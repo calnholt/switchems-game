@@ -1,0 +1,36 @@
+import { Component, Input } from '@angular/core';
+import { MonsterActionCardIcons } from '../../../models/monster/monster.model';
+import { ImageUtil } from 'src/app/shared/utils/image.util';
+
+type CardType = 'BUFF' | 'DRAW' | 'DISCARD' | 'ADDED_BUFF';
+
+@Component({
+  selector: 'sw-monster-action-card-icons',
+  templateUrl: './monster-action-card-icons.component.html',
+  styleUrls: ['./monster-action-card-icons.component.scss']
+})
+export class MonsterActionCardIconsComponent {
+  @Input({ required: true }) icons: MonsterActionCardIcons = new MonsterActionCardIcons();
+  cardTypes: {type: CardType, index: number}[] = [];
+
+  buffImg = ImageUtil.getSymbolsPath('buff');
+  discardImg = ImageUtil.getSymbolsPath('discard');
+  drawImg = ImageUtil.getSymbolsPath('draw');
+
+  constructor() {
+
+  }
+
+  ngOnInit() {
+    this.cardTypes = this.cardTypes.concat(
+      this.getCardTypeArray(this.icons.buff, 'BUFF'),
+      this.getCardTypeArray(this.icons.augmentedBuff, 'ADDED_BUFF'),
+      this.getCardTypeArray(this.icons.discard, 'DISCARD'),
+      this.getCardTypeArray(this.icons.draw, 'DRAW'),
+    );
+  }
+
+  getCardTypeArray(amount: number, type: CardType) {
+    return ([...Array(amount).keys()]).map((obj, i) => { return { type: type, index: i }});
+  }
+}

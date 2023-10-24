@@ -1,0 +1,85 @@
+{
+  "elements": [
+    "Death",
+    "Rock"
+  ],
+  "actions": [
+    {
+      "name": "Kraterkazee",
+      "text": "[Q], <b>Recoil 2[ATK]</b>~RECOIL~",
+      "element": "Death",
+      "statusFlg": false,
+      "attack": 4,
+      "speed": 7,
+      "draw": 0,
+      "discard": 1,
+      "buff": 1,
+      "lastUpdated": "Fri, 30 Dec 2022 09:50:42 GMT"
+    },
+    {
+      "name": "Roc Rock",
+      "text": "<b>Recoil 1[ATK]</b>~RECOIL~",
+      "element": "Rock",
+      "statusFlg": false,
+      "attack": 3,
+      "speed": 5,
+      "draw": 0,
+      "discard": 0,
+      "buff": 2,
+      "lastUpdated": "Fri, 26 Feb 2021 08:36:31 GMT"
+    },
+    {
+      "name": "Iron Defense",
+      "text": "{\"stat\": \"DEF\", \"num\": 3}<br><br>This monster gains <div>+1[DEF]</div> this turn.",
+      "element": "Rock",
+      "statusFlg": true,
+      "speed": 7,
+      "draw": 1,
+      "discard": 0,
+      "buff": 0,
+      "lastUpdated": "Tue, 24 Jan 2023 13:32:08 GMT"
+    },
+    {
+      "name": "Scavenge",
+      "text": "If an enemy monster has been or becomes KO'd this turn, this monster heals <div>6[HP]</div>.",
+      "element": "Death",
+      "statusFlg": false,
+      "attack": 2,
+      "speed": 4,
+      "draw": 0,
+      "discard": 1,
+      "buff": 3,
+      "lastUpdated": "Sun, 26 Sep 2021 13:23:52 GMT"
+    }
+  ],
+  "buffs": [
+    {
+      "buffName": "Beak Drill",
+      "buffText": "<b>Pierce 2[DEF]</b>~PIERCE~",
+      "lastUpdated": "Sat, 04 Sep 2021 12:51:49 GMT"
+    },
+    {
+      "buffName": "Hard Headed",
+      "buffText": "If your opponent selected a monster <b>attack</b> action this turn, the enemy monster's attack gains <div><b>recoil 2[ATK]</b>.</div>~RECOIL~",
+      "lastUpdated": "Sat, 04 Sep 2021 12:51:49 GMT"
+    },
+    {
+      "buffName": "Self Defense",
+      "buffText": "This monster heals 1[HP] and does not suffer <b>recoil</b> damage this turn. ~RECOIL~",
+      "lastUpdated": "Tue, 24 Jan 2023 15:15:45 GMT"
+    },
+    {
+      "buffName": "Bigger Rocs",
+      "buffText": "This attack gains +2[ATK] and <div><b>recoil 1[ATK]</b></div>. ~RECOIL~",
+      "lastUpdated": "Tue, 24 Jan 2023 13:32:08 GMT"
+    }
+  ],
+  "monsterId": 9,
+  "name": "Vulturock",
+  "text": "When this monster <b>switches in</b>, <div>{\"stat\": \"SPD\", \"num\": 2}.</div>~SWITCH~",
+  "hp": 9,
+  "promiseDescription": "<b>Vulturock</b> hits hard – including itself!",
+  "initiative": 75,
+  "imageFlg": true,
+  "lastUpdated": "Fri, 27 Jan 2023 08:00:52 GMT"
+}

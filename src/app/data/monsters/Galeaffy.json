@@ -1,0 +1,86 @@
+{
+  "elements": [
+    "Leaf"
+  ],
+  "actions": [
+    {
+      "name": "Foreboding Winds",
+      "text": "[Q]. <br><br>If this attack deals two or more damage to the enemy monster, <div>[+] [+] then [-] [-].</div>",
+      "element": "Leaf",
+      "statusFlg": false,
+      "attack": 3,
+      "speed": 6,
+      "draw": 0,
+      "discard": 1,
+      "buff": 1,
+      "lastUpdated": "Thu, 26 Jan 2023 10:50:10 GMT"
+    },
+    {
+      "name": "Whirlwind",
+      "text": "If this action is <b>faster</b>, this attack gains +3[ATK].~FASTER~",
+      "element": "Leaf",
+      "statusFlg": false,
+      "attack": 1,
+      "speed": 5,
+      "draw": 0,
+      "discard": 0,
+      "buff": 2,
+      "lastUpdated": "Sun, 26 Sep 2021 13:47:29 GMT"
+    },
+    {
+      "name": "Cyclone",
+      "text": "{\"stat\": \"SPD\", \"num\": 2}.",
+      "element": "Leaf",
+      "statusFlg": false,
+      "attack": 2,
+      "speed": 3,
+      "draw": 1,
+      "discard": 0,
+      "buff": 1,
+      "lastUpdated": "Thu, 26 Jan 2023 10:54:24 GMT"
+    },
+    {
+      "name": "Vicious Hurricane",
+      "text": "<b>Single use.</b> <br><br>This attack gains <div>+X[ATK]</div> where X is equal to your speed minus the enemy monster's speed. If the opponent selected a non-monster action this turn, this attack gains <div>+2[ATK]</div> instead. ~SINGLE~",
+      "element": "Death",
+      "statusFlg": false,
+      "attack": 1,
+      "speed": 5,
+      "draw": 0,
+      "discard": 2,
+      "buff": 2,
+      "lastUpdated": "Fri, 24 Sep 2021 12:14:02 GMT"
+    }
+  ],
+  "buffs": [
+    {
+      "buffName": "Propulsive Winds",
+      "buffText": "This attack gains <div>+2[SPD]</div>.",
+      "lastUpdated": "Thu, 26 Jan 2023 10:50:10 GMT"
+    },
+    {
+      "buffName": "Turbulence",
+      "buffText": "At the start of the turn, [+] then [-]. ~AURA~",
+      "auraDuration": 5,
+      "lastUpdated": "Thu, 26 Jan 2023 12:34:05 GMT"
+    },
+    {
+      "buffName": "Leafy Kicks",
+      "buffText": "{\"stat\": \"SPD\", \"num\": 2}",
+      "lastUpdated": "Fri, 24 Sep 2021 12:14:02 GMT"
+    },
+    {
+      "buffName": "Outta Here",
+      "buffText": "<b>Super [B] [B].</b><br><br>Perform a switch action after the monster action phase. ~SUPER~",
+      "lastUpdated": "Thu, 26 Jan 2023 10:50:10 GMT"
+    }
+  ],
+  "monsterId": 8,
+  "name": "Galeaffy",
+  "text": "When this monster <b>switches in or out</b>, <div>[+] [+] then [-] [-].</div> ~SWITCH~",
+  "hp": 8,
+  "promiseDescription": "The master of speed has arrived!",
+  "initiative": 85,
+  "imageFlg": true,
+  "lastUpdated": "Thu, 26 Jan 2023 10:50:10 GMT"
+}

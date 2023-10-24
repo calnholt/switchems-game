@@ -1,0 +1,17 @@
+<div id="monster-action-card-icons">
+  <div class="d-flex">
+      <ng-container *ngFor="let type of cardTypes">
+        <span 
+        class="{{type.type.toLowerCase()}}" 
+        [ngClass]="{ 'applied' : 
+          (type.type === 'BUFF' && type.index < icons.appliedBuff) || 
+          (type.type === 'ADDED_BUFF' && icons.appliedBuff > icons.buff && type.index < (icons.appliedBuff - icons.buff)) || 
+          (type.type === 'DISCARD' && type.index < icons.appliedDiscard)}">
+          <img *ngIf="type.type === 'BUFF'" src={{buffImg}} />
+          <img *ngIf="type.type === 'DRAW'" src={{drawImg}} />
+          <img *ngIf="type.type === 'DISCARD'" src={{discardImg}} />
+          <img *ngIf="type.type === 'ADDED_BUFF'" src={{buffImg}} />
+        </span>
+      </ng-container>
+  </div>
+</div>

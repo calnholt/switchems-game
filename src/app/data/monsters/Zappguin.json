@@ -1,0 +1,85 @@
+{
+  "elements": [
+    "Electric"
+  ],
+  "actions": [
+    {
+      "name": "Thunderstorm",
+      "text": "<div>{\"stat\": \"SPD\", \"num\": 3}</div>",
+      "element": "Electric",
+      "statusFlg": false,
+      "attack": 4,
+      "speed": 5,
+      "draw": 0,
+      "discard": 2,
+      "buff": 0,
+      "lastUpdated": "Tue, 24 Jan 2023 14:16:01 GMT"
+    },
+    {
+      "name": "Ice Blast",
+      "text": "If this attack is <b>faster</b>, [Q] [Q]. ~FASTER~",
+      "element": "Water",
+      "statusFlg": false,
+      "attack": 2,
+      "speed": 4,
+      "draw": 0,
+      "discard": 0,
+      "buff": 1,
+      "lastUpdated": "Wed, 07 Jul 2021 07:02:19 GMT"
+    },
+    {
+      "name": "Vortex",
+      "text": "This attack gains two [B] slots if the enemy monster has a [STATUS]. <br><br>{\"stat\": \"ATK\", \"num\": 1} for each [B] slot used.~STATUS~",
+      "element": "Electric",
+      "statusFlg": false,
+      "attack": 2,
+      "speed": 6,
+      "draw": 0,
+      "discard": 1,
+      "buff": 1,
+      "lastUpdated": "Tue, 24 Jan 2023 14:16:01 GMT"
+    },
+    {
+      "name": "Paralyze",
+      "text": "<b>Stun [STATUS]</b>, <b>Crush 1[PQ]</b>. ~STUN~ ~CRUSH~",
+      "element": "Electric",
+      "statusFlg": true,
+      "speed": 7,
+      "draw": 1,
+      "discard": 0,
+      "buff": 0,
+      "lastUpdated": "Tue, 24 Jan 2023 14:32:17 GMT"
+    }
+  ],
+  "buffs": [
+    {
+      "buffName": "Charge Up",
+      "buffText": "{\"stat\": \"SPD\", \"num\": 2}",
+      "lastUpdated": "Tue, 24 Jan 2023 14:16:01 GMT"
+    },
+    {
+      "buffName": "Resuscitate",
+      "buffText": "If the enemy monster is <div><b>weak</b> [WEAK]</div> to this attack's element, [Q] [Q] [Q]. If not, [Q] instead. ~EFFECTIVE~",
+      "auraDuration": 0,
+      "lastUpdated": "Tue, 24 Jan 2023 14:16:01 GMT"
+    },
+    {
+      "buffName": "High Voltage",
+      "buffText": "This attack gains +1[ATK]. If the enemy monster has a <div>[STATUS],</div> this attack gains <div>+2[ATK] instead.</div> ~EXHAUST~",
+      "lastUpdated": "Tue, 24 Jan 2023 14:16:01 GMT"
+    },
+    {
+      "buffName": "Quicken",
+      "buffText": "This attack gains +2[SPD].",
+      "lastUpdated": "Tue, 24 Jan 2023 14:16:01 GMT"
+    }
+  ],
+  "monsterId": 7,
+  "name": "Zappguin",
+  "text": "When this monster <b>switches in</b>, <div>{\"num\": 1, \"stat\": \"SPD\"}</div><br><br>If this monster's attack action is <b>faster</b>, you may [FLIP]. If successful, the attack gains <b>flinch</b>.~SWITCH~~FLINCH~",
+  "hp": 8,
+  "promiseDescription": "<b>Zappguin</b> wants nothing more than to <b>stun</b> [STATUS] and <b>flinch</b> every monster it meets.",
+  "initiative": 40,
+  "imageFlg": true,
+  "lastUpdated": "Wed, 25 Jan 2023 12:07:15 GMT"
+}

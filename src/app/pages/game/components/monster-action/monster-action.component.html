@@ -1,0 +1,27 @@
+<div id="monster-action" [ngClass]="{'selected' : action.isSelected}" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+  <div class="title-container title">
+    {{action.name}}
+  </div>
+  <div class="stat-container">
+    <div *ngIf="action.attack">
+      <span>{{action.attack}}
+        <img [src]="attackImg">
+      </span>
+    </div>
+    <div>
+      <img [src]="elementImg" >
+    </div>
+    <div *ngIf="action.speed">
+      <span>{{action.speed}}
+        <img [src]="speedImg">
+      </span>
+    </div>
+  </div>
+  <div class="monster-action-container">
+    <div [innerHTML]="action.text | convertEmbeddedText" class="text"></div>
+    <sw-monster-action-card-icons [icons]="action.icons" />
+  </div>
+</div>
+<ng-container *ngIf="isHovering">
+  <sw-monster-action-hovers [text]="action.text" />
+</ng-container>

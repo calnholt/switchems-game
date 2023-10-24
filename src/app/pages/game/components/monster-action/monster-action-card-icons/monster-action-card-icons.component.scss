@@ -1,0 +1,24 @@
+#monster-action-card-icons {
+  position: absolute;
+  bottom: 5px;
+  div {
+    span:not(:last-child) {
+      margin-right: 5px;
+    }
+    img {
+      height: 40px;
+    }
+    .added_buff {
+      img {
+        border: 4px solid rgb(135, 135, 255);
+        border-radius: 3px;
+      }
+    }
+    .applied {
+      img {
+        border: 4px solid green;
+        border-radius: 3px;
+      }
+    }
+  }
+}
