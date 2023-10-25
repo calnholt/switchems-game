@@ -1,0 +1,21 @@
+@import '../../../../../assets/styles/constants.scss';
+
+#term-tooltip {
+  background-color: black;
+  border-radius: 4px;
+  padding: 3px 6px;
+  .title {
+    font-family: "Beastformer";
+    font-size: 25px;
+    line-height: 75%;
+    margin-bottom: 3px;
+    border-bottom: 1px white solid;
+    padding-bottom: 4px;
+    text-align: center;
+  }
+  .description{
+  }
+  img {
+    filter: invert(100%) !important;
+  }
+}

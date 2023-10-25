@@ -13,9 +13,9 @@ export class MonsterActionCardIconsComponent {
   @Input({ required: true }) icons: MonsterActionCardIcons = new MonsterActionCardIcons();
   cardTypes: {type: CardType, index: number}[] = [];
 
-  buffImg = ImageUtil.getSymbolsPath('buff');
-  discardImg = ImageUtil.getSymbolsPath('discard');
-  drawImg = ImageUtil.getSymbolsPath('draw');
+  buffImg = ImageUtil.icons.buff;
+  discardImg = ImageUtil.icons.discard;
+  drawImg = ImageUtil.icons.draw;
 
   constructor() {
 
@@ -24,13 +24,16 @@ export class MonsterActionCardIconsComponent {
   ngOnInit() {
     this.cardTypes = this.cardTypes.concat(
       this.getCardTypeArray(this.icons.buff, 'BUFF'),
-      this.getCardTypeArray(this.icons.augmentedBuff, 'ADDED_BUFF'),
+      this.getCardTypeArray(this.icons.addedBuff, 'ADDED_BUFF'),
       this.getCardTypeArray(this.icons.discard, 'DISCARD'),
       this.getCardTypeArray(this.icons.draw, 'DRAW'),
     );
   }
 
   getCardTypeArray(amount: number, type: CardType) {
-    return ([...Array(amount).keys()]).map((obj, i) => { return { type: type, index: i }});
+    if (amount > 0) {
+      return ([...Array(amount).keys()]).map((obj, i) => { return { type: type, index: i }});
+    }
+    return [];
   }
 }

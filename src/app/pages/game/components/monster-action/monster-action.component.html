@@ -1,4 +1,4 @@
-<div id="monster-action" [ngClass]="{'selected' : action.isSelected}" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+<div id="monster-action" [ngClass]="{'selected' : action.isSelected}" cardInfoTooltip [action]="action" tooltipType="ACTION">
   <div class="title-container title">
     {{action.name}}
   </div>
@@ -23,5 +23,5 @@
   </div>
 </div>
 <ng-container *ngIf="isHovering">
-  <sw-monster-action-hovers [text]="action.text" />
+  <sw-monster-action-tooltip  />
 </ng-container>

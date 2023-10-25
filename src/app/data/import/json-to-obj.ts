@@ -8,7 +8,7 @@ import { default as Drownigator } from '../monsters/Drownigator.json';
 import { default as Vulturock } from '../monsters/Vulturock.json';
 import { default as Willard } from '../monsters/Willard.json';
 import { ElemType, ELEMENTS } from 'src/app/shared/types/dataTypes';
-import { Monster, MonsterAction } from 'src/app/pages/game/models/monster/monster.model';
+import { Monster, MonsterAction, MonsterActionCardIcons } from 'src/app/pages/game/models/monster/monster.model';
 
 const getElemType = (text: string): ElemType => {
     return ELEMENTS.find(e => e.toString() as ElemType === text) as ElemType;
@@ -37,13 +37,14 @@ export const loadMonsters = (selectedMonster?: any): Array<Monster> => {
 export const convertFromJSON = (all: Array<any>): Array<Monster> => {
     let out = new Array<Monster>();
     all.forEach(json => {
-        const monster: any = {};
+        const monster: Monster = new Monster();
         let MONSTER_PROPERTIES = [
             'name',
             'text',
             'hp',
             'initiative',
         ];
+        //@ts-ignore
         MONSTER_PROPERTIES.forEach(p => monster[p] = json[p]);
         const elements = Array<ElemType>();
         json.elements.forEach((element: string) => elements.push(getElemType(element)));
@@ -55,14 +56,18 @@ export const convertFromJSON = (all: Array<any>): Array<Monster> => {
             'text',
             'attack',
             'speed',
-            'draw',
-            'discard',
-            'buff',
         ];
         for (let i = 0; i < ACTIONS; i++) {
-            const action: any = {};
-            ACTION_PROPERTIES.forEach(p => action[p] = json.actions[i][p]);
+            //@ts-ignore
+            const action: MpnsterAction = new MonsterAction();
+            const jsonAction = json.actions[i];
+            ACTION_PROPERTIES.forEach(p => action[p] = jsonAction[p]);
             action.element = getElemType(json.actions[i].element);
+
+            action.icons = new MonsterActionCardIcons(); 
+            action.icons.buff = jsonAction.buff;
+            action.icons.discard = jsonAction.discard;
+            action.icons.draw = jsonAction.draw;
             monster.actions.push(action);
         }
         // monster.buffs = new Array<Buff>();

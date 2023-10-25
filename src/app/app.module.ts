@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { GameModule } from './pages/game/game.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { GameModule } from './pages/game/game.module';
     RouterModule.forRoot(AppRoutingModule, {
       enableTracing: false
     }),
-    GameModule
+    GameModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

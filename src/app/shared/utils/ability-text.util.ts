@@ -2,11 +2,15 @@ import { Term, Image } from "../types/data";
 import { Css, TERM_CODES, IMAGE_CODES } from "../types/dataTypes";
 
 export const AbilityTextUtil = {
+  getAbilityTextDefaults: getAbilityTextDefaults,
   getAbilityText: getAbilityText,
   getTermsFromText: getTermsFromText,
 }
 
-function getAbilityText(text: string): string;
+function getAbilityTextDefaults(text: string): string {
+  return getAbilityText(text, "embedded-term-text", "embedded-icon");
+}
+
 function getAbilityText(text: string, termCss: Css = "embedded-term-text", imageCss: Css = "embedded-icon"): string {
   if (!text) {
     return "";

@@ -1,0 +1,36 @@
+@import '../../../../../assets/styles/constants.scss';
+
+#effectiveness-tooltip {
+  display: flex;
+  justify-content: center;
+  >div {
+    border-radius: 4px;
+    background-color: black;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 4px 4px;
+    width: min-content;
+    >div:not(:last-child) {
+      margin-right: 4px;
+    }
+
+    .vs {
+      color: white;
+      background: black;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      font-family: $header-font;
+      border-radius: 4px;
+      color: white;
+      padding: 2px;
+      font-size: 40px;
+      line-height: 70%;
+    }
+
+    img {
+      height: 30px;
+    }
+  }
+}

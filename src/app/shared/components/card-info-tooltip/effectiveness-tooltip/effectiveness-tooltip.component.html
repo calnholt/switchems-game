@@ -1,0 +1,13 @@
+<div id="effectiveness-tooltip">
+  <div>
+    <div>
+      <img [src]="randomCube">
+    </div>
+    <div class="vs">VS</div>
+    <ng-container *ngFor="let path of imgPaths">
+      <div>
+        <img [src]="path">
+      </div>
+    </ng-container>
+  </div>
+</div>

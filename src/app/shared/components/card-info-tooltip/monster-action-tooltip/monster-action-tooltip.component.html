@@ -1,0 +1,9 @@
+<div id="monster-action-tooltip" class="tooltip-container" *ngIf="show && !fadingOut" [style.left]="left + 'px'" [style.top]="top + 'px'" [@slideInRightOnEnter] [@fadeOutOnLeave]>
+  <div class="term-container" *ngFor="let term of terms">
+    <sw-term-tooltip [term]="term" />
+    <div class="dot">• • •</div>
+  </div>
+  <ng-container *ngIf="action.attack != null">
+    <sw-effectiveness-tooltip [advantages]="advantages" />
+  </ng-container>
+</div>
