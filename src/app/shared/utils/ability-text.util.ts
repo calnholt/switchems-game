@@ -4,6 +4,7 @@ import { Css, TERM_CODES, IMAGE_CODES } from "../types/dataTypes";
 export const AbilityTextUtil = {
   getAbilityTextDefaults: getAbilityTextDefaults,
   getAbilityText: getAbilityText,
+  getAbilityTextWithoutTerms: getAbilityTextWithoutTerms,
   getTermsFromText: getTermsFromText,
 }
 
@@ -36,6 +37,16 @@ function getAbilityText(text: string, termCss: Css = "embedded-term-text", image
 
 function getTermsFromText(text: string): Term[] {
   return TERM_CODES.filter(term => text.includes(term.key));
+}
+
+function getAbilityTextWithoutTerms(text: string): string {
+  let parsedText = text;
+  TERM_CODES.forEach((term: Term) => {
+    while (parsedText.includes(term.key)) {
+      parsedText = parsedText.replace(term.key, '');
+    }
+  });
+  return parsedText;
 }
 
 
