@@ -3,7 +3,7 @@ import { ELEMENT_PATH_COLOR, ElemType, MONSTERS_PATH, Path, SVG_PATH, SYMBOLS_PA
 export const ImageUtil = {
   getSymbolsPath,
   getElementsPath,
-  getMonstersPath: (name: string): Path => `${MONSTERS_PATH}${name.toLowerCase()}.png`,
+  getMonstersPath,
   elements: {
     fire: getElementsPath('Fire'),
     death: getElementsPath('Death'),
@@ -17,8 +17,23 @@ export const ImageUtil = {
     discard: getSymbolsPath('discard'),
     buff: getSymbolsPath('buff'),
     randomCube: getSymbolsPath('question'),
+    attack: getSymbolsPath('attack'),
+    speed: getSymbolsPath('speed'),
+    defense: getSymbolsPath('defense'),
+  },
+  monsters: {
+    Chargroar: getMonstersPath('chargroar'),
+    Drownigator: getMonstersPath('drownigator'),
+    Flexferno: getMonstersPath('flexferno'),
+    Galeaffy: getMonstersPath('galeaffy'),
+    Phantomaton: getMonstersPath('phantomaton'),
+    Stallagrowth: getMonstersPath('stallagrowth'),
+    Vulturock: getMonstersPath('vulturock'),
+    Willard: getMonstersPath('willard'),
+    Zappguin: getMonstersPath('zappguin'),
   }
 }
 
 function getElementsPath(name: ElemType): Path { return `${ELEMENT_PATH_COLOR}${name.toLowerCase()}.png` };
 function getSymbolsPath(name: string): Path { return `${SYMBOLS_PATH}${name.toLowerCase()}.png` };
+function getMonstersPath(name: string): Path { return `${MONSTERS_PATH}${name.toLowerCase()}.png` };

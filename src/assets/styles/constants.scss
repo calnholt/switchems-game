@@ -1,5 +1,4 @@
 @import './fonts.scss';
-@import '../../styles.scss';
 
 $red: #d0021b;
 $blue: #4a90e2;
@@ -17,6 +16,7 @@ $card-width: 6.325cm;
 $card-height: 8.8cm;
 
 $recessed: inset -20px 0 20px 0 rgb(0 0 0 / 20%), inset 0 -20px 20px 0 rgb(0 0 0 / 20%);
+$shadow: 20px 20px 15px #91919133;
 
 $action-background-image: url("src/assets/images/svg/bubbles.svg");
 $action-fill-rule: evenodd;

@@ -1,0 +1,16 @@
+<div id="stat-board-section"
+  [ngClass]="{'applied' : statBoardSection._isApplied}"
+  (click)="onSelect()" 
+  [@pulse]="aniState && this.statBoardSection._isApplied" (@pulse.done)="aniDone()">
+  <div>
+    <img [src]="icon">
+  </div>
+  <div class="pip-container">
+    <ng-container *ngFor="let _ of [].constructor(statBoardSection._current)">
+      <div class="circle occupied"></div>
+    </ng-container>
+    <ng-container *ngFor="let _ of [].constructor(statBoardSection._max - statBoardSection._current)">
+      <div class="circle open"></div>
+    </ng-container>
+  </div>
+</div>

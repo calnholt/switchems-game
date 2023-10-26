@@ -1,0 +1,49 @@
+@import '../../../../../../../assets/styles/constants.scss';
+
+#stat-board-section {
+  display: flex;
+  align-items: center;
+  background: #dcf7dc;
+  width: fit-content;
+  padding: 8px 10px;
+  border-radius: 29px;
+  margin-bottom: 5px;
+
+  &.applied {
+    box-shadow: $shadow;
+  }
+
+  div:nth-child(1) {
+    width: 45px;
+  }
+
+  img {
+    height: 40px;
+  }
+
+  .pip-container {
+    display: flex;
+    align-items: center;
+
+    .circle {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+
+      &.occupied {
+        background-color: #36d317;
+        border: 4px solid black;
+      }
+
+      &.open {
+        background-color: black;
+      }
+    }
+
+    .circle:not(:last-child) {
+      margin-right: 3px;
+    }
+  }
+
+
+}
