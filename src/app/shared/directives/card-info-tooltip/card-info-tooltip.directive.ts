@@ -52,8 +52,8 @@ export class CardInfoTooltipDirective {
     const domElem =(this.componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
     document.body.appendChild(domElem);
     this.componentRef.instance.action = this.action;
-    const { left, right, top } = this.elementRef.nativeElement.getBoundingClientRect();
-    this.componentRef.instance.left = this.action.index % 2 == 0 ? left - 5 - TOOLTIP_WIDTH : right + 5;
+    const { left, right, top, bottom } = this.elementRef.nativeElement.getBoundingClientRect();
+    this.componentRef.instance.left = left + 25; // (300 - 250) / 2
     this.componentRef.instance.top = top;
     if (this.state === 'UNINITIALIZED') {
       // best approach? not sure

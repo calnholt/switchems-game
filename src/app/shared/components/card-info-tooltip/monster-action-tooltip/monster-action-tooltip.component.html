@@ -1,10 +1,27 @@
+
+<!-- TODO: no actual difference yet, need to adjust top or bottom based on if user's or not -->
 <ng-container *ngIf="action.index % 2 === 0">
-  <div id="monster-action-tooltip" class="tooltip-container" *ngIf="show" [style.left]="left + 'px'" [style.top]="top + 'px'" [@slideInRightOnEnter] [@fadeOutOnLeave] (@fadeOutOnLeave.done)="aniDone($event)">
+  <div #ref 
+    id="monster-action-tooltip" 
+    class="tooltip-container" 
+    *ngIf="show" [style.left]="left + 'px'" 
+    [style.top]="top + 'px'" 
+    [@slideInDownOnEnter] 
+    [@fadeOutOnLeave] 
+    (@fadeOutOnLeave.done)="aniDone($event)">
     <ng-container *ngTemplateOutlet="contents"></ng-container>
   </div>
 </ng-container>
 <ng-container *ngIf="action.index % 2 === 1">
-  <div id="monster-action-tooltip" class="tooltip-container" *ngIf="show" [style.left]="left + 'px'" [style.top]="top + 'px'" [@slideInLeftOnEnter] [@fadeOutOnLeave] (@fadeOutOnLeave.done)="aniDone($event)">
+  <div #ref 
+    id="monster-action-tooltip" 
+    class="tooltip-container" 
+    *ngIf="show" 
+    [style.left]="left + 'px'" 
+    [style.top]="top + 'px'" 
+    [@slideInDownOnEnter] 
+    [@fadeOutOnLeave] 
+    (@fadeOutOnLeave.done)="aniDone($event)">
     <ng-container *ngTemplateOutlet="contents"></ng-container>
   </div>
 </ng-container>
