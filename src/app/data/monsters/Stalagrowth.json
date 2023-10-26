@@ -6,7 +6,7 @@
   "actions": [
     {
       "name": "Gravelcrust Grip",
-      "text": "<b>Drain [STATUS], recoil 3[ATK], single use. </b><br><br>If this monster has no [DEF][PQ], <div>{\"stat\": \"DEF\", \"num\": 3}.</div> ~DRAIN~~SINGLE~",
+      "text": "<b>Drain [STATUS], recoil 3[ATK], single use. </b><br><br>If this monster has no [DEF][PQ], <div>{\"stat\": \"DEF\", \"num\": 3}.</div> ~DRAIN~~RECOIL~~SINGLE~",
       "element": "Leaf",
       "statusFlg": true,
       "speed": 2,
@@ -17,7 +17,7 @@
     },
     {
       "name": "Vine Whips",
-      "text": "Remove all [STATUS] from the enemy monster. This attack gains <div>+3[ATK]</div> for each [STATUS] removed.<br><br>If the enemy monster <div><b>switched In [SL]</b></div> this turn,  <div><b>drain [STATUS]</b>.</div>",
+      "text": "Remove all [STATUS] from the enemy monster. This attack gains <div>+3[ATK]</div> for each [STATUS] removed.<br><br>If the enemy monster <div><b>switched In [SL]</b></div> this turn,  <div><b>drain [STATUS]</b>.</div>~STATUS~",
       "element": "Leaf",
       "statusFlg": false,
       "attack": 1,

@@ -5,7 +5,7 @@
   "actions": [
     {
       "name": "Inferno",
-      "text": "If the enemy monster has a [STATUS], this attack gains one [B] slot and [Q].<br><br>If all [B] slots are used <u>and</u> all applied buffs <b>belong</b> to this monster, this attack gains +2[ATK] for each buff slot used.",
+      "text": "If the enemy monster has a [STATUS], this attack gains one [B] slot and [Q].<br><br>If all [B] slots are used <u>and</u> all applied buffs <b>belong</b> to this monster, this attack gains +2[ATK] for each buff slot used. ~STATUS~ ~BELONGS~",
       "element": "Fire",
       "statusFlg": false,
       "attack": 2,
@@ -17,7 +17,7 @@
     },
     {
       "name": "Burn",
-      "text": "<b>Wound [STATUS]</b>.  \n<br><br>This monster gains +1[DEF] this turn. \n\n~WOUND~",
+      "text": "<b>Wound [STATUS]</b>.  \n<br><br>This monster gains +1[DEF] this turn. \n\n~WOUND~~STATUS~",
       "element": "Fire",
       "statusFlg": true,
       "speed": 8,
@@ -40,7 +40,7 @@
     },
     {
       "name": "Scorch",
-      "text": "[Q].<br><br>If the enemy monster has a [STATUS], this attack gains [Q].",
+      "text": "[Q].<br><br>If the enemy monster has a [STATUS], this attack gains [Q].~STATUS~",
       "element": "Fire",
       "statusFlg": false,
       "attack": 3,

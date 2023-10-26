@@ -6,7 +6,7 @@
   "actions": [
     {
       "name": "Fatigue",
-      "text": "<b>Fatigue [STATUS]</b>, {\"stat\": \"DEF\", \"num\": 1}. ~FATIGUE~",
+      "text": "<b>Fatigue [STATUS]</b>, {\"stat\": \"DEF\", \"num\": 1}. ~FATIGUE~ ~STATUS~",
       "element": "Death",
       "statusFlg": true,
       "speed": 8,
