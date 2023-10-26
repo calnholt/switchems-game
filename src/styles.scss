@@ -1,11 +1,3 @@
-// @font-face { 
-//   font-family: 'Beastformer'; 
-//   src: url('./assets/fonts/Beastformer.ttf') format("ttf")
-// } 
-// @font-face { 
-//   font-family: 'Helvetica'; 
-//   src: url('./assets/fonts/Helvetica.ttc') format("ttc")
-// }
 
 .embedded-term-text {
   font-style: italic;
@@ -15,7 +7,7 @@
   }
 }
 .embedded-icon {
-  max-height: 15px;
+  max-height: 19px;
 }
 .embedded-icon-inverse {
   filter: invert(100%);
@@ -24,10 +16,13 @@
 .chunk {
   display: inline-block;
 }
+b {
+  text-decoration: underline;
+}
 
 .tooltip-container {
   position: fixed;
-  background-color: #e9e9e9;;
+  background-color: #b9b9b985;
   border-radius: 4px;
   color: #ffffff;
   font-family: Arial;
@@ -35,4 +30,5 @@
   font-size: 13px;
   opacity: 1;
   width: 250px;
+  box-shadow: 20px 20px 15px #91919133;
 }
