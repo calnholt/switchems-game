@@ -11,11 +11,11 @@ export class GameComponent {
 
   constructor(private monsterService: MonsterService) {}
 
-  actions: MonsterAction[] = [];
+  monsters: Array<MonsterAction[]> = [];
 
   ngOnInit() {
     this.monsterService.getMonsters().forEach(m => {
-      this.actions = this.actions.concat(m.actions);
+      this.monsters.push(m.actions);
     })
   }
 }
