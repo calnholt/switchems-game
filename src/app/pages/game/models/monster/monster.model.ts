@@ -18,11 +18,17 @@ export class MonsterAction {
   speed: number = 0;
   element!: ElemType;
   icons: MonsterActionCardIcons = new MonsterActionCardIcons();
+  index: number = 0;
+  isStatus: boolean = false;
   // TODO: UI props...should they be here?
   isSelected: boolean = false;
   isLocked: boolean = false;
   isUsed: boolean = false;
   isDisabled: boolean = false;
+
+  getAbilityTextWithoutTerms(): string {
+    return AbilityTextUtil.getAbilityTextWithoutTerms(this.text);
+  }
 
   getAdvantages() {
     const map: Map<ElemType, number[]> = new Map();
@@ -37,6 +43,11 @@ export class MonsterAction {
 
   getTerms(): Term[] {
     return AbilityTextUtil.getTermsFromText(this.text);
+  }
+
+  hasTooltip(): boolean {
+    const hasTerms = !!this.getTerms()?.length;
+    return hasTerms || !this.isStatus;
   }
 }
 

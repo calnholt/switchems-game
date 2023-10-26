@@ -58,12 +58,13 @@ export const convertFromJSON = (all: Array<any>): Array<Monster> => {
             'speed',
         ];
         for (let i = 0; i < ACTIONS; i++) {
-            //@ts-ignore
-            const action: MpnsterAction = new MonsterAction();
+            const action: MonsterAction = new MonsterAction();
             const jsonAction = json.actions[i];
-            ACTION_PROPERTIES.forEach(p => action[p] = jsonAction[p]);
+            // @ts-ignore
+            ACTION_PROPERTIES.forEach((p) => action[p] = jsonAction[p]);
             action.element = getElemType(json.actions[i].element);
-
+            action.isStatus = jsonAction['statusFlg'];
+            action.index = i;
             action.icons = new MonsterActionCardIcons(); 
             action.icons.buff = jsonAction.buff;
             action.icons.discard = jsonAction.discard;
