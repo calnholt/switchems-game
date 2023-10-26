@@ -1,4 +1,6 @@
 
+@import './assets/styles/constants.scss';
+
 .embedded-term-text {
   font-style: italic;
   font-size: 11px;
@@ -30,5 +32,5 @@ b {
   font-size: 13px;
   opacity: 1;
   width: 250px;
-  box-shadow: 20px 20px 15px #91919133;
+  box-shadow: $shadow;
 }
