@@ -9,6 +9,7 @@ export class Monster {
   private hp: number;
   private initiative: number;
   private actions: MonsterAction[];
+  private currentHp: number = 0;
 
   constructor(
     name: string,
@@ -24,6 +25,7 @@ export class Monster {
     this.hp = hp;
     this.initiative = initiative;
     this.actions = actions;
+    this.currentHp = this.hp;
   }
 
   public get _name(): string { return this.name; }
@@ -32,6 +34,7 @@ export class Monster {
   public get _hp(): number { return this.hp; }
   public get _initiative(): number { return this.initiative; }
   public get _actions(): MonsterAction[] { return this.actions; }
+  public get _currentHp(): number { return this.currentHp; }
 }
 
 export class MonsterAction {

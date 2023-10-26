@@ -82,7 +82,8 @@ const getMonsterAction = (action: any): MonsterAction => {
     action.speed,
     action.element,
     getMonsterActionCardIcon(action),
-    0
+    0,
+    action.statusFlg
   );
 }
 
