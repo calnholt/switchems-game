@@ -76,7 +76,7 @@
   ],
   "monsterId": 1,
   "name": "Stalagrowth",
-  "text": "When this monster <b>switches in</b>, {\"stat\": \"DEF\", \"num\": 1}.</div> ~SWITCH~",
+  "switchIn": "When this monster <b>switches in</b>, {\"stat\": \"DEF\", \"num\": 1}.</div>",
   "hp": 10,
   "promiseDescription": "<b>Stallagrowth</b> plays for the long game – slowly drain the enemy's health and stand your ground with bolstered defense.",
   "initiative": 10,

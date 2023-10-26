@@ -5,7 +5,8 @@ import { AbilityTextUtil } from "src/app/shared/utils/ability-text.util";
 export class Monster {
   private name: string;
   private elements: Array<ElemType>;
-  private text: string;
+  private switchIn: string;
+  private passive: string;
   private hp: number;
   private initiative: number;
   private actions: MonsterAction[];
@@ -14,14 +15,16 @@ export class Monster {
   constructor(
     name: string,
     elements: ElemType[],
-    text: string,
+    switchIn: string,
+    passive: string,
     hp: number,
     initiative: number,
     actions: MonsterAction[]
   ) {
     this.name = name;
     this.elements = elements;
-    this.text = text;
+    this.switchIn = switchIn;
+    this.passive = passive;
     this.hp = hp;
     this.initiative = initiative;
     this.actions = actions;
@@ -30,7 +33,8 @@ export class Monster {
 
   public get _name(): string { return this.name; }
   public get _elements(): ElemType[] { return this.elements; }
-  public get _text(): string { return this.text; }
+  public get _switchIn(): string { return this.switchIn; }
+  public get _passive(): string { return this.passive; }
   public get _hp(): number { return this.hp; }
   public get _initiative(): number { return this.initiative; }
   public get _actions(): MonsterAction[] { return this.actions; }

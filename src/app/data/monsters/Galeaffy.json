@@ -77,7 +77,7 @@
   ],
   "monsterId": 8,
   "name": "Galeaffy",
-  "text": "When this monster <b>switches in or out</b>, <div>[+] [+] then [-] [-].</div> ~SWITCH~",
+  "switchIn": "When this monster <b>switches in</b>, <div>[+] [+] then [-] [-].</div>",
   "hp": 8,
   "promiseDescription": "The master of speed has arrived!",
   "initiative": 85,

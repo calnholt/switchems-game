@@ -7,12 +7,7 @@ import { default as Galeaffy } from '../monsters/Galeaffy.json';
 import { default as Drownigator } from '../monsters/Drownigator.json';
 import { default as Vulturock } from '../monsters/Vulturock.json';
 import { default as Willard } from '../monsters/Willard.json';
-import { ElemType, ELEMENTS } from 'src/app/shared/types/dataTypes';
 import { Monster, MonsterAction, MonsterActionCardIcons } from 'src/app/pages/game/models/monster/monster.model';
-
-const getElemType = (text: string): ElemType => {
-  return ELEMENTS.find(e => e.toString() as ElemType === text) as ElemType;
-};
 
 export const loadMonsters = (selectedMonster?: any): Array<Monster> => {
   let ALL = [];
@@ -40,7 +35,8 @@ export const convertFromJSON = (all: Array<any>): Array<Monster> => {
     const monster: Monster = new Monster(
       json.name,
       json.elements,
-      json.text,
+      json.switchIn,
+      json.passive,
       json.hp,
       json.initiative,
       json.actions.map(getMonsterAction),

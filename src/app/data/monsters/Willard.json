@@ -74,7 +74,7 @@
     }
   ],
   "name": "Willard",
-  "text": "When this monster <b>switches in</b>, the enemy monster loses 1[HP]. ~SWITCH~",
+  "switchIn": "When this monster <b>switches in</b>, the enemy monster loses 1[HP].",
   "hp": 10,
   "initiative": 5,
   "imageFlg": true,
