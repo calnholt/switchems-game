@@ -1,6 +1,8 @@
 #monster-action-card-icons {
   position: absolute;
   bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
   div {
     span:not(:last-child) {
       margin-right: 5px;

@@ -1,11 +1,11 @@
 @import '../../../../../assets/styles/constants.scss';
 
 #term-tooltip {
-  background-color: black;
+  background-color: #000000f0;;
   border-radius: 4px;
   padding: 3px 6px;
   .title {
-    font-family: "Beastformer";
+    font-family: $header-font;
     font-size: 25px;
     line-height: 75%;
     margin-bottom: 3px;
@@ -13,7 +13,8 @@
     padding-bottom: 4px;
     text-align: center;
   }
-  .description{
+  .description {
+    font-family: $text-font;
   }
   img {
     filter: invert(100%) !important;
