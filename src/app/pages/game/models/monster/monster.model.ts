@@ -1,6 +1,7 @@
 import { Term } from "src/app/shared/types/data";
-import { ElemType } from "src/app/shared/types/dataTypes";
+import { ELEMENTS, ElemType } from "src/app/shared/types/dataTypes";
 import { AbilityTextUtil } from "src/app/shared/utils/ability-text.util";
+import { StatUtil } from "src/app/shared/utils/stat.util";
 
 export class Monster {
   private name: string;
@@ -39,6 +40,38 @@ export class Monster {
   public get _initiative(): number { return this.initiative; }
   public get _actions(): MonsterAction[] { return this.actions; }
   public get _currentHp(): number { return this.currentHp; }
+
+  getEffectivenessArray(): number[] {
+    const arrs = this._elements.map((el: ElemType) => StatUtil.getAdvantages(el)) ?? [];
+    let totals = [0, 0, 0, 0, 0, 0];
+    if (this.elements.length === 1) {
+      totals = arrs[0];
+    }
+    else {
+      for (let i = 0; i < ELEMENTS.length; i++) {
+        const elemArr = [];
+        for (let j = 0; j < arrs.length; j++) {
+          elemArr.push(arrs[j][i]);
+        }
+        const containsNegative = elemArr.some(e => e < 0);
+        const positives = elemArr.filter(e => e > 0);
+        if (containsNegative) {
+          totals[i] = -1;
+        } else if (positives) {
+          totals[i] = positives.length;
+        } else {
+          totals[i] = 0;
+        }
+      }
+    }
+    return totals;
+  }
+
+  getSwitchDefenseValue(): number {
+    const defaultValue = 3;
+    const effectivenessArray = this.getEffectivenessArray();
+    return effectivenessArray.includes(2) ? defaultValue * 2 : defaultValue;
+  }
 }
 
 export class MonsterAction {
@@ -54,7 +87,7 @@ export class MonsterAction {
   private isLocked: boolean;
   private isUsed: boolean;
   private isDisabled: boolean;
-  
+
   constructor(
     name: string,
     text: string,

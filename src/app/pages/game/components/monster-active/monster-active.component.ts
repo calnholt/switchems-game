@@ -12,9 +12,13 @@ export class MonsterActiveComponent implements OnInit {
   @Input() monster!: Monster;
   
   monsterIcon!: Path;
+  superEffectiveIcon!: Path;
+  switchDefenseIcon!: Path;
   
   ngOnInit(): void {
     this.monsterIcon = ImageUtil.getMonstersPath(this.monster._name);
+    this.superEffectiveIcon = ImageUtil.icons.superEffective;
+    this.switchDefenseIcon = ImageUtil.icons.switchDefense;
   }
 
 }

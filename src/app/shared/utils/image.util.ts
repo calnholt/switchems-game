@@ -20,6 +20,8 @@ export const ImageUtil = {
     attack: getSymbolsPath('attack'),
     speed: getSymbolsPath('speed'),
     defense: getSymbolsPath('defense'),
+    superEffective: getSymbolsPath('super-effective'),
+    switchDefense: getSymbolsPath('switch-defense'),
   },
   monsters: {
     Chargroar: getMonstersPath('chargroar'),
