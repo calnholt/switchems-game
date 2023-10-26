@@ -34,3 +34,7 @@ b {
   width: 250px;
   box-shadow: $shadow;
 }
+
+body {
+  user-select: none;
+}

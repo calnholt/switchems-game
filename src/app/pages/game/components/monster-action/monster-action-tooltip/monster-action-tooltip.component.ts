@@ -16,13 +16,17 @@ import { AnimationEvent } from '@angular/animations';
   ]
 })
 export class MonsterActionTooltipComponent implements AfterViewInit {
-  @ViewChild('ref') ref!: ElementRef<any>;
   @Input() action!: MonsterAction;
-
+  
   terms!: Term[];
   advantages!: number[];
-
+  
+  // TODO: figure out how to abstract this logic
+  // issues: ngAfterViewInit no firing if class is extended in this class
+  // ref is undefined in base class
+  
   // props managed from tooltip directive
+  @ViewChild('ref') ref!: ElementRef<any>;
   top!: number;
   left!: number;
   show: boolean = true;
@@ -33,7 +37,6 @@ export class MonsterActionTooltipComponent implements AfterViewInit {
   ngOnInit() {
     this.terms = this.action.getTerms();
     this.advantages = this.action.getAdvantages();
-    console.log(this.ref);
   }
 
   ngAfterViewInit() {

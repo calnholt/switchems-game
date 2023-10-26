@@ -1,16 +1,36 @@
+@import '../../../../../assets/styles/constants.scss';
+
 #monster-active {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: fit-content;
+  font-family: $header-font;
+  font-size: 21px;
+  line-height: 70%;
+  margin-right: 4px;
+  
+  .stat-container {
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    background-color: rgb(199, 199, 199);
+    padding: 5px;
+    border-radius: 5px;
+  }
 
   img {
     height: 250px;
   }
 
+  .hp {
+    margin-right: 3px;
+    color: black;
+  }
+
   .hp-bar {
     width: 200px;
-    margin-top: 10px;
+    margin-right: 3px;
 
     .hp-chunk:first-child {
       border-radius: 10px 0px 0px 10px;
@@ -21,7 +41,7 @@
     }
 
     .hp-chunk:not(:last-child) {
-      border-right: 2px solid white;
+      border-right: 2px solid #c7c7c7;
     }
 
     .hp-chunk {
@@ -30,8 +50,20 @@
       background-color: red;
 
       &.damaged {
-        background-color: gray;
+        background-color: black;
       }
     }
   }
+
+  .initiative {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
 }

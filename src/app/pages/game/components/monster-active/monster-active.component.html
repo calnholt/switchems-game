@@ -1,10 +1,14 @@
 <div id="monster-active">
   <img [src]="monsterIcon" />
-  <div>
+  <div class="stat-container">
+    <div class="hp">{{ monster._currentHp }}/{{ monster._hp }}</div>
     <div class="hp-bar d-flex">
       <ng-container *ngFor="let _ of [].constructor(monster._hp); let i = index">
         <div class="hp-chunk" [ngClass]="{'damaged' : (i + 1) > monster._currentHp}"></div>
       </ng-container>
+    </div>
+    <div class="initiative">
+      <div>{{ monster._initiative }}</div>
     </div>
   </div>
 </div>
