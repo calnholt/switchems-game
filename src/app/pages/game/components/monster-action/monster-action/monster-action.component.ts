@@ -1,5 +1,5 @@
-import { Component, HostListener, Input, signal } from '@angular/core';
-import { MonsterAction } from '../../models/monster/monster.model';
+import { Component, Input } from '@angular/core';
+import { MonsterAction } from '../../../models/monster/monster.model';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
 import { Path } from 'src/app/shared/types/dataTypes';
 import { Term } from 'src/app/shared/types/data';
@@ -15,11 +15,10 @@ export class MonsterActionComponent {
 
   terms: Term[] = [];
 
-  isHovering = false;
-
   elementImg: Path = "";
   attackImg: Path = "";
   speedImg: Path = "";
+  statusImg: Path = "";
 
   ngOnInit() {
     if (this.action?.element) {
@@ -27,15 +26,8 @@ export class MonsterActionComponent {
     }
     this.attackImg = ImageUtil.getSymbolsPath('attack');
     this.speedImg = ImageUtil.getSymbolsPath('speed');
+    this.statusImg = ImageUtil.getSymbolsPath('status');
     this.terms = AbilityTextUtil.getTermsFromText(this.action.text);
   }
 
-  onMouseEnter() {
-    this.isHovering = true;
-  }
-
-  onMouseLeave() {
-    this.isHovering = false;
-  }
-  
 }
