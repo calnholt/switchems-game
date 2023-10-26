@@ -1,4 +1,15 @@
-<div id="monster-action-tooltip" class="tooltip-container" *ngIf="show && !fadingOut" [style.left]="left + 'px'" [style.top]="top + 'px'" [@slideInRightOnEnter] [@fadeOutOnLeave]>
+<ng-container *ngIf="action.index % 2 === 0">
+  <div id="monster-action-tooltip" class="tooltip-container" *ngIf="show" [style.left]="left + 'px'" [style.top]="top + 'px'" [@slideInRightOnEnter] [@fadeOutOnLeave] (@fadeOutOnLeave.done)="aniDone($event)">
+    <ng-container *ngTemplateOutlet="contents"></ng-container>
+  </div>
+</ng-container>
+<ng-container *ngIf="action.index % 2 === 1">
+  <div id="monster-action-tooltip" class="tooltip-container" *ngIf="show" [style.left]="left + 'px'" [style.top]="top + 'px'" [@slideInLeftOnEnter] [@fadeOutOnLeave] (@fadeOutOnLeave.done)="aniDone($event)">
+    <ng-container *ngTemplateOutlet="contents"></ng-container>
+  </div>
+</ng-container>
+
+<ng-template #contents>
   <div class="term-container" *ngFor="let term of terms">
     <sw-term-tooltip [term]="term" />
     <div class="dot">• • •</div>
@@ -6,4 +17,4 @@
   <ng-container *ngIf="action.attack != null">
     <sw-effectiveness-tooltip [advantages]="advantages" />
   </ng-container>
-</div>
+</ng-template>
