@@ -1,7 +1,7 @@
 <sw-stat-board [statBoard]="statBoard" />
 <ng-container *ngFor="let monster of monsters">
   <sw-monster-active [monster]="monster" />
-  <sw-monster-action-grid [actions]="monster.actions" />
+  <sw-monster-action-grid [actions]="monster._actions" />
 </ng-container>
 <div>
 </div>

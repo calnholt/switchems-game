@@ -1,29 +1,29 @@
-<div id="monster-action" [ngClass]="{'selected' : action.isSelected}" cardInfoTooltip [action]="action" tooltipType="ACTION">
+<div id="monster-action" [ngClass]="{'selected' : action._isSelected}" cardInfoTooltip [action]="action" tooltipType="ACTION">
   <div class="title-container title">
-    {{action.name}}
+    {{action._name}}
   </div>
   <div class="stat-container">
-    <div *ngIf="action.attack">
-      <span>{{action.attack}}
+    <div *ngIf="action._attack">
+      <span>{{action._attack}}
         <img [src]="attackImg">
       </span>
     </div>
-    <div *ngIf="action.isStatus">
+    <div *ngIf="action._isStatus">
       <img [src]="statusImg" />
     </div>
     <div>
       <img [src]="elementImg" >
     </div>
-    <div *ngIf="action.speed">
-      <span>{{action.speed}}
+    <div *ngIf="action._speed">
+      <span>{{action._speed}}
         <img [src]="speedImg">
       </span>
     </div>
   </div>
   <div class="monster-action-container">
-    <div [innerHTML]="action.text | convertEmbeddedText : { excludeTerms: true }" class="text"></div>
+    <div [innerHTML]="action._text | convertEmbeddedText : { excludeTerms: true }" class="text"></div>
   </div>
   <div class="icons-container">
-    <sw-monster-action-card-icons [icons]="action.icons" />
+    <sw-monster-action-card-icons [icons]="action._icons" />
   </div>
 </div>

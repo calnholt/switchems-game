@@ -14,7 +14,7 @@ export class MonsterActiveComponent implements OnInit {
   monsterIcon!: Path;
   
   ngOnInit(): void {
-    this.monsterIcon = ImageUtil.getMonstersPath(this.monster.name);
+    this.monsterIcon = ImageUtil.getMonstersPath(this.monster._name);
   }
 
 }

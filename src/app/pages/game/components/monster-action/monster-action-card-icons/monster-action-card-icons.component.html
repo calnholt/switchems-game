@@ -4,9 +4,9 @@
         <span 
         class="{{type.type.toLowerCase()}}" 
         [ngClass]="{ 'applied' : 
-          (type.type === 'BUFF' && type.index < icons.appliedBuff) || 
-          (type.type === 'ADDED_BUFF' && icons.addedBuff > 0 && type.index < (icons.appliedBuff - icons.buff)) || 
-          (type.type === 'DISCARD' && type.index < icons.appliedDiscard)}">
+          (type.type === 'BUFF' && type.index < icons._appliedBuff) || 
+          (type.type === 'ADDED_BUFF' && icons._addedBuff > 0 && type.index < (icons._appliedBuff - icons._buff)) || 
+          (type.type === 'DISCARD' && type.index < icons._appliedDiscard)}">
           <img *ngIf="type.type === 'BUFF'" src={{buffImg}} />
           <img *ngIf="type.type === 'DRAW'" src={{drawImg}} />
           <img *ngIf="type.type === 'DISCARD'" src={{discardImg}} />

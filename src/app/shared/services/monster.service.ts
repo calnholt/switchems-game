@@ -13,7 +13,7 @@ export class MonsterService {
 
   loadMonsters() {
     this.monsters = loadMonsters();
-    this.monsters.sort((a,b) => a.name.localeCompare(b.name));
+    this.monsters.sort((a,b) => a._name.localeCompare(b._name));
   }
 
   getMonsters() {
@@ -26,9 +26,9 @@ export class MonsterService {
   getMonster(monsterName: string, useJson?: boolean): Monster {
     if (!this.monsters || useJson) {
       this.loadMonsters();
-      loadMonsters().find(m => m.name === monsterName);
+      loadMonsters().find(m => m._name === monsterName);
     }
-    return this.monsters.find(m => m.name === monsterName) as Monster;
+    return this.monsters.find(m => m._name === monsterName) as Monster;
   }
 
 }
