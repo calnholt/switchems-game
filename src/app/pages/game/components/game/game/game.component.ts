@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { MonsterAction } from '../../models/monster/monster.model';
+import { Monster } from '../../../models/monster/monster.model';
 import { MonsterService } from 'src/app/shared/services/monster.service';
+import { StatBoard } from '../../../models/stat-board/stat-board.model';
 
 @Component({
   selector: 'sw-game',
@@ -9,13 +10,13 @@ import { MonsterService } from 'src/app/shared/services/monster.service';
 })
 export class GameComponent {
 
+  statBoard = new StatBoard();
+
   constructor(private monsterService: MonsterService) {}
 
-  monsters: Array<MonsterAction[]> = [];
+  monsters: Monster[] = [];
 
   ngOnInit() {
-    this.monsterService.getMonsters().forEach(m => {
-      this.monsters.push(m.actions);
-    })
+    this.monsters = this.monsterService.getMonsters();
   }
 }
