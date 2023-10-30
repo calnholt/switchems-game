@@ -1,0 +1,9 @@
+<div id="buff" [ngClass]="backgroundClass" class="sw-card-hover">
+    <div class="sw-card-title">
+        {{buff._name}}
+    </div>
+    <div class="sw-card-text-container">
+        <div class="text" [innerHTML]=" buff._text | convertEmbeddedText : { excludeTerms: true }"></div>
+    </div>
+    <img [src]="monsterPath" />
+</div>

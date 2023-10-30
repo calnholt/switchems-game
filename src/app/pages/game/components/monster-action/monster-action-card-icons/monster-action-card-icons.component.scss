@@ -16,26 +16,5 @@
         border-radius: 3px;
       }
     }
-    sw-svg-icon > span > svg > g {
-      fill: green;
-    }
-    .applied {
-      sw-svg-icon > span > svg > g {
-        fill: green;
-      }
-      sw-svg-icon {
-        .buff-svg {
-          fill: green !important;
-          svg {
-            fill: green !important;
-            g {
-              path {
-                fill: green !important;
-              }
-            }
-          }
-        }
-      }
-    }
   }
 }

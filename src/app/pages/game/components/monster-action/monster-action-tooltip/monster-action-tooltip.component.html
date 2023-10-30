@@ -28,7 +28,7 @@
 
 <ng-template #contents>
   <div class="term-container" *ngFor="let term of terms">
-    <sw-term-tooltip [term]="term" />
+    <sw-term-tooltip [title]="term.name" [description]="term.value" />
     <div class="dot">• • •</div>
   </div>
   <ng-container *ngIf="action._attack != null">

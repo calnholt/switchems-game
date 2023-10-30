@@ -8,6 +8,8 @@ import { MonsterActionComponent } from './components/monster-action/monster-acti
 import { StatBoardComponent } from './components/game/stat-board/stat-board.component';
 import { StatBoardSectionComponent } from './components/game/stat-board/stat-board-section/stat-board-section.component';
 import { MonsterActiveComponent } from './components/monster-active/monster-active.component';
+import { MonsterTooltipComponent } from './components/monster-active/monster-tooltip/monster-tooltip.component';
+import { BuffComponent } from './components/buff/buff.component';
 
 
 @NgModule({
@@ -19,6 +21,8 @@ import { MonsterActiveComponent } from './components/monster-active/monster-acti
     StatBoardComponent,
     StatBoardSectionComponent,
     MonsterActiveComponent,
+    MonsterTooltipComponent,
+    BuffComponent,
   ],
   exports: [
     MonsterActionComponent,

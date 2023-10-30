@@ -1,7 +1,7 @@
 <div id="term-tooltip">
-  <div class="title">{{term.name}}</div>
+  <div class="title">{{title}}</div>
   <div class="description" 
-    [innerHTML]="term.value| convertEmbeddedText: 
-      {termCss: 'embedded-term-text', imageCss: 'embedded-icon-inverse'}">
+    [innerHTML]="description | convertEmbeddedText: 
+      {termCss: 'embedded-term-text', imageCss: 'embedded-icon-inverse', excludeTerms: true}">
   </div>
 </div>

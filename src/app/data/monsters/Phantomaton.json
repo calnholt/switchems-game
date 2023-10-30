@@ -77,7 +77,7 @@
   ],
   "monsterId": 10,
   "name": "Phantomaton",
-  "passive": "Whenever an enemy monsters performs a switch action, this monster heals 2[HP]. ~SWITCH~",
+  "passive": "Whenever an enemy monsters performs a switch action, this monster heals 2[HP].",
   "hp": 9,
   "promiseDescription": "Strike fear in your opponent when <b>Phantomaton</b> switches in to an advantageous matchup! Watch the enemy monster squirm when the cost of switching out is too high.",
   "initiative": 55,

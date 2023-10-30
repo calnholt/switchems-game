@@ -24,6 +24,7 @@ export type ImageFile = string;
 export type CardTypes = `MONSTER` | `ACTION` | `BUFF` | 'EXTRA';
 
 export const ICON_PATH: Path = `./assets/images`;
+export const BACKGROUNDS_PATH = ICON_PATH + `/backgrounds/`;
 export const SYMBOLS_PATH: Path = ICON_PATH + `/symbols/`;
 export const MONSTERS_PATH: Path = ICON_PATH + `/monsters/`;
 export const ELEMENT_PATH_COLOR: Path = ICON_PATH + `/elements/color/`;

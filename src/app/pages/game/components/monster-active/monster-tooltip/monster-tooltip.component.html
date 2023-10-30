@@ -1,0 +1,13 @@
+<div id="monster-tooltip"
+  #ref
+  *ngIf="show" 
+  class="tooltip-container" 
+  [style.left]="left + 'px'" 
+  [style.top]="top + 'px'" 
+  [@slideInRightOnEnter] 
+  [@fadeOutOnLeave] 
+  (@fadeOutOnLeave.done)="aniDone($event)">
+  <sw-term-tooltip *ngIf="monster._switchIn" title="Switch In" [description]="monster._switchIn" />
+  <div *ngIf="monster._switchIn && monster._passive" class="dot">• • •</div>
+  <sw-term-tooltip *ngIf="monster._passive" title="Passive" [description]="monster._passive" />
+</div>

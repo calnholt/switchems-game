@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Term } from 'src/app/shared/types/data';
 
 @Component({
   selector: 'sw-term-tooltip',
@@ -7,5 +6,6 @@ import { Term } from 'src/app/shared/types/data';
   styleUrls: ['./term-tooltip.component.scss']
 })
 export class TermTooltipComponent {
-  @Input() term: Term = new Term('', '~AURA~', '');
+  @Input() title!: string;
+  @Input() description!: string;
 }

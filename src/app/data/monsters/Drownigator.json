@@ -76,7 +76,7 @@
   ],
   "monsterId": 5,
   "name": "Drownigator",
-  "switchIn": "When this monster <b>switches in</b>, <div>[+].</div>~SWITCH~",
+  "switchIn": "When this monster <b>switches in</b>, <div>[+].</div>",
   "passive": null,
   "hp": 8,
   "promiseDescription": "<b>Drownigator</b> is a total nuisance with debuffs.",

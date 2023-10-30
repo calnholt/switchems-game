@@ -80,7 +80,7 @@
   ],
   "monsterId": 4,
   "name": "Chargroar",
-  "switchIn": "When this monster <b>switches in</b>, you may disable a different monster action on the enemy monster.~SWITCH~",
+  "switchIn": "When this monster <b>switches in</b>, you may disable a different monster action on the enemy monster.",
   "passive": null,
   "hp": 7,
   "promiseDescription": "<b>Chargroar</b> is the quintessential assassin – fast, lethal, and fragile. Knockout a monster quickly to improve your buffs!",

@@ -10,7 +10,7 @@ import { AnimationEvent } from '@angular/animations';
   templateUrl: './monster-action-tooltip.component.html',
   styleUrls: ['./monster-action-tooltip.component.scss'],
   animations: [
-    slideInDownOnEnterAnimation({ duration: 300, translate: '5%' }),
+    slideInDownOnEnterAnimation({ delay: 100, duration: 300, translate: '5%' }),
     // slideInLeftOnEnterAnimation({ duration: 300, translate: '5%' }),
     fadeOutOnLeaveAnimation({ duration: 300 }),
   ]
@@ -30,8 +30,6 @@ export class MonsterActionTooltipComponent implements AfterViewInit {
   top!: number;
   left!: number;
   show: boolean = true;
-
-  // used to communicate with tooltip directive
   kill: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   ngOnInit() {
@@ -40,7 +38,6 @@ export class MonsterActionTooltipComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const { top, bottom } = (this.ref.nativeElement as HTMLElement).getBoundingClientRect();
     this.top = this.top - (this.ref.nativeElement as HTMLElement).offsetHeight - 5;
   }
 

@@ -1,9 +1,11 @@
+import { BACKGROUNDS_PATH } from './../types/dataTypes';
 import { ELEMENT_PATH_COLOR, ElemType, MONSTERS_PATH, Path, SVG_PATH, SYMBOLS_PATH } from "../types/dataTypes";
 
 export const ImageUtil = {
   getSymbolsPath,
   getElementsPath,
   getMonstersPath,
+  getBuffBackgroundPath,
   elements: {
     fire: getElementsPath('Fire'),
     death: getElementsPath('Death'),
@@ -39,3 +41,7 @@ export const ImageUtil = {
 function getElementsPath(name: ElemType): Path { return `${ELEMENT_PATH_COLOR}${name.toLowerCase()}.png` };
 function getSymbolsPath(name: string): Path { return `${SYMBOLS_PATH}${name.toLowerCase()}.png` };
 function getMonstersPath(name: string): Path { return `${MONSTERS_PATH}${name.toLowerCase()}.png` };
+function getBuffBackgroundPath(elements: ElemType[]): Path {
+  const elemJoin = elements.map(e => e.toString().toLowerCase()).join("");
+  return `${BACKGROUNDS_PATH}${elemJoin}.png`
+}

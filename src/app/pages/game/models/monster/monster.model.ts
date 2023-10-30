@@ -11,7 +11,14 @@ export class Monster {
   private hp: number;
   private initiative: number;
   private actions: MonsterAction[];
+  private buffs: Buff[];
+  
+  // evaluated fields
   private currentHp: number = 0;
+  private effectivenessArray!: number[];
+  private weaknesses!: ElemType[];
+  private resistances!: ElemType[];
+  private switchDefense!: number;
 
   constructor(
     name: string,
@@ -20,7 +27,8 @@ export class Monster {
     passive: string,
     hp: number,
     initiative: number,
-    actions: MonsterAction[]
+    actions: MonsterAction[],
+    buffs: Buff[],
   ) {
     this.name = name;
     this.elements = elements;
@@ -29,7 +37,14 @@ export class Monster {
     this.hp = hp;
     this.initiative = initiative;
     this.actions = actions;
+    this.buffs = buffs;
     this.currentHp = this.hp;
+
+    this.effectivenessArray = this.getEffectivenessArray();
+    this.weaknesses = this.getWeaknesses();
+    this.resistances = this.getResistances();
+    this.switchDefense = this.getSwitchDefenseValue();
+
   }
 
   public get _name(): string { return this.name; }
@@ -39,8 +54,13 @@ export class Monster {
   public get _hp(): number { return this.hp; }
   public get _initiative(): number { return this.initiative; }
   public get _actions(): MonsterAction[] { return this.actions; }
+  public get _buffs(): Buff[] { return this.buffs; }
   public get _currentHp(): number { return this.currentHp; }
-
+  public get _effectivenessArray(): number[] { return this.effectivenessArray; }
+  public get _weaknesses(): ElemType[] { return this.weaknesses; }
+  public get _resistances(): ElemType[] { return this.resistances; }
+  public get _switchDefense(): number { return this.switchDefense; }
+  
   getEffectivenessArray(): number[] {
     const arrs = this._elements.map((el: ElemType) => StatUtil.getAdvantages(el)) ?? [];
     let totals = [0, 0, 0, 0, 0, 0];
@@ -72,7 +92,23 @@ export class Monster {
     const effectivenessArray = this.getEffectivenessArray();
     return effectivenessArray.includes(2) ? defaultValue * 2 : defaultValue;
   }
+
+  getWeaknesses(): ElemType[] {
+    // @ts-ignore
+    return this.effectivenessArray
+        .map((n, i) => n < 0 ? ELEMENTS[i] : null)
+        .filter(elem => elem);
+  }
+
+  getResistances(): ElemType[] {
+    // @ts-ignore
+    return this.effectivenessArray
+        .map((n, i) => n > 0 ? ELEMENTS[i] : null)
+        .filter(elem => elem);
+  }
+
 }
+
 
 export class MonsterAction {
   private name: string;
@@ -201,4 +237,25 @@ export class MonsterActionCardIcons {
   get _appliedDiscard(): number {
     return this.appliedDiscard;
   }
+}
+
+export class Buff {
+  private monsterName!: string;
+  private name!: string;
+  private text!: string;
+  private isAppliedAsBuff: boolean = false;
+  private isAppliedAsDiscard: boolean = false;
+
+  constructor(monsterName: string, name: string, text: string) {
+    this.monsterName = monsterName;
+    this.name = name;
+    this.text = text;
+  }
+
+  get _monsterName(): string { return this.monsterName; }
+  get _name(): string { return this.name; }
+  get _text(): string { return this.text; }
+  get _isAppliedAsBuff(): boolean { return this.isAppliedAsBuff; }
+  get _isAppliedAsDiscard(): boolean { return this.isAppliedAsDiscard; }
+
 }

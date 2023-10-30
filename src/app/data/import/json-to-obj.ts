@@ -7,32 +7,29 @@ import { default as Galeaffy } from '../monsters/Galeaffy.json';
 import { default as Drownigator } from '../monsters/Drownigator.json';
 import { default as Vulturock } from '../monsters/Vulturock.json';
 import { default as Willard } from '../monsters/Willard.json';
-import { Monster, MonsterAction, MonsterActionCardIcons } from 'src/app/pages/game/models/monster/monster.model';
+import { Buff, Monster, MonsterAction, MonsterActionCardIcons } from 'src/app/pages/game/models/monster/monster.model';
 
 export const loadMonsters = (selectedMonster?: any): Array<Monster> => {
-  let ALL = [];
   if (selectedMonster) {
-    ALL = [selectedMonster];
-  } else {
-    ALL = [
-      Chargroar,
-      Drownigator,
-      Flexferno,
-      Galeaffy,
-      Stalagrowth,
-      Phantomaton,
-      Vulturock,
-      Willard,
-      Zappguin,
-    ];
+    return convertFromJSON([selectedMonster]);
   }
-  return convertFromJSON(ALL);
+  return convertFromJSON([
+    Chargroar,
+    Drownigator,
+    Flexferno,
+    Galeaffy,
+    Stalagrowth,
+    Phantomaton,
+    Vulturock,
+    Willard,
+    Zappguin,
+  ]);
 };
 
+
 export const convertFromJSON = (all: Array<any>): Array<Monster> => {
-  let out = new Array<Monster>();
-  all.forEach(json => {
-    const monster: Monster = new Monster(
+  return [...all].map(json => {
+    return new Monster(
       json.name,
       json.elements,
       json.switchIn,
@@ -40,34 +37,9 @@ export const convertFromJSON = (all: Array<any>): Array<Monster> => {
       json.hp,
       json.initiative,
       json.actions.map(getMonsterAction),
+      json.buffs.map((b: any) => getBuff(json.name, b)),
     );
-    // monster.buffs = new Array<Buff>();
-    // const BUFFS = 4;
-    // let BUFF_PROPERTIES = [
-    //     'buffText',
-    //     'buffName',
-    //     'auraDuration',
-    //     'lastUpdated',
-    // ];
-    // if (keepGUI) {
-    //     BUFF_PROPERTIES = BUFF_PROPERTIES.concat(
-    //         'isSelected',
-    //     )
-    // }
-    // for (let i = 0; i < BUFFS; i++) {
-    //     const buff = new Buff();
-    //     BUFF_PROPERTIES.forEach(p => buff[p] = json.buffs[i][p]);
-    //     buff.monsterName = monster.monsterName;
-    //     monster.buffs.push(buff);
-    // }
-    // out = out.sort((a, b) => {
-    //     if (a.monsterName > b.monsterName) {return 1; }
-    //     if (a.monsterName < b.monsterName) {return -1; }
-    //     return 0;
-    // });
-    out.push(monster);
   });
-  return out;
 }
 
 const getMonsterAction = (action: any): MonsterAction => {
@@ -88,5 +60,13 @@ const getMonsterActionCardIcon = (action: any): MonsterActionCardIcons => {
     action.buff,
     action.discard,
     action.draw
+  );
+}
+
+const getBuff = (monsterName: string, buff: any): Buff => {
+  return new Buff(
+    monsterName,
+    buff.buffName,
+    buff.buffText,
   );
 }

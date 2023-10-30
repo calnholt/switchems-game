@@ -1,5 +1,10 @@
-<div id="monster-action" [ngClass]="{'selected' : action._isSelected}" cardInfoTooltip [action]="action" tooltipType="ACTION">
-  <div class="title-container title">
+<div id="monster-action" 
+  class="sw-card-hover"
+  [ngClass]="{'selected' : action._isSelected}" 
+  cardInfoTooltip 
+  [object]="action" 
+  tooltipType="ACTION">
+  <div class="title-container sw-card-title">
     {{action._name}}
   </div>
   <div class="stat-container">
@@ -20,7 +25,7 @@
       </span>
     </div>
   </div>
-  <div class="monster-action-container">
+  <div class="sw-card-text-container">
     <div [innerHTML]="action._text | convertEmbeddedText : { excludeTerms: true }" class="text"></div>
   </div>
   <div class="icons-container">
