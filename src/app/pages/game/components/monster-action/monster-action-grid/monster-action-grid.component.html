@@ -1,5 +1,17 @@
 <div id="monster-action-grid">
   <ng-container *ngFor="let action of actions">
-    <sw-monster-action [action]="action" />
+    <ng-container *ngIf="action._isSelected">
+      <div class="card-separator-section">
+        <div class="card-separator">
+          <div class="section">selected</div>
+          <sw-monster-action [action]="action" />
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!action._isSelected">
+      <div class="action">
+        <sw-monster-action [action]="action" />
+      </div>
+    </ng-container>
   </ng-container>
 </div>

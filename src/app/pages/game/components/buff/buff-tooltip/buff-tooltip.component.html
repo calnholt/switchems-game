@@ -1,0 +1,16 @@
+<div id="buff-tooltip"
+  #ref
+  *ngIf="show" 
+  class="tooltip-container" 
+  [style.left]="left + 'px'" 
+  [style.top]="top + 'px'" 
+  [@slideInDownOnEnter] 
+  [@fadeOutOnLeave] 
+  (@fadeOutOnLeave.done)="aniDone($event)">
+  <ng-container *ngFor="let term of buff._terms; index as i">
+    <sw-term-tooltip [title]="term.name" [description]="term.value" />
+    <ng-container *ngIf="buff._terms.length > (i + 1) && (i + 1) < buff._terms.length">
+      <div class="dot">• • •</div>
+    </ng-container>
+  </ng-container>
+</div>

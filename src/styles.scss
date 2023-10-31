@@ -78,6 +78,25 @@ body {
   transition: transform 0.2s;
 }
 .sw-card-hover:hover {
-  transform: scale(1.15);
+  transform: scale(1.05);
   z-index: $action-hover-index;
+  box-shadow: $shadow;
+}
+
+.card-separator-section {
+  display: flex;
+  padding-top: 5px;
+  border-top: 1px solid black;
+  margin-top: 5px;
+  .card-separator {
+    display: flex;
+    font-family: $header-font;
+    font-size: 30px;
+    line-height: 70%;
+    color: black;
+    .section {
+      margin-right: 5px;
+      writing-mode: tb;
+    }
+  }
 }

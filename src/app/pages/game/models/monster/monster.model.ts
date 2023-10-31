@@ -2,8 +2,9 @@ import { Term } from "src/app/shared/types/data";
 import { ELEMENTS, ElemType } from "src/app/shared/types/dataTypes";
 import { AbilityTextUtil } from "src/app/shared/utils/ability-text.util";
 import { StatUtil } from "src/app/shared/utils/stat.util";
+import { IHaveTooltip } from "~/app/shared/interfaces/IHaveTooltip.interface";
 
-export class Monster {
+export class Monster implements IHaveTooltip {
   private name: string;
   private elements: Array<ElemType>;
   private switchIn: string;
@@ -45,6 +46,9 @@ export class Monster {
     this.resistances = this.getResistances();
     this.switchDefense = this.getSwitchDefenseValue();
 
+  }
+  hasTooltip () {
+    return !!(this._switchIn || this.passive);
   }
 
   public get _name(): string { return this.name; }
@@ -106,11 +110,9 @@ export class Monster {
         .map((n, i) => n > 0 ? ELEMENTS[i] : null)
         .filter(elem => elem);
   }
-
 }
 
-
-export class MonsterAction {
+export class MonsterAction implements IHaveTooltip {
   private name: string;
   private text: string;
   private attack: number;
@@ -119,7 +121,7 @@ export class MonsterAction {
   private icons: MonsterActionCardIcons;
   private index: number;
   private isStatus: boolean;
-  private isSelected: boolean;
+  public isSelected: boolean;
   private isLocked: boolean;
   private isUsed: boolean;
   private isDisabled: boolean;
@@ -239,17 +241,22 @@ export class MonsterActionCardIcons {
   }
 }
 
-export class Buff {
+export class Buff implements IHaveTooltip {
   private monsterName!: string;
   private name!: string;
   private text!: string;
-  private isAppliedAsBuff: boolean = false;
-  private isAppliedAsDiscard: boolean = false;
+  public isAppliedAsBuff: boolean = false;
+  public isAppliedAsDiscard: boolean = false;
+  private terms: Term[] = [];
 
   constructor(monsterName: string, name: string, text: string) {
     this.monsterName = monsterName;
     this.name = name;
     this.text = text;
+    this.terms = AbilityTextUtil.getTermsFromText(text);
+  }
+  hasTooltip(): boolean {
+    return !!this._terms.length;
   }
 
   get _monsterName(): string { return this.monsterName; }
@@ -257,5 +264,6 @@ export class Buff {
   get _text(): string { return this.text; }
   get _isAppliedAsBuff(): boolean { return this.isAppliedAsBuff; }
   get _isAppliedAsDiscard(): boolean { return this.isAppliedAsDiscard; }
+  get _terms(): Term[] { return this.terms; }
 
 }

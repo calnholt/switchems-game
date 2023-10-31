@@ -1,0 +1,17 @@
+@import '../../../../../assets/styles/constants.scss';
+
+#player-hand {
+  .card-separator-section {
+    margin-right: 5px;
+  }
+  display: flex;
+  .buff:not(:last-child) {
+    margin-right: 2px;
+  }
+  .cards:not(:last-child) {
+    margin-right: 5px;
+  }
+  img {
+    height: 40px;
+  }
+}

@@ -4,6 +4,9 @@ import { Monster, MonsterAction } from 'src/app/pages/game/models/monster/monste
 import { Subscription } from 'rxjs';
 import { ICardInfoTooltip } from './card-info-tooltip.interface';
 import { MonsterTooltipComponent } from 'src/app/pages/game/components/monster-active/monster-tooltip/monster-tooltip.component';
+import { BuffTooltipComponent } from '~/app/pages/game/components/buff/buff-tooltip/buff-tooltip.component';
+import { IHaveTooltip } from '../../interfaces/IHaveTooltip.interface';
+import { ITooltip } from '../../interfaces/ITooltip.interface';
 
 export type TooltipType = 'ACTION' | 'BUFF' | 'MONSTER';
 type State = 
@@ -17,9 +20,9 @@ type State =
 })
 export class CardInfoTooltipDirective {
   @Input() tooltipType: TooltipType = 'ACTION';
-  @Input() object!: MonsterAction | Monster;
+  @Input() object!: IHaveTooltip;
 
-  private componentRef!: ComponentRef<ICardInfoTooltip & any>;
+  private componentRef!: ComponentRef<ITooltip & any>;
 
   state: State = 'UNINITIALIZED';
   subscription!: Subscription;
@@ -31,13 +34,14 @@ export class CardInfoTooltipDirective {
 
   @HostListener('mouseover')
   onMouseEnter(): void {
-    if ((this.object instanceof MonsterAction)) {
-      if (!this.object.hasTooltip()) return;
-    }
+    if (!this.object.hasTooltip()) return;
     if (this.state === 'UNINITIALIZED') {
       switch (this.tooltipType) {
         case 'MONSTER':
           this.setMonsterProperties();
+          break;
+        case 'BUFF':
+          this.setBuffProperties();
           break;
         case 'ACTION':
         default:
@@ -79,7 +83,16 @@ export class CardInfoTooltipDirective {
     this.componentRef.instance.action = this.object;
     const { left, right, top, bottom } = this.elementRef.nativeElement.getBoundingClientRect();
     this.componentRef.instance.left = left + 25; // (300 - 250) / 2
-    this.componentRef.instance.top = top - 25; // adjust for scaling when hovering
+    this.componentRef.instance.top = top - 10; // adjust for scaling when hovering
+  }
+
+  private setBuffProperties() {
+    this.componentRef  = this.viewContainerRef.createComponent(BuffTooltipComponent);
+    this.setDOM();
+    this.componentRef.instance.buff = this.object;
+    const { left, right, top, bottom } = this.elementRef.nativeElement.getBoundingClientRect();
+    this.componentRef.instance.left = left;
+    this.componentRef.instance.top = top - 10; // adjust for scaling when hovering
   }
 
   @HostListener('mouseleave')

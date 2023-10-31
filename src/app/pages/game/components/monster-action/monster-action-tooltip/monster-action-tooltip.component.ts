@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { MonsterAction } from 'src/app/pages/game/models/monster/monster.model';
 import { Term } from 'src/app/shared/types/data';
 import { AnimationEvent } from '@angular/animations';
+import { ITooltip } from '~/app/shared/interfaces/ITooltip.interface';
 
 @Component({
   selector: 'sw-monster-action-tooltip',
@@ -15,22 +16,14 @@ import { AnimationEvent } from '@angular/animations';
     fadeOutOnLeaveAnimation({ duration: 300 }),
   ]
 })
-export class MonsterActionTooltipComponent implements AfterViewInit {
+export class MonsterActionTooltipComponent extends ITooltip implements AfterViewInit {
   @Input() action!: MonsterAction;
   
   terms!: Term[];
   advantages!: number[];
   
-  // TODO: figure out how to abstract this logic
-  // issues: ngAfterViewInit no firing if class is extended in this class
-  // ref is undefined in base class
-  
   // props managed from tooltip directive
   @ViewChild('ref') ref!: ElementRef<any>;
-  top!: number;
-  left!: number;
-  show: boolean = true;
-  kill: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   ngOnInit() {
     this.terms = this.action.getTerms();

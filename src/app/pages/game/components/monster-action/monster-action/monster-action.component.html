@@ -1,6 +1,6 @@
-<div id="monster-action" 
-  class="sw-card-hover"
-  [ngClass]="{'selected' : action._isSelected}" 
+<div #actionTemplate id="monster-action" 
+  class="sw-card-hover  {{action._element.toString().toLowerCase()}}"
+  (click)="action.isSelected = !action.isSelected"
   cardInfoTooltip 
   [object]="action" 
   tooltipType="ACTION">

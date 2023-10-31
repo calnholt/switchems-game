@@ -24,6 +24,7 @@
     color: black;
     border-bottom: 2px solid black;
     border-radius: 6px;
+    background-color: white;
     span {
       display: flex;
       align-items: center;
@@ -32,4 +33,29 @@
       height: 30px;
     }
   }
+
+  &.death {
+    background-image: url("../../../../../../assets/images/backgrounds/action/death.png");
+  }
+
+  &.electric {
+    background-image: url("../../../../../../assets/images/backgrounds/action/electric.png");
+  }
+
+  &.fire {
+    background-image: url("../../../../../../assets/images/backgrounds/action/fire.png");
+  }
+
+  &.leaf {
+    background-image: url("../../../../../../assets/images/backgrounds/action/leaf.png");
+  }
+
+  &.rock {
+    background-image: url("../../../../../../assets/images/backgrounds/action/rock.png");
+  }
+
+  &.water {
+    background-image: url("../../../../../../assets/images/backgrounds/action/water.png");
+  }
+
 }

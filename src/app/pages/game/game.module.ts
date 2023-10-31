@@ -10,6 +10,8 @@ import { StatBoardSectionComponent } from './components/game/stat-board/stat-boa
 import { MonsterActiveComponent } from './components/monster-active/monster-active.component';
 import { MonsterTooltipComponent } from './components/monster-active/monster-tooltip/monster-tooltip.component';
 import { BuffComponent } from './components/buff/buff.component';
+import { PlayerHandComponent } from './components/player-hand/player-hand.component';
+import { BuffTooltipComponent } from './components/buff/buff-tooltip/buff-tooltip.component';
 
 
 @NgModule({
@@ -23,6 +25,8 @@ import { BuffComponent } from './components/buff/buff.component';
     MonsterActiveComponent,
     MonsterTooltipComponent,
     BuffComponent,
+    PlayerHandComponent,
+    BuffTooltipComponent,
   ],
   exports: [
     MonsterActionComponent,

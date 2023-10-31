@@ -2,11 +2,7 @@
 <ng-container *ngFor="let monster of monsters">
   <sw-monster-active [monster]="monster" />
   <sw-monster-action-grid [actions]="monster._actions" />
-    <div class="d-flex">
-      <ng-container *ngFor="let buff of monster._buffs">
-        <sw-buff [buff]="buff" />
-      </ng-container>
-    </div>
+  <sw-player-hand [buffs]="monster._buffs" />
 </ng-container>
 <div>
 </div>

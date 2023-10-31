@@ -1,9 +1,29 @@
-<div id="buff" [ngClass]="backgroundClass" class="sw-card-hover">
-    <div class="sw-card-title">
-        {{buff._name}}
+<div id="buff" 
+  [ngClass]="backgroundClass" 
+  class="sw-card-hover"
+  cardInfoTooltip 
+  [object]="buff" 
+  tooltipType="BUFF" 
+  [@fadeInOnEnter]
+  [@fadeOutOnLeave]
+  >
+  <div class="sw-card-title">
+    {{buff._name}}
+  </div>
+  <div class="sw-card-text-container">
+    <div class="text" [innerHTML]=" buff._text | convertEmbeddedText : { excludeTerms: true }"></div>
+  </div>
+  <img class="monster-img" [src]="monsterPath" />
+  <ng-container *ngIf="isHovering">
+    <div class="apply-as buff" [ngClass]="{'applied' : buff._isAppliedAsBuff}" (click)="buff.isAppliedAsBuff = !buff.isAppliedAsBuff">
+      <div>
+        <img [src]="buffPath" />
+      </div>
     </div>
-    <div class="sw-card-text-container">
-        <div class="text" [innerHTML]=" buff._text | convertEmbeddedText : { excludeTerms: true }"></div>
+    <div class="apply-as discard" [ngClass]="{'applied' : buff._isAppliedAsDiscard}" (click)="buff.isAppliedAsDiscard = !buff.isAppliedAsDiscard">
+      <div>
+        <img [src]="discardPath" />
+      </div>
     </div>
-    <img [src]="monsterPath" />
+  </ng-container>
 </div>
