@@ -1,34 +1,34 @@
-<div #actionTemplate id="monster-action" 
-  class="sw-card-hover  {{action._element.toString().toLowerCase()}}"
-  (click)="action.isSelected = !action.isSelected"
-  cardInfoTooltip 
-  [object]="action" 
-  tooltipType="ACTION">
+<div #actionTemplate id="monster-action" class="sw-card-hover  {{action._element.toString().toLowerCase()}}"
+  (click)="action.isSelected = !action.isSelected" cardInfoTooltip [object]="action" tooltipType="ACTION">
   <div class="title-container sw-card-title">
     {{action._name}}
   </div>
   <div class="stat-container">
-    <div *ngIf="action._attack">
-      <span>{{action._attack}}
-        <img [src]="attackImg">
-      </span>
+    <div class="stat-section">
+      <div *ngIf="action._attack">
+        <span>{{action._attack}}
+          <img [src]="attackImg">
+        </span>
+      </div>
+      <div *ngIf="action._isStatus">
+        <img [src]="statusImg" />
+      </div>
+      <div>
+        <img [src]="elementImg">
+      </div>
+      <div *ngIf="action._speed">
+        <span>{{action._speed}}
+          <img [src]="speedImg">
+        </span>
+      </div>
     </div>
-    <div *ngIf="action._isStatus">
-      <img [src]="statusImg" />
-    </div>
-    <div>
-      <img [src]="elementImg" >
-    </div>
-    <div *ngIf="action._speed">
-      <span>{{action._speed}}
-        <img [src]="speedImg">
-      </span>
+    <div class="stat-section cards">
+      <div class="icons-container">
+        <sw-monster-action-card-icons [icons]="action._icons" />
+      </div>
     </div>
   </div>
   <div class="sw-card-text-container">
     <div [innerHTML]="action._text | convertEmbeddedText : { excludeTerms: true }" class="text"></div>
-  </div>
-  <div class="icons-container">
-    <sw-monster-action-card-icons [icons]="action._icons" />
   </div>
 </div>

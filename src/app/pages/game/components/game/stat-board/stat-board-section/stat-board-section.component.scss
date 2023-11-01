@@ -14,11 +14,11 @@
   }
 
   div:nth-child(1) {
-    width: 45px;
+    width: 30px;
   }
 
   img {
-    height: 40px;
+    height: 25px;
   }
 
   .pip-container {
@@ -26,8 +26,8 @@
     align-items: center;
 
     .circle {
-      width: 25px;
-      height: 25px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
 
       &.occupied {

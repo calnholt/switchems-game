@@ -7,7 +7,7 @@
 #buff {
   position: relative;
   width: 250px;
-  height: 250px;
+  height: 216px;
   border: 4px solid black;
   border-radius: 6px;
   cursor: pointer;
@@ -84,7 +84,7 @@
     height: 130px;
     width: 60px;
     background: black;
-    top: 116px;
+    top: 82px;
     z-index: 100;
     &.applied {
       background-color: green;

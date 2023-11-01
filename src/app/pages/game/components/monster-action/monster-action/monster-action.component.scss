@@ -3,7 +3,7 @@
 
 #monster-action {
   width: 300px;
-  height: 260px;
+  height: 202px;
   border: 4px solid black;
   border-radius: 6px;
   position: relative;
@@ -14,23 +14,34 @@
     box-shadow: $recessed;
   }
   .stat-container {
-    padding: 5px 0px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+    padding: 3px 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     font-family: $header-font;
-    font-size: 38px;
+    font-size: 30px;
     line-height: 70%;
     color: black;
     border-bottom: 2px solid black;
     border-radius: 6px;
     background-color: white;
+    .stat-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      // &.cards {
+      //   justify-content: flex-end;
+      //   margin-right: 5px;
+      // }
+    }
+    .stat-section:first-child {
+      border-right: 1px solid black;
+    }
     span {
       display: flex;
       align-items: center;
     }
     img {
-      height: 30px;
+      height: 22px;
     }
   }
 
