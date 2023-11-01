@@ -68,5 +68,6 @@ const getBuff = (monsterName: string, buff: any): Buff => {
     monsterName,
     buff.buffName,
     buff.buffText,
+    buff.auraDuration
   );
 }
