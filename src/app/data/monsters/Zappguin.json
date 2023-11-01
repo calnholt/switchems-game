@@ -41,7 +41,7 @@
     },
     {
       "name": "Paralyze",
-      "text": "<b>Stun [STATUS]</b>, <b>Crush 1[PQ]</b>. ~STUN~ ~CRUSH~",
+      "text": "<b>Stun [STATUS]</b>, <b>Crush 1</b>. ~STUN~ ~CRUSH~",
       "element": "Electric",
       "statusFlg": true,
       "speed": 7,
@@ -59,7 +59,7 @@
     },
     {
       "buffName": "Resuscitate",
-      "buffText": "If the enemy monster is <div><b>weak</b> [WEAK]</div> to this attack's element, [Q] [Q] [Q]. If not, [Q] instead. ~EFFECTIVE~",
+      "buffText": "If the enemy monster is <b>weak</b> to this attack's element, [Q] [Q] [Q]. If not, [Q] instead. ~EFFECTIVE~",
       "auraDuration": 0,
       "lastUpdated": "Tue, 24 Jan 2023 14:16:01 GMT"
     },

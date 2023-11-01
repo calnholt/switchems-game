@@ -6,7 +6,7 @@
   "actions": [
     {
       "name": "Gravelcrust Grip",
-      "text": "<b>Drain [STATUS], recoil 3[ATK], single use. </b><br><br>If this monster has no [DEF][PQ], <div>{\"stat\": \"DEF\", \"num\": 3}.</div> ~DRAIN~~RECOIL~~SINGLE~",
+      "text": "<b>Drain [STATUS], recoil 3, single use. </b><br><br>If this monster has no [DEF][PQ], <div>{\"stat\": \"DEF\", \"num\": 3}.</div> ~DRAIN~~RECOIL~~SINGLE~",
       "element": "Leaf",
       "statusFlg": true,
       "speed": 2,
@@ -60,7 +60,7 @@
     },
     {
       "buffName": "Mossy Overgrowth",
-      "buffText": "<b>Super [B] [B]. </b><br><br>This monster gains <div>+3[DEF]</div> this turn. ~SUPER~",
+      "buffText": "<b>Super</b>.<br><br>This monster gains <div>+3[DEF]</div> this turn. ~SUPER~",
       "lastUpdated": "Sat, 04 Sep 2021 12:47:52 GMT"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "buffName": "Life Siphon",
-      "buffText": "<b>Crush 2</b>[PQ]. If two cubes were removed this way, this monster heals 1[HP]. ~CRUSH~",
+      "buffText": "<b>Crush 2</b>. If two cubes were removed this way, this monster heals 1[HP]. ~CRUSH~",
       "lastUpdated": "Tue, 24 Jan 2023 13:13:52 GMT"
     }
   ],

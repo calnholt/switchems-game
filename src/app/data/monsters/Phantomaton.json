@@ -5,7 +5,7 @@
   "actions": [
     {
       "name": "Cobolt",
-      "text": "If the enemy monster is <div><b>weak</b> [WEAK]</div> to this attack's element, this attack gains +2[ATK].</div>~EFFECTIVE~",
+      "text": "If the enemy monster is <b>weak</b> to this attack's element, this attack gains +2[ATK].</div>~EFFECTIVE~",
       "element": "Death",
       "statusFlg": false,
       "attack": 2,
@@ -17,7 +17,7 @@
     },
     {
       "name": "Static Void",
-      "text": "If the enemy monster is <div><b>weak</b> [WEAK]</div> to this attack's element, this attack gains +2[ATK].</div>~EFFECTIVE~",
+      "text": "If the enemy monster is <b>weak</b> to this attack's element, this attack gains +2[ATK].</div>~EFFECTIVE~",
       "element": "Electric",
       "statusFlg": false,
       "attack": 2,
@@ -29,7 +29,7 @@
     },
     {
       "name": "Arraydicate",
-      "text": "<b>Crush 2 [PQ]</b>~CRUSH~",
+      "text": "<b>Crush 2</b>.~CRUSH~",
       "element": "Electric",
       "statusFlg": false,
       "attack": 3,
@@ -41,7 +41,7 @@
     },
     {
       "name": "Exception Caught",
-      "text": "<b>Single use.</b><br><br>Your opponent [-] [-] [-].~SINGLE~",
+      "text": "<b>Single use</b>.<br><br>Your opponent [-] [-] [-].~SINGLE~",
       "element": "Death",
       "statusFlg": false,
       "attack": 1,
@@ -65,7 +65,7 @@
     },
     {
       "buffName": "Refactor",
-      "buffText": "<b>Super [B] [B]. </b><br><br>Attack speeds are reversed this turn and you win all speed ties.~SUPER~",
+      "buffText": "<b>Super</b>.<br><br>Attack speeds are reversed this turn and you win all speed ties.~SUPER~",
       "lastUpdated": "Thu, 15 Jul 2021 08:25:53 GMT"
     },
     {

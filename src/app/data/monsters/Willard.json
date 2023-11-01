@@ -5,7 +5,7 @@
   "actions": [
     {
       "name": "Grand Slam",
-      "text": "<b>Recoil 2[ATK].</b><br><br> \nIf this monster currently has higher [HP] than the enemy monster, this attack gains +2[ATK]. ~RECOIL~",
+      "text": "<b>Recoil 2</b>.<br><br> \nIf this monster currently has higher [HP] than the enemy monster, this attack gains +2[ATK]. ~RECOIL~",
       "element": "Rock",
       "statusFlg": false,
       "attack": 4,
@@ -50,7 +50,7 @@
   "buffs": [
     {
       "buffName": "Take It Easy",
-      "buffText": "<b>Super [B] [B].</b> \n<br><br>\nThis monster heals 2[HP]. If this monster has less than 5[HP], this monster heals 3[HP] instead. ~SUPER~ ",
+      "buffText": "<b>Super</b>. \n<br><br>\nThis monster heals 2[HP]. If this monster has less than 5[HP], this monster heals 3[HP] instead. ~SUPER~ ",
       "auraDuration": null,
       "lastUpdated": "Thu, 26 Jan 2023 11:44:19 GMT"
     },

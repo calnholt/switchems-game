@@ -28,7 +28,7 @@
     },
     {
       "name": "No Pain, No Gain",
-      "text": "[Q] [Q]. <br><br><b>Recoil 1[ATK]</b>,  {\"stat\": \"ATK\", \"num\": 1}.~RECOIL~",
+      "text": "[Q] [Q]. <br><br><b>Recoil 1</b>,  {\"stat\": \"ATK\", \"num\": 1}.~RECOIL~",
       "element": "Rock",
       "statusFlg": false,
       "attack": 1,

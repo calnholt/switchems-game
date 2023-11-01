@@ -44,7 +44,7 @@
     },
     {
       "name": "Blazing Roar",
-      "text": "[Q]. <br><br><b>Pierce X[DEF]</b>, where X is the number of buff slots used.~PIERCE~",
+      "text": "[Q]. <br><br><b>Pierce X</b>, where X is the number of buff slots used.~PIERCE~",
       "element": "Fire",
       "statusFlg": false,
       "attack": 3,
@@ -69,12 +69,12 @@
     },
     {
       "buffName": "Revenge",
-      "buffText": "If the enemy monster is <div><b>resistant</b> [RESIST]</div> to this attack's element, this attack gains +1[ATK] and + 2[SPD]. If not, this attack gains <b>recoil 1[ATK]</b>.~RESIST~ ~RECOIL~",
+      "buffText": "If the enemy monster is <b>resistant</b> to this attack's element, this attack gains +1[ATK] and + 2[SPD]. If not, this attack gains <b>recoil 1</b>.~RESIST~ ~RECOIL~",
       "lastUpdated": "Fri, 27 Jan 2023 08:01:56 GMT"
     },
     {
       "buffName": "Prey Upon",
-      "buffText": "If the enemy monster is <div><b>weak</b> [WEAK]</div> to this attack's element, this attack gains +1[ATK] and +2[SPD]. If not, this attack gains <b>recoil 1[ATK]</b>.~EFFECTIVE~~RECOIL~",
+      "buffText": "If the enemy monster is <b>weak</b> to this attack's element, this attack gains <div<+1[ATK]</div> and <div>+2[SPD].</div> If not, this attack gains <b>recoil 1</b>.~EFFECTIVE~~RECOIL~",
       "lastUpdated": "Fri, 27 Jan 2023 08:01:56 GMT"
     }
   ],

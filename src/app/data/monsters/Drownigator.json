@@ -65,12 +65,12 @@
     },
     {
       "buffName": "Cripple",
-      "buffText": "<b>Crush 4[PQ]</b> ~CRUSH~",
+      "buffText": "<b>Crush 4</b>. ~CRUSH~",
       "lastUpdated": "Tue, 24 Jan 2023 13:20:19 GMT"
     },
     {
       "buffName": "Tremble",
-      "buffText": "<b>Super [B] [B], Recoil 1[ATK].  </b><br><br><div>{\"stat\": \"SPD\", \"num\": 2}</div> and <div>{\"stat\": \"ATK\", \"num\": 2}.</div>~SUPER~ ~RECOIL~",
+      "buffText": "<b>Super, Recoil 1</b>.<br><br><div>{\"stat\": \"SPD\", \"num\": 2}</div> and <div>{\"stat\": \"ATK\", \"num\": 2}.</div>~SUPER~ ~RECOIL~",
       "lastUpdated": "Tue, 24 Jan 2023 13:29:13 GMT"
     }
   ],

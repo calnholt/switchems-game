@@ -6,7 +6,7 @@
   "actions": [
     {
       "name": "Kraterkazee",
-      "text": "[Q], <b>Recoil 2[ATK]</b>~RECOIL~",
+      "text": "[Q], <b>Recoil 2</b>.~RECOIL~",
       "element": "Death",
       "statusFlg": false,
       "attack": 4,
@@ -18,7 +18,7 @@
     },
     {
       "name": "Roc Rock",
-      "text": "<b>Recoil 1[ATK]</b>~RECOIL~",
+      "text": "<b>Recoil 1</b>.~RECOIL~",
       "element": "Rock",
       "statusFlg": false,
       "attack": 3,
@@ -55,12 +55,12 @@
   "buffs": [
     {
       "buffName": "Beak Drill",
-      "buffText": "<b>Pierce 2[DEF]</b>~PIERCE~",
+      "buffText": "<b>Pierce 2</b>.~PIERCE~",
       "lastUpdated": "Sat, 04 Sep 2021 12:51:49 GMT"
     },
     {
       "buffName": "Hard Headed",
-      "buffText": "If your opponent selected a monster <b>attack</b> action this turn, the enemy monster's attack gains <div><b>recoil 2[ATK]</b>.</div>~RECOIL~",
+      "buffText": "If your opponent selected a monster <b>attack</b> action this turn, the enemy monster's attack gains <div><b>recoil 2</b>.</div>~RECOIL~",
       "lastUpdated": "Sat, 04 Sep 2021 12:51:49 GMT"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "buffName": "Bigger Rocs",
-      "buffText": "This attack gains +2[ATK] and <div><b>recoil 1[ATK]</b></div>. ~RECOIL~",
+      "buffText": "This attack gains +2[ATK] and <div><b>recoil 1</b></div>. ~RECOIL~",
       "lastUpdated": "Tue, 24 Jan 2023 13:32:08 GMT"
     }
   ],
