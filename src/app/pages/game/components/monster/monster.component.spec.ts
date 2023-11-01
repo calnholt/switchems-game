@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MonsterActiveComponent } from './monster-active.component';
+import { MonsterActiveComponent } from './monster.component';
 
 describe('MonsterActiveComponent', () => {
   let component: MonsterActiveComponent;

@@ -4,9 +4,9 @@ import { ImageUtil } from 'src/app/shared/utils/image.util';
 import { Path } from 'src/app/shared/types/dataTypes';
 
 @Component({
-  selector: 'sw-monster-active',
-  templateUrl: './monster-active.component.html',
-  styleUrls: ['./monster-active.component.scss']
+  selector: 'sw-monster',
+  templateUrl: './monster.component.html',
+  styleUrls: ['./monster.component.scss']
 })
 export class MonsterActiveComponent implements OnInit {
   @Input() monster!: Monster;

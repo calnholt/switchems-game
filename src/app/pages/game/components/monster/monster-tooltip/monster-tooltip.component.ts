@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Monster } from '../../../models/monster/monster.model';
 import { fadeOutOnLeaveAnimation, slideInRightOnEnterAnimation } from 'angular-animations';
 import { AnimationEvent } from '@angular/animations';
+import { ITooltip } from '~/app/shared/interfaces/ITooltip.interface';
 
 @Component({
   selector: 'sw-monster-tooltip',
@@ -13,18 +14,14 @@ import { AnimationEvent } from '@angular/animations';
     fadeOutOnLeaveAnimation({ duration: 300 }),
   ]
 })
-export class MonsterTooltipComponent implements AfterViewInit {
+export class MonsterTooltipComponent extends ITooltip implements AfterViewInit {
   @Input() monster!: Monster;
 
   @ViewChild('ref') ref!: ElementRef<any>;
-  top!: number;
-  left!: number;
-  show: boolean = true;
-  kill: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   ngAfterViewInit() {
     const offsetHeight = (this.ref.nativeElement as HTMLElement).offsetHeight;
-    this.top = this.top + (Math.abs(offsetHeight - 250) / 2);
+    this.top = this.top + (Math.abs(offsetHeight - 200) / 2);
   }
 
   // animation callback
@@ -33,4 +30,12 @@ export class MonsterTooltipComponent implements AfterViewInit {
       this.kill.next(true);
     }
   }
+
+  tooltipSetup = (monster: Monster, nativeElement: HTMLElement) => {
+    this.monster = monster;
+    const { right, top } = nativeElement.getBoundingClientRect();
+    this.left = right + 5;
+    this.top = top;
+  }
+
 }

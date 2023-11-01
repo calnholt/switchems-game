@@ -1,5 +1,5 @@
-<div id="monster-active" cardInfoTooltip [object]="monster" tooltipType="MONSTER">
-  <img [src]="monsterIcon" />
+<div id="monster">
+  <img [src]="monsterIcon" cardInfoTooltip [object]="monster" tooltipType="MONSTER" />
   <div class="stat-container">
     <div class="hp">{{ monster._currentHp }}/{{ monster._hp }}</div>
     <div class="hp-bar d-flex">

@@ -1,6 +1,6 @@
 @import '../../../../../assets/styles/constants.scss';
 
-#monster-active {
+#monster {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,14 +28,14 @@
         display: flex;
         align-items: center;
         background-color: black;
-        padding: 5px;
+        padding: 5px 3px;
         border-radius: 10px;
         margin: 3px;
         color: white;
 
         .defense-value {
-          margin-right: 2px;
-          font-size: 35px;
+          font-size: 25px;
+          padding-left: 1px;
         }
 
         img {
@@ -44,7 +44,7 @@
       }
   
       img {
-        height: 30px;
+        height: 20px;
         margin: 0px 3px;
       }
   
@@ -62,14 +62,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 6px;
-    padding: 5px;
+    margin-top: 2px;
+    padding: 2px;
     border-radius: 5px;
     width: 324px;
   }
 
   img {
-    height: 250px;
+    height: 200px;
+    cursor: pointer;
   }
 
   .hp {
