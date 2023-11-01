@@ -1,6 +1,8 @@
-<sw-stat-board [statBoard]="statBoard" />
 <ng-container *ngFor="let monster of monsters">
-  <sw-monster-active [monster]="monster" />
+  <div class="d-flex">
+    <sw-stat-board [statBoard]="statBoard" />
+    <sw-monster [monster]="monster" />
+  </div>
   <sw-monster-action-grid [actions]="monster._actions" />
   <sw-player-hand [buffs]="monster._buffs" />
 </ng-container>
