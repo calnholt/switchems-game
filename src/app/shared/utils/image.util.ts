@@ -24,6 +24,7 @@ export const ImageUtil = {
     defense: getSymbolsPath('defense'),
     superEffective: getSymbolsPath('super-effective'),
     switchDefense: getSymbolsPath('switch-defense'),
+    teamAura: getSymbolsPath('aura'),
   },
   monsters: {
     Chargroar: getMonstersPath('chargroar'),
