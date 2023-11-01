@@ -14,14 +14,13 @@ import { Buff } from '../../../models/monster/monster.model';
   ]
 })
 export class BuffTooltipComponent extends ITooltip {
-  // props managed from tooltip directive
   @ViewChild('ref') ref!: ElementRef<any>;
   @Input() buff!: Buff;
-
+  
   ngAfterViewInit() {
     this.top = this.top - (this.ref.nativeElement as HTMLElement).offsetHeight - 5;
   }
-
+  
   // animation callback
   aniDone(event: AnimationEvent) {
     if (event.totalTime > 0 && !this.show) {
@@ -29,4 +28,11 @@ export class BuffTooltipComponent extends ITooltip {
     }
   }
 
+  tooltipSetup = (buff: Buff, nativeElement: HTMLElement) => {
+    this.buff = buff;
+    const { left, top } = nativeElement.getBoundingClientRect();
+    this.left = left;
+    this.top = top - 10; // adjust for scaling when hovering
+  }
+  
 }

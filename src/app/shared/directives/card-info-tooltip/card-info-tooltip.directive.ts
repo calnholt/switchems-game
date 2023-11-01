@@ -1,9 +1,7 @@
 import { ComponentRef, Directive, ElementRef, EmbeddedViewRef, HostListener, Input, ViewContainerRef } from '@angular/core';
 import { MonsterActionTooltipComponent } from '../../../pages/game/components/monster-action/monster-action-tooltip/monster-action-tooltip.component';
-import { Monster, MonsterAction } from 'src/app/pages/game/models/monster/monster.model';
 import { Subscription } from 'rxjs';
-import { ICardInfoTooltip } from './card-info-tooltip.interface';
-import { MonsterTooltipComponent } from 'src/app/pages/game/components/monster-active/monster-tooltip/monster-tooltip.component';
+import { MonsterTooltipComponent } from 'src/app/pages/game/components/monster/monster-tooltip/monster-tooltip.component';
 import { BuffTooltipComponent } from '~/app/pages/game/components/buff/buff-tooltip/buff-tooltip.component';
 import { IHaveTooltip } from '../../interfaces/IHaveTooltip.interface';
 import { ITooltip } from '../../interfaces/ITooltip.interface';
@@ -38,16 +36,17 @@ export class CardInfoTooltipDirective {
     if (this.state === 'UNINITIALIZED') {
       switch (this.tooltipType) {
         case 'MONSTER':
-          this.setMonsterProperties();
+          this.componentRef = this.viewContainerRef.createComponent(MonsterTooltipComponent);
           break;
         case 'BUFF':
-          this.setBuffProperties();
+          this.componentRef  = this.viewContainerRef.createComponent(BuffTooltipComponent);
           break;
         case 'ACTION':
         default:
-          this.setActionProperties();
+          this.componentRef = this.viewContainerRef.createComponent(MonsterActionTooltipComponent);
           break;
         }
+        this.setup();
     }
     else if (this.state === 'NOT_SHOWING') {
       this.componentRef.instance.show = true;
@@ -55,9 +54,10 @@ export class CardInfoTooltipDirective {
     this.state = 'SHOWING';
   }
 
-  private setDOM() {
+  private setup() {
     const domElem = (this.componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
     document.body.appendChild(domElem);
+    this.componentRef.instance.tooltipSetup(this.object, this.elementRef.nativeElement);
     if (this.state === 'UNINITIALIZED') {
       // best approach? not sure
       this.subscription = this.componentRef.instance.kill.subscribe((val: boolean) => {
@@ -66,33 +66,6 @@ export class CardInfoTooltipDirective {
         }
       });
     }
-  }
-
-  private setMonsterProperties() {
-    this.componentRef = this.viewContainerRef.createComponent(MonsterTooltipComponent);
-    this.setDOM();
-    this.componentRef.instance.monster = this.object;
-    const { left, right, top, bottom } = this.elementRef.nativeElement.getBoundingClientRect();
-    this.componentRef.instance.left = right + 5;
-    this.componentRef.instance.top = top;
-  }
-
-  private setActionProperties() {
-    this.componentRef = this.viewContainerRef.createComponent(MonsterActionTooltipComponent);
-    this.setDOM();
-    this.componentRef.instance.action = this.object;
-    const { left, right, top, bottom } = this.elementRef.nativeElement.getBoundingClientRect();
-    this.componentRef.instance.left = left + 25; // (300 - 250) / 2
-    this.componentRef.instance.top = top - 10; // adjust for scaling when hovering
-  }
-
-  private setBuffProperties() {
-    this.componentRef  = this.viewContainerRef.createComponent(BuffTooltipComponent);
-    this.setDOM();
-    this.componentRef.instance.buff = this.object;
-    const { left, right, top, bottom } = this.elementRef.nativeElement.getBoundingClientRect();
-    this.componentRef.instance.left = left;
-    this.componentRef.instance.top = top - 10; // adjust for scaling when hovering
   }
 
   @HostListener('mouseleave')
