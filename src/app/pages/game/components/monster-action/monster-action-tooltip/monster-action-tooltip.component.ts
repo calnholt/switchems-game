@@ -1,10 +1,9 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild, signal } from '@angular/core';
 import { fadeOutOnLeaveAnimation, slideInDownOnEnterAnimation, slideInLeftOnEnterAnimation, slideInRightOnEnterAnimation } from 'angular-animations';
-import { BehaviorSubject } from 'rxjs';
-import { MonsterAction } from 'src/app/pages/game/models/monster/monster.model';
 import { Term } from 'src/app/shared/types/data';
 import { AnimationEvent } from '@angular/animations';
 import { ITooltip } from '~/app/shared/interfaces/ITooltip.interface';
+import { MonsterAction } from '../../../models/monster/action.model';
 
 @Component({
   selector: 'sw-monster-action-tooltip',
@@ -12,7 +11,6 @@ import { ITooltip } from '~/app/shared/interfaces/ITooltip.interface';
   styleUrls: ['./monster-action-tooltip.component.scss'],
   animations: [
     slideInDownOnEnterAnimation({ delay: 100, duration: 300, translate: '5%' }),
-    // slideInLeftOnEnterAnimation({ duration: 300, translate: '5%' }),
     fadeOutOnLeaveAnimation({ duration: 300 }),
   ]
 })

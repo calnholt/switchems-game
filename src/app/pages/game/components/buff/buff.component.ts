@@ -1,10 +1,10 @@
 import { MonsterService } from 'src/app/shared/services/monster.service';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
-import { Buff } from './../../models/monster/monster.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { Css, Path } from 'src/app/shared/types/dataTypes';
 import { IHover } from '~/app/shared/interfaces/IHover.interface';
-import { bounceInOnEnterAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, rubberBandAnimation, rubberBandOnEnterAnimation, slideInDownOnEnterAnimation } from 'angular-animations';
+import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
+import { Buff } from '../../models/monster/buff.model';
 
 @Component({
   selector: 'sw-buff',

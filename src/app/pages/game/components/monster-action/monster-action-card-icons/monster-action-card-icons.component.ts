@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { MonsterActionCardIcons } from '../../../models/monster/monster.model';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
+import { MonsterActionCardIcons } from '../../../models/monster/monster-action-card-icons.model';
 
 type CardType = 'BUFF' | 'DRAW' | 'DISCARD' | 'ADDED_BUFF';
 
@@ -10,7 +10,7 @@ type CardType = 'BUFF' | 'DRAW' | 'DISCARD' | 'ADDED_BUFF';
   styleUrls: ['./monster-action-card-icons.component.scss']
 })
 export class MonsterActionCardIconsComponent {
-  @Input({ required: true }) icons: MonsterActionCardIcons = new MonsterActionCardIcons();
+  @Input() icons!: MonsterActionCardIcons;
   cardTypes: {type: CardType, index: number}[] = [];
 
   buffImg = ImageUtil.icons.buff;

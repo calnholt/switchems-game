@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Monster } from "../../pages/game/models/monster/monster.model";
+import { Monster } from "../../pages/game/models/monster/monster-action.model";
 import { loadMonsters } from "../../data/import/json-to-obj";
 
 @Injectable({

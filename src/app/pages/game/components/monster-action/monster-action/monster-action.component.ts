@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { MonsterAction } from '../../../models/monster/monster.model';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
 import { Path } from 'src/app/shared/types/dataTypes';
 import { Term } from 'src/app/shared/types/data';
 import { AbilityTextUtil } from 'src/app/shared/utils/ability-text.util';
+import { MonsterAction } from '../../../models/monster/action.model';
 
 @Component({
   selector: 'sw-monster-action',

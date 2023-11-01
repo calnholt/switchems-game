@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { fadeOutOnLeaveAnimation, slideInDownOnEnterAnimation } from 'angular-animations';
 import { ITooltip } from '~/app/shared/interfaces/ITooltip.interface';
 import { AnimationEvent } from '@angular/animations';
-import { Buff } from '../../../models/monster/monster.model';
+import { Buff } from '../../../models/monster/buff.model';
 
 @Component({
   selector: 'sw-buff-tooltip',

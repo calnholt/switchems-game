@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MonsterAction } from '../../../models/monster/monster.model';
+import { MonsterAction } from '../../../models/monster/action.model';
 
 @Component({
   selector: 'sw-monster-action-grid',

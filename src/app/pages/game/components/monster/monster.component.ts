@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Monster } from '../../models/monster/monster.model';
+import { Monster } from '../../models/monster/monster-action.model';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
 import { Path } from 'src/app/shared/types/dataTypes';
 

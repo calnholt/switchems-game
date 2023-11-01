@@ -1,6 +1,6 @@
 import { Component, DoCheck, Input, IterableDiffer, IterableDifferFactory, IterableDiffers, KeyValueDiffers, SimpleChanges } from '@angular/core';
-import { Buff } from '../../models/monster/monster.model';
 import { ImageUtil } from '~/app/shared/utils/image.util';
+import { Buff } from '../../models/monster/buff.model';
 
 @Component({
   selector: 'sw-player-hand',
