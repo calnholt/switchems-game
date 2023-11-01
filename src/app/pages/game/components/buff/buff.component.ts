@@ -22,6 +22,7 @@ export class BuffComponent extends IHover implements OnInit {
   monsterPath!: Path;
   buffPath = ImageUtil.icons.buff;
   discardPath = ImageUtil.icons.discard;
+  teamAuraPath = ImageUtil.icons.teamAura;
 
   animationState = false;
 

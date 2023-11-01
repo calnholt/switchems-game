@@ -67,6 +67,18 @@
     background-image: url("../../../../../assets/images/backgrounds/buff/water.png");
   }
 
+  .team-aura-container {
+    font-family: $text-font;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    line-height: 21px;
+    img {
+      height: 25px;
+    }
+  }
+
   .apply-as {
     position: absolute;
     height: 130px;

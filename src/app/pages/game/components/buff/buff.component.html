@@ -11,6 +11,10 @@
     {{buff._name}}
   </div>
   <div class="sw-card-text-container">
+    <div *ngIf="buff._auraDuration" class="team-aura-container">
+      <div>{{buff._auraDuration}}</div>
+      <img [src]="teamAuraPath" />
+    </div>
     <div class="text" [innerHTML]=" buff._text | convertEmbeddedText : { excludeTerms: true }"></div>
   </div>
   <img class="monster-img" [src]="monsterPath" />
