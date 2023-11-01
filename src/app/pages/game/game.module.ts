@@ -7,8 +7,8 @@ import { MonsterActionGridComponent } from './components/monster-action/monster-
 import { MonsterActionComponent } from './components/monster-action/monster-action/monster-action.component';
 import { StatBoardComponent } from './components/game/stat-board/stat-board.component';
 import { StatBoardSectionComponent } from './components/game/stat-board/stat-board-section/stat-board-section.component';
-import { MonsterActiveComponent } from './components/monster-active/monster-active.component';
-import { MonsterTooltipComponent } from './components/monster-active/monster-tooltip/monster-tooltip.component';
+import { MonsterActiveComponent } from './components/monster/monster.component';
+import { MonsterTooltipComponent } from './components/monster/monster-tooltip/monster-tooltip.component';
 import { BuffComponent } from './components/buff/buff.component';
 import { PlayerHandComponent } from './components/player-hand/player-hand.component';
 import { BuffTooltipComponent } from './components/buff/buff-tooltip/buff-tooltip.component';
