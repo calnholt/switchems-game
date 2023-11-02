@@ -3,8 +3,9 @@ import { StatUtil } from "src/app/shared/utils/stat.util";
 import { IHaveTooltip } from "~/app/shared/interfaces/IHaveTooltip.interface";
 import { MonsterAction } from "./action.model";
 import { Buff } from "./buff.model";
+import { CardCompositeKey, ICompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 
-export class Monster implements IHaveTooltip {
+export class Monster implements IHaveTooltip, ICompositeKey {
   private _name: string;
   private _elements: Array<ElemType>;
   private _switchIn: string;
@@ -47,9 +48,11 @@ export class Monster implements IHaveTooltip {
     this._switchDefense = this.getSwitchDefenseValue();
 
   }
+  key(): CardCompositeKey { return this.name; }
   hasTooltip () {
     return !!(this._switchIn || this._passive);
   }
+  
 
   public get name(): string { return this._name; }
   public get elements(): ElemType[] { return this._elements; }

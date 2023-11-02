@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { Monster } from '../../../models/monster/monster-action.model';
+import { Monster } from '../../../models/monster/monster.model';
 import { fadeOutOnLeaveAnimation, slideInRightOnEnterAnimation } from 'angular-animations';
 import { AnimationEvent } from '@angular/animations';
 import { ITooltip } from '~/app/shared/interfaces/ITooltip.interface';

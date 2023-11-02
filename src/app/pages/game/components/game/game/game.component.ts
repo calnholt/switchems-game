@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Monster } from '../../../models/monster/monster-action.model';
+import { Monster } from '../../../models/monster/monster.model';
 import { MonsterService } from 'src/app/shared/services/monster.service';
 import { StatBoard } from '../../../models/stat-board/stat-board.model';
 

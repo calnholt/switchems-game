@@ -3,9 +3,11 @@ import { Term } from "~/app/shared/types/data";
 import { ElemType } from "~/app/shared/types/dataTypes";
 import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
 import { MonsterActionCardIcons } from "./monster-action-card-icons.model";
+import { CardCompositeKey, ICompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 
-export class MonsterAction implements IHaveTooltip {
+export class MonsterAction implements IHaveTooltip, ICompositeKey {
   private _name: string;
+  private _monsterName: string;
   private _text: string;
   private _attack: number;
   private _speed: number;
@@ -20,6 +22,7 @@ export class MonsterAction implements IHaveTooltip {
 
   constructor(
     name: string,
+    monsterName: string,
     text: string,
     attack: number,
     speed: number,
@@ -33,6 +36,7 @@ export class MonsterAction implements IHaveTooltip {
     isDisabled: boolean = false
   ) {
     this._name = name;
+    this._monsterName = monsterName;
     this._text = text;
     this._attack = attack;
     this._speed = speed;
@@ -47,6 +51,7 @@ export class MonsterAction implements IHaveTooltip {
   }
 
   get name(): string { return this._name; }
+  get monsterName(): string { return this._monsterName; }
   get text(): string { return this._text; }
   get attack(): number { return this._attack; }
   get speed(): number { return this._speed; }
@@ -82,4 +87,7 @@ export class MonsterAction implements IHaveTooltip {
     const hasTerms = !!this.getTerms()?.length;
     return hasTerms || !this.isStatus;
   }
+
+  key(): CardCompositeKey { return `${this.monsterName}-${this.name}`; }
+
 }
