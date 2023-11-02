@@ -24,6 +24,15 @@ export class Buff implements IHaveTooltip, ICompositeKey {
   hasTooltip(): boolean { return !!this._terms.length; }
 
   isApplied(): boolean { return this._isAppliedAsBuff || this._isAppliedAsDiscard; }
+  toggleAppliedAsBuff() {
+    this._isAppliedAsBuff = !this._isAppliedAsBuff;
+    this._isAppliedAsDiscard = false;
+  }
+
+  toggleAppliedAsDiscard() {
+    this._isAppliedAsDiscard = !this._isAppliedAsDiscard;
+    this._isAppliedAsBuff = false;
+  }
 
   get monsterName(): string { return this._monsterName; }
   get name(): string { return this._name; }

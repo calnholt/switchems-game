@@ -4,10 +4,9 @@ import { Buff } from "../monster/buff.model";
 export class DiscardPile {
   private _cards: Buff[] = [];
 
-  constructor() {
-    
-  }
-
+  /**
+ * Empties the discard pile and returns all of the cards in it
+ */
   empty(): Buff[] {
     const cards = [...this._cards];
     this._cards = [];

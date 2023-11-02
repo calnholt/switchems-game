@@ -1,7 +1,7 @@
 import { ArrayUtil } from "~/app/shared/utils/array.util";
 import { Buff } from "../monster/buff.model";
 
-export class Hand {
+export class Deck {
   private _cards: Buff[];
 
   constructor(cards: Buff[]) {
@@ -16,8 +16,12 @@ export class Hand {
     this._cards = ArrayUtil.randomizeOrder(cards);
   }
 
-  canDraw(): boolean { return this._cards.length > 0; }
+  isEmpty(): boolean { return this._cards.length === 0; }
 
+  /**
+   * Removes the top card of the deck (index 0)
+   * @returns top card of of deck
+   */
   draw(): Buff { return (this._cards.shift() as Buff); }
 
 }
