@@ -1,37 +1,12 @@
 <div id="monster">
-  <img [src]="monsterIcon" cardInfoTooltip [object]="monster" tooltipType="MONSTER" />
-  <div class="stat-container">
-    <div class="hp">{{ monster._currentHp }}/{{ monster._hp }}</div>
-    <div class="hp-bar d-flex">
-      <ng-container *ngFor="let _ of [].constructor(monster._hp); let i = index">
-        <div class="hp-chunk" [ngClass]="{'damaged' : (i + 1) > monster._currentHp}"></div>
-      </ng-container>
-    </div>
-    <div class="initiative">
-      <div>{{ monster._initiative }}</div>
-    </div>
-  </div>
-  <div class="element-container">
-    <div class="element-info-container mr-1">
-      <div class="type">
-        <img [src]="superEffectiveIcon">
-      </div>
-      <div class="elements">
-        <ng-container *ngFor="let element of monster._weaknesses" class="elements">
-          <img class="element-icon" [src]="ImageUtil.getElementsPath(element)">
-        </ng-container>
-      </div>
-    </div>
-    <div class="element-info-container">
-      <div class="elements">
-        <ng-container *ngFor="let element of monster._resistances">
-          <img class="element-icon" [src]="ImageUtil.getElementsPath(element)">
-        </ng-container>
-      </div>
-      <div class="type defense">
-        <div class="defense-value">{{monster._switchDefense}}</div>
-        <img [src]="switchDefenseIcon">
-      </div>
-    </div>
-  </div>
+  <img [src]="monsterIcon" 
+    cardInfoTooltip 
+    [object]="monster" 
+    tooltipType="MONSTER" />
+  <sw-monster-hp [hp]="monster._hp" 
+    [currentHp]="monster._currentHp" 
+    [initiative]="monster._initiative" />
+  <sw-monster-element-breakdown [weaknesses]="monster._weaknesses"
+    [resistances]="monster._resistances"
+    [switchDefense]="monster._switchDefense"/>
 </div>

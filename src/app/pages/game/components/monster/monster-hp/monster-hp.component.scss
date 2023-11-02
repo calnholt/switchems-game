@@ -1,0 +1,51 @@
+#monster-hp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+  padding: 2px;
+  border-radius: 5px;
+
+  .hp {
+    margin-right: 3px;
+    color: black;
+  }
+
+  .hp-bar {
+    width: 200px;
+    margin-right: 3px;
+
+    .hp-chunk:first-child {
+      border-radius: 10px 0px 0px 10px;
+    }
+
+    .hp-chunk:last-child {
+      border-radius: 0px 10px 10px 0px;
+    }
+
+    .hp-chunk:not(:last-child) {
+      border-right: 2px solid white;
+    }
+
+    .hp-chunk {
+      height: 15px;
+      width: 100%;
+      background-color: red;
+
+      &.damaged {
+        background-color: black;
+      }
+    }
+  }
+
+  .initiative {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
