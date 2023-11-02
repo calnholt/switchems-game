@@ -29,7 +29,6 @@ export const loadMonsters = (selectedMonster?: any): Array<Monster> => {
   ]);
 };
 
-
 export const convertFromJSON = (all: Array<any>): Array<Monster> => {
   return [...all].map(json => {
     return new Monster(

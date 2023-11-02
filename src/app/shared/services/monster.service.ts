@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Monster } from "../../pages/game/models/monster/monster-action.model";
-import { loadMonsters } from "../../data/import/json-to-obj";
+import { loadMonsters } from "~/app/data/import/convert-json-cards";
 
 @Injectable({
   providedIn: 'root'
