@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { Monster } from '../../../models/monster/monster-action.model';
 import { fadeOutOnLeaveAnimation, slideInRightOnEnterAnimation } from 'angular-animations';
 import { AnimationEvent } from '@angular/animations';

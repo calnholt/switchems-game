@@ -17,7 +17,7 @@ export class MonsterActiveComponent implements OnInit {
   readonly ImageUtil = ImageUtil;
   
   ngOnInit(): void {
-    this.monsterIcon = ImageUtil.getMonstersPath(this.monster._name);
+    this.monsterIcon = ImageUtil.getMonstersPath(this.monster.name);
     this.superEffectiveIcon = ImageUtil.icons.superEffective;
     this.switchDefenseIcon = ImageUtil.icons.switchDefense;
   }

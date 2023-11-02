@@ -31,38 +31,38 @@ export class StatBoard {
 };
 
 export class StatBoardSection {
-  private max!: number;
-  private current!: number;
-  private isApplied!: boolean;
+  private _max!: number;
+  private _current!: number;
+  private _isApplied!: boolean;
   readonly type!: StatBoardSectionType;
 
   constructor(max: number, current: number, isApplied: boolean, type: StatBoardSectionType) {
-    this.max = max;
-    this. current = current;
-    this.isApplied = isApplied;
+    this._max = max;
+    this._current = current;
+    this._isApplied = isApplied;
     this.type = type;
   }
 
-  public get _max() { return this.max }
-  public get _current() { return this.current }
-  public get _isApplied() { return this.isApplied }
+  public get max() { return this._max }
+  public get current() { return this._current }
+  public get isApplied() { return this._isApplied }
 
-  public set apply(value: boolean) { this.isApplied = value }
+  public set apply(value: boolean) { this._isApplied = value }
 
   setApplied(value: boolean) {
-    this.isApplied = value;
+    this._isApplied = value;
   }
 
   use() {
-    this.current = 0;
+    this._current = 0;
   }
 
   gain(amount: number) {
     if (this.current + amount > this.max) {
-      this.current = this.max;
+      this._current = this.max;
     }
     else {
-      this.current += amount;
+      this._current += amount;
     }
   }
 }

@@ -21,13 +21,13 @@ export class MonsterActionComponent {
   statusImg: Path = "";
 
   ngOnInit() {
-    if (this.action?._element) {
-      this.elementImg = ImageUtil.getElementsPath(this.action?._element);
+    if (this.action?.element) {
+      this.elementImg = ImageUtil.getElementsPath(this.action?.element);
     }
     this.attackImg = ImageUtil.getSymbolsPath('attack');
     this.speedImg = ImageUtil.getSymbolsPath('speed');
     this.statusImg = ImageUtil.getSymbolsPath('status');
-    this.terms = AbilityTextUtil.getTermsFromText(this.action._text);
+    this.terms = AbilityTextUtil.getTermsFromText(this.action.text);
   }
 
 }

@@ -1,15 +1,15 @@
 <div id="stat-board-section"
-  [ngClass]="{'applied' : statBoardSection._isApplied}"
+  [ngClass]="{'applied' : statBoardSection.isApplied}"
   (click)="onSelect()" 
-  [@pulse]="aniState && this.statBoardSection._isApplied" (@pulse.done)="aniDone()">
+  [@pulse]="aniState && this.statBoardSection.isApplied" (@pulse.done)="aniDone()">
   <div>
     <img [src]="icon">
   </div>
   <div class="pip-container">
-    <ng-container *ngFor="let _ of [].constructor(statBoardSection._current)">
+    <ng-container *ngFor="let _ of [].constructor(statBoardSection.current)">
       <div class="circle occupied"></div>
     </ng-container>
-    <ng-container *ngFor="let _ of [].constructor(statBoardSection._max - statBoardSection._current)">
+    <ng-container *ngFor="let _ of [].constructor(statBoardSection.max - statBoardSection.current)">
       <div class="circle open"></div>
     </ng-container>
   </div>

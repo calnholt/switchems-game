@@ -1,10 +1,10 @@
 export class MonsterActionCardIcons {
-  private buff: number;
-  private discard: number;
-  private draw: number;
-  private addedBuff: number;
-  private appliedBuff: number;
-  private appliedDiscard: number;
+  private _buff: number;
+  private _discard: number;
+  private _draw: number;
+  private _addedBuff: number;
+  private _appliedBuff: number;
+  private _appliedDiscard: number;
 
   constructor(
     buff: number = 0,
@@ -14,35 +14,35 @@ export class MonsterActionCardIcons {
     appliedBuff: number = 0,
     appliedDiscard: number = 0
   ) {
-    this.buff = buff;
-    this.discard = discard;
-    this.draw = draw;
-    this.addedBuff = addedBuff;
-    this.appliedBuff = appliedBuff;
-    this.appliedDiscard = appliedDiscard;
+    this._buff = buff;
+    this._discard = discard;
+    this._draw = draw;
+    this._addedBuff = addedBuff;
+    this._appliedBuff = appliedBuff;
+    this._appliedDiscard = appliedDiscard;
   }
 
-  get _buff(): number {
-    return this.buff;
+  get buff(): number {
+    return this._buff;
   }
 
-  get _discard(): number {
-    return this.discard;
+  get discard(): number {
+    return this._discard;
   }
 
-  get _draw(): number {
-    return this.draw;
+  get draw(): number {
+    return this._draw;
   }
 
-  get _addedBuff(): number {
-    return this.addedBuff;
+  get addedBuff(): number {
+    return this._addedBuff;
   }
 
-  get _appliedBuff(): number {
-    return this.appliedBuff;
+  get appliedBuff(): number {
+    return this._appliedBuff;
   }
 
-  get _appliedDiscard(): number {
-    return this.appliedDiscard;
+  get appliedDiscard(): number {
+    return this._appliedDiscard;
   }
 }

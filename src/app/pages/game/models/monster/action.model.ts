@@ -5,18 +5,18 @@ import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
 import { MonsterActionCardIcons } from "./monster-action-card-icons.model";
 
 export class MonsterAction implements IHaveTooltip {
-  private name: string;
-  private text: string;
-  private attack: number;
-  private speed: number;
-  private element: ElemType;
-  private icons: MonsterActionCardIcons;
-  private index: number;
-  private isStatus: boolean;
-  public isSelected: boolean;
-  private isLocked: boolean;
-  private isUsed: boolean;
-  private isDisabled: boolean;
+  private _name: string;
+  private _text: string;
+  private _attack: number;
+  private _speed: number;
+  private _element: ElemType;
+  private _icons: MonsterActionCardIcons;
+  private _index: number;
+  private _isStatus: boolean;
+  public _isSelected: boolean;
+  private _isLocked: boolean;
+  private _isUsed: boolean;
+  private _isDisabled: boolean;
 
   constructor(
     name: string,
@@ -32,35 +32,35 @@ export class MonsterAction implements IHaveTooltip {
     isUsed: boolean = false,
     isDisabled: boolean = false
   ) {
-    this.name = name;
-    this.text = text;
-    this.attack = attack;
-    this.speed = speed;
-    this.element = element;
-    this.icons = icons;
-    this.index = index;
-    this.isStatus = isStatus;
-    this.isSelected = isSelected;
-    this.isLocked = isLocked;
-    this.isUsed = isUsed;
-    this.isDisabled = isDisabled;
+    this._name = name;
+    this._text = text;
+    this._attack = attack;
+    this._speed = speed;
+    this._element = element;
+    this._icons = icons;
+    this._index = index;
+    this._isStatus = isStatus;
+    this._isSelected = isSelected;
+    this._isLocked = isLocked;
+    this._isUsed = isUsed;
+    this._isDisabled = isDisabled;
   }
 
-  get _name(): string { return this.name; }
-  get _text(): string { return this.text; }
-  get _attack(): number { return this.attack; }
-  get _speed(): number { return this.speed; }
-  get _element(): ElemType { return this.element; }
-  get _icons(): MonsterActionCardIcons { return this.icons; }
-  get _index(): number { return this.index; }
-  get _isStatus(): boolean { return this.isStatus; }
-  get _isSelected(): boolean { return this.isSelected; }
-  get _isLocked(): boolean { return this.isLocked; }
-  get _isUsed(): boolean { return this.isUsed; }
-  get _isDisabled(): boolean { return this.isDisabled; }
+  get name(): string { return this._name; }
+  get text(): string { return this._text; }
+  get attack(): number { return this._attack; }
+  get speed(): number { return this._speed; }
+  get element(): ElemType { return this._element; }
+  get icons(): MonsterActionCardIcons { return this._icons; }
+  get index(): number { return this._index; }
+  get isStatus(): boolean { return this._isStatus; }
+  get isSelected(): boolean { return this._isSelected; }
+  get isLocked(): boolean { return this._isLocked; }
+  get isUsed(): boolean { return this._isUsed; }
+  get isDisabled(): boolean { return this._isDisabled; }
 
   getAbilityTextWithoutTerms(): string {
-    return AbilityTextUtil.getAbilityTextWithoutTerms(this.text);
+    return AbilityTextUtil.getAbilityTextWithoutTerms(this._text);
   }
 
   getAdvantages() {

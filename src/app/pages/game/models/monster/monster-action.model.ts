@@ -5,21 +5,21 @@ import { MonsterAction } from "./action.model";
 import { Buff } from "./buff.model";
 
 export class Monster implements IHaveTooltip {
-  private name: string;
-  private elements: Array<ElemType>;
-  private switchIn: string;
-  private passive: string;
-  private hp: number;
-  private initiative: number;
-  private actions: MonsterAction[];
-  private buffs: Buff[];
+  private _name: string;
+  private _elements: Array<ElemType>;
+  private _switchIn: string;
+  private _passive: string;
+  private _hp: number;
+  private _initiative: number;
+  private _actions: MonsterAction[];
+  private _buffs: Buff[];
   
   // evaluated fields
-  private currentHp: number = 0;
-  private effectivenessArray!: number[];
-  private weaknesses!: ElemType[];
-  private resistances!: ElemType[];
-  private switchDefense!: number;
+  private _currentHp: number = 0;
+  private _effectivenessArray!: number[];
+  private _weaknesses!: ElemType[];
+  private _resistances!: ElemType[];
+  private _switchDefense!: number;
 
   constructor(
     name: string,
@@ -31,39 +31,39 @@ export class Monster implements IHaveTooltip {
     actions: MonsterAction[],
     buffs: Buff[],
   ) {
-    this.name = name;
-    this.elements = elements;
-    this.switchIn = switchIn;
-    this.passive = passive;
-    this.hp = hp;
-    this.initiative = initiative;
-    this.actions = actions;
-    this.buffs = buffs;
-    this.currentHp = this.hp;
+    this._name = name;
+    this._elements = elements;
+    this._switchIn = switchIn;
+    this._passive = passive;
+    this._hp = hp;
+    this._initiative = initiative;
+    this._actions = actions;
+    this._buffs = buffs;
+    this._currentHp = this._hp;
 
-    this.effectivenessArray = this.getEffectivenessArray();
-    this.weaknesses = this.getWeaknesses();
-    this.resistances = this.getResistances();
-    this.switchDefense = this.getSwitchDefenseValue();
+    this._effectivenessArray = this.getEffectivenessArray();
+    this._weaknesses = this.getWeaknesses();
+    this._resistances = this.getResistances();
+    this._switchDefense = this.getSwitchDefenseValue();
 
   }
   hasTooltip () {
-    return !!(this._switchIn || this.passive);
+    return !!(this._switchIn || this._passive);
   }
 
-  public get _name(): string { return this.name; }
-  public get _elements(): ElemType[] { return this.elements; }
-  public get _switchIn(): string { return this.switchIn; }
-  public get _passive(): string { return this.passive; }
-  public get _hp(): number { return this.hp; }
-  public get _initiative(): number { return this.initiative; }
-  public get _actions(): MonsterAction[] { return this.actions; }
-  public get _buffs(): Buff[] { return this.buffs; }
-  public get _currentHp(): number { return this.currentHp; }
-  public get _effectivenessArray(): number[] { return this.effectivenessArray; }
-  public get _weaknesses(): ElemType[] { return this.weaknesses; }
-  public get _resistances(): ElemType[] { return this.resistances; }
-  public get _switchDefense(): number { return this.switchDefense; }
+  public get name(): string { return this._name; }
+  public get elements(): ElemType[] { return this._elements; }
+  public get switchIn(): string { return this._switchIn; }
+  public get passive(): string { return this._passive; }
+  public get hp(): number { return this._hp; }
+  public get initiative(): number { return this._initiative; }
+  public get actions(): MonsterAction[] { return this._actions; }
+  public get buffs(): Buff[] { return this._buffs; }
+  public get currentHp(): number { return this._currentHp; }
+  public get effectivenessArray(): number[] { return this._effectivenessArray; }
+  public get weaknesses(): ElemType[] { return this._weaknesses; }
+  public get resistances(): ElemType[] { return this._resistances; }
+  public get switchDefense(): number { return this._switchDefense; }
   
   getEffectivenessArray(): number[] {
     const arrs = this._elements.map((el: ElemType) => StatUtil.getAdvantages(el)) ?? [];

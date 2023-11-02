@@ -23,10 +23,10 @@ export class MonsterActionCardIconsComponent {
 
   ngOnInit() {
     this.cardTypes = this.cardTypes.concat(
-      this.getCardTypeArray(this.icons._buff, 'BUFF'),
-      this.getCardTypeArray(this.icons._addedBuff, 'ADDED_BUFF'),
-      this.getCardTypeArray(this.icons._discard, 'DISCARD'),
-      this.getCardTypeArray(this.icons._draw, 'DRAW'),
+      this.getCardTypeArray(this.icons.buff, 'BUFF'),
+      this.getCardTypeArray(this.icons.addedBuff, 'ADDED_BUFF'),
+      this.getCardTypeArray(this.icons.discard, 'DISCARD'),
+      this.getCardTypeArray(this.icons.draw, 'DRAW'),
     );
   }
 

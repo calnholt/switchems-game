@@ -1,4 +1,4 @@
-import { Component, DoCheck, Input, IterableDiffer, IterableDifferFactory, IterableDiffers, KeyValueDiffers, SimpleChanges } from '@angular/core';
+import { Component, DoCheck, Input, KeyValueDiffers } from '@angular/core';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { Buff } from '../../models/monster/buff.model';
 

@@ -8,23 +8,23 @@
   [@fadeOutOnLeave]
   >
   <div class="sw-card-title">
-    {{buff._name}}
+    {{buff.name}}
   </div>
   <div class="sw-card-text-container">
-    <div *ngIf="buff._auraDuration" class="team-aura-container">
-      <div>{{buff._auraDuration}}</div>
+    <div *ngIf="buff.auraDuration" class="team-aura-container">
+      <div>{{buff.auraDuration}}</div>
       <img [src]="teamAuraPath" />
     </div>
-    <div class="text" [innerHTML]=" buff._text | convertEmbeddedText : { excludeTerms: true }"></div>
+    <div class="text" [innerHTML]=" buff.text | convertEmbeddedText : { excludeTerms: true }"></div>
   </div>
   <img class="monster-img" [src]="monsterPath" />
   <ng-container *ngIf="isHovering">
-    <div class="apply-as buff" [ngClass]="{'applied' : buff._isAppliedAsBuff}" (click)="buff.isAppliedAsBuff = !buff.isAppliedAsBuff">
+    <div class="apply-as buff" [ngClass]="{'applied' : buff._isAppliedAsBuff}" (click)="buff._isAppliedAsBuff = !buff.isAppliedAsBuff">
       <div>
         <img [src]="buffPath" />
       </div>
     </div>
-    <div class="apply-as discard" [ngClass]="{'applied' : buff._isAppliedAsDiscard}" (click)="buff.isAppliedAsDiscard = !buff.isAppliedAsDiscard">
+    <div class="apply-as discard" [ngClass]="{'applied' : buff._isAppliedAsDiscard}" (click)="buff._isAppliedAsDiscard = !buff.isAppliedAsDiscard">
       <div>
         <img [src]="discardPath" />
       </div>

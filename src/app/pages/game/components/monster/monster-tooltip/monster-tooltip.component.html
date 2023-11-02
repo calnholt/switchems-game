@@ -7,7 +7,7 @@
   [@slideInRightOnEnter] 
   [@fadeOutOnLeave] 
   (@fadeOutOnLeave.done)="aniDone($event)">
-  <sw-term-tooltip *ngIf="monster._switchIn" title="Switch In" [description]="monster._switchIn" />
-  <div *ngIf="monster._switchIn && monster._passive" class="dot">• • •</div>
-  <sw-term-tooltip *ngIf="monster._passive" title="Passive" [description]="monster._passive" />
+  <sw-term-tooltip *ngIf="monster.switchIn" title="Switch In" [description]="monster.switchIn" />
+  <div *ngIf="monster.switchIn && monster.passive" class="dot">• • •</div>
+  <sw-term-tooltip *ngIf="monster.passive" title="Passive" [description]="monster.passive" />
 </div>

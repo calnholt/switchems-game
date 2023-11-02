@@ -1,6 +1,6 @@
 
 <!-- TODO: no actual difference yet, need to adjust top or bottom based on if user's or not -->
-<ng-container *ngIf="action._index % 2 === 0">
+<ng-container *ngIf="action.index % 2 === 0">
   <div #ref 
     id="monster-action-tooltip" 
     class="tooltip-container" 
@@ -12,7 +12,7 @@
     <ng-container *ngTemplateOutlet="contents"></ng-container>
   </div>
 </ng-container>
-<ng-container *ngIf="action._index % 2 === 1">
+<ng-container *ngIf="action.index % 2 === 1">
   <div #ref 
     id="monster-action-tooltip" 
     class="tooltip-container" 
@@ -31,7 +31,7 @@
     <sw-term-tooltip [title]="term.name" [description]="term.value" />
     <div class="dot">• • •</div>
   </div>
-  <ng-container *ngIf="action._attack != null">
+  <ng-container *ngIf="action.attack != null">
     <sw-effectiveness-tooltip [advantages]="advantages" />
   </ng-container>
 </ng-template>
