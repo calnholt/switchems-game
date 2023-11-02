@@ -10,7 +10,7 @@ import { default as Willard } from '../monsters/Willard.json';
 import { MonsterAction } from '~/app/pages/game/models/monster/action.model';
 import { Buff } from '~/app/pages/game/models/monster/buff.model';
 import { MonsterActionCardIcons } from '~/app/pages/game/models/monster/monster-action-card-icons.model';
-import { Monster } from '~/app/pages/game/models/monster/monster-action.model';
+import { Monster } from '~/app/pages/game/models/monster/monster.model';
 
 export const loadMonsters = (selectedMonster?: any): Array<Monster> => {
   if (selectedMonster) {
@@ -38,15 +38,16 @@ export const convertFromJSON = (all: Array<any>): Array<Monster> => {
       json.passive,
       json.hp,
       json.initiative,
-      json.actions.map(getMonsterAction),
+      json.actions.map((a: any) => getMonsterAction(json.name, a)),
       json.buffs.map((b: any) => getBuff(json.name, b)),
     );
   });
 }
 
-const getMonsterAction = (action: any): MonsterAction => {
+const getMonsterAction = (monsterName: string, action: any): MonsterAction => {
   return new MonsterAction(
     action.name,
+    monsterName,
     action.text,
     action.attack,
     action.speed,
