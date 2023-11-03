@@ -43,11 +43,11 @@ export class BuffComponent extends IHover implements OnInit {
   }
 
   applyAsBuff() {
-    this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_APPLY_BUFF, data: this.buff.key() });
+    this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_APPLY_BUFF, data: this.buff });
   }
 
   applyAsDiscard() {
-    this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_APPLY_DISCARD, data: this.buff.key() });
+    this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_APPLY_DISCARD, data: this.buff });
   }
 
 }

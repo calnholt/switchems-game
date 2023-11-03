@@ -39,7 +39,7 @@ export class MonsterActionComponent {
   }
 
   selectAction() {
-    this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_MONSTER_ACTION_SELECT, data: this.action.key() })
+    this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_MONSTER_ACTION_SELECT, data: this.action })
   }
 
 }

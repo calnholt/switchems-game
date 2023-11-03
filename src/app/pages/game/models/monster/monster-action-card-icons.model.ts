@@ -49,7 +49,10 @@ export class MonsterActionCardIcons {
   setAppliedBuff(value: number) { this._appliedBuff = value; }
   setAppliedDiscard(value: number) { this._appliedDiscard = value; }
 
-  canApplyBuff(): boolean { return this._appliedBuff + this._addedBuff < this._buff; }
+  canApplyBuff(isSuper: boolean): boolean { 
+    return this._appliedBuff + this._addedBuff +(isSuper ? 1 : 0) < this._buff; 
+  }
+
   canApplyDiscard(): boolean { return this._appliedDiscard < this._discard; }
 
   clearApplied() {

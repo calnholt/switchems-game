@@ -1,6 +1,7 @@
 import { CardCompositeKey, ICompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { IHaveTooltip } from "~/app/shared/interfaces/IHaveTooltip.interface";
 import { Term } from "~/app/shared/types/data";
+import { TERM_CODES, TERM_KEYS } from "~/app/shared/types/dataTypes";
 import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
 
 export class Buff implements IHaveTooltip, ICompositeKey {
@@ -11,6 +12,7 @@ export class Buff implements IHaveTooltip, ICompositeKey {
   private _isAppliedAsBuff: boolean = false;
   private _isAppliedAsDiscard: boolean = false;
   private _terms: Term[] = [];
+  private _isSuper: boolean;
 
   constructor(monsterName: string, name: string, text: string, auraDuration: number) {
     this._monsterName = monsterName;
@@ -18,6 +20,7 @@ export class Buff implements IHaveTooltip, ICompositeKey {
     this._text = text;
     this._auraDuration = auraDuration;
     this._terms = AbilityTextUtil.getTermsFromText(text);
+    this._isSuper = text.includes('~SUPER~');
   }
   
   key(): CardCompositeKey { return `${this.monsterName}_${this.name}`; }
@@ -44,5 +47,6 @@ export class Buff implements IHaveTooltip, ICompositeKey {
   get isAppliedAsBuff(): boolean { return this._isAppliedAsBuff; }
   get isAppliedAsDiscard(): boolean { return this._isAppliedAsDiscard; }
   get terms(): Term[] { return this._terms; }
+  get isSuper(): boolean { return this._isSuper; }
 
 }

@@ -26,7 +26,9 @@ export class Hand {
     return this._cards.filter(card => card.isAppliedAsBuff);
   }
 
-  getAppliedBuffCount(): number { return this.getAppliedBuffs().length; }
+  getAppliedBuffCount(): number { 
+    return this.getAppliedBuffs().length + this.getAppliedBuffs().filter(b => b.isSuper).length; 
+  }
   
   getAppliedDiscards(): Buff[] {
     return this._cards.filter(card => card.isAppliedAsDiscard);
