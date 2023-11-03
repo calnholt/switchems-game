@@ -42,8 +42,7 @@ export class GameUISelectionService {
       return;
     }
     playerCardManager.toggleCardAsBuff(selectedBuff.key());
-    this.playerCardManagerService.setApplied(
-      selectedBuff.key(),
+    this.playerCardManagerService.updateApplied(
       hand.getAppliedBuffCount(),
       hand.getAppliedDiscardCount(),
     );
@@ -62,8 +61,7 @@ export class GameUISelectionService {
       return;
     }
     playerCardManager.toggleCardAsDiscard(selectedBuff.key());
-    this.playerCardManagerService.setApplied(
-      selectedBuff.key(),
+    this.playerCardManagerService.updateApplied(
       hand.getAppliedBuffCount(),
       hand.getAppliedDiscardCount(),
     );
@@ -74,7 +72,7 @@ export class GameUISelectionService {
     const { hand } = playerCardManager;
     if (!activeMonster.isActionSelected()) {
       selectedAction.setIsSelected(true);
-
+      this.playerCardManagerService.setApplied(selectedAction.key(), 0, 0);
     }
     // don't do anything if action is already selected
     else if (selectedAction.key() === activeMonster.getSelectedAction().key()) {

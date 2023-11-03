@@ -47,6 +47,13 @@ export class PlayerCardManagerService {
       discard: discard,
     })
   }
+  public updateApplied(buff: number, discard: number) {
+    this._applied$.next({
+      ...this.applied,
+      buff: buff,
+      discard: discard,
+    })
+  }
 
   private endOfTurnCleanup() {
     this.model.cleanupAppliedCards();

@@ -29,8 +29,10 @@ export class MonsterActionCardIconsComponent {
 
   ngOnInit() {
     this.playerCardManagerService.applied$.subscribe((applied) => {
-      if (applied.key === this.action.key())
-      this.applied = applied;
+      const key = this.action.key();
+      if (applied.key === key){
+        this.applied = applied;
+      }
     })
     this.cardTypes = this.cardTypes.concat(
       this.getCardTypeArray(this.action.buff, 'BUFF'),
