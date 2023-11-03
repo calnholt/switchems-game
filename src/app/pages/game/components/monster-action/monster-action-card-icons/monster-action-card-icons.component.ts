@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
-import { Applied, PlayerCardManagerService } from '../../../services/player-card-manager/player-card-manager.service';
+import { Applied, AppliedService } from '../../../services/applied/applied.service';
 import { MonsterAction } from '../../../models/monster/action.model';
 
 type CardType = 'BUFF' | 'DRAW' | 'DISCARD' | 'ADDED_BUFF';
@@ -22,7 +22,7 @@ export class MonsterActionCardIconsComponent {
   drawImg = ImageUtil.icons.draw;
 
   constructor(
-    private playerCardManagerService: PlayerCardManagerService
+    private playerCardManagerService: AppliedService
   ) {
     this.applied = this.playerCardManagerService.applied;
   }

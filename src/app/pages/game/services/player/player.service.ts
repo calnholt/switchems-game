@@ -20,7 +20,11 @@ export class PlayerService {
     threeRandomMonsters[1].setIsActive(false);
     threeRandomMonsters[2].setIsActive(false);
     this._player = new Player(threeRandomMonsters);
-
+    this._player.playerCardManager.drawCard();
+    this._player.playerCardManager.drawCard();
+    this._player.playerCardManager.drawCard();
+    this._player.playerCardManager.drawCard();
+    this._player.playerCardManager.drawCard();
   }
 
   public get playerCardManager() { return this._player.playerCardManager; }

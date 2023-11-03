@@ -3,7 +3,7 @@ import { PlayerService } from '../player/player.service';
 import { GameUISelectionEvent, GameUISelectionEventType } from './game-ui-selection-event.model';
 import { Buff } from '../../models/monster/buff.model';
 import { MonsterAction } from '../../models/monster/action.model';
-import { PlayerCardManagerService } from '../player-card-manager/player-card-manager.service';
+import { AppliedService } from '../applied/applied.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class GameUISelectionService {
 
   constructor(
     private playerService: PlayerService,
-    private playerCardManagerService: PlayerCardManagerService,
+    private playerCardManagerService: AppliedService,
   ) { }
 
   public sendEvent(event: GameUISelectionEvent) {

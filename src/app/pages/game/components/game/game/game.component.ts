@@ -3,7 +3,7 @@ import { Monster } from '../../../models/monster/monster.model';
 import { StatBoard } from '../../../models/stat-board/stat-board.model';
 import { PlayerCardManager } from '../../../models/player/player-card-manager.model';
 import { PlayerService } from '../../../services/player/player.service';
-import { PlayerCardManagerService } from '../../../services/player-card-manager/player-card-manager.service';
+import { AppliedService } from '../../../services/applied/applied.service';
 
 @Component({
   selector: 'sw-game',
@@ -18,13 +18,12 @@ export class GameComponent {
 
   constructor(
     private playerService: PlayerService,
-    private playerCardManagerService: PlayerCardManagerService,
   ) {}
 
 
   ngOnInit() {
     this.activeMonster = this.playerService.activeMonster;
-    this.playerCardManager = this.playerCardManagerService.playerCardManager;
+    this.playerCardManager = this.playerService.playerCardManager;
     this.statBoard = this.playerService.statBoard;
   }
 }
