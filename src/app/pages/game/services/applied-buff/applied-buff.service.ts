@@ -11,7 +11,7 @@ export interface Applied {
 @Injectable({
   providedIn: 'root'
 })
-export class AppliedService {
+export class AppliedBuffService {
 
   private _applied$: BehaviorSubject<Applied> = new BehaviorSubject({buff: 0, discard: 0, key: ''});
 
