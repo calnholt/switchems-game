@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PlayerCardManagerEventService } from '../player-card-manager/player-card-manager-event.service';
-import { EventType } from './event.model';
+import { EventDataType } from './event.model';
 import { PlayerCardManagerEventType } from '../player-card-manager/player-card-manager-event.model';
 
 @Injectable({
@@ -12,10 +12,10 @@ export class EventManagerService {
     private playerCardManagerService: PlayerCardManagerEventService,
   ) { }
 
-  public sendEvent(type: EventType, data: any) {
+  public sendEvent(event: EventDataType) {
     
-    if (Object.values(PlayerCardManagerEventType).includes(type as PlayerCardManagerEventType)) {
-      this.playerCardManagerService.sendEvent(type, data)
+    if (Object.values(PlayerCardManagerEventType).includes(event.type as PlayerCardManagerEventType)) {
+      this.playerCardManagerService.sendEvent(event)
     }
   }
 

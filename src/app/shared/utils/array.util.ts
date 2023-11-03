@@ -3,7 +3,8 @@
 export const ArrayUtil = {
   getRandomIndex,
   getRandomItemFromArray,
-  randomizeOrder
+  randomizeOrder,
+  getRandomUniqueEntriesFromArray
 };
 
 function getRandomItemFromArray<T>(arr: T[]): T | undefined {
@@ -22,4 +23,18 @@ function randomizeOrder<T>(array: T[]) {
     [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
   }
   return arrayCopy;
+}
+
+function getRandomUniqueEntriesFromArray<T>(array: T[], entries: number): T[] {
+  if (entries <= 0 || entries > array.length) {
+    return [];
+  }
+  const result: T[] = [];
+  const indices: Set<number> = new Set(array.map((a: T, i: number) => i));
+  for (let i = 0; i < entries; i++) {
+    const randomIndex = Math.floor(Math.random() * indices.size);
+    indices.delete(randomIndex);
+    result.push(array[randomIndex]);
+  }
+  return result;
 }

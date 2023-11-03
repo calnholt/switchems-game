@@ -8,6 +8,8 @@ export class Hand {
   private _cards: Buff[] = [];
   private _maxHandSize: number = MAX_HAND_SIZE;
 
+  public get cards() { return this._cards; }
+
   cardsInHand(): number { return this._cards.length; }
 
   canDiscard(): boolean { return this._cards.length > 0; }

@@ -6,6 +6,7 @@ export class Deck {
 
   constructor(cards: Buff[]) {
     this._cards = cards;
+    this.shuffle();
   }
 
   shuffle(): void {

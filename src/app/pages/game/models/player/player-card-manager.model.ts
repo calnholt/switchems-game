@@ -19,6 +19,12 @@ export class PlayerCardManager {
     this._discardPile = new DiscardPile();
   }
 
+  public get hand() { return this._hand; }
+  public get deck() { return this._deck; }
+  public get discardPile() { return this._discardPile; }
+  public get appliedBuffs() { return this._appliedBuffs; }
+  public get appliedDiscards() { return this._appliedDiscards; }
+
   public drawCard(): DrawResultType {
     if (this._hand.hasMaxHandSize()) {
       return 'MAX_HAND_SIZE';

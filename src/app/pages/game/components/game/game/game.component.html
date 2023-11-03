@@ -4,7 +4,7 @@
     <sw-monster [monster]="monster" />
   </div>
   <sw-monster-action-grid [actions]="monster.actions" />
-  <sw-player-hand [buffs]="monster.buffs" />
+  <sw-player-hand [buffs]="playerCardManager.hand.cards" />
 </ng-container>
 <div>
 </div>

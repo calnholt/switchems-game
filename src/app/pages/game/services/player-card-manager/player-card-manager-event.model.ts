@@ -2,6 +2,7 @@ import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interfac
 
 export interface PlayerCardManagerEvent {
   type: PlayerCardManagerEventType,
+  data: any;
 } 
 
 export enum PlayerCardManagerEventType {
@@ -11,12 +12,12 @@ export enum PlayerCardManagerEventType {
 
 export interface ToggleBuffEvent extends PlayerCardManagerEvent {
   type: PlayerCardManagerEventType.TOGGLE_APPLY_BUFF,
-  payload: { key: CardCompositeKey }
+  data: CardCompositeKey,
 }
 
 export interface ToggleDiscardEvent extends PlayerCardManagerEvent {
   type: PlayerCardManagerEventType.TOGGLE_APPLY_DISCARD,
-  payload: { key: CardCompositeKey }
+  data: CardCompositeKey
 }
 
 export type PlayerCardManagerEventData = 
