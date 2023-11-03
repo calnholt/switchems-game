@@ -1,0 +1,8 @@
+<div id="standard-action" (click)="select()" >
+  <div>
+    <span>{{standardAction.name}}</span>
+    <ng-container *ngFor="let path of standardAction.paths">
+      <img [src]="path" />
+    </ng-container>
+  </div>
+</div>

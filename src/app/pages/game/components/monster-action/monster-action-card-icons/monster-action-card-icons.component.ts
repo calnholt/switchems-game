@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
-import { Applied, AppliedBuffService } from '../../../services/applied-buff/applied-buff.service';
+import { SelectedAction, SelectedActionService } from '../../../services/selected-action/selected-action.service';
 import { MonsterAction } from '../../../models/monster/action.model';
 
 type CardType = 'BUFF' | 'DRAW' | 'DISCARD' | 'ADDED_BUFF';
@@ -15,22 +15,21 @@ export class MonsterActionCardIconsComponent {
   cardTypes: {type: CardType, index: number}[] = [];
 
   // subscriptions
-  applied!: Applied;
+  applied!: SelectedAction;
 
   buffImg = ImageUtil.icons.buff;
   discardImg = ImageUtil.icons.discard;
   drawImg = ImageUtil.icons.draw;
 
   constructor(
-    private playerCardManagerService: AppliedBuffService
+    private playerCardManagerService: SelectedActionService
   ) {
-    this.applied = this.playerCardManagerService.applied;
+    this.applied = this.playerCardManagerService.selectedAction;
   }
 
   ngOnInit() {
-    this.playerCardManagerService.applied$.subscribe((applied) => {
-      const key = this.action.key();
-      if (applied.key === key){
+    this.playerCardManagerService.selectedAction$.subscribe((applied) => {
+      if (applied.action.key() === this.action.key()){
         this.applied = applied;
       }
     })

@@ -72,7 +72,7 @@ export class Monster implements IHaveTooltip, ICompositeKey {
   public get isActive(): boolean { return this._isActive; }
 
   setIsActive(value: boolean) { this._isActive = value; }
-  isActionSelected(): boolean { return !!this._actions.filter(a => a._isSelected).length }
+  isActionSelected(): boolean { return !!this._actions.filter(a => a.isSelected).length }
   
   getEffectivenessArray(): number[] {
     const arrs = this._elements.map((el: ElemType) => StatUtil.getAdvantages(el)) ?? [];
@@ -121,7 +121,7 @@ export class Monster implements IHaveTooltip, ICompositeKey {
   }
 
   getSelectedAction(): MonsterAction {
-    return this._actions.find(a => a._isSelected) as MonsterAction;
+    return this._actions.find(a => a.isSelected) as MonsterAction;
   }
 
   getActionByKey(key: CardCompositeKey): MonsterAction {

@@ -14,6 +14,7 @@ import { PlayerHandComponent } from './components/player-hand/player-hand.compon
 import { BuffTooltipComponent } from './components/buff/buff-tooltip/buff-tooltip.component';
 import { MonsterHpComponent } from './components/monster/monster-hp/monster-hp.component';
 import { MonsterElementBreakdownComponent } from './components/monster/monster-element-breakdown/monster-element-breakdown.component';
+import { StandardActionComponent } from './components/standard-action/standard-action.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { MonsterElementBreakdownComponent } from './components/monster/monster-e
     BuffTooltipComponent,
     MonsterHpComponent,
     MonsterElementBreakdownComponent,
+    StandardActionComponent,
   ],
   exports: [
     MonsterActionComponent,

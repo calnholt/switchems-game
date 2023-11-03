@@ -2,9 +2,10 @@ import { IHaveTooltip } from "~/app/shared/interfaces/IHaveTooltip.interface";
 import { Term } from "~/app/shared/types/data";
 import { ElemType } from "~/app/shared/types/dataTypes";
 import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
-import { CardCompositeKey, ICompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
+import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
+import { ISelectableAction } from "~/app/shared/interfaces/ISelectableAction.interface";
 
-export class MonsterAction implements IHaveTooltip, ICompositeKey {
+export class MonsterAction implements IHaveTooltip, ISelectableAction {
   private _name: string;
   private _monsterName: string;
   private _text: string;
@@ -13,7 +14,7 @@ export class MonsterAction implements IHaveTooltip, ICompositeKey {
   private _element: ElemType;
   private _index: number;
   private _isStatus: boolean;
-  public _isSelected: boolean = false;
+  private _isSelected: boolean = false;
   private _isLocked: boolean = false;
   private _isUsed: boolean = false;
   private _isDisabled: boolean = false;
@@ -91,13 +92,15 @@ export class MonsterAction implements IHaveTooltip, ICompositeKey {
     return hasTerms || !this.isStatus;
   }
 
-  key(): CardCompositeKey { return `${this.monsterName}_${this.name}`; }
+  // ISelectableAction function
+  selectAsAction(): void { this._isSelected = true; }
+  deselectAsAction(): void { this._isSelected = false; }
+  key(): CardCompositeKey { return `${this.monsterName}_${this.name}`; } 
+  isCostFulfilled(discards: number): boolean { return discards === this._discard; }
+  // end
 
   setIsSelected(value: boolean) { this._isSelected = value; }
 
-  deselectAction() {
-    this._isSelected = false;
-  }
 
   canApplyBuff(alreadyApplied: number, isSuper: boolean = false): boolean { 
     return alreadyApplied + this._addedBuff +(isSuper ? 1 : 0) < this._buff; 

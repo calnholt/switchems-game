@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { PlayerService } from '../player/player.service';
 import { GameUISelectionEvent, GameUISelectionEventType } from './game-ui-selection-event.model';
 import { Buff } from '../../models/monster/buff.model';
-import { MonsterAction } from '../../models/monster/action.model';
-import { AppliedBuffService } from '../applied-buff/applied-buff.service';
+import { SelectedActionService } from '../selected-action/selected-action.service';
+import { ISelectableAction } from '~/app/shared/interfaces/ISelectableAction.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class GameUISelectionService {
 
   constructor(
     private playerService: PlayerService,
-    private playerCardManagerService: AppliedBuffService,
+    private selectedActionService: SelectedActionService,
   ) { }
 
   public sendEvent(event: GameUISelectionEvent) {
@@ -23,8 +23,8 @@ export class GameUISelectionService {
       case GameUISelectionEventType.TOGGLE_APPLY_DISCARD:
         this.toggleCardAsDiscard(event.data);
         break;
-      case GameUISelectionEventType.TOGGLE_MONSTER_ACTION_SELECT:
-        this.toggleSelectedMonsterAction(event.data);
+      case GameUISelectionEventType.TOGGLE_ACTION:
+        this.toggleSelectedAction(event.data);
         break;
     }
   }
@@ -32,17 +32,17 @@ export class GameUISelectionService {
   private toggleCardAsBuff(selectedBuff: Buff) {
     const { activeMonster, playerCardManager } = this.playerService;
     const { hand } = playerCardManager;
-    const { applied } = this.playerCardManagerService;
+    const { selectedAction } = this.selectedActionService;
     // cant apply if no action is selected
     if (!activeMonster.isActionSelected()) {
       return
     }
     // cant apply if at capacity
-    if (!activeMonster.getSelectedAction().canApplyBuff(applied.buff, selectedBuff.isSuper) && !selectedBuff.isAppliedAsBuff) {
+    if (!activeMonster.getSelectedAction().canApplyBuff(selectedAction.buff, selectedBuff.isSuper) && !selectedBuff.isAppliedAsBuff) {
       return;
     }
     playerCardManager.toggleCardAsBuff(selectedBuff.key());
-    this.playerCardManagerService.updateApplied(
+    this.selectedActionService.update(
       hand.getAppliedBuffCount(),
       hand.getAppliedDiscardCount(),
     );
@@ -51,41 +51,42 @@ export class GameUISelectionService {
   private toggleCardAsDiscard(selectedBuff: Buff) {
     const { activeMonster, playerCardManager } = this.playerService;
     const { hand } = playerCardManager;
-    const { applied } = this.playerCardManagerService;
+    const { selectedAction } = this.selectedActionService;
     // cant apply if no action is selected
     if (!activeMonster.isActionSelected()) {
       return
     }
     // cant apply if at capacity
-    if (!activeMonster.getSelectedAction().canApplyDiscard(applied.discard) && !selectedBuff.isAppliedAsDiscard) {
+    if (!activeMonster.getSelectedAction().canApplyDiscard(selectedAction.discard) && !selectedBuff.isAppliedAsDiscard) {
       return;
     }
     playerCardManager.toggleCardAsDiscard(selectedBuff.key());
-    this.playerCardManagerService.updateApplied(
+    this.selectedActionService.update(
       hand.getAppliedBuffCount(),
       hand.getAppliedDiscardCount(),
     );
   }
 
-  private toggleSelectedMonsterAction(selectedAction: MonsterAction) {
-    const { activeMonster, playerCardManager } = this.playerService;
-    const { hand } = playerCardManager;
-    if (!activeMonster.isActionSelected()) {
-      selectedAction.setIsSelected(true);
-      this.playerCardManagerService.setApplied(selectedAction.key(), 0, 0);
-    }
-    // don't do anything if action is already selected
-    else if (selectedAction.key() === activeMonster.getSelectedAction().key()) {
-      return;
+  private toggleSelectedAction(newSelectedAction: ISelectableAction) {
+    const { selectedAction } = this.selectedActionService;
+    if (!selectedAction.action) {
+      newSelectedAction.selectAsAction();
+      this.selectedActionService.set(newSelectedAction, 0, 0);
     }
     // if selection already exists, need to wipe out all card selections
-    else {
-      const previousSelectedAction = activeMonster.getSelectedAction();
-      previousSelectedAction.deselectAction();
-      selectedAction.setIsSelected(true);
-      hand.clearAllApplied();
-      this.playerCardManagerService.setApplied(selectedAction.key(), 0, 0);
+    else if (newSelectedAction.key() !== selectedAction.action.key()) {
+      this.setNewSelectedAction(selectedAction.action, newSelectedAction);
     }
+  }
+
+  // helper functions - think about util
+
+  private setNewSelectedAction(oldAction: ISelectableAction, newAction: ISelectableAction) {
+    const { hand } = this.playerService.playerCardManager;
+    oldAction.deselectAsAction();
+    newAction.selectAsAction();
+    hand.clearAllApplied();
+    this.selectedActionService.set(newAction, 0, 0);
   }
 
 }

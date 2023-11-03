@@ -13,10 +13,8 @@ export class EventManagerService {
   ) { }
 
   public sendEvent(event: EventDataType) {
-    
     if (Object.values(GameUISelectionEventType).includes(event.type as GameUISelectionEventType)) {
       this.gameUISelectionService.sendEvent(event)
     }
   }
-
 }
