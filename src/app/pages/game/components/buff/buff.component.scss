@@ -106,6 +106,15 @@
     }
     img {
       height: 60px;
+      transition: transform 0.1s;
+    }
+    &.hovering:hover {
+      background-color: green;
+      border: 4px solid black;
+        &.applied {
+          background-color: black;
+        }
     }
   }
 }
+

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Monster } from '../../../models/monster/monster.model';
-import { MonsterService } from 'src/app/shared/services/monster.service';
 import { StatBoard } from '../../../models/stat-board/stat-board.model';
-import { PlayerCardManagerService } from '../../../services/player-card-manager/player-card-manager.service';
 import { PlayerCardManager } from '../../../models/player/player-card-manager.model';
+import { PlayerService } from '../../../services/player/player.service';
+import { PlayerCardManagerService } from '../../../services/player-card-manager/player-card-manager.service';
 
 @Component({
   selector: 'sw-game',
@@ -13,17 +13,18 @@ import { PlayerCardManager } from '../../../models/player/player-card-manager.mo
 export class GameComponent {
 
   playerCardManager!: PlayerCardManager;
-  statBoard = new StatBoard();
+  statBoard!: StatBoard;
+  activeMonster!: Monster;
 
   constructor(
-    private monsterService: MonsterService,
-    private playerCardManagerService: PlayerCardManagerService
+    private playerService: PlayerService,
+    private playerCardManagerService: PlayerCardManagerService,
   ) {}
 
-  monsters: Monster[] = [];
 
   ngOnInit() {
-    this.monsters = this.monsterService.getMonsters();
+    this.activeMonster = this.playerService.activeMonster;
     this.playerCardManager = this.playerCardManagerService.playerCardManager;
+    this.statBoard = this.playerService.statBoard;
   }
 }

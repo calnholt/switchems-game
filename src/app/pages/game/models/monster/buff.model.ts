@@ -8,8 +8,8 @@ export class Buff implements IHaveTooltip, ICompositeKey {
   private _name: string;
   private _text: string;
   private _auraDuration: number;
-  public _isAppliedAsBuff: boolean = false;
-  public _isAppliedAsDiscard: boolean = false;
+  private _isAppliedAsBuff: boolean = false;
+  private _isAppliedAsDiscard: boolean = false;
   private _terms: Term[] = [];
 
   constructor(monsterName: string, name: string, text: string, auraDuration: number) {
@@ -20,7 +20,7 @@ export class Buff implements IHaveTooltip, ICompositeKey {
     this._terms = AbilityTextUtil.getTermsFromText(text);
   }
   
-  key(): CardCompositeKey { return `${this.monsterName}-${this.name}`; }
+  key(): CardCompositeKey { return `${this.monsterName}_${this.name}`; }
   hasTooltip(): boolean { return !!this._terms.length; }
 
   isApplied(): boolean { return this._isAppliedAsBuff || this._isAppliedAsDiscard; }
@@ -33,6 +33,9 @@ export class Buff implements IHaveTooltip, ICompositeKey {
     this._isAppliedAsDiscard = !this._isAppliedAsDiscard;
     this._isAppliedAsBuff = false;
   }
+
+  setIsAppliedAsBuff(value: boolean) { this._isAppliedAsBuff = value; }
+  setIsAppliedAsDiscard(value: boolean) { this._isAppliedAsDiscard = value; }
 
   get monsterName(): string { return this._monsterName; }
   get name(): string { return this._name; }

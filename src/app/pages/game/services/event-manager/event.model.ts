@@ -1,5 +1,5 @@
-import { PlayerCardManagerEventData, PlayerCardManagerEventType } from "../player-card-manager/player-card-manager-event.model";
+import { GameUISelectionEventData, GameUISelectionEventType } from "../game-ui-selection/game-ui-selection-event.model";
 
-export type EventType = PlayerCardManagerEventType;
+export type EventType = GameUISelectionEventType;
 
-export type EventDataType = PlayerCardManagerEventData;
+export type EventDataType = GameUISelectionEventData;

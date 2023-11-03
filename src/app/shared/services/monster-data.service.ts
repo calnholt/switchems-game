@@ -5,7 +5,7 @@ import { loadMonsters } from "~/app/data/import/convert-json-cards";
 @Injectable({
   providedIn: 'root'
 })
-export class MonsterService {
+export class MonsterDataService {
 
   private monsters: Array<Monster> = [];
 

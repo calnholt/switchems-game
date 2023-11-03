@@ -19,12 +19,12 @@
   </div>
   <img class="monster-img" [src]="monsterPath" />
   <ng-container *ngIf="isHovering">
-    <div class="apply-as buff" [ngClass]="{'applied' : buff._isAppliedAsBuff}" (click)="applyAsBuff()">
+    <div class="apply-as buff" [ngClass]="{'applied' : buff.isAppliedAsBuff, 'hovering': isHovering}" (click)="applyAsBuff()">
       <div>
         <img [src]="buffPath" />
       </div>
     </div>
-    <div class="apply-as discard" [ngClass]="{'applied' : buff._isAppliedAsDiscard}" (click)="applyAsDiscard()">
+    <div class="apply-as discard" [ngClass]="{'applied' : buff.isAppliedAsDiscard, 'hovering': isHovering}" (click)="applyAsDiscard()">
       <div>
         <img [src]="discardPath" />
       </div>

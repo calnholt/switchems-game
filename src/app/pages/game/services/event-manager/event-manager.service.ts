@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { PlayerCardManagerEventService } from '../player-card-manager/player-card-manager-event.service';
 import { EventDataType } from './event.model';
-import { PlayerCardManagerEventType } from '../player-card-manager/player-card-manager-event.model';
+import { GameUISelectionEventType } from '../game-ui-selection/game-ui-selection-event.model';
+import { GameUISelectionService } from '../game-ui-selection/game-ui-selection.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +9,13 @@ import { PlayerCardManagerEventType } from '../player-card-manager/player-card-m
 export class EventManagerService {
 
   constructor(
-    private playerCardManagerService: PlayerCardManagerEventService,
+    private gameUISelectionService: GameUISelectionService,
   ) { }
 
   public sendEvent(event: EventDataType) {
     
-    if (Object.values(PlayerCardManagerEventType).includes(event.type as PlayerCardManagerEventType)) {
-      this.playerCardManagerService.sendEvent(event)
+    if (Object.values(GameUISelectionEventType).includes(event.type as GameUISelectionEventType)) {
+      this.gameUISelectionService.sendEvent(event)
     }
   }
 

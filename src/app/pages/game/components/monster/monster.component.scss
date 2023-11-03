@@ -13,5 +13,10 @@
   img {
     height: 200px;
     cursor: pointer;
+
+    &.inactive {
+      height: 128px;
+    }
   }
+
 }

@@ -52,13 +52,13 @@ export class PlayerHandComponent implements DoCheck {
   }
 
   filterUnapplied(b: Buff): boolean {
-    return !b._isAppliedAsBuff && !b._isAppliedAsDiscard;
+    return !b.isAppliedAsBuff && !b.isAppliedAsDiscard;
   }
   filterAppliedAsDiscard(b: Buff): boolean {
-    return b._isAppliedAsDiscard;
+    return b.isAppliedAsDiscard;
   }
   filterAppliedAsBuff(b: Buff): boolean {
-    return b._isAppliedAsBuff;
+    return b.isAppliedAsBuff;
   }
 
 }

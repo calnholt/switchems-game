@@ -1,5 +1,6 @@
 <div id="monster">
   <img [src]="monsterIcon" 
+    [class]="!monster.isActive ? 'inactive' : ''" 
     cardInfoTooltip 
     [object]="monster" 
     tooltipType="MONSTER" />

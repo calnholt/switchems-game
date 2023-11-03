@@ -1,4 +1,4 @@
-import { MonsterService } from 'src/app/shared/services/monster.service';
+import { MonsterDataService } from '~/app/shared/services/monster-data.service';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
 import { Component, Input, OnInit } from '@angular/core';
 import { Css, Path } from 'src/app/shared/types/dataTypes';
@@ -6,7 +6,7 @@ import { IHover } from '~/app/shared/interfaces/IHover.interface';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { Buff } from '../../models/monster/buff.model';
 import { EventManagerService } from '../../services/event-manager/event-manager.service';
-import { PlayerCardManagerEventType } from '../../services/player-card-manager/player-card-manager-event.model';
+import { GameUISelectionEventType } from '../../services/game-ui-selection/game-ui-selection-event.model';
 
 @Component({
   selector: 'sw-buff',
@@ -29,7 +29,7 @@ export class BuffComponent extends IHover implements OnInit {
   animationState = false;
 
   constructor(
-    private monsterService: MonsterService,
+    private monsterService: MonsterDataService,
     private eventManagerService: EventManagerService
   ) {
     super();
@@ -39,15 +39,15 @@ export class BuffComponent extends IHover implements OnInit {
     const monster = this.monsterService.getMonster(this.buff.monsterName);
     this.backgroundClass = monster.elements.map(e => e.toString().toLowerCase()).join("");
     this.monsterPath = ImageUtil.getMonstersPath(monster.name);
-    this.animationState =  (this.buff._isAppliedAsBuff || this.buff._isAppliedAsDiscard);
+    this.animationState =  (this.buff.isAppliedAsBuff || this.buff.isAppliedAsDiscard);
   }
 
   applyAsBuff() {
-    this.eventManagerService.sendEvent({ type: PlayerCardManagerEventType.TOGGLE_APPLY_BUFF, data: this.buff.key() });
+    this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_APPLY_BUFF, data: this.buff.key() });
   }
 
   applyAsDiscard() {
-    this.eventManagerService.sendEvent({ type: PlayerCardManagerEventType.TOGGLE_APPLY_DISCARD, data: this.buff.key() });
+    this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_APPLY_DISCARD, data: this.buff.key() });
   }
 
 }

@@ -88,6 +88,13 @@ export class MonsterAction implements IHaveTooltip, ICompositeKey {
     return hasTerms || !this.isStatus;
   }
 
-  key(): CardCompositeKey { return `${this.monsterName}-${this.name}`; }
+  key(): CardCompositeKey { return `${this.monsterName}_${this.name}`; }
+
+  setIsSelected(value: boolean) { this._isSelected = value; }
+
+  deselectAction() {
+    this.icons.clearApplied();
+    this._isSelected = false;
+  }
 
 }

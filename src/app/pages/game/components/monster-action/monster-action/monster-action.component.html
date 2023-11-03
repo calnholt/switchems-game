@@ -1,5 +1,5 @@
 <div #actionTemplate id="monster-action" class="sw-card-hover  {{action.element.toString().toLowerCase()}}"
-  (click)="action._isSelected = !action.isSelected" cardInfoTooltip [object]="action" tooltipType="ACTION">
+  (click)="selectAction()" cardInfoTooltip [object]="action" tooltipType="ACTION">
   <div class="title-container sw-card-title">
     {{action.name}}
   </div>

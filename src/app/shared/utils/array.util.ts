@@ -30,11 +30,11 @@ function getRandomUniqueEntriesFromArray<T>(array: T[], entries: number): T[] {
     return [];
   }
   const result: T[] = [];
-  const indices: Set<number> = new Set(array.map((a: T, i: number) => i));
+  const indices: number[] = array.map((a: T, i: number) => i);
   for (let i = 0; i < entries; i++) {
-    const randomIndex = Math.floor(Math.random() * indices.size);
-    indices.delete(randomIndex);
-    result.push(array[randomIndex]);
+    const randomIndex = Math.floor(Math.random() * indices.length);
+    result.push(array[indices[randomIndex]]);
+    indices.splice(indices[randomIndex], 1);
   }
   return result;
 }
