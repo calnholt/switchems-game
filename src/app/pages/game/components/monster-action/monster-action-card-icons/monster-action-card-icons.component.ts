@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
 import { MonsterActionCardIcons } from '../../../models/monster/monster-action-card-icons.model';
+import { Applied, PlayerCardManagerService } from '../../../services/player-card-manager/player-card-manager.service';
 
 type CardType = 'BUFF' | 'DRAW' | 'DISCARD' | 'ADDED_BUFF';
 
@@ -13,15 +14,23 @@ export class MonsterActionCardIconsComponent {
   @Input() icons!: MonsterActionCardIcons;
   cardTypes: {type: CardType, index: number}[] = [];
 
+  // subscriptions
+  applied!: Applied;
+
   buffImg = ImageUtil.icons.buff;
   discardImg = ImageUtil.icons.discard;
   drawImg = ImageUtil.icons.draw;
 
-  constructor() {
+  constructor(
+    private playerCardManagerService: PlayerCardManagerService
+  ) {
 
   }
 
   ngOnInit() {
+    this.playerCardManagerService.applied$.subscribe((applied) => {
+      this.applied = applied;
+    })
     this.cardTypes = this.cardTypes.concat(
       this.getCardTypeArray(this.icons.buff, 'BUFF'),
       this.getCardTypeArray(this.icons.addedBuff, 'ADDED_BUFF'),

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { PlayerService } from '../player/player.service';
 import { GameUISelectionEvent, GameUISelectionEventType } from './game-ui-selection-event.model';
-import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 import { Buff } from '../../models/monster/buff.model';
 import { MonsterAction } from '../../models/monster/action.model';
+import { PlayerCardManagerService } from '../player-card-manager/player-card-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ export class GameUISelectionService {
 
   constructor(
     private playerService: PlayerService,
+    private playerCardManagerService: PlayerCardManagerService,
   ) { }
 
   public sendEvent(event: GameUISelectionEvent) {
@@ -31,35 +32,41 @@ export class GameUISelectionService {
   private toggleCardAsBuff(selectedBuff: Buff) {
     const { activeMonster, playerCardManager } = this.playerService;
     const { hand } = playerCardManager;
+    const { applied } = this.playerCardManagerService;
     // cant apply if no action is selected
     if (!activeMonster.isActionSelected()) {
       return
     }
     const icons = activeMonster.getSelectedAction().icons;
     // cant apply if at capacity
-    if (!icons.canApplyBuff(selectedBuff.isSuper) && !selectedBuff.isAppliedAsBuff) {
+    if (!icons.canApplyBuff(applied.buff, selectedBuff.isSuper) && !selectedBuff.isAppliedAsBuff) {
       return;
     }
     playerCardManager.toggleCardAsBuff(selectedBuff.key());
-    activeMonster.getSelectedAction().icons.setAppliedBuff(hand.getAppliedBuffCount());
-    activeMonster.getSelectedAction().icons.setAppliedDiscard(hand.getAppliedDiscardCount());
+    this.playerCardManagerService.setApplied(
+      hand.getAppliedBuffCount(),
+      hand.getAppliedDiscardCount(),
+    );
   }
 
   private toggleCardAsDiscard(selectedBuff: Buff) {
     const { activeMonster, playerCardManager } = this.playerService;
     const { hand } = playerCardManager;
+    const { applied } = this.playerCardManagerService;
     // cant apply if no action is selected
     if (!activeMonster.isActionSelected()) {
       return
     }
     const icons = activeMonster.getSelectedAction().icons;
     // cant apply if at capacity
-    if (!icons.canApplyDiscard() && !selectedBuff.isAppliedAsDiscard) {
+    if (!icons.canApplyDiscard(applied.discard) && !selectedBuff.isAppliedAsDiscard) {
       return;
     }
     playerCardManager.toggleCardAsDiscard(selectedBuff.key());
-    activeMonster.getSelectedAction().icons.setAppliedBuff(hand.getAppliedBuffCount());
-    activeMonster.getSelectedAction().icons.setAppliedDiscard(hand.getAppliedDiscardCount());
+    this.playerCardManagerService.setApplied(
+      hand.getAppliedBuffCount(),
+      hand.getAppliedDiscardCount(),
+    );
   }
 
   private toggleSelectedMonsterAction(selectedAction: MonsterAction) {

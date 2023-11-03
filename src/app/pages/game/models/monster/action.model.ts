@@ -93,7 +93,6 @@ export class MonsterAction implements IHaveTooltip, ICompositeKey {
   setIsSelected(value: boolean) { this._isSelected = value; }
 
   deselectAction() {
-    this.icons.clearApplied();
     this._isSelected = false;
   }
 
