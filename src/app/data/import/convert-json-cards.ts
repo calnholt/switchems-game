@@ -9,7 +9,6 @@ import { default as Vulturock } from '../monsters/Vulturock.json';
 import { default as Willard } from '../monsters/Willard.json';
 import { MonsterAction } from '~/app/pages/game/models/monster/action.model';
 import { Buff } from '~/app/pages/game/models/monster/buff.model';
-import { MonsterActionCardIcons } from '~/app/pages/game/models/monster/monster-action-card-icons.model';
 import { Monster } from '~/app/pages/game/models/monster/monster.model';
 
 export const loadMonsters = (selectedMonster?: any): Array<Monster> => {
@@ -52,17 +51,12 @@ const getMonsterAction = (monsterName: string, action: any): MonsterAction => {
     action.attack,
     action.speed,
     action.element,
-    getMonsterActionCardIcon(action),
     0,
-    action.statusFlg
-  );
-}
-
-const getMonsterActionCardIcon = (action: any): MonsterActionCardIcons => {
-  return new MonsterActionCardIcons(
+    action.statusFlg,
     action.buff,
     action.discard,
-    action.draw
+    action.draw,
+    0
   );
 }
 

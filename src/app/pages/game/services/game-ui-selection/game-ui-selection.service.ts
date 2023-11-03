@@ -37,13 +37,13 @@ export class GameUISelectionService {
     if (!activeMonster.isActionSelected()) {
       return
     }
-    const icons = activeMonster.getSelectedAction().icons;
     // cant apply if at capacity
-    if (!icons.canApplyBuff(applied.buff, selectedBuff.isSuper) && !selectedBuff.isAppliedAsBuff) {
+    if (!activeMonster.getSelectedAction().canApplyBuff(applied.buff, selectedBuff.isSuper) && !selectedBuff.isAppliedAsBuff) {
       return;
     }
     playerCardManager.toggleCardAsBuff(selectedBuff.key());
     this.playerCardManagerService.setApplied(
+      selectedBuff.key(),
       hand.getAppliedBuffCount(),
       hand.getAppliedDiscardCount(),
     );
@@ -57,13 +57,13 @@ export class GameUISelectionService {
     if (!activeMonster.isActionSelected()) {
       return
     }
-    const icons = activeMonster.getSelectedAction().icons;
     // cant apply if at capacity
-    if (!icons.canApplyDiscard(applied.discard) && !selectedBuff.isAppliedAsDiscard) {
+    if (!activeMonster.getSelectedAction().canApplyDiscard(applied.discard) && !selectedBuff.isAppliedAsDiscard) {
       return;
     }
     playerCardManager.toggleCardAsDiscard(selectedBuff.key());
     this.playerCardManagerService.setApplied(
+      selectedBuff.key(),
       hand.getAppliedBuffCount(),
       hand.getAppliedDiscardCount(),
     );
@@ -86,6 +86,7 @@ export class GameUISelectionService {
       previousSelectedAction.deselectAction();
       selectedAction.setIsSelected(true);
       hand.clearAllApplied();
+      this.playerCardManagerService.setApplied(selectedAction.key(), 0, 0);
     }
   }
 
