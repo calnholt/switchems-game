@@ -15,7 +15,7 @@ export class MonsterActionCardIconsComponent {
   cardTypes: {type: CardType, index: number}[] = [];
 
   // subscriptions
-  applied!: SelectedAction;
+  selectedAction!: SelectedAction;
 
   buffImg = ImageUtil.icons.buff;
   discardImg = ImageUtil.icons.discard;
@@ -24,13 +24,17 @@ export class MonsterActionCardIconsComponent {
   constructor(
     private playerCardManagerService: SelectedActionService
   ) {
-    this.applied = this.playerCardManagerService.selectedAction;
+    this.selectedAction = this.playerCardManagerService.selectedAction;
   }
 
   ngOnInit() {
     this.playerCardManagerService.selectedAction$.subscribe((applied) => {
       if (applied.action.key() === this.action.key()){
-        this.applied = applied;
+        this.selectedAction = applied;
+      }
+      else {
+        //@ts-ignore
+        this.selectedAction = { buff: 0, discard: 0, action: null };
       }
     })
     this.cardTypes = this.cardTypes.concat(

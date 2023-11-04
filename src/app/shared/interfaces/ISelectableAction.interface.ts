@@ -5,4 +5,6 @@ export interface ISelectableAction {
   deselectAsAction: () => void;
   key: () => CardCompositeKey;
   isCostFulfilled: (discards: number) => boolean;
+  canApplyBuff:(alreadyApplied: number, slots: number) => boolean;
+  canApplyDiscard:(alreadyApplied: number, slots: number) => boolean;
 }

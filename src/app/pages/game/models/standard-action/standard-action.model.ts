@@ -23,7 +23,9 @@ export class StandardAction implements ISelectableAction {
   selectAsAction(): void { this._isSelected = true; }
   deselectAsAction(): void { this._isSelected = false; }
   key(): CardCompositeKey { return `Standard Action_${this.name}`; }
-  isCostFulfilled(discards: number): boolean { return true; }
+  isCostFulfilled(): boolean { return true; }
+  canApplyBuff(): boolean { return false; }
+  canApplyDiscard(): boolean { return false; }
   // end
 
 

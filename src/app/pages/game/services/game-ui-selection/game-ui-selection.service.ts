@@ -38,7 +38,7 @@ export class GameUISelectionService {
       return
     }
     // cant apply if at capacity
-    if (!activeMonster.getSelectedAction().canApplyBuff(selectedAction.buff, selectedBuff.isSuper) && !selectedBuff.isAppliedAsBuff) {
+    if (!activeMonster.getSelectedAction().canApplyBuff(selectedAction.buff, selectedBuff.isSuper ? 2 : 1) && !selectedBuff.isAppliedAsBuff) {
       return;
     }
     playerCardManager.toggleCardAsBuff(selectedBuff.key());
@@ -57,7 +57,7 @@ export class GameUISelectionService {
       return
     }
     // cant apply if at capacity
-    if (!activeMonster.getSelectedAction().canApplyDiscard(selectedAction.discard) && !selectedBuff.isAppliedAsDiscard) {
+    if (!activeMonster.getSelectedAction().canApplyDiscard(selectedAction.discard, 1) && !selectedBuff.isAppliedAsDiscard) {
       return;
     }
     playerCardManager.toggleCardAsDiscard(selectedBuff.key());

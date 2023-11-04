@@ -97,15 +97,12 @@ export class MonsterAction implements IHaveTooltip, ISelectableAction {
   deselectAsAction(): void { this._isSelected = false; }
   key(): CardCompositeKey { return `${this.monsterName}_${this.name}`; } 
   isCostFulfilled(discards: number): boolean { return discards === this._discard; }
+  canApplyBuff(alreadyApplied: number, slots: number): boolean { return alreadyApplied + slots <= this._buff + this._addedBuff; }
+  canApplyDiscard(alreadyApplied: number, slots: number): boolean { return alreadyApplied + slots <= this._discard; }
   // end
 
   setIsSelected(value: boolean) { this._isSelected = value; }
 
 
-  canApplyBuff(alreadyApplied: number, isSuper: boolean = false): boolean { 
-    return alreadyApplied + this._addedBuff +(isSuper ? 1 : 0) < this._buff; 
-  }
-
-  canApplyDiscard(alreadyApplied: number): boolean { return alreadyApplied < this._discard; }
 
 }
