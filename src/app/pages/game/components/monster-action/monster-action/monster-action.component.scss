@@ -1,17 +1,26 @@
 @import '../../../../../../styles.scss';
 @import '../../../../../../assets/styles/constants.scss';
 
+#monster-action:hover {
+  filter: brightness(100%);
+}
+
 #monster-action {
   width: 300px;
   height: 200px;
-  border: 4px solid black;
   border-radius: 6px;
   position: relative;
   background: white;
   cursor: pointer;
+  filter: brightness(85%);
+  transition: filter 0.3s ease;
 
   &.selected {
-    box-shadow: $recessed;
+    filter: brightness(100%);
+  }
+
+  .sw-card-title {
+    border-radius: 4px 4px 0px 0px;
   }
 
   .stat-container {
@@ -23,7 +32,7 @@
     line-height: 70%;
     color: black;
     border-bottom: 2px solid black;
-    border-radius: 6px;
+    border-radius: 0px 0px 4px 4px;
     background-color: white;
 
     .stat-section {

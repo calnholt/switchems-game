@@ -2,11 +2,16 @@
 
 #standard-action {
   font-family: $header-font;
+  line-height: 70%;
   font-size: 20px;
-  border: 3px solid black;
   border-radius: 4px;
+  background-color: #efefef;
+  padding: 10px;
   cursor: pointer;
   img {
     height: 20px;
+  }
+  img:not(:last-child){
+    margin-right: 4px;
   }
 }

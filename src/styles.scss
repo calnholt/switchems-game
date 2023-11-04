@@ -54,10 +54,11 @@ body {
   background: black;
   color: white;
   text-align: center;
-  padding-bottom: 4px;
+  padding: 4px;
 }
 
 .sw-card-text-container {
+  text-align: center;
   font-family: $text-font;
   line-height: 70%;
   margin: 5px;
@@ -76,11 +77,11 @@ body {
 .sw-card-hover {
   transition: transform 0.2s;
 }
-.sw-card-hover:hover {
-  transform: scale(1.05);
-  z-index: $action-hover-index;
-  box-shadow: $shadow;
-}
+// .sw-card-hover:hover {
+//   transform: scale(1.05);
+//   z-index: $action-hover-index;
+//   box-shadow: $shadow;
+// }
 
 .card-separator-section {
   display: flex;
