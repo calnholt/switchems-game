@@ -1,10 +1,12 @@
-<div class="d-flex">
-  <sw-stat-board [statBoard]="statBoard" />
-  <sw-monster [monster]="activeMonster" />
-  <sw-standard-action [standardAction]="restStandardAction" />
-  <sw-standard-action [standardAction]="prepareStandardAction" />
-</div>
-<sw-monster-action-grid [actions]="activeMonster.actions" />
-<sw-player-hand [buffs]="playerCardManager.hand.cards" />
-<div>
+<div id="game">
+  <div class="d-flex">
+    <sw-stat-board [statBoard]="statBoard" />
+    <sw-monster [monster]="activeMonster" />
+    <sw-standard-action [standardAction]="restStandardAction" />
+    <sw-standard-action [standardAction]="prepareStandardAction" />
+  </div>
+  <div>
+    <sw-monster-action-grid [actions]="activeMonster.actions" />
+    <sw-player-hand [buffs]="playerCardManager.hand.cards" />
+  </div>
 </div>

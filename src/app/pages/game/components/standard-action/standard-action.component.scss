@@ -3,15 +3,27 @@
 #standard-action {
   font-family: $header-font;
   line-height: 70%;
-  font-size: 20px;
+  font-size: 24px;
   border-radius: 4px;
   background-color: #efefef;
   padding: 10px;
+
+  div {
+    display: flex;
+    align-items: center;
+    span {
+
+      margin-right: 10px;
+    }
+  }
+
   cursor: pointer;
+
   img {
     height: 20px;
   }
-  img:not(:last-child){
+
+  img:not(:last-child) {
     margin-right: 4px;
   }
 }
