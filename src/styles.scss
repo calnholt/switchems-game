@@ -77,11 +77,11 @@ body {
 .sw-card-hover {
   transition: transform 0.2s;
 }
-// .sw-card-hover:hover {
-//   transform: scale(1.05);
-//   z-index: $action-hover-index;
-//   box-shadow: $shadow;
-// }
+.sw-card-hover:hover {
+  transform: scale(1.05);
+  z-index: $action-hover-index;
+  box-shadow: $shadow;
+}
 
 .card-separator-section {
   display: flex;

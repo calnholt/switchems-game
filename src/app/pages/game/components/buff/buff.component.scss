@@ -74,6 +74,7 @@
     align-items: center;
     margin-bottom: 5px;
     line-height: 21px;
+
     img {
       height: 25px;
     }
@@ -81,40 +82,51 @@
 
   .apply-as {
     position: absolute;
-    height: 130px;
+    top: 22px;
+    height: 186px;
     width: 60px;
-    background: black;
-    top: 82px;
+    background: linear-gradient(90deg, black, transparent);
     z-index: 100;
+    opacity: 0.3;
+    transition: background 1s ease;
+
     &.applied {
-      background-color: green;
-      border: 4px solid black;
+      background: linear-gradient(90deg, green, transparent);
+      &.discard {
+        background: linear-gradient(270deg, green, transparent);
+      }
     }
-    &.buff {
-      left: -60px;
-      border-radius: 4px 0px 0px 4px;
-    }
+
+    &.buff {}
+
     &.discard {
-      right: -60px;
-      border-radius: 0px 4px 4px 0px;
+      right: 0px;
+      background: linear-gradient(270deg, black, transparent);
     }
+
     div {
       display: flex;
       height: 100%;
       justify-content: center;
       align-items: center;
     }
+
     img {
       height: 60px;
       transition: transform 0.1s;
     }
-    &.hovering:hover {
-      background-color: green;
-      border: 4px solid black;
-        &.applied {
-          background-color: black;
-        }
+
+  }
+  .apply-as:hover {
+    background: linear-gradient(90deg, green, transparent);
+    &.discard {
+      background: linear-gradient(270deg, green, transparent);
+    }
+    &.applied {
+      background: linear-gradient(90deg, black, transparent);
+      &.discard {
+        background: linear-gradient(270deg, black, transparent);
+      }
     }
   }
 }
-

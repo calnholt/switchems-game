@@ -10,24 +10,26 @@
   <div class="sw-card-title">
     {{buff.name}}
   </div>
-  <div class="sw-card-text-container">
-    <div *ngIf="buff.auraDuration" class="team-aura-container">
-      <div>{{buff.auraDuration}}</div>
-      <img [src]="teamAuraPath" />
+  <div>
+    <ng-container *ngIf="isHovering">
+      <div *ngIf="displayApplyToBuffButton" class="apply-as buff" [ngClass]="{'applied' : buff.isAppliedAsBuff}" (click)="applyAsBuff()">
+        <div>
+          <img [src]="buffPath" />
+        </div>
+      </div>
+      <div *ngIf="displayApplyToDiscardButton" class="apply-as discard" [ngClass]="{'applied' : buff.isAppliedAsDiscard}" (click)="applyAsDiscard()">
+        <div>
+          <img [src]="discardPath" />
+        </div>
+      </div>
+    </ng-container>
+    <div class="sw-card-text-container">
+      <div *ngIf="buff.auraDuration" class="team-aura-container">
+        <div>{{buff.auraDuration}}</div>
+        <img [src]="teamAuraPath" />
+      </div>
+      <div class="text" [innerHTML]=" buff.text | convertEmbeddedText : { excludeTerms: true }"></div>
     </div>
-    <div class="text" [innerHTML]=" buff.text | convertEmbeddedText : { excludeTerms: true }"></div>
+    <img class="monster-img" [src]="monsterPath" />
   </div>
-  <img class="monster-img" [src]="monsterPath" />
-  <ng-container *ngIf="isHovering">
-    <div *ngIf="displayApplyToBuffButton" class="apply-as buff" [ngClass]="{'applied' : buff.isAppliedAsBuff, 'hovering': isHovering}" (click)="applyAsBuff()">
-      <div>
-        <img [src]="buffPath" />
-      </div>
-    </div>
-    <div *ngIf="displayApplyToDiscardButton" class="apply-as discard" [ngClass]="{'applied' : buff.isAppliedAsDiscard, 'hovering': isHovering}" (click)="applyAsDiscard()">
-      <div>
-        <img [src]="discardPath" />
-      </div>
-    </div>
-  </ng-container>
 </div>
