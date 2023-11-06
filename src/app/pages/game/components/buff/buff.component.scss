@@ -88,12 +88,11 @@
     background: linear-gradient(90deg, black, transparent);
     z-index: 100;
     opacity: 0.3;
-    transition: background 1s ease;
 
     &.applied {
-      background: linear-gradient(90deg, green, transparent);
+      background: linear-gradient(90deg, white, transparent);
       &.discard {
-        background: linear-gradient(270deg, green, transparent);
+        background: linear-gradient(270deg, white, transparent);
       }
     }
 
@@ -118,9 +117,9 @@
 
   }
   .apply-as:hover {
-    background: linear-gradient(90deg, green, transparent);
+    background: linear-gradient(90deg, white, transparent);
     &.discard {
-      background: linear-gradient(270deg, green, transparent);
+      background: linear-gradient(270deg, white, transparent);
     }
     &.applied {
       background: linear-gradient(90deg, black, transparent);

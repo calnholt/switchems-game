@@ -3,7 +3,7 @@ import { fadeOutOnLeaveAnimation, slideInDownOnEnterAnimation, slideInLeftOnEnte
 import { Term } from 'src/app/shared/types/data';
 import { AnimationEvent } from '@angular/animations';
 import { ITooltip } from '~/app/shared/interfaces/ITooltip.interface';
-import { MonsterAction } from '../../../models/monster/action.model';
+import { MonsterAction } from '../../../models/monster/monster-action.model';
 
 @Component({
   selector: 'sw-monster-action-tooltip',

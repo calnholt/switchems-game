@@ -7,7 +7,7 @@ import { default as Galeaffy } from '../monsters/Galeaffy.json';
 import { default as Drownigator } from '../monsters/Drownigator.json';
 import { default as Vulturock } from '../monsters/Vulturock.json';
 import { default as Willard } from '../monsters/Willard.json';
-import { MonsterAction } from '~/app/pages/game/models/monster/action.model';
+import { MonsterAction } from '~/app/pages/game/models/monster/monster-action.model';
 import { Buff } from '~/app/pages/game/models/monster/buff.model';
 import { Monster } from '~/app/pages/game/models/monster/monster.model';
 
@@ -56,7 +56,6 @@ const getMonsterAction = (monsterName: string, action: any): MonsterAction => {
     action.buff,
     action.discard,
     action.draw,
-    0
   );
 }
 

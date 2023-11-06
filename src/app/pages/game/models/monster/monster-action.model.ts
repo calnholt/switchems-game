@@ -4,6 +4,7 @@ import { ElemType } from "~/app/shared/types/dataTypes";
 import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ISelectableAction } from "~/app/shared/interfaces/ISelectableAction.interface";
+import { Buff } from "./buff.model";
 
 export class MonsterAction extends ISelectableAction implements IHaveTooltip {
   private _name: string;
@@ -88,20 +89,14 @@ export class MonsterAction extends ISelectableAction implements IHaveTooltip {
   }
 
   // ISelectableAction function
-  selectAsAction = (): void => { this._isSelected = true; }
-  deselectAsAction = (): void => { this._isSelected = false; }
   key = (): CardCompositeKey => { return `${this.monsterName}_${this.name}`; } 
   isCostFulfilled = (discards: number): boolean => { return discards === this._discard; }
-  canApplyBuff = (slots: number): boolean => { 
-    return this._appliedBuffs.length + slots <= this._buff; 
+  canApplyBuff = (buffSlotsUsed: number, buff: Buff): boolean => { 
+    return buffSlotsUsed + buff.buffSlots <= this._buff; 
   }
-  canApplyDiscard = (slots: number): boolean => { 
-    return this._appliedDiscards.length + slots <= this._discard; 
+  canApplyDiscard = (discardSlotsUsed: number, buff: Buff): boolean => { 
+    return discardSlotsUsed + buff.discardSlots <= this._discard; 
   }
   // end
-
-  setIsSelected(value: boolean) { this._isSelected = value; }
-
-
 
 }

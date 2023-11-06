@@ -7,7 +7,7 @@ import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animati
 import { Buff } from '../../models/monster/buff.model';
 import { EventManagerService } from '../../services/event-manager/event-manager.service';
 import { GameUISelectionEventType } from '../../services/game-ui-selection/game-ui-selection-event.model';
-import { SelectedAction, SelectedActionService } from '../../services/selected-action/selected-action.service';
+import { SelectedActionService } from '../../services/selected-action/selected-action.service';
 
 @Component({
   selector: 'sw-buff',
@@ -28,6 +28,8 @@ export class BuffComponent extends IHover implements OnInit {
   teamAuraPath = ImageUtil.icons.teamAura;
 
   animationState = false;
+  isAppliedAsBuff = false;
+  isAppliedAsDiscard = false;
   displayApplyToBuffButton = false;
   displayApplyToDiscardButton = false;
 
@@ -43,11 +45,15 @@ export class BuffComponent extends IHover implements OnInit {
     const monster = this.monsterService.getMonster(this.buff.monsterName);
     this.backgroundClass = monster.elements.map(e => e.toString().toLowerCase()).join("");
     this.monsterPath = ImageUtil.getMonstersPath(monster.name);
-    this.animationState =  (this.buff.isAppliedAsBuff || this.buff.isAppliedAsDiscard);
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
-      this.displayApplyToBuffButton = selectedAction.action.canApplyBuff(selectedAction.buff, this.buff.isSuper ? 2 : 1) || this.buff.isAppliedAsBuff
-      this.displayApplyToDiscardButton = selectedAction.action.canApplyDiscard(selectedAction.discard, 1) || this.buff.isAppliedAsDiscard;
-
+      if (!selectedAction.action) {
+        return;
+      }
+      this.isAppliedAsBuff = selectedAction.isAppliedAsBuff(this.buff);
+      this.isAppliedAsDiscard = selectedAction.isAppliedAsDiscard(this.buff);
+      this.animationState =  this.isAppliedAsBuff || this.isAppliedAsDiscard;
+      this.displayApplyToBuffButton = selectedAction.action.canApplyBuff(selectedAction.getNumBuffSlotsUsed(), this.buff) || this.isAppliedAsBuff;
+      this.displayApplyToDiscardButton = selectedAction.action.canApplyDiscard(selectedAction.getNumDiscardSlotsUsed(), this.buff) || this.isAppliedAsDiscard;
     });
   }
 

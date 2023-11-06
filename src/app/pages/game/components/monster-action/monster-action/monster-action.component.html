@@ -1,6 +1,6 @@
 <sw-pushable-button>
   <div #actionTemplate id="monster-action" class="{{action.element.toString().toLowerCase()}}"
-    (click)="selectAction()" [ngClass]="{'selected' : action.isSelected}" cardInfoTooltip [object]="action" tooltipType="ACTION">
+    (click)="selectAction()" [ngClass]="{'selected' : isSelected}" cardInfoTooltip [object]="action" tooltipType="ACTION">
     <div class="title-container sw-card-title">
       {{action.name}}
     </div>

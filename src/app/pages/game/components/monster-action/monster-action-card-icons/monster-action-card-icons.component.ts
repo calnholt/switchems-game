@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
-import { SelectedAction, SelectedActionService } from '../../../services/selected-action/selected-action.service';
-import { MonsterAction } from '../../../models/monster/action.model';
+import { SelectedActionService } from '../../../services/selected-action/selected-action.service';
+import { MonsterAction } from '../../../models/monster/monster-action.model';
+import { SelectedAction } from '../../../services/selected-action/selected-action.model';
 
 type CardType = 'BUFF' | 'DRAW' | 'DISCARD';
 
@@ -24,17 +25,19 @@ export class MonsterActionCardIconsComponent {
   constructor(
     private playerCardManagerService: SelectedActionService
   ) {
-    this.selectedAction = this.playerCardManagerService.selectedAction;
   }
 
   ngOnInit() {
     this.playerCardManagerService.selectedAction$.subscribe((applied) => {
+      if (!applied.action) {
+        return;
+      }
       if (applied.action.key() === this.action.key()){
         this.selectedAction = applied;
       }
       else {
         //@ts-ignore
-        this.selectedAction = { buff: 0, discard: 0, action: null };
+        this.selectedAction = new SelectedAction(null);
       }
     })
     this.cardTypes = this.cardTypes.concat(

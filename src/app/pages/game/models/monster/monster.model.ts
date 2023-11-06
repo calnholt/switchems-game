@@ -1,7 +1,7 @@
 import { ELEMENTS, ElemType } from "src/app/shared/types/dataTypes";
 import { StatUtil } from "src/app/shared/utils/stat.util";
 import { IHaveTooltip } from "~/app/shared/interfaces/IHaveTooltip.interface";
-import { MonsterAction } from "./action.model";
+import { MonsterAction } from "./monster-action.model";
 import { Buff } from "./buff.model";
 import { CardCompositeKey, ICompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 
@@ -72,7 +72,6 @@ export class Monster implements IHaveTooltip, ICompositeKey {
   public get isActive(): boolean { return this._isActive; }
 
   setIsActive(value: boolean) { this._isActive = value; }
-  isActionSelected(): boolean { return !!this._actions.filter(a => a.isSelected).length }
   
   getEffectivenessArray(): number[] {
     const arrs = this._elements.map((el: ElemType) => StatUtil.getAdvantages(el)) ?? [];
@@ -118,10 +117,6 @@ export class Monster implements IHaveTooltip, ICompositeKey {
     return this.effectivenessArray
         .map((n, i) => n > 0 ? ELEMENTS[i] : null)
         .filter(elem => elem);
-  }
-
-  getSelectedAction(): MonsterAction {
-    return this._actions.find(a => a.isSelected) as MonsterAction;
   }
 
   getActionByKey(key: CardCompositeKey): MonsterAction {

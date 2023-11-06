@@ -38,25 +38,12 @@ export class PlayerCardManager {
     return 'DRAW';
   }
 
-  public applyCards(): void {
-    this._appliedBuffs = this._hand.getAppliedBuffs();
-    this._appliedDiscards = this._hand.getAppliedDiscards();
-    this._hand.removeAppliedCards();
-  }
 
   public cleanupAppliedCards() {
     this._discardPile.addMultiple(this._appliedDiscards);
     this._discardPile.addMultiple(this._appliedBuffs);
     this._appliedBuffs = [];
     this._appliedDiscards = [];
-  }
-
-  public toggleCardAsBuff(key: CardCompositeKey) {
-    this._hand.toggleCardAsBuff(key);
-  }
-
-  public toggleCardAsDiscard(key: CardCompositeKey) {
-    this._hand.toggleCardAsDiscard(key);
   }
 
 }
