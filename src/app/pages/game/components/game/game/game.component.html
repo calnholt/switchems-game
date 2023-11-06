@@ -6,6 +6,9 @@
     <sw-standard-action [standardAction]="prepareStandardAction" />
   </div>
   <div>
+    <div class="d-flex justify-content-center">
+      <sw-submit-action-button />
+    </div>
     <sw-monster-action-grid [actions]="activeMonster.actions" />
     <sw-player-hand [buffs]="playerCardManager.hand.cards" />
   </div>

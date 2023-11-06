@@ -20,6 +20,7 @@ export class StandardAction extends ISelectableAction {
   public get description() { return this._description; }
 
   // ISelectableAction
+  getDisplayName = (): string => { return this._name; } 
   key = (): CardCompositeKey => { return `Standard Action_${this.name}`; }
   isCostFulfilled = (): boolean => { return true; }
   canApplyBuff = (): boolean => { return false; }

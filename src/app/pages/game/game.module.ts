@@ -15,6 +15,7 @@ import { BuffTooltipComponent } from './components/buff/buff-tooltip/buff-toolti
 import { MonsterHpComponent } from './components/monster/monster-hp/monster-hp.component';
 import { MonsterElementBreakdownComponent } from './components/monster/monster-element-breakdown/monster-element-breakdown.component';
 import { StandardActionComponent } from './components/standard-action/standard-action.component';
+import { SubmitActionButtonComponent } from './components/submit-action-button/submit-action-button.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { StandardActionComponent } from './components/standard-action/standard-a
     MonsterHpComponent,
     MonsterElementBreakdownComponent,
     StandardActionComponent,
+    SubmitActionButtonComponent,
   ],
   exports: [
     MonsterActionComponent,

@@ -89,6 +89,7 @@ export class MonsterAction extends ISelectableAction implements IHaveTooltip {
   }
 
   // ISelectableAction function
+  getDisplayName = (): string => { return this._name; } 
   key = (): CardCompositeKey => { return `${this.monsterName}_${this.name}`; } 
   isCostFulfilled = (discards: number): boolean => { return discards === this._discard; }
   canApplyBuff = (buffSlotsUsed: number, buff: Buff): boolean => { 

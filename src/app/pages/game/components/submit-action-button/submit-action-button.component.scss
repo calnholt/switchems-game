@@ -1,0 +1,11 @@
+@import '../../../../../assets/styles/constants.scss';
+
+#submit-action-button {
+  font-family: $header-font;
+  font-size: 30px;
+  line-height: 80%;
+  background-color: #efefef;
+  padding: 10px;
+  border-radius: 4px;
+  width: 475px;
+}

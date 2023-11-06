@@ -4,6 +4,7 @@ import { CardCompositeKey } from "./ICompositeKey.interface";
 export abstract class ISelectableAction {
   protected _buff: number = 0;
   protected _discard: number = 0;
+  public abstract getDisplayName: () => string;
   public abstract key: () => CardCompositeKey;
   public abstract isCostFulfilled: (discards: number) => boolean;
   public abstract canApplyBuff:(buffSlotsUsed: number, buff: Buff) => boolean;

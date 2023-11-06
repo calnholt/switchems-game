@@ -21,7 +21,7 @@
       "statusFlg": false,
       "attack": 2,
       "speed": 3,
-      "discard": null,
+      "discard": 0,
       "buff": 2,
       "lastUpdated": "Thu, 26 Jan 2023 12:41:12 GMT"
     },
