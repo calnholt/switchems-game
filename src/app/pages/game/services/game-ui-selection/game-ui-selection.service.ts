@@ -34,7 +34,7 @@ export class GameUISelectionService {
       return;
     }
     // cant apply if at capacity
-    if (!action.canApplyBuff(selectedAction.getNumBuffSlotsUsed(), selectedBuff) && !selectedAction.isApplied(selectedBuff)) {
+    if (!selectedAction.canApplyBuff(selectedBuff) && !selectedAction.isApplied(selectedBuff)) {
       return;
     }
     this.selectedActionService.handleBuff(selectedBuff);
@@ -47,7 +47,7 @@ export class GameUISelectionService {
       return;
     }
     // cant apply if at capacity
-    if (!action.canApplyDiscard(selectedAction.getNumDiscardSlotsUsed(), selectedBuff) && !selectedAction.isApplied(selectedBuff)) {
+    if (!selectedAction.canApplyDiscard(selectedBuff) && !selectedAction.isApplied(selectedBuff)) {
       return;
     }
     this.selectedActionService.handleDiscard(selectedBuff);

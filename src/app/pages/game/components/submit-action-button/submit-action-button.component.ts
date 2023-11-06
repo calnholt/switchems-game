@@ -26,7 +26,7 @@ export class SubmitActionButtonComponent {
       if (!selectedAction.action) return;
       this.displayName = selectedAction.action.getDisplayName();
       const num  = selectedAction.getNumDiscardSlotsUsed();
-      this.isCostFulfilled = selectedAction.action.isCostFulfilled(selectedAction.getNumDiscardSlotsUsed());
+      this.isCostFulfilled = selectedAction.isCostFulfilled();
       this.label = this.getDisplayText();
     })
   }

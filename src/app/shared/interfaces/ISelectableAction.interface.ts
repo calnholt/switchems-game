@@ -6,9 +6,6 @@ export abstract class ISelectableAction {
   protected _discard: number = 0;
   public abstract getDisplayName: () => string;
   public abstract key: () => CardCompositeKey;
-  public abstract isCostFulfilled: (discards: number) => boolean;
-  public abstract canApplyBuff:(buffSlotsUsed: number, buff: Buff) => boolean;
-  public abstract canApplyDiscard:(discardSlotsUsed: number, buff: Buff) => boolean;
   public get buff(): number { return this._buff; }
   public get discard(): number { return this._discard; }
 }

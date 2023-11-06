@@ -10,8 +10,15 @@ export class SelectedAction {
     this.appliedDiscards = discards;
     this.action = action;
   }
+  isCostFulfilled(): boolean { return this.getNumDiscardSlotsUsed() === this.action.discard; }
   isAppliedAsBuff(buff: Buff): boolean { return this.appliedBuffs.map(b => b.key()).includes(buff.key()); }
   isAppliedAsDiscard(buff: Buff): boolean { return this.appliedDiscards.map(b => b.key()).includes(buff.key()); }
+  canApplyBuff = (buff: Buff): boolean => { 
+    return this.getNumBuffSlotsUsed() + buff.buffSlots <= this.action.buff; 
+  }
+  canApplyDiscard = (buff: Buff): boolean => { 
+    return this.getNumDiscardSlotsUsed() + buff.discardSlots <= this.action.discard; 
+  }
   getNumBuffSlotsUsed(): number {
     return this.appliedBuffs.reduce((accumulator, value) => accumulator + value.buffSlots, 0);
   };

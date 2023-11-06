@@ -52,8 +52,8 @@ export class BuffComponent extends IHover implements OnInit {
       this.isAppliedAsBuff = selectedAction.isAppliedAsBuff(this.buff);
       this.isAppliedAsDiscard = selectedAction.isAppliedAsDiscard(this.buff);
       this.animationState =  this.isAppliedAsBuff || this.isAppliedAsDiscard;
-      this.displayApplyToBuffButton = selectedAction.action.canApplyBuff(selectedAction.getNumBuffSlotsUsed(), this.buff) || this.isAppliedAsBuff;
-      this.displayApplyToDiscardButton = selectedAction.action.canApplyDiscard(selectedAction.getNumDiscardSlotsUsed(), this.buff) || this.isAppliedAsDiscard;
+      this.displayApplyToBuffButton = selectedAction.canApplyBuff(this.buff) || this.isAppliedAsBuff;
+      this.displayApplyToDiscardButton = selectedAction.canApplyDiscard(this.buff) || this.isAppliedAsDiscard;
     });
   }
 
