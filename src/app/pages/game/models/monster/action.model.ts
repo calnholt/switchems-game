@@ -5,7 +5,7 @@ import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ISelectableAction } from "~/app/shared/interfaces/ISelectableAction.interface";
 
-export class MonsterAction implements IHaveTooltip, ISelectableAction {
+export class MonsterAction extends ISelectableAction implements IHaveTooltip {
   private _name: string;
   private _monsterName: string;
   private _text: string;
@@ -14,14 +14,12 @@ export class MonsterAction implements IHaveTooltip, ISelectableAction {
   private _element: ElemType;
   private _index: number;
   private _isStatus: boolean;
-  private _isSelected: boolean = false;
   private _isLocked: boolean = false;
   private _isUsed: boolean = false;
   private _isDisabled: boolean = false;
-  private _buff: number;
-  private _discard: number;
+  private _originalBuff: number;
+  private _originalDiscard: number;
   private _draw: number;
-  private _addedBuff: number;
 
   constructor(
     name: string,
@@ -35,8 +33,8 @@ export class MonsterAction implements IHaveTooltip, ISelectableAction {
     buff: number = 0,
     discard: number = 0,
     draw: number = 0,
-    addedBuff: number = 0,
   ) {
+    super();
     this._name = name;
     this._monsterName = monsterName;
     this._text = text;
@@ -45,10 +43,11 @@ export class MonsterAction implements IHaveTooltip, ISelectableAction {
     this._element = element;
     this._index = index;
     this._isStatus = isStatus;
+    this._originalBuff = buff;
+    this._originalDiscard = discard;
     this._buff = buff;
     this._discard = discard;
     this._draw = draw;
-    this._addedBuff = addedBuff;
   }
 
   get name(): string { return this._name; }
@@ -59,14 +58,10 @@ export class MonsterAction implements IHaveTooltip, ISelectableAction {
   get element(): ElemType { return this._element; }
   get index(): number { return this._index; }
   get isStatus(): boolean { return this._isStatus; }
-  get isSelected(): boolean { return this._isSelected; }
   get isLocked(): boolean { return this._isLocked; }
   get isUsed(): boolean { return this._isUsed; }
   get isDisabled(): boolean { return this._isDisabled; }
-  get buff(): number { return this._buff; }
-  get discard(): number { return this._discard; }
   get draw(): number { return this._draw; }
-  get addedBuff(): number { return this._addedBuff; }
 
   getAbilityTextWithoutTerms(): string {
     return AbilityTextUtil.getAbilityTextWithoutTerms(this._text);
@@ -93,12 +88,16 @@ export class MonsterAction implements IHaveTooltip, ISelectableAction {
   }
 
   // ISelectableAction function
-  selectAsAction(): void { this._isSelected = true; }
-  deselectAsAction(): void { this._isSelected = false; }
-  key(): CardCompositeKey { return `${this.monsterName}_${this.name}`; } 
-  isCostFulfilled(discards: number): boolean { return discards === this._discard; }
-  canApplyBuff(alreadyApplied: number, slots: number): boolean { return alreadyApplied + slots <= this._buff + this._addedBuff; }
-  canApplyDiscard(alreadyApplied: number, slots: number): boolean { return alreadyApplied + slots <= this._discard; }
+  selectAsAction = (): void => { this._isSelected = true; }
+  deselectAsAction = (): void => { this._isSelected = false; }
+  key = (): CardCompositeKey => { return `${this.monsterName}_${this.name}`; } 
+  isCostFulfilled = (discards: number): boolean => { return discards === this._discard; }
+  canApplyBuff = (slots: number): boolean => { 
+    return this._appliedBuffs.length + slots <= this._buff; 
+  }
+  canApplyDiscard = (slots: number): boolean => { 
+    return this._appliedDiscards.length + slots <= this._discard; 
+  }
   // end
 
   setIsSelected(value: boolean) { this._isSelected = value; }

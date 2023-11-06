@@ -3,7 +3,7 @@ import { ImageUtil } from 'src/app/shared/utils/image.util';
 import { SelectedAction, SelectedActionService } from '../../../services/selected-action/selected-action.service';
 import { MonsterAction } from '../../../models/monster/action.model';
 
-type CardType = 'BUFF' | 'DRAW' | 'DISCARD' | 'ADDED_BUFF';
+type CardType = 'BUFF' | 'DRAW' | 'DISCARD';
 
 @Component({
   selector: 'sw-monster-action-card-icons',
@@ -39,7 +39,6 @@ export class MonsterActionCardIconsComponent {
     })
     this.cardTypes = this.cardTypes.concat(
       this.getCardTypeArray(this.action.buff, 'BUFF'),
-      this.getCardTypeArray(this.action.addedBuff, 'ADDED_BUFF'),
       this.getCardTypeArray(this.action.discard, 'DISCARD'),
       this.getCardTypeArray(this.action.draw, 'DRAW'),
     );

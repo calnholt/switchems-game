@@ -38,7 +38,7 @@ export class GameUISelectionService {
       return
     }
     // cant apply if at capacity
-    if (!activeMonster.getSelectedAction().canApplyBuff(selectedAction.buff, selectedBuff.isSuper ? 2 : 1) && !selectedBuff.isAppliedAsBuff) {
+    if (!activeMonster.getSelectedAction().canApplyBuff(selectedBuff.isSuper ? 2 : 1) && !selectedBuff.isAppliedAsBuff) {
       return;
     }
     playerCardManager.toggleCardAsBuff(selectedBuff.key());
@@ -53,14 +53,14 @@ export class GameUISelectionService {
     const { hand } = playerCardManager;
     const { selectedAction } = this.selectedActionService;
     // cant apply if no action is selected
-    if (!activeMonster.isActionSelected()) {
+    if (!selectedAction.action) {
       return
     }
     // cant apply if at capacity
-    if (!activeMonster.getSelectedAction().canApplyDiscard(selectedAction.discard, 1) && !selectedBuff.isAppliedAsDiscard) {
+    if (!selectedAction.action.canApplyDiscard(1) && !selectedBuff.isAppliedAsDiscard) {
       return;
     }
-    playerCardManager.toggleCardAsDiscard(selectedBuff.key());
+    selectedBuff.toggleAppliedAsDiscard();
     this.selectedActionService.update(
       hand.getAppliedBuffCount(),
       hand.getAppliedDiscardCount(),
