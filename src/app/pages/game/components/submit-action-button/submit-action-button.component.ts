@@ -25,7 +25,6 @@ export class SubmitActionButtonComponent {
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
       if (!selectedAction.action) return;
       this.displayName = selectedAction.action.getDisplayName();
-      const num  = selectedAction.getNumDiscardSlotsUsed();
       this.isCostFulfilled = selectedAction.isCostFulfilled();
       this.label = this.getDisplayText();
     })

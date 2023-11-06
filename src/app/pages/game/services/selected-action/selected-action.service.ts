@@ -9,7 +9,6 @@ import { SelectedAction } from './selected-action.model';
 })
 export class SelectedActionService {
 
-  //@ts-ignore
   private _selectedAction$: BehaviorSubject<SelectedAction> = new BehaviorSubject(new SelectedAction(null));
 
   public get selectedAction$() { return this._selectedAction$; } 
@@ -52,7 +51,7 @@ export class SelectedActionService {
 
   private getNewSelectedAction() {
     return new SelectedAction(
-      this.selectedAction.action,
+      this.selectedAction?.action ?? null,
       this.selectedAction.appliedBuffs,
       this.selectedAction.appliedDiscards,
     ); 

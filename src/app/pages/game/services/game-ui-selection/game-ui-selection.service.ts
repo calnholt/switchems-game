@@ -28,9 +28,9 @@ export class GameUISelectionService {
   }
 
   private toggleCardAsBuff(selectedBuff: Buff) {
-    const { action, selectedAction } = this.selectedActionService;
+    const { selectedAction } = this.selectedActionService;
     // cant apply if no action is selected
-    if (!action) {
+    if (!selectedAction.isActionSelected()) {
       return;
     }
     // cant apply if at capacity
@@ -41,9 +41,9 @@ export class GameUISelectionService {
   }
 
   private toggleCardAsDiscard(selectedBuff: Buff) {
-    const { action, selectedAction } = this.selectedActionService;
+    const { selectedAction } = this.selectedActionService;
     // cant apply if no action is selected
-    if (!action) {
+    if (!selectedAction.isActionSelected()) {
       return;
     }
     // cant apply if at capacity

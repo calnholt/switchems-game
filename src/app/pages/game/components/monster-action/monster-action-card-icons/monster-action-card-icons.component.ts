@@ -36,7 +36,6 @@ export class MonsterActionCardIconsComponent {
         this.selectedAction = applied;
       }
       else {
-        //@ts-ignore
         this.selectedAction = new SelectedAction(null);
       }
     })
