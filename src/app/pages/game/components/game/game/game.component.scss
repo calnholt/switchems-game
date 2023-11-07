@@ -3,12 +3,11 @@
 
   .action-container {
     display: grid;
-    grid-template-columns: 2fr 11fr;
+    grid-template-columns: 270px max-content;
     .inactive-monster-container {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      margin-right: 20px;
     }
   }
 }
