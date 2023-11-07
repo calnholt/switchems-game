@@ -85,14 +85,14 @@
     top: 22px;
     height: 186px;
     width: 60px;
-    background: linear-gradient(90deg, black, transparent);
+    background: linear-gradient(90deg, white, transparent);
     z-index: 100;
     opacity: 0.3;
 
     &.applied {
-      background: linear-gradient(90deg, white, transparent);
+      background: linear-gradient(90deg, black, transparent);
       &.discard {
-        background: linear-gradient(270deg, white, transparent);
+        background: linear-gradient(270deg, black, transparent);
       }
     }
 
@@ -100,7 +100,7 @@
 
     &.discard {
       right: 0px;
-      background: linear-gradient(270deg, black, transparent);
+      background: linear-gradient(270deg, white, transparent);
     }
 
     div {
@@ -117,14 +117,14 @@
 
   }
   .apply-as:hover {
-    background: linear-gradient(90deg, white, transparent);
+    background: linear-gradient(90deg, black, transparent);
     &.discard {
-      background: linear-gradient(270deg, white, transparent);
+      background: linear-gradient(270deg, black, transparent);
     }
     &.applied {
-      background: linear-gradient(90deg, black, transparent);
+      background: linear-gradient(90deg, white, transparent);
       &.discard {
-        background: linear-gradient(270deg, black, transparent);
+        background: linear-gradient(270deg, white, transparent);
       }
     }
   }
