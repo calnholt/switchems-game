@@ -3,10 +3,9 @@ import { Term } from "~/app/shared/types/data";
 import { ElemType } from "~/app/shared/types/dataTypes";
 import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { ISelectableAction } from "~/app/shared/interfaces/ISelectableAction.interface";
-import { Buff } from "./buff.model";
+import { ISelectableAction, SelectedActionType } from "~/app/shared/interfaces/ISelectableAction.interface";
 
-export class MonsterAction extends ISelectableAction implements IHaveTooltip {
+export class MonsterAction implements ISelectableAction, IHaveTooltip {
   private _name: string;
   private _monsterName: string;
   private _text: string;
@@ -18,8 +17,10 @@ export class MonsterAction extends ISelectableAction implements IHaveTooltip {
   private _isLocked: boolean = false;
   private _isUsed: boolean = false;
   private _isDisabled: boolean = false;
-  private _originalBuff: number;
-  private _originalDiscard: number;
+  private _originalBuffSlots: number;
+  private _originalDiscardSlots: number;
+  private _currentBuffSlots: number;
+  private _currentDiscardSlots: number;
   private _draw: number;
 
   constructor(
@@ -35,7 +36,6 @@ export class MonsterAction extends ISelectableAction implements IHaveTooltip {
     discard: number = 0,
     draw: number = 0,
   ) {
-    super();
     this._name = name;
     this._monsterName = monsterName;
     this._text = text;
@@ -44,10 +44,10 @@ export class MonsterAction extends ISelectableAction implements IHaveTooltip {
     this._element = element;
     this._index = index;
     this._isStatus = isStatus;
-    this._originalBuff = buff;
-    this._originalDiscard = discard;
-    this._buff = buff;
-    this._discard = discard;
+    this._originalBuffSlots = buff;
+    this._originalDiscardSlots = discard;
+    this._currentBuffSlots = buff;
+    this._currentDiscardSlots = discard;
     this._draw = draw;
   }
 
@@ -89,7 +89,10 @@ export class MonsterAction extends ISelectableAction implements IHaveTooltip {
   }
 
   // ISelectableAction function
+  getNumOfBuffSlots = (): number => { return this._currentBuffSlots; };
+  getNumOfDiscardSlots = (): number => { return this._currentDiscardSlots; };
   getDisplayName = (): string => { return this._name; } 
+  getSelectableActionType = (): SelectedActionType => { return 'MONSTER'; } 
   key = (): CardCompositeKey => { return `${this.monsterName}_${this.name}`; } 
   // end
 

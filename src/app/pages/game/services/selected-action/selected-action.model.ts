@@ -11,16 +11,16 @@ export class SelectedAction {
     this.action = action;
   }
   isActionSelected(): boolean { return !!this.action; }
-  isCostFulfilled(): boolean { return this.getNumDiscardSlotsUsed() === this.action?.discard; }
+  isCostFulfilled(): boolean { return this.getNumDiscardSlotsUsed() === this.action?.getNumOfDiscardSlots(); }
   isAppliedAsBuff(buff: Buff): boolean { return this.appliedBuffs.map(b => b.key()).includes(buff.key()); }
   isAppliedAsDiscard(buff: Buff): boolean { return this.appliedDiscards.map(b => b.key()).includes(buff.key()); }
   canApplyBuff = (buff: Buff): boolean => { 
     if(!this.action) return false;
-    return this.getNumBuffSlotsUsed() + buff.buffSlots <= this.action.buff; 
+    return this.getNumBuffSlotsUsed() + buff.buffSlots <= this.action.getNumOfBuffSlots(); 
   }
   canApplyDiscard = (buff: Buff): boolean => { 
     if(!this.action) return false;
-    return this.getNumDiscardSlotsUsed() + buff.discardSlots <= this.action.discard; 
+    return this.getNumDiscardSlotsUsed() + buff.discardSlots <= this.action.getNumOfDiscardSlots(); 
   }
   getNumBuffSlotsUsed(): number {
     return this.appliedBuffs.reduce((accumulator, value) => accumulator + value.buffSlots, 0);

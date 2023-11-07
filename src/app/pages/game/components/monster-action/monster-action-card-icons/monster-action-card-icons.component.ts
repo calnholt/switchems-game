@@ -16,7 +16,7 @@ export class MonsterActionCardIconsComponent {
   cardTypes: {type: CardType, index: number}[] = [];
 
   // subscriptions
-  selectedAction!: SelectedAction;
+  selectedAction!: SelectedAction | undefined;
 
   buffImg = ImageUtil.icons.buff;
   discardImg = ImageUtil.icons.discard;
@@ -40,8 +40,8 @@ export class MonsterActionCardIconsComponent {
       }
     })
     this.cardTypes = this.cardTypes.concat(
-      this.getCardTypeArray(this.action.buff, 'BUFF'),
-      this.getCardTypeArray(this.action.discard, 'DISCARD'),
+      this.getCardTypeArray(this.action.getNumOfBuffSlots(), 'BUFF'),
+      this.getCardTypeArray(this.action.getNumOfDiscardSlots(), 'DISCARD'),
       this.getCardTypeArray(this.action.draw, 'DRAW'),
     );
   }

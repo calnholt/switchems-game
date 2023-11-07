@@ -3,9 +3,10 @@ import { StatUtil } from "src/app/shared/utils/stat.util";
 import { IHaveTooltip } from "~/app/shared/interfaces/IHaveTooltip.interface";
 import { MonsterAction } from "./monster-action.model";
 import { Buff } from "./buff.model";
-import { CardCompositeKey, ICompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
+import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
+import { ISelectableAction, SelectedActionType } from "~/app/shared/interfaces/ISelectableAction.interface";
 
-export class Monster implements IHaveTooltip, ICompositeKey {
+export class Monster implements IHaveTooltip, ISelectableAction {
   private _name: string;
   private _elements: Array<ElemType>;
   private _switchIn: string;
@@ -50,7 +51,14 @@ export class Monster implements IHaveTooltip, ICompositeKey {
     this._switchDefense = this.getSwitchDefenseValue();
 
   }
+
+  // ISelectableAction function
+  getNumOfBuffSlots = (): number => { return 0; };
+  getNumOfDiscardSlots = (): number => { return 2; };
+  getDisplayName = (): string => { return this._name; } 
+  getSelectableActionType = (): SelectedActionType => { return 'SWITCH'; } 
   key(): CardCompositeKey { return this.name; }
+  // end
   hasTooltip () {
     return !!(this._switchIn || this._passive);
   }
