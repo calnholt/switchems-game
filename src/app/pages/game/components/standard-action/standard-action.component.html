@@ -1,7 +1,9 @@
 <sw-pushable-button>
   <div id="standard-action" (click)="select()">
-    <div>
-      <span>{{standardAction.name}}{{" - "}}</span>
+    <div class="sw-card-title">
+      {{standardAction.name}}
+    </div>
+    <div class="sw-card-text-container">
       <ng-container *ngFor="let path of standardAction.paths">
         <img [src]="path" />
       </ng-container>

@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MonsterAction } from '../../../models/monster/monster-action.model';
+import { StandardAction } from '../../../models/standard-action/standard-action.model';
+import { ImageUtil } from '~/app/shared/utils/image.util';
 
 @Component({
   selector: 'sw-monster-action-grid',
@@ -9,5 +11,16 @@ import { MonsterAction } from '../../../models/monster/monster-action.model';
 export class MonsterActionGridComponent {
   @Input() actions!: MonsterAction[];
 
+  restStandardAction = new StandardAction('Rest', [
+    ImageUtil.icons.draw, 
+    ImageUtil.icons.draw, 
+    ImageUtil.icons.hp
+  ]);
+  prepareStandardAction = new StandardAction('Prepare', [
+    ImageUtil.icons.draw, 
+    ImageUtil.icons.randomCube, 
+    ImageUtil.icons.randomCube, 
+    ImageUtil.icons.randomCube, 
+  ]);
   
 }

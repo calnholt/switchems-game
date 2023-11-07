@@ -25,6 +25,7 @@ function randomizeOrder<T>(array: T[]) {
   return arrayCopy;
 }
 
+// TODO: not working perfectly
 function getRandomUniqueEntriesFromArray<T>(array: T[], entries: number): T[] {
   if (entries <= 0 || entries > array.length) {
     return [];

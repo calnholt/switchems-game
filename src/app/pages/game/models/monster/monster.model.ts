@@ -16,7 +16,7 @@ export class Monster implements IHaveTooltip, ISelectableAction {
   private _actions: MonsterAction[];
   private _buffs: Buff[];
 
-  private _isActive: boolean = false;
+  private _isActive: boolean = false; // TODO: consider removing this
   
   // evaluated fields
   private _currentHp: number = 0;
@@ -55,7 +55,7 @@ export class Monster implements IHaveTooltip, ISelectableAction {
   // ISelectableAction function
   getNumOfBuffSlots = (): number => { return 0; };
   getNumOfDiscardSlots = (): number => { return 2; };
-  getDisplayName = (): string => { return this._name; } 
+  getDisplayName = (): string => { return `Switch to ${this._name}`; } 
   getSelectableActionType = (): SelectedActionType => { return 'SWITCH'; } 
   key(): CardCompositeKey { return this.name; }
   // end

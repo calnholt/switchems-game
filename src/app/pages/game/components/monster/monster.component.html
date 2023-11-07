@@ -1,13 +1,18 @@
-<div id="monster">
-  <img [src]="monsterIcon" 
-    [class]="!monster.isActive ? 'inactive' : ''" 
-    cardInfoTooltip 
-    [object]="monster" 
-    tooltipType="MONSTER" />
-  <sw-monster-hp [hp]="monster.hp" 
-    [currentHp]="monster.currentHp" 
-    [initiative]="monster.initiative" />
-  <sw-monster-element-breakdown [weaknesses]="monster.weaknesses"
-    [resistances]="monster.resistances"
-    [switchDefense]="monster.switchDefense"/>
+<div id="monster" (click)="onSelect()">
+  <div class="monster-container {{!isActive ? 'inactive' : ''}} {{selected ? 'selected' : ''}}" [ngClass]="backgroundClass" >
+    <img [src]="monsterIcon" 
+      cardInfoTooltip 
+      [object]="monster" 
+      tooltipType="MONSTER" />
+    <div *ngIf="!isActive" class="discard-container">
+      <img [ngClass]="{'selected' : numDiscards > 0}" [src]="discardIcon" />
+      <img [ngClass]="{'selected' : numDiscards > 1}" [src]="discardIcon" />
+    </div>
+    <sw-monster-hp [hp]="monster.hp" 
+      [currentHp]="monster.currentHp" 
+      [initiative]="monster.initiative" />
+    <sw-monster-element-breakdown [weaknesses]="monster.weaknesses"
+      [resistances]="monster.resistances"
+      [switchDefense]="monster.switchDefense"/>
+  </div>
 </div>

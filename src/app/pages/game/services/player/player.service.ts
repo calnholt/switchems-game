@@ -29,6 +29,7 @@ export class PlayerService {
 
   public get playerCardManager() { return this._player.playerCardManager; }
   public get activeMonster() { return this._player.activeMonster; }
+  public get inactiveMonsters() { return this._player.inactiveMonsters; }
   public get statBoard() { return this._player.statBoard; }
 
 }

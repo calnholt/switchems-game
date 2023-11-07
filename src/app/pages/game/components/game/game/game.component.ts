@@ -16,6 +16,7 @@ export class GameComponent {
   playerCardManager!: PlayerCardManager;
   statBoard!: StatBoard;
   activeMonster!: Monster;
+  inactiveMonsters: Monster[] = [];
 
   restStandardAction = new StandardAction('Rest', [
     ImageUtil.icons.draw, 
@@ -35,6 +36,7 @@ export class GameComponent {
 
   ngOnInit() {
     this.activeMonster = this.playerService.activeMonster;
+    this.inactiveMonsters = this.playerService.inactiveMonsters;
     this.playerCardManager = this.playerService.playerCardManager;
     this.statBoard = this.playerService.statBoard;
   }

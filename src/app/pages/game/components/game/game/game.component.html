@@ -1,15 +1,24 @@
 <div id="game">
   <div class="d-flex">
     <sw-stat-board [statBoard]="statBoard" />
-    <sw-monster [monster]="activeMonster" />
-    <sw-standard-action [standardAction]="restStandardAction" />
-    <sw-standard-action [standardAction]="prepareStandardAction" />
+    <sw-monster [monster]="activeMonster" [isActive]="true" />
   </div>
   <div>
     <div class="d-flex justify-content-center">
       <sw-submit-action-button />
     </div>
-    <sw-monster-action-grid [actions]="activeMonster.actions" />
-    <sw-player-hand [buffs]="playerCardManager.hand.cards" />
+    <div class="action-container">
+      <div class="inactive-monster-container">
+        <ng-container *ngFor="let monster of inactiveMonsters">
+          <sw-pushable-button>
+            <sw-monster [monster]="monster" [isActive]="false" />
+          </sw-pushable-button>
+        </ng-container>
+      </div>
+      <div>
+        <sw-monster-action-grid [actions]="activeMonster.actions" />
+        <sw-player-hand [buffs]="playerCardManager.hand.cards" />
+      </div>
+    </div>
   </div>
 </div>

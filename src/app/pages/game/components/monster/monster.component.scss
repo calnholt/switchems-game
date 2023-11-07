@@ -1,22 +1,96 @@
 @import '../../../../../assets/styles/constants.scss';
 
 #monster {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: fit-content;
-  font-family: $header-font;
-  font-size: 21px;
-  line-height: 70%;
-  margin-right: 4px;
+  .monster-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    font-family: $header-font;
+    font-size: 21px;
+    line-height: 70%;
 
-  img {
-    height: 200px;
-    cursor: pointer;
+    img {
+      height: 200px;
+      cursor: pointer;
+
+    }
 
     &.inactive {
-      height: 128px;
+      border-radius: 4px;
+      padding: 3px;
+      filter: brightness(85%);
+
+      .discard-container {
+        position: absolute;
+        right: 0px;
+        display: flex;
+        img {
+          height: 25px;
+          margin-right: 5px;
+          &.selected {
+            filter: invert(1);
+          }
+        }
+      }
+
+      img {
+        height: 128px;
+      }
+
+      &.selected {
+        filter: brightness(100%);
+      }
+
+      &.death {
+        background-image: url("../../../../../assets/images/backgrounds/buff/death.png");
+      }
+
+      &.deathrock {
+        background-image: url("../../../../../assets/images/backgrounds/buff/deathrock.png");
+      }
+
+      &.deathwater {
+        background-image: url("../../../../../assets/images/backgrounds/buff/deathwater.png");
+      }
+
+      &.electric {
+        background-image: url("../../../../../assets/images/backgrounds/buff/electric.png");
+      }
+
+      &.electricfire {
+        background-image: url("../../../../../assets/images/backgrounds/buff/electricfire.png");
+      }
+
+      &.fire {
+        background-image: url("../../../../../assets/images/backgrounds/buff/fire.png");
+      }
+
+      &.fireleaf {
+        background-image: url("../../../../../assets/images/backgrounds/buff/fireleaf.png");
+      }
+
+      &.leaf {
+        background-image: url("../../../../../assets/images/backgrounds/buff/leaf.png");
+      }
+
+      &.leafrock {
+        background-image: url("../../../../../assets/images/backgrounds/buff/leafrock.png");
+      }
+
+      &.leafwater {
+        background-image: url("../../../../../assets/images/backgrounds/buff/leafwater.png");
+      }
+
+      &.rock {
+        background-image: url("../../../../../assets/images/backgrounds/buff/rock.png");
+      }
+
+      &.water {
+        background-image: url("../../../../../assets/images/backgrounds/buff/water.png");
+      }
     }
+
   }
 
 }

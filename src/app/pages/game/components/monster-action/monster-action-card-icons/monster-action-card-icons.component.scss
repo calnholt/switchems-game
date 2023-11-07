@@ -5,8 +5,9 @@
     }
     span {
       &.applied {
-        border: 4px solid green;
-        border-radius: 3px;
+        img {
+          filter: invert(1);
+        }
       }
     }
     img {

@@ -1,6 +1,6 @@
 #monster-action-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(6, 1fr);
   grid-template-rows: 1fr;
   column-gap: 10px;
   row-gap: 10px;
@@ -9,6 +9,13 @@
   .action {
     border-top: 1px solid transparent;
     padding-top: 10px;
+  }
+
+  .standard-action-container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
   }
 
 }

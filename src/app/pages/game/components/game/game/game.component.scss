@@ -1,3 +1,14 @@
 #game {
   margin: 40px;
+
+  .action-container {
+    display: grid;
+    grid-template-columns: 2fr 11fr;
+    .inactive-monster-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-right: 20px;
+    }
+  }
 }
