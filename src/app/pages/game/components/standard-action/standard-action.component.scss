@@ -7,7 +7,13 @@
   border-radius: 4px;
   background-color: #efefef;
   width: 150px;
+  filter: brightness(85%);
+  transition: filter 0.3s ease;
   cursor: pointer;
+
+  &.selected {
+    filter: brightness(100%);
+  }
 
   .sw-card-title { 
     padding: 4px;
@@ -27,4 +33,9 @@
   img:not(:last-child) {
     margin-right: 4px;
   }
+}
+
+#standard-action:hover {
+  filter: brightness(100%);
+  transition: filter 0.3s ease;
 }

@@ -1,5 +1,5 @@
 <sw-pushable-button>
-  <div id="standard-action" (click)="select()">
+  <div id="standard-action" [ngClass]="{ 'selected' : selected }" (click)="select()">
     <div class="sw-card-title">
       {{standardAction.name}}
     </div>
