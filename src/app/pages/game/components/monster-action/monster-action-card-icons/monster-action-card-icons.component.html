@@ -4,8 +4,8 @@
         <span 
         class="{{type.type.toLowerCase()}}" 
         [ngClass]="{ 'applied' : 
-          (type.type === 'BUFF' && type.index < (selectedAction?.getNumBuffSlotsUsed() ?? 0)) || 
-          (type.type === 'DISCARD' && type.index < (selectedAction?.getNumDiscardSlotsUsed() ?? 0))}">
+          (type.type === 'BUFF' && type.index < buffSlotsUsed) || 
+          (type.type === 'DISCARD' && type.index < discardSlotsUsed)}">
           <img *ngIf="type.type === 'BUFF'" src={{buffImg}} />
           <img *ngIf="type.type === 'DRAW'" src={{drawImg}} />
           <img *ngIf="type.type === 'DISCARD'" src={{discardImg}} />

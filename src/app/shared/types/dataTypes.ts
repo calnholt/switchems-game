@@ -45,7 +45,7 @@ export const TERM_KEYS = [`~WOUND~`, `~FLINCH~`, `~DRAIN~`, `~FATIGUE~`,
 export type TermCode = typeof TERM_KEYS[number];
 const termCodes = [
     new Term('Belongs', `~BELONGS~`, `A buff card <u>belongs</u> to a monster if the monster name on the bottom of the buff card matches.`),
-    new Term('Drain', `~DRAIN~`, `At the end of the turn, monsters with <u>drain</u> [STATUS] suffer <span>1[ATK]</span> and your active monster heals <span>1[HP].</span>`),
+    new Term('Drain', `~DRAIN~`, `At the end of the turn, if your active monster has less HP than a monster with the drain status, that monster suffers <span>1[ATK]</span> and your active monster heals <span>1[HP].</span>`),
     new Term('Weak', `~EFFECTIVE~`, `Monsters are <u>weak</u> to elements in the [WEAK] section of their monster card.`),
     new Term('Exhaust', `~EXHAUST~`, `Cards with <u>exhaust</u> are removed from the game after they are resolved. Put a blank into your discard.`),
     new Term('Faster', `~FASTER~`, `This action is <u>faster</u> if your opponent selects a standard action, or if both players select a monster action and yours resolves first.`),

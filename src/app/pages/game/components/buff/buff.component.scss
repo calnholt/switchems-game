@@ -8,9 +8,13 @@
   position: relative;
   width: 250px;
   height: 216px;
-  border: 4px solid black;
   border-radius: 6px;
   cursor: pointer;
+
+  .sw-card-title {
+    padding: 5px;
+    border-radius: 4px 4px 0px 0px;
+  }
 
   .monster-img {
     position: absolute;
@@ -82,8 +86,8 @@
 
   .apply-as {
     position: absolute;
-    top: 22px;
-    height: 186px;
+    top: 28px;
+    height: 188px;
     width: 60px;
     background: linear-gradient(90deg, white, transparent);
     z-index: 100;
@@ -96,11 +100,14 @@
       }
     }
 
-    &.buff {}
+    &.buff {
+      border-radius: 0px 0px 0px 4px;
+    }
 
     &.discard {
       right: 0px;
       background: linear-gradient(270deg, white, transparent);
+      border-radius: 0px 0px 4px 0px;
     }
 
     div {

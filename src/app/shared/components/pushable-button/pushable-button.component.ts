@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'sw-pushable-button',
@@ -6,4 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./pushable-button.component.scss']
 })
 export class PushableButtonComponent {
+  @Input() isActive = true;
 }

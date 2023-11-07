@@ -25,7 +25,6 @@ function randomizeOrder<T>(array: T[]) {
   return arrayCopy;
 }
 
-// TODO: not working perfectly
 function getRandomUniqueEntriesFromArray<T>(array: T[], entries: number): T[] {
   if (entries <= 0 || entries > array.length) {
     return [];
@@ -33,9 +32,10 @@ function getRandomUniqueEntriesFromArray<T>(array: T[], entries: number): T[] {
   const result: T[] = [];
   const indices: number[] = array.map((a: T, i: number) => i);
   for (let i = 0; i < entries; i++) {
-    const randomIndex = Math.floor(Math.random() * indices.length);
-    result.push(array[indices[randomIndex]]);
-    indices.splice(indices[randomIndex], 1);
+    const randomIndex = getRandomIndex(indices.length);
+    const index = indices[randomIndex];
+    result.push(array[index]);
+    indices.splice(randomIndex, 1);
   }
   return result;
 }

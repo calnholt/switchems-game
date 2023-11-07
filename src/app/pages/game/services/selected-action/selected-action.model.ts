@@ -1,14 +1,17 @@
 import { ISelectableAction } from "~/app/shared/interfaces/ISelectableAction.interface";
 import { Buff } from "../../models/monster/buff.model";
+import { StatBoardSection } from "../../models/stat-board/stat-board.model";
 
 export class SelectedAction {
   appliedBuffs: Buff[];
   appliedDiscards: Buff[] = [];
-  action: ISelectableAction | null;
-  constructor(action: ISelectableAction | null, buffs: Buff[] = [], discards: Buff[] = []) {
+  statBoardSection: StatBoardSection | undefined;
+  action: ISelectableAction | undefined;
+  constructor(action: ISelectableAction | undefined, buffs: Buff[] = [], discards: Buff[] = [], statBoardSection?: StatBoardSection | undefined) {
     this.appliedBuffs = buffs;
     this.appliedDiscards = discards;
     this.action = action;
+    this.statBoardSection = statBoardSection;
   }
   isActionSelected(): boolean { return !!this.action; }
   isCostFulfilled(): boolean { return this.getNumDiscardSlotsUsed() === this.action?.getNumOfDiscardSlots(); }
@@ -47,6 +50,14 @@ export class SelectedAction {
     else {
       this.appliedDiscards = this.appliedDiscards.filter(b => b.key() !== buff.key());
       this.appliedBuffs.push(buff);
+    }
+  }
+  handleStatBoardSection(statBoardSection: StatBoardSection) { 
+    if (this.statBoardSection?.type === statBoardSection.type) {
+      this.statBoardSection = undefined;
+    }
+    else if (statBoardSection.current > 0 && this.action?.canApplyStat()) {
+      this.statBoardSection = statBoardSection;
     }
   }
 }

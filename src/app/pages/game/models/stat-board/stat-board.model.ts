@@ -1,23 +1,14 @@
+import { ArrayUtil } from "~/app/shared/utils/array.util";
+
 export class StatBoard {
-  readonly attack: StatBoardSection = new StatBoardSection(3, 0, false, 'ATTACK');
-  readonly speed: StatBoardSection = new StatBoardSection(4, 0, false, 'SPEED');
-  readonly defense: StatBoardSection = new StatBoardSection(3, 0, false, 'DEFENSE');
+  readonly attack: StatBoardSection = new StatBoardSection(3, 0, 'ATTACK');
+  readonly speed: StatBoardSection = new StatBoardSection(4, 0, 'SPEED');
+  readonly defense: StatBoardSection = new StatBoardSection(3, 0, 'DEFENSE');
 
   getSectionFromType(type: StatBoardSectionType) {
     if (type === 'ATTACK') return this.attack;
     if (type === 'SPEED') return this.speed;
     return this.defense;
-  }
-
-  apply(type: StatBoardSectionType) {
-    [this.attack, this.speed, this.defense].forEach(section => {
-      if (section.type === type) {
-        section.setApplied(true);
-      }
-      else {
-        section.setApplied(false);
-      }
-    });
   }
 
   use(type: StatBoardSectionType) {
@@ -33,25 +24,16 @@ export class StatBoard {
 export class StatBoardSection {
   private _max!: number;
   private _current!: number;
-  private _isApplied!: boolean;
   readonly type!: StatBoardSectionType;
 
-  constructor(max: number, current: number, isApplied: boolean, type: StatBoardSectionType) {
+  constructor(max: number, current: number, type: StatBoardSectionType) {
     this._max = max;
-    this._current = current;
-    this._isApplied = isApplied;
+    this._current = ArrayUtil.getRandomIndex(max + 1); // TODO: replace with current
     this.type = type;
   }
 
   public get max() { return this._max }
   public get current() { return this._current }
-  public get isApplied() { return this._isApplied }
-
-  public set apply(value: boolean) { this._isApplied = value }
-
-  setApplied(value: boolean) {
-    this._isApplied = value;
-  }
 
   use() {
     this._current = 0;

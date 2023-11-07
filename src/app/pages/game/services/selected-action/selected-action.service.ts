@@ -3,13 +3,14 @@ import { BehaviorSubject } from 'rxjs';
 import { ISelectableAction } from '~/app/shared/interfaces/ISelectableAction.interface';
 import { Buff } from '../../models/monster/buff.model';
 import { SelectedAction } from './selected-action.model';
+import { StatBoardSection } from '../../models/stat-board/stat-board.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SelectedActionService {
 
-  private _selectedAction$: BehaviorSubject<SelectedAction> = new BehaviorSubject(new SelectedAction(null));
+  private _selectedAction$: BehaviorSubject<SelectedAction> = new BehaviorSubject(new SelectedAction(undefined));
 
   public get selectedAction$() { return this._selectedAction$; } 
   public get selectedAction() { return this._selectedAction$.value; }
@@ -31,7 +32,7 @@ export class SelectedActionService {
     else {
       this.selectedAction.appliedBuffs.push(buff);
     }
-    this._selectedAction$.next(this.getNewSelectedAction());
+    this.updateAction();
   }
 
   public handleDiscard(buff: Buff) {
@@ -46,14 +47,25 @@ export class SelectedActionService {
     else {
       this.selectedAction.appliedDiscards.push(buff);
     }
+    this.updateAction();
+  }
+
+  public handleStatBoardSection(statBoardSection: StatBoardSection) {
+    this.selectedAction.handleStatBoardSection(statBoardSection);
+    this.updateAction();
+
+  }
+
+  private updateAction() {
     this._selectedAction$.next(this.getNewSelectedAction());
   }
 
   private getNewSelectedAction() {
     return new SelectedAction(
-      this.selectedAction?.action ?? null,
+      this.selectedAction.action,
       this.selectedAction.appliedBuffs,
       this.selectedAction.appliedDiscards,
+      this.selectedAction.statBoardSection,
     ); 
   }
 

@@ -1,16 +1,24 @@
-<sw-pushable-button>
-  <div id="stat-board-section" [ngClass]="{'applied' : statBoardSection.isApplied}" (click)="onSelect()"
-    [@pulse]="aniState && this.statBoardSection.isApplied" (@pulse.done)="aniDone()">
+<div id="stat-board-section">
+  <div class="stat-board-section-container">
     <div>
-      <img [src]="icon">
+      <sw-pushable-button [isActive]="statBoardSection.current > 0">
+        <div class="stat-board-section-button" (click)="onSelect()">
+          <div>
+            <img [src]="icon">
+          </div>
+          <div class="pip-container">
+            <ng-container *ngFor="let _ of [].constructor(statBoardSection.current)">
+              <div class="circle occupied"></div>
+            </ng-container>
+            <ng-container *ngFor="let _ of [].constructor(statBoardSection.max - statBoardSection.current)">
+              <div class="circle open"></div>
+            </ng-container>
+          </div>
+        </div>
+      </sw-pushable-button>
     </div>
-    <div class="pip-container">
-      <ng-container *ngFor="let _ of [].constructor(statBoardSection.current)">
-        <div class="circle occupied"></div>
-      </ng-container>
-      <ng-container *ngFor="let _ of [].constructor(statBoardSection.max - statBoardSection.current)">
-        <div class="circle open"></div>
-      </ng-container>
+    <div *ngIf="isApplied" [@slideInLeftOnEnter] [@fadeOutOnLeave] [@fadeInOnEnter]>
+      <img class="arrow" [src]="arrowSrc" />
     </div>
   </div>
-</sw-pushable-button>
+</div>

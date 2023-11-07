@@ -1,5 +1,5 @@
 import { BACKGROUNDS_PATH } from './../types/dataTypes';
-import { ELEMENT_PATH_COLOR, ElemType, MONSTERS_PATH, Path, SVG_PATH, SYMBOLS_PATH } from "../types/dataTypes";
+import { ELEMENT_PATH_COLOR, ElemType, MONSTERS_PATH, Path, SYMBOLS_PATH } from "../types/dataTypes";
 
 export const ImageUtil = {
   getSymbolsPath,
@@ -26,6 +26,7 @@ export const ImageUtil = {
     switchDefense: getSymbolsPath('switch-defense'),
     teamAura: getSymbolsPath('aura'),
     hp: getSymbolsPath('heart'),
+    arrow: getSymbolsPath('arrow'),
   },
   monsters: {
     Chargroar: getMonstersPath('chargroar'),

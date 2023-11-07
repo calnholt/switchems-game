@@ -1,24 +1,33 @@
 @import '../../../../../../../assets/styles/constants.scss';
 
 #stat-board-section {
-  display: flex;
-  align-items: center;
-  background: #dcf7dc;
-  width: fit-content;
-  padding: 8px 10px;
-  border-radius: 10px;
-  margin-bottom: 5px;
+  
+  .stat-board-section-container {
+    display: flex;
+    align-items: center;
+    .arrow {
+      height: 40px;
+    }
+  }
+  .stat-board-section-button {
+    display: flex;
+    align-items: center;
+    background: #dcf7dc;
+    width: fit-content;
+    padding: 8px 10px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+
+  }
 
   &.applied {
     box-shadow: $shadow;
   }
 
-  div:nth-child(1) {
-    width: 30px;
-  }
 
   img {
     height: 25px;
+    margin-right: 5px;
   }
 
   .pip-container {

@@ -1,7 +1,7 @@
 <button class="pushable">
-  <span class="shadow"></span>
-  <span class="edge"></span>
-  <span class="front">
+  <span [ngClass]="{ 'shadow' : isActive }"></span>
+  <span [ngClass]="{ 'edge' : isActive }"></span>
+  <span [ngClass]="{ 'front' : isActive }">
     <ng-content></ng-content>
   </span>
 </button>

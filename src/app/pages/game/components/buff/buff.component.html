@@ -12,12 +12,18 @@
   </div>
   <div>
     <ng-container *ngIf="isHovering">
-      <div *ngIf="displayApplyToBuffButton" class="apply-as buff" [ngClass]="{'applied' : isAppliedAsBuff}" (click)="applyAsBuff()">
+      <div *ngIf="displayApplyToBuffButton" 
+        class="apply-as buff"  
+        [ngClass]="{'applied' : isAppliedAsBuff}" 
+        (click)="applyAsBuff()">
         <div>
           <img [src]="buffPath" />
         </div>
       </div>
-      <div *ngIf="displayApplyToDiscardButton" class="apply-as discard" [ngClass]="{'applied' : isAppliedAsDiscard}" (click)="applyAsDiscard()">
+      <div *ngIf="displayApplyToDiscardButton" 
+      class="apply-as discard" 
+      [ngClass]="{'applied' : isAppliedAsDiscard}" 
+      (click)="applyAsDiscard()">
         <div>
           <img [src]="discardPath" />
         </div>

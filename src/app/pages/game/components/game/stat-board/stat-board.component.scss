@@ -1,6 +1,7 @@
 #stat-board {
   display: flex;
   flex-direction: column;
+  width: 200px;
   div:not(:last-child) {
     margin-bottom: 12px;
   }

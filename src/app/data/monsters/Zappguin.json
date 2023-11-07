@@ -65,7 +65,7 @@
     },
     {
       "buffName": "High Voltage",
-      "buffText": "This attack gains +1[ATK]. If the enemy monster has a <div>[STATUS],</div> this attack gains <div>+2[ATK] instead.</div> ~EXHAUST~",
+      "buffText": "This attack gains +1[ATK]. If the enemy monster has a <div>[STATUS],</div> this attack gains <div>+2[ATK] instead.</div>",
       "lastUpdated": "Tue, 24 Jan 2023 14:16:01 GMT"
     },
     {

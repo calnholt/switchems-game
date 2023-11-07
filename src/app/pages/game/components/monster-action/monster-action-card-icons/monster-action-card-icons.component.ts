@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
 import { SelectedActionService } from '../../../services/selected-action/selected-action.service';
 import { MonsterAction } from '../../../models/monster/monster-action.model';
-import { SelectedAction } from '../../../services/selected-action/selected-action.model';
 
 type CardType = 'BUFF' | 'DRAW' | 'DISCARD';
 
@@ -15,8 +14,8 @@ export class MonsterActionCardIconsComponent {
   @Input() action!: MonsterAction;
   cardTypes: {type: CardType, index: number}[] = [];
 
-  // subscriptions
-  selectedAction!: SelectedAction | undefined;
+  buffSlotsUsed = 0;
+  discardSlotsUsed = 0;
 
   buffImg = ImageUtil.icons.buff;
   discardImg = ImageUtil.icons.discard;
@@ -28,15 +27,17 @@ export class MonsterActionCardIconsComponent {
   }
 
   ngOnInit() {
-    this.playerCardManagerService.selectedAction$.subscribe((applied) => {
-      if (!applied.action) {
+    this.playerCardManagerService.selectedAction$.subscribe((selectAction) => {
+      if (!selectAction.action) {
         return;
       }
-      if (applied.action.key() === this.action.key()){
-        this.selectedAction = applied;
+      if (selectAction.action.key() === this.action.key()){
+        this.buffSlotsUsed = selectAction.getNumBuffSlotsUsed();
+        this.discardSlotsUsed = selectAction.getNumDiscardSlotsUsed();
       }
       else {
-        this.selectedAction = new SelectedAction(null);
+        this.buffSlotsUsed = 0;
+        this.discardSlotsUsed = 0;
       }
     })
     this.cardTypes = this.cardTypes.concat(

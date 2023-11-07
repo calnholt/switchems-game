@@ -3,6 +3,7 @@ import { GameUISelectionEvent, GameUISelectionEventType } from './game-ui-select
 import { Buff } from '../../models/monster/buff.model';
 import { SelectedActionService } from '../selected-action/selected-action.service';
 import { ISelectableAction } from '~/app/shared/interfaces/ISelectableAction.interface';
+import { StatBoardSection } from '../../models/stat-board/stat-board.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,9 @@ export class GameUISelectionService {
         break;
       case GameUISelectionEventType.TOGGLE_ACTION:
         this.toggleSelectedAction(event.data);
+        break;
+      case GameUISelectionEventType.TOGGLE_APPLY_STAT:
+        this.toggleApplyStat(event.data);
         break;
     }
   }
@@ -59,6 +63,10 @@ export class GameUISelectionService {
       return;
     }
     this.selectedActionService.selectAction(newSelectedAction);
+  }
+
+  private toggleApplyStat(statBoardSection: StatBoardSection) {
+    this.selectedActionService.handleStatBoardSection(statBoardSection);
   }
 
 }
