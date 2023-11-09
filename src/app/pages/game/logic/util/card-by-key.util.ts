@@ -1,198 +1,187 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { LightningFang } from "../logic/chargroar/actions/lightning-fang.model";
-import { EventManagerService } from "../../../services/event-manager/event-manager.service";
-import { GameStateService } from "../../../services/game-state/game-state.service";
-import { Condition, PlayerType } from "../logic/condition.model";
-import { BehaviorSubject } from "rxjs";
-import { Hypercharge } from "../logic/chargroar/actions/hypercharge.model";
-import { BlazingRoar } from "../logic/chargroar/actions/blazing-roar.model";
-import { LightsOut } from "../logic/chargroar/actions/lights-out.model";
-import { Chargroar } from "../logic/chargroar/chargroar.model";
-import { Charge } from "../logic/chargroar/buffs/charge.model";
-import { Roar } from "../logic/chargroar/buffs/roar.model";
-import { Revenge } from "../logic/chargroar/buffs/revenge.model";
-import { PreyUpon } from "../logic/chargroar/buffs/prey-upon.model";
+import { EventManagerService } from "../../services/event-manager/event-manager.service";
+import { GameStateService } from "../../services/game-state/game-state.service";
+import { PlayerType } from "../player-type.mode";
 
 export const CardByKeyUtil = {
   getCardByKey
 }
 
-function getCardByKey(key: CardCompositeKey, player: PlayerType, ems: EventManagerService, gss: GameStateService, trigger$: BehaviorSubject<Condition>) {
-  const withTrigger = { key, player, ems, gss, trigger$ };
-  const withoutTrigger = { key, player, ems, gss };
+function getCardByKey(key: CardCompositeKey, player: PlayerType, ems: EventManagerService, gss: GameStateService) {
 
   switch (key) {
     // chargroar
     case CHARGROAR:
-      return new Chargroar(key, player, ems, gss);
+      break;
     case getActionKey(CHARGROAR, 0):
-      return new LightningFang(key, player, ems, gss);;
+      // 
+      break;
     case getActionKey(CHARGROAR, 1):
-      return new LightsOut(key, player, ems, gss);
+      break;
     case getActionKey(CHARGROAR, 2):
-      return new Hypercharge(key, player, ems, gss);
+      break;
     case getActionKey(CHARGROAR, 3):
-      return new BlazingRoar(key, player, ems, gss);
+      break;
     case getBuffKey(CHARGROAR, 0):
-      return new Charge(key, player, ems, gss);
+      break;
     case getBuffKey(CHARGROAR, 1):
-      return new Roar(key, player, ems, gss);
+      break;
     case getBuffKey(CHARGROAR, 2):
-      return new Revenge(key, player, ems, gss);
+      break;
     case getBuffKey(CHARGROAR, 3):
-      return new PreyUpon(key, player, ems, gss);
+      break;
     // ***
     case VULTUROCK:
-      return null;
+      break;
     case getActionKey(VULTUROCK, 0):
-      return null;
+      break;
     case getActionKey(VULTUROCK, 1):
-      return null;
+      break;
     case getActionKey(VULTUROCK, 2):
-      return null;
+      break;
     case getActionKey(VULTUROCK, 3):
-      return null;
+      break;
     case getBuffKey(VULTUROCK, 0):
-      return null;
+      break;
     case getBuffKey(VULTUROCK, 1):
-      return null;
+      break;
     case getBuffKey(VULTUROCK, 2):
-      return null;
+      break;
     case getBuffKey(VULTUROCK, 3):
-      return null;
+      break;
     // ***
     case WILLARD:
-      return null;
+      break;
     case getActionKey(WILLARD, 0):
-      return null;
+      break;
     case getActionKey(WILLARD, 1):
-      return null;
+      break;
     case getActionKey(WILLARD, 2):
-      return null;
+      break;
     case getActionKey(WILLARD, 3):
-      return null;
+      break;
     case getBuffKey(WILLARD, 0):
-      return null;
+      break;
     case getBuffKey(WILLARD, 1):
-      return null;
+      break;
     case getBuffKey(WILLARD, 2):
-      return null;
+      break;
     case getBuffKey(WILLARD, 3):
-      return null;
+      break;
     // ***
     case ZAPPGUIN:
-      return null;
+      break;
     case getActionKey(ZAPPGUIN, 0):
-      return null;
+      break;
     case getActionKey(ZAPPGUIN, 1):
-      return null;
+      break;
     case getActionKey(ZAPPGUIN, 2):
-      return null;
+      break;
     case getActionKey(ZAPPGUIN, 3):
-      return null;
+      break;
     case getBuffKey(ZAPPGUIN, 0):
-      return null;
+      break;
     case getBuffKey(ZAPPGUIN, 1):
-      return null;
+      break;
     case getBuffKey(ZAPPGUIN, 2):
-      return null;
+      break;
     case getBuffKey(ZAPPGUIN, 3):
-      return null;
+      break;
     // ***
     case PHANTOMATON:
-      return null;
+      break;
     case getActionKey(PHANTOMATON, 0):
-      return null;
+      break;
     case getActionKey(PHANTOMATON, 1):
-      return null;
+      break;
     case getActionKey(PHANTOMATON, 2):
-      return null;
+      break;
     case getActionKey(PHANTOMATON, 3):
-      return null;
+      break;
     case getBuffKey(PHANTOMATON, 0):
-      return null;
+      break;
     case getBuffKey(PHANTOMATON, 1):
-      return null;
+      break;
     case getBuffKey(PHANTOMATON, 2):
-      return null;
+      break;
     case getBuffKey(PHANTOMATON, 3):
-      return null;
+      break;
     // ***
     case STALAGROWTH:
-      return null;
+      break;
     case getActionKey(STALAGROWTH, 0):
-      return null;
+      break;
     case getActionKey(STALAGROWTH, 1):
-      return null;
+      break;
     case getActionKey(STALAGROWTH, 2):
-      return null;
+      break;
     case getActionKey(STALAGROWTH, 3):
-      return null;
+      break;
     case getBuffKey(STALAGROWTH, 0):
-      return null;
+      break;
     case getBuffKey(STALAGROWTH, 1):
-      return null;
+      break;
     case getBuffKey(STALAGROWTH, 2):
-      return null;
+      break;
     case getBuffKey(STALAGROWTH, 3):
-      return null;
+      break;
     // ***
     case GALEAFFY:
-      return null;
+      break;
     case getActionKey(GALEAFFY, 0):
-      return null;
+      break;
     case getActionKey(GALEAFFY, 1):
-      return null;
+      break;
     case getActionKey(GALEAFFY, 2):
-      return null;
+      break;
     case getActionKey(GALEAFFY, 3):
-      return null;
+      break;
     case getBuffKey(GALEAFFY, 0):
-      return null;
+      break;
     case getBuffKey(GALEAFFY, 1):
-      return null;
+      break;
     case getBuffKey(GALEAFFY, 2):
-      return null;
+      break;
     case getBuffKey(GALEAFFY, 3):
-      return null;
+      break;
     // ***
     case DROWNIGATOR:
-      return null;
+      break;
     case getActionKey(DROWNIGATOR, 0):
-      return null;
+      break;
     case getActionKey(DROWNIGATOR, 1):
-      return null;
+      break;
     case getActionKey(DROWNIGATOR, 2):
-      return null;
+      break;
     case getActionKey(DROWNIGATOR, 3):
-      return null;
+      break;
     case getBuffKey(DROWNIGATOR, 0):
-      return null;
+      break;
     case getBuffKey(DROWNIGATOR, 1):
-      return null;
+      break;
     case getBuffKey(DROWNIGATOR, 2):
-      return null;
+      break;
     case getBuffKey(DROWNIGATOR, 3):
-      return null;
+      break;
     // ***
     case FLEXFERNO:
-      return null;
+      break;
     case getActionKey(FLEXFERNO, 0):
-      return null;
+      break;
     case getActionKey(FLEXFERNO, 1):
-      return null;
+      break;
     case getActionKey(FLEXFERNO, 2):
-      return null;
+      break;
     case getActionKey(FLEXFERNO, 3):
-      return null;
+      break;
     case getBuffKey(FLEXFERNO, 0):
-      return null;
+      break;
     case getBuffKey(FLEXFERNO, 1):
-      return null;
+      break;
     case getBuffKey(FLEXFERNO, 2):
-      return null;
+      break;
     case getBuffKey(FLEXFERNO, 3):
-      return null;
+      break;
   }
 }
 const CHARGROAR = 'CHARGROAR';

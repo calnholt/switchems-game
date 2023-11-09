@@ -1,8 +1,8 @@
-import { MonsterAction } from "../../../models/monster/monster-action.model";
-import { Monster } from "../../../models/monster/monster.model";
-import { GameState, PlayerState } from "../../../services/game-state/game-state.service";
-import { GameStateUtil } from "../../../services/game-state/game-state.util";
-import { PlayerType } from "../logic/condition.model";
+import { MonsterAction } from "../../models/monster/monster-action.model";
+import { Monster } from "../../models/monster/monster.model";
+import { GameState, PlayerState } from "../../services/game-state/game-state.service";
+import { GameStateUtil } from "../../services/game-state/game-state.util";
+import { PlayerType } from "../player-type.mode";
 
 export const DamageCalcUtil = {
   calculateDamage,

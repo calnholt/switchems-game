@@ -4,8 +4,7 @@ import { SelectedAction } from '../selected-action/selected-action.model';
 import { PlayerService } from '../player/player.service';
 import { SelectedActionType } from '~/app/shared/interfaces/ISelectableAction.interface';
 import { MonsterAction } from '../../models/monster/monster-action.model';
-import { Condition, PlayerType } from '../../components/game/logic/condition.model';
-import { TriggerService } from '../triggers/trigger.service';
+import { PlayerType } from '../../logic/player-type.mode';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +20,6 @@ export class ResolveActionsService {
 
   constructor(
     private playerService: PlayerService,
-    private triggerService: TriggerService,
   ) { }
 
   async resolve(selectedAction: SelectedAction, opponentAction: SelectedAction) {
@@ -38,7 +36,6 @@ export class ResolveActionsService {
     const oSpeed = (oMonster.actions.find(a => a.key() === oKey) as MonsterAction)?.speed;
     const firstPlayer = this.getFirstPlayer(initiative, type, speed, oInitiative, oType, oSpeed);
     // send out faster event
-    this.triggerService.faster$.next(new Condition(true, firstPlayer, firstPlayer === 'P' ? key : oKey));
     await new Promise(resolve => setTimeout(resolve, 100));
     // apply stat cubes
     if (selectedAction.statBoardSection) {

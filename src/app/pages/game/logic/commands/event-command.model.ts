@@ -1,6 +1,5 @@
 import { EventCommandQueueService } from "~/app/pages/game/services/event-command-queue/event-command-queue.service";
 import { STAT_PIP_TYPES } from "./stat-pip-commands.model";
-import { PlayerType } from "../condition.model";
 import { SWITCH_TYPES } from "./swtich-commands.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { MONSTER_ACTION_COMMANDS } from "./monster-action-commands.model";
@@ -8,6 +7,7 @@ import { STAT_MODIFICATION_COMMANDS } from "./stat-modification-command.model";
 import { BUFF_COMMANDS } from "./buff-command.model";
 import { HAND_COMMAND_TYPES } from "./hand-commands.model";
 import { ONGOING_TURN_COMMAND_TYPES } from "./ongoing-turn-commands.model";
+import { PlayerType } from "../player-type.mode";
 
 export abstract class EventCommand<T extends CommandData> {
   readonly receiver: EventCommandQueueService;

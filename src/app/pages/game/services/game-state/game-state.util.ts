@@ -1,9 +1,8 @@
 import { ISelectableAction } from "~/app/shared/interfaces/ISelectableAction.interface";
-import { PlayerType } from "../../components/game/logic/condition.model";
 import { GameState, PlayerState } from "./game-state.service";
 import { MonsterAction } from "../../models/monster/monster-action.model";
-import { DamageCalcUtil } from "../../components/game/util/damage-calc.util";
-import { PlayerTrackedEventKey } from "../tracked-events/player-tracked-events.service";
+import { PlayerType } from "../../logic/player-type.mode";
+import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 
 export const GameStateUtil = {
   isFaster,
@@ -13,9 +12,9 @@ export const GameStateUtil = {
   getPlayerStates,
   getMonsterAction,
   dealsXDamage,
-  hasPlayerTrackedEvent,
   getNumBuffSlotsUsed,
   opponentHasKnockedOutMonster,
+  getFirstPlayer,
 }
 
 function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
@@ -80,14 +79,42 @@ function getPlayerStates(gs: GameState, playerType: PlayerType) {
   return { p: getPlayerState(gs, playerType), o: getOpponentPlayerState(gs, playerType) };
 }
 
-function hasPlayerTrackedEvent(gs: GameState, playerType: PlayerType, type: PlayerTrackedEventKey) {
-  return getPlayerState(gs, playerType).playerTrackedEvents.has(type);
-}
-
 function getNumBuffSlotsUsed(gs: GameState, playerType: PlayerType) {
   return getPlayerState(gs, playerType).selectedAction.getNumBuffSlotsUsed();
 }
 
 function opponentHasKnockedOutMonster(gs: GameState, playerType: PlayerType) {
   return !!getOpponentPlayerState(gs, playerType).inactiveMonsters.find(m => m.currentHp === 0);
+}
+
+function getFirstPlayer(gs: GameState, playerType: PlayerType): PlayerType {
+  const { p, o } = getPlayerStates(gs, playerType);
+  if (!p.selectedAction.action || !o.selectedAction.action) return 'T';
+  const monster = p.activeMonster;
+  const oMonster = o.activeMonster;
+  const initiative = monster.initiative;
+  const oInitiative = oMonster.initiative;
+  const type = p.selectedAction.action.getSelectableActionType();
+  const oType = o.selectedAction.action.getSelectableActionType();
+  const key = p.selectedAction.action.key();
+  const oKey = o.selectedAction.action.key();
+  const speed = (monster.actions.find(a => a.key() === key) as MonsterAction)?.speed;
+  const oSpeed = (oMonster.actions.find(a => a.key() === oKey) as MonsterAction)?.speed;
+  if (type !== oType) {
+    if (type === 'SWITCH') return 'P';
+    if (oType === 'SWITCH') return 'O';
+    if (type === 'MONSTER') return 'P';
+    if (oType === 'MONSTER') return 'O';
+    if (type === 'STANDARD') return 'O';
+    return 'P';
+  }
+  else {
+    if (type === 'SWITCH' || type === 'STANDARD') {
+      return initiative > oInitiative ? 'P' : 'O';
+    }
+    if (speed !== oSpeed) {
+      return speed > oSpeed ? 'P' : 'O';
+    }
+    return initiative > oInitiative ? 'P' : 'O';
+  }
 }

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Monster } from '../../../models/monster/monster.model';
-import { StatBoard } from '../../../models/stat-board/stat-board.model';
-import { PlayerCardManager } from '../../../models/player/player-card-manager.model';
-import { PlayerService } from '../../../services/player/player.service';
-import { StandardAction } from '../../../models/standard-action/standard-action.model';
+import { Monster } from '../../models/monster/monster.model';
+import { StatBoard } from '../../models/stat-board/stat-board.model';
+import { PlayerCardManager } from '../../models/player/player-card-manager.model';
+import { PlayerService } from '../../services/player/player.service';
+import { StandardAction } from '../../models/standard-action/standard-action.model';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 
 @Component({
