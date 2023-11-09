@@ -24,6 +24,10 @@ export abstract class EventCommand<T extends CommandData> {
     this.receiver.fireTriggers(this.type);
   }
 
+  public executeAsTrigger(type: EventCommandType) {
+    this.receiver.registerTrigger(type, this);
+  }
+
   abstract getDisplayMessage(): string;
 
   public skipMessage(): boolean {
@@ -53,6 +57,7 @@ export type EventCommandType =
 
 export interface CommandData {
   monsterName?: string;
-  key?: CardCompositeKey;
+  key: CardCompositeKey;
   player: PlayerType;
+  destroyOnTrigger?: boolean;
 };

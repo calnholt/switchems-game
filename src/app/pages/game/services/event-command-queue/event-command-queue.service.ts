@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Queue } from '~/app/shared/classes/queue.model';
-import { CommandData, EventCommand, EventCommandType } from '../../components/game/logic/commands/event-command.model';
 import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
+import { EventCommand, CommandData, EventCommandType } from '../../logic/commands/event-command.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +32,7 @@ export class EventCommandQueueService {
 
     while (!this._queue.isEmpty() && !this._isAwaitingDecision) {
       const command = this._queue.dequeue();
+      if (!command) break;
       if (command?.requiresDecision()) {
         // The command requires a player decision to proceed
         this._isAwaitingDecision = true;
@@ -39,6 +40,9 @@ export class EventCommandQueueService {
         break; // Exit the loop and wait for the decision
       } else {
         command?.execute();
+        if (command?.data.destroyOnTrigger) {
+          this.unregisterTrigger(command.type, command.data.key);
+        }
       }
     }
 

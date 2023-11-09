@@ -14,7 +14,6 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, ems: EventManag
     case CHARGROAR:
       break;
     case getActionKey(CHARGROAR, 0):
-      // 
       break;
     case getActionKey(CHARGROAR, 1):
       break;
