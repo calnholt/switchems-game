@@ -10,17 +10,19 @@ export class Buff implements IHaveTooltip, ICompositeKey {
   private _auraDuration: number;
   private _terms: Term[] = [];
   private _isSuper: boolean;
+  readonly index: number;
 
-  constructor(monsterName: string, name: string, text: string, auraDuration: number) {
+  constructor(monsterName: string, name: string, text: string, auraDuration: number, index: number) {
     this._monsterName = monsterName;
     this._name = name;
     this._text = text;
     this._auraDuration = auraDuration;
     this._terms = AbilityTextUtil.getTermsFromText(text);
     this._isSuper = text.includes('~SUPER~');
+    this.index = index;
   }
   
-  key(): CardCompositeKey { return `${this.monsterName}_${this.name}`; }
+  key(): CardCompositeKey { return `${this.monsterName.replaceAll(' ', '').toUpperCase()}_B${this.index}`; }
   hasTooltip(): boolean { return !!this._terms.length; }
 
   get buffSlots(): number { return this.isSuper ? 2 : 1; }

@@ -11,10 +11,12 @@ import { StatBoardSection } from '../../models/stat-board/stat-board.model';
 export class SelectedActionService {
 
   private _selectedAction$: BehaviorSubject<SelectedAction> = new BehaviorSubject(new SelectedAction(undefined));
+  private _oSelectedAction = new SelectedAction(undefined);
 
   public get selectedAction$() { return this._selectedAction$; } 
   public get selectedAction() { return this._selectedAction$.value; }
   public get action() { return this._selectedAction$.value.action; }
+  public get oSelectedAction() { return this._oSelectedAction; }
 
   public selectAction(newAction: ISelectableAction) {
     this._selectedAction$.next(new SelectedAction(newAction));

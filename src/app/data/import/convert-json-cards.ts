@@ -37,13 +37,13 @@ export const convertFromJSON = (all: Array<any>): Array<Monster> => {
       json.passive,
       json.hp,
       json.initiative,
-      json.actions.map((a: any) => getMonsterAction(json.name, a)),
-      json.buffs.map((b: any) => getBuff(json.name, b)),
+      json.actions.map((a: any, i: number) => getMonsterAction(json.name, a, i)),
+      json.buffs.map((b: any, i: number) => getBuff(json.name, b, i)),
     );
   });
 }
 
-const getMonsterAction = (monsterName: string, action: any): MonsterAction => {
+const getMonsterAction = (monsterName: string, action: any, i: number): MonsterAction => {
   return new MonsterAction(
     action.name,
     monsterName,
@@ -51,7 +51,7 @@ const getMonsterAction = (monsterName: string, action: any): MonsterAction => {
     action.attack,
     action.speed,
     action.element,
-    0,
+    i,
     action.statusFlg,
     action.buff,
     action.discard,
@@ -59,11 +59,12 @@ const getMonsterAction = (monsterName: string, action: any): MonsterAction => {
   );
 }
 
-const getBuff = (monsterName: string, buff: any): Buff => {
+const getBuff = (monsterName: string, buff: any, i: number): Buff => {
   return new Buff(
     monsterName,
     buff.buffName,
     buff.buffText,
-    buff.auraDuration
+    buff.auraDuration,
+    i
   );
 }

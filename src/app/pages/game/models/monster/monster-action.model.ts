@@ -94,7 +94,7 @@ export class MonsterAction implements ISelectableAction, IHaveTooltip {
   getDisplayName = (): string => { return this._name; } 
   getSelectableActionType = (): SelectedActionType => { return 'MONSTER'; } 
   canApplyStat = (): boolean => { return !this._isStatus; } 
-  key = (): CardCompositeKey => { return `${this.monsterName}_${this.name}`; } 
+  key = (): CardCompositeKey => { return `${this.monsterName.replaceAll(' ', '').toUpperCase()}_A${this.index}`; } 
   // end
 
 }

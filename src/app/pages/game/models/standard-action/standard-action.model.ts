@@ -24,7 +24,7 @@ export class StandardAction implements ISelectableAction {
   getDisplayName = (): string => { return this._name; } 
   getSelectableActionType = (): SelectedActionType => { return 'STANDARD'; } 
   canApplyStat = (): boolean => { return false; } 
-  key = (): CardCompositeKey => { return `Standard Action_${this.name}`; }
+  key = (): CardCompositeKey => { return `SA_${this.name.replaceAll(' ', '').toUpperCase()}`; }
   // end
 
 

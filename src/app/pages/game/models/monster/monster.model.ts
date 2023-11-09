@@ -58,7 +58,7 @@ export class Monster implements IHaveTooltip, ISelectableAction {
   getDisplayName = (): string => { return `Switch to ${this._name}`; } 
   getSelectableActionType = (): SelectedActionType => { return 'SWITCH'; } 
   canApplyStat = (): boolean => { return false; } 
-  key(): CardCompositeKey { return this.name; }
+  key(): CardCompositeKey { return this.name.replaceAll(' ', '').toUpperCase(); }
   // end
   hasTooltip () {
     return !!(this._switchIn || this._passive);
