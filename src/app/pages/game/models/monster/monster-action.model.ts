@@ -4,6 +4,7 @@ import { ElemType } from "~/app/shared/types/dataTypes";
 import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ISelectableAction, SelectedActionType } from "~/app/shared/interfaces/ISelectableAction.interface";
+import { ActionModifierType, Modifiers } from "../../components/game/logic/modifiers/modifier.model";
 
 export class MonsterAction implements ISelectableAction, IHaveTooltip {
   private _name: string;
@@ -22,6 +23,8 @@ export class MonsterAction implements ISelectableAction, IHaveTooltip {
   private _currentBuffSlots: number;
   private _currentDiscardSlots: number;
   private _draw: number;
+
+  readonly modifiers: Modifiers<ActionModifierType> = new Modifiers();
 
   constructor(
     name: string,

@@ -5,6 +5,7 @@ import { MonsterAction } from "./monster-action.model";
 import { Buff } from "./buff.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ISelectableAction, SelectedActionType } from "~/app/shared/interfaces/ISelectableAction.interface";
+import { Modifiers, MonsterModifierType } from "../../components/game/logic/modifiers/modifier.model";
 
 export class Monster implements IHaveTooltip, ISelectableAction {
   private _name: string;
@@ -24,6 +25,8 @@ export class Monster implements IHaveTooltip, ISelectableAction {
   private _weaknesses!: ElemType[];
   private _resistances!: ElemType[];
   private _switchDefense!: number;
+
+  readonly modifiers: Modifiers<MonsterModifierType> = new Modifiers();
 
   constructor(
     name: string,

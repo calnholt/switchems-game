@@ -27,11 +27,6 @@ function getOpponentPlayerState(gs: GameState, playerType: PlayerType): PlayerSt
   return gs.p;
 }
 
-function compareInitiative(gs: GameState): PlayerType {
-  if (gs.p.activeMonster.initiative === gs.o.activeMonster.initiative) return 'T';
-  return gs.p.activeMonster.initiative > gs.o.activeMonster.initiative ? 'P' : 'O';
-}
-
 function isFaster(gs: GameState, playerType: PlayerType) {
   const { p, o } = getPlayerStates(gs, playerType);
   const selectedAction = (p.selectedAction.action as ISelectableAction);
@@ -44,8 +39,10 @@ function isFaster(gs: GameState, playerType: PlayerType) {
   if (type === 'MONSTER' && oType === 'STANDARD') {
     return true;
   }
-  const speed = getMonsterAction(p).speed + p.modifications.speed;
-  const oSpeed = getMonsterAction(o).speed + o.modifications.speed;
+  const action = getMonsterAction(p);
+  const oAction = getMonsterAction(o);
+  const speed = action.speed + action.modifiers.sumByType('SPEED');
+  const oSpeed = oAction.speed + oAction.modifiers.sumByType('SPEED');
   if (speed > oSpeed) {
     return true;
   }
@@ -76,7 +73,6 @@ function hasMoreHP(gs: GameState, playerType: PlayerType) {
 }
 
 function dealsXDamage(gs: GameState, playerType: PlayerType, x: number) {
-  const { p, o } = getPlayerStates(gs, playerType);
   return DamageCalcUtil.calculateDamage(gs, playerType) >= x;
 }
 

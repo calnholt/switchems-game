@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PlayerService } from '../player/player.service';
 import { SelectedActionService } from '../selected-action/selected-action.service';
-import { StatModificationService, StatModifications } from '../stat-modification/stat-modification.service';
 import { Monster } from '../../models/monster/monster.model';
 import { PlayerCardManager } from '../../models/player/player-card-manager.model';
 import { StatBoard } from '../../models/stat-board/stat-board.model';
@@ -19,7 +18,6 @@ export interface PlayerState {
   playerCardManager: PlayerCardManager;
   statBoard: StatBoard;
   selectedAction: SelectedAction;
-  modifications: StatModifications;
   playerTrackedEvents: Map<PlayerTrackedEventKey, number | boolean>;
 }
 
@@ -31,7 +29,6 @@ export class GameStateService {
   constructor(
     private playerService: PlayerService,
     private selectedActionService: SelectedActionService,
-    private statModificationService: StatModificationService,
     private playerTrackedEventsService: PlayerTrackedEventsService,
   ) { }
 
@@ -51,10 +48,6 @@ export class GameStateService {
       oSelectedAction,
     } = this.selectedActionService;
     const {
-      modifications,
-      oModifications,
-    } = this.statModificationService;
-    const {
       playerTrackedEvents,
       oPlayerTrackedEvents
     } = this.playerTrackedEventsService;
@@ -66,7 +59,6 @@ export class GameStateService {
         inactiveMonsters,
         playerCardManager,
         statBoard,
-        modifications,
         playerTrackedEvents
       },
       o: {
@@ -75,7 +67,6 @@ export class GameStateService {
         inactiveMonsters: oInactiveMonsters,
         playerCardManager: oPlayerCardManager,
         statBoard: oStatBoard,
-        modifications: oModifications,
         playerTrackedEvents: oPlayerTrackedEvents
       }
     }
