@@ -60,4 +60,5 @@ export interface CommandData {
   key: CardCompositeKey;
   player: PlayerType;
   destroyOnTrigger?: boolean;
+  triggersPrompt?: boolean;
 };

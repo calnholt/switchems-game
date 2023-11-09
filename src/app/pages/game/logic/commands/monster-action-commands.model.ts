@@ -11,6 +11,7 @@ export type MONSTER_ACTION_COMMANDS =
   | 'TAKE_RECOIL_DAMAGE'
   | 'APPLY_STATUS_EFFECT'
   | 'REMOVE_STATUS_EFFECT'
+  | 'DISABLE_ACTION_PROMPT'
 
 
 interface BasicCommandData extends CommandData {
@@ -103,5 +104,17 @@ export class RemoveStatusCommand extends EventCommand<ApplyStatusEffectCommandDa
   }
   override getDisplayMessage(): string {
     return `${this.data.statusName} was removed from ${this.data.monsterName}.`;
+  }
+}
+export class DisableActionPromptCommand extends EventCommand<BasicCommandData> {
+  constructor(receiver: EventCommandQueueService, data: BasicCommandData) {
+    super(receiver, 'DISABLE_ACTION_PROMPT', { ...data, triggersPrompt: true });
+  }
+  override getDisplayMessage(): string {
+    return '';
+  }
+
+  public override skipMessage(): boolean {
+    return true;
   }
 }
