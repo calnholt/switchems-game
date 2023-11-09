@@ -20,19 +20,19 @@ function LightningFangAction(key: CardCompositeKey, player: PlayerType, ecqs: Ev
   }
 }
 
-function LightsOutAction(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService, gss: GameStateService) {
+function LightsOutAction(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService) {
   const cmd = new GainStatPipCommand(ecqs, { key, player, amount: 2, type: "SPEED" });
   cmd.executeAsTrigger('KNOCKED_OUT_BY_ATTACK');
 }
 
-function HyperChargeAction(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService, gss: GameStateService) {
+function HyperChargeAction(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService) {
   const cmdA = new GainStatPipCommand(ecqs, { key, player, amount: 3, type: "ATTACK", destroyOnTrigger: true });
   cmdA.execute();
   const cmdB = new StatModificationCommand(ecqs, { key, player, amount: 3, statType: 'attack' });
   cmdB.execute();
 }
 
-function BlazingRoar(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService, gss: GameStateService) {
+function BlazingRoar(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService) {
   const cmdA = new GainRandomStatPipCommand(ecqs, { key, player, amount: 1, type: 'RANDOM' });
   cmdA.execute();
   const cmdB = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'pierce' });
