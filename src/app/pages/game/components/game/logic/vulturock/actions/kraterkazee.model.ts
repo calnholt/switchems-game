@@ -7,7 +7,7 @@ import { StatModificationUtil } from "~/app/pages/game/services/stat-modificatio
 import { GameStateUtil } from "~/app/pages/game/services/game-state/game-state.util";
 import { IActionEffect } from "../../IActionEffect.interface";
 
-export class BlazingRoar extends CardEffect implements IActionEffect {
+export class Kraterkazee extends CardEffect implements IActionEffect {
 
   constructor(key: CardCompositeKey, player: PlayerType, ems: EventManagerService, gss: GameStateService) {
     super(key, player, ems, gss);
@@ -16,12 +16,9 @@ export class BlazingRoar extends CardEffect implements IActionEffect {
   override onTrigger(): void {
     return;
   }
-  beforeAction(): void {
-    this.gss.getGameState().p.statBoard.gainRandom(1);
 
-    // gain 1 pierce for each buff slots used
-    const num = GameStateUtil.getNumBuffSlotsUsed(this.gss.getGameState(), this.playerType);
-    StatModificationUtil.modifyPierce(this.ems, num, this.playerType);
+  beforeAction(): void {
+    StatModificationUtil.modifyRecoil(this.ems, 2, this.playerType);
   }
   
   afterAction(): void {

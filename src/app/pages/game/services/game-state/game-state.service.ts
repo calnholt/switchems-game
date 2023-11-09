@@ -6,7 +6,7 @@ import { Monster } from '../../models/monster/monster.model';
 import { PlayerCardManager } from '../../models/player/player-card-manager.model';
 import { StatBoard } from '../../models/stat-board/stat-board.model';
 import { SelectedAction } from '../selected-action/selected-action.model';
-import { PlayerTrackedEventsService, PlayerTrackedEventsType } from '../tracked-events/player-tracked-events.service';
+import { PlayerTrackedEventsService, PlayerTrackedEventKey } from '../tracked-events/player-tracked-events.service';
 
 export interface GameState {
   p: PlayerState;
@@ -20,7 +20,7 @@ export interface PlayerState {
   statBoard: StatBoard;
   selectedAction: SelectedAction;
   modifications: StatModifications;
-  playerTrackedEvents: Map<PlayerTrackedEventsType, number | boolean>;
+  playerTrackedEvents: Map<PlayerTrackedEventKey, number | boolean>;
 }
 
 @Injectable({

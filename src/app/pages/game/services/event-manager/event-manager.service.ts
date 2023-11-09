@@ -4,6 +4,8 @@ import { GameUISelectionEvent, GameUISelectionEventType } from '../game-ui-selec
 import { GameUISelectionService } from '../game-ui-selection/game-ui-selection.service';
 import { StatModificationEvent, StatModificationEventType } from '../stat-modification/stat-modification.model';
 import { StatModificationService } from '../stat-modification/stat-modification.service';
+import { PlayerTrackedEventsService } from '../tracked-events/player-tracked-events.service';
+import { PlayerTrackedEvent, PlayerTrackedEventType } from '../tracked-events/player-tracked-events.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,7 @@ export class EventManagerService {
   constructor(
     private gameUISelectionService: GameUISelectionService,
     private statModificationService: StatModificationService,
+    private playerTrackedEventsService: PlayerTrackedEventsService
   ) { }
 
   public sendEvent(event: EventDataType) {
@@ -21,6 +24,9 @@ export class EventManagerService {
     }
     if (Object.values(StatModificationEventType).includes(event.type as StatModificationEventType)) {
       this.statModificationService.sendEvent(event as StatModificationEvent)
+    }
+    if (Object.values(PlayerTrackedEventType).includes(event.type as PlayerTrackedEventType)) {
+      this.playerTrackedEventsService.addEvent(event as PlayerTrackedEvent);
     }
   }
 }

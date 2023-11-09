@@ -3,7 +3,7 @@ import { PlayerType } from "../../components/game/logic/condition.model";
 import { GameState, PlayerState } from "./game-state.service";
 import { MonsterAction } from "../../models/monster/monster-action.model";
 import { DamageCalcUtil } from "../../components/game/util/damage-calc.util";
-import { PlayerTrackedEventsType } from "../tracked-events/player-tracked-events.service";
+import { PlayerTrackedEventKey } from "../tracked-events/player-tracked-events.service";
 
 export const GameStateUtil = {
   isFaster,
@@ -84,7 +84,7 @@ function getPlayerStates(gs: GameState, playerType: PlayerType) {
   return { p: getPlayerState(gs, playerType), o: getOpponentPlayerState(gs, playerType) };
 }
 
-function hasPlayerTrackedEvent(gs: GameState, playerType: PlayerType, type: PlayerTrackedEventsType) {
+function hasPlayerTrackedEvent(gs: GameState, playerType: PlayerType, type: PlayerTrackedEventKey) {
   return getPlayerState(gs, playerType).playerTrackedEvents.has(type);
 }
 

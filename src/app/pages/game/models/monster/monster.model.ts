@@ -132,4 +132,12 @@ export class Monster implements IHaveTooltip, ISelectableAction {
     return this._actions.find(a => a.key() === key) as MonsterAction;
   }
 
+  heal(value: number) {
+    let total = value + this._currentHp;
+    if (total > this._hp) {
+      total = this._hp;
+    }
+    this._currentHp = total;
+  }
+
 }

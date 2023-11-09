@@ -19,6 +19,21 @@ export class StatBoard {
     this.getSectionFromType(type).gain(amount);
   }
 
+  gainRandom(amount: number) {
+    for (let i = 0; i < amount; i++) {
+      const random = Math.floor(Math.random() * 3);
+      if (random === 0) {
+        this.gain(1, 'ATTACK');
+      }
+      else if (random === 1) {
+        this.gain(1, 'DEFENSE');
+      }
+      else {
+        this.gain(1, 'SPEED');
+      }
+    }
+  }
+
 };
 
 export class StatBoardSection {

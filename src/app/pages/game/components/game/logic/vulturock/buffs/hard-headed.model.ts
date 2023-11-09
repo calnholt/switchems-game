@@ -1,28 +1,31 @@
 import { EventManagerService } from "~/app/pages/game/services/event-manager/event-manager.service";
 import { GameStateService } from "~/app/pages/game/services/game-state/game-state.service";
 import { GameStateUtil } from "~/app/pages/game/services/game-state/game-state.util";
+import { StatModificationUtil } from "~/app/pages/game/services/stat-modification/stat-modification.util";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { CardEffect } from "../../card-effect.model";
 import { PlayerType } from "../../condition.model";
-import { PlayerTrackedEventKey } from "~/app/pages/game/services/tracked-events/player-tracked-events.service";
 import { IActionEffect } from "../../IActionEffect.interface";
 
-export class LightsOut extends CardEffect implements IActionEffect {
-  
+export class HardHeaded extends CardEffect implements IActionEffect {
+
   constructor(key: CardCompositeKey, player: PlayerType, ems: EventManagerService, gss: GameStateService) {
     super(key, player, ems, gss);
-  }
-
-  beforeAction(): void {}
-
-  afterAction(): void { 
-    if (GameStateUtil.hasPlayerTrackedEvent(this.gss.getGameState(), this.playerType, PlayerTrackedEventKey.monsterKnockedOutByAttack)) {
-      // TODO: gain 2 speed cubes
-    }
   }
 
   override onTrigger(): void {
     return;
   }
-
+  beforeAction(): void {
+    const opponentSelectedMonsterAction = 
+        this.gss.getGameState().o.selectedAction.action?.getSelectableActionType() === 'MONSTER';
+    if (opponentSelectedMonsterAction) {
+      StatModificationUtil.modifyRecoil(this.ems, 2, this.getOppositePlayerType());
+    }
+  }
+  
+  afterAction(): void {
+    return;
+  }
+  
 }

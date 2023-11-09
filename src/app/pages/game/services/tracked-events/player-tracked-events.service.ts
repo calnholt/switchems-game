@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { PlayerType } from '../../components/game/logic/condition.model';
+import { PlayerTrackedEvent } from './player-tracked-events.model';
 
-export enum PlayerTrackedEventsType {
+export enum PlayerTrackedEventKey {
   monsterKnockedOutByAttack = 'monsterKnockedOutByAttack',
   damageTaken = 'damageTaken',
   // speedReverse?: boolean;
@@ -16,17 +17,17 @@ export enum PlayerTrackedEventsType {
 })
 export class PlayerTrackedEventsService {
 
-  readonly playerTrackedEvents$ = new BehaviorSubject<Map<PlayerTrackedEventsType, number | boolean>>(new Map());
-  readonly oPlayerTrackedEvents$ = new BehaviorSubject<Map<PlayerTrackedEventsType, number | boolean>>(new Map());
+  readonly playerTrackedEvents$ = new BehaviorSubject<Map<PlayerTrackedEventKey, number | boolean>>(new Map());
+  readonly oPlayerTrackedEvents$ = new BehaviorSubject<Map<PlayerTrackedEventKey, number | boolean>>(new Map());
 
   public get playerTrackedEvents() { return this.playerTrackedEvents$.value; }
   public get oPlayerTrackedEvents() { return this.oPlayerTrackedEvents$.value; }
 
   constructor() { }
 
-  public addEvent(type: PlayerTrackedEventsType, value: any, playerType: PlayerType) {
-    this.getPlayerTrackedEvents(playerType).set(type, value);
-    this.getPlayerTrackedEvents$(playerType).next(this.getPlayerTrackedEvents(playerType));
+  public addEvent(event: PlayerTrackedEvent) {
+    this.getPlayerTrackedEvents(event.playerType).set(event.data.key, event.data.value);
+    this.getPlayerTrackedEvents$(event.playerType).next(this.getPlayerTrackedEvents(event.playerType));
   }
 
   private getPlayerTrackedEvents$(playerType: PlayerType) {
