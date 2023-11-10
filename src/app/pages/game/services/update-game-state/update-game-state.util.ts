@@ -4,7 +4,7 @@ import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/m
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyStatusEffectCommandData, DealDamageCommandData, KnockedOutByAttackCommand } from "../../logic/commands/monster-action-commands.model";
 import { GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
-import { ApplyFlinchCommand, StatModificationData } from "../../logic/commands/stat-modification-command.model";
+import { StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
 import { EventCommandQueueService } from "../event-command-queue/event-command-queue.service";
 import { EventCommand, CommandData } from "../../logic/commands/event-command.model";
@@ -24,6 +24,7 @@ export const UpdateGameStateUtil = {
   preventRecoil,
   flinched,
   removeStatusEffect,
+  gainRandomStatPip,
 }
 
 function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }
@@ -114,5 +115,8 @@ function removeStatusEffect(gs: GameState, data: ApplyStatusEffectCommandData) {
   monster.modifiers.remove(data.statusName);
 }
 function weak(gs: GameState, data: CommandData, ecqs: EventCommandQueueService) {
-  return new GainRandomStatPipCommand(ecqs, { key: 'pip', amount: 1, wasRandom: true })
+  return new GainRandomStatPipCommand(ecqs, { key: 'pip', amount: 1 })
+}
+function gainRandomStatPip() {
+
 }

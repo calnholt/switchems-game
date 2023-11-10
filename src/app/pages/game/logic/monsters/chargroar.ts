@@ -24,7 +24,7 @@ function ChargroarMonster(key: CardCompositeKey, player: PlayerType, ecqs: Event
 
 function LightningFangAction(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService, isFaster: boolean) {
   if (isFaster) {
-    const cmd = new StatModificationCommand(ecqs, { key, player, amount: 3, statType: "attack" });
+    const cmd = new StatModificationCommand(ecqs, { key, player, amount: 3, statType: "ATTACK" });
     cmd.execute();
   }
 }
@@ -37,51 +37,51 @@ function LightsOutAction(key: CardCompositeKey, player: PlayerType, ecqs: EventC
 function HyperChargeAction(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService) {
   const cmdA = new GainStatPipCommand(ecqs, { key, player, amount: 3, statType: "ATTACK", destroyOnTrigger: true });
   cmdA.execute();
-  const cmdB = new StatModificationCommand(ecqs, { key, player, amount: 3, statType: 'attack' });
+  const cmdB = new StatModificationCommand(ecqs, { key, player, amount: 3, statType: 'ATTACK' });
   cmdB.execute();
 }
 
 function BlazingRoarAction(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService) {
-  const cmdA = new GainRandomStatPipCommand(ecqs, { key, player, amount: 1, statType: 'RANDOM' });
+  const cmdA = new GainRandomStatPipCommand(ecqs, { key, player, amount: 1 });
   cmdA.execute();
-  const cmdB = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'pierce' });
+  const cmdB = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'PIERCE' });
   cmdB.executeAsTrigger('APPLY_BUFF');
 }
 
 function ChargeBuff(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService, opponentHasKnockedOutMonster: boolean) {
   const value = opponentHasKnockedOutMonster ? 2 : 1;
-  const cmd = new StatModificationCommand(ecqs, { key, player, amount: value, statType: 'speed' });
+  const cmd = new StatModificationCommand(ecqs, { key, player, amount: value, statType: 'SPEED' });
   cmd.execute();
 }
 
 function RoarBuff(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService, opponentHasKnockedOutMonster: boolean) {
   const value = opponentHasKnockedOutMonster ? 2 : 1;
-  const cmd = new StatModificationCommand(ecqs, { key, player, amount: value, statType: 'attack' });
+  const cmd = new StatModificationCommand(ecqs, { key, player, amount: value, statType: 'ATTACK' });
   cmd.execute();
 }
 
 function RevengeBuff(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService, isEnemyResistant: boolean) {
   if (isEnemyResistant) {
-    const cmd = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'attack' });
+    const cmd = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'ATTACK' });
     cmd.execute();
-    const cmd2 = new StatModificationCommand(ecqs, { key, player, amount: 2, statType: 'speed' });
+    const cmd2 = new StatModificationCommand(ecqs, { key, player, amount: 2, statType: 'SPEED' });
     cmd2.execute();
   }
   else {
-    const cmd = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'recoil' });
+    const cmd = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'RECOIL' });
     cmd.execute();
   }
 }
 
 function PreyUponBuff(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService, isEnemyWeak: boolean) {
   if (isEnemyWeak) {
-    const cmd = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'attack' });
+    const cmd = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'ATTACK' });
     cmd.execute();
-    const cmd2 = new StatModificationCommand(ecqs, { key, player, amount: 2, statType: 'speed' });
+    const cmd2 = new StatModificationCommand(ecqs, { key, player, amount: 2, statType: 'SPEED' });
     cmd2.execute();
   }
   else {
-    const cmd = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'recoil' });
+    const cmd = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'RECOIL' });
     cmd.execute();
   }
 }
