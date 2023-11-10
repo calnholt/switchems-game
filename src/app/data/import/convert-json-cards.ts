@@ -6,7 +6,7 @@ import { default as Phantomaton } from '../monsters/Phantomaton.json';
 import { default as Galeaffy } from '../monsters/Galeaffy.json';
 import { default as Drownigator } from '../monsters/Drownigator.json';
 import { default as Vulturock } from '../monsters/Vulturock.json';
-import { default as Willard } from '../monsters/Willard.json';
+import { default as Whailstrom } from '../monsters/Whailstrom.json';
 import { MonsterAction } from '~/app/pages/game/models/monster/monster-action.model';
 import { Buff } from '~/app/pages/game/models/monster/buff.model';
 import { Monster } from '~/app/pages/game/models/monster/monster.model';
@@ -23,7 +23,7 @@ export const loadMonsters = (selectedMonster?: any): Array<Monster> => {
     Stalagrowth,
     Phantomaton,
     Vulturock,
-    Willard,
+    Whailstrom,
     Zappguin,
   ]);
 };

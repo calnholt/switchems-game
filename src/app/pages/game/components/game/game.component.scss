@@ -1,5 +1,23 @@
+#arena {
+  background-image: url("../../../../../assets/images/backgrounds/arena/frozen.png");
+  background-size: cover;
+  background-position-x: center;
+}
+
 #game {
-  margin: 40px;
+  margin: 0 40px;
+  // height: 924px;
+  padding-bottom: 10px;
+
+  .opponent-container {
+    height: 150px;
+  }
+
+  .actions-container {
+    background-color: #6363637d;
+    border-radius: 4px;
+    padding: 12px;
+  }
 
   .action-container {
     display: grid;

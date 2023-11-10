@@ -49,23 +49,23 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, ems: EventManag
     case getBuffKey(VULTUROCK, 3):
       break;
     // ***
-    case WILLARD:
+    case WHAILSTROM:
       break;
-    case getActionKey(WILLARD, 0):
+    case getActionKey(WHAILSTROM, 0):
       break;
-    case getActionKey(WILLARD, 1):
+    case getActionKey(WHAILSTROM, 1):
       break;
-    case getActionKey(WILLARD, 2):
+    case getActionKey(WHAILSTROM, 2):
       break;
-    case getActionKey(WILLARD, 3):
+    case getActionKey(WHAILSTROM, 3):
       break;
-    case getBuffKey(WILLARD, 0):
+    case getBuffKey(WHAILSTROM, 0):
       break;
-    case getBuffKey(WILLARD, 1):
+    case getBuffKey(WHAILSTROM, 1):
       break;
-    case getBuffKey(WILLARD, 2):
+    case getBuffKey(WHAILSTROM, 2):
       break;
-    case getBuffKey(WILLARD, 3):
+    case getBuffKey(WHAILSTROM, 3):
       break;
     // ***
     case ZAPPGUIN:
@@ -185,7 +185,7 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, ems: EventManag
 }
 const CHARGROAR = 'CHARGROAR';
 const VULTUROCK = 'VULTUROCK';
-const WILLARD = 'WILLARD';
+const WHAILSTROM = 'Whailstrom';
 const ZAPPGUIN = 'ZAPPGUIN';
 const PHANTOMATON = 'PHANTOMATON';
 const STALAGROWTH = 'STALAGROWTH';

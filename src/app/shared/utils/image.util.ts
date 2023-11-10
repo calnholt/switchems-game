@@ -36,7 +36,7 @@ export const ImageUtil = {
     Phantomaton: getMonstersPath('phantomaton'),
     Stallagrowth: getMonstersPath('stallagrowth'),
     Vulturock: getMonstersPath('vulturock'),
-    Willard: getMonstersPath('willard'),
+    Willard: getMonstersPath('whailstrom'),
     Zappguin: getMonstersPath('zappguin'),
   }
 }

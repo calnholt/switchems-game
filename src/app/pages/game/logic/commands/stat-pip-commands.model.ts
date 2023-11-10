@@ -25,12 +25,19 @@ export class GainStatPipCommand extends EventCommand<StatPipCommandData> {
   override skipMessage(): boolean { return true; }
 }
 
-export class GainRandomStatPipCommand extends EventCommand<StatPipCommandData> {
-  constructor(receiver: EventCommandQueueService, data: StatPipCommandData) {
+export interface GainRandomStatPipCommandData extends CommandData {
+  amount: number,
+}
+
+export class GainRandomStatPipCommand extends EventCommand<GainRandomStatPipCommandData> {
+  constructor(receiver: EventCommandQueueService, data: GainRandomStatPipCommandData) {
     super(receiver, 'GAIN_RANDOM_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString()}${this.data.wasRandom ? ' randomly' : ''} gained ${this.data.amount} ${this.data.statType.toLowerCase()} pips.`;
+    return ``;
+  }
+  public override skipMessage(): boolean {
+    return true;
   }
 }
 

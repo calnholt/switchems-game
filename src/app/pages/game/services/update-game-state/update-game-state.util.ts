@@ -3,12 +3,13 @@ import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyStatusEffectCommandData, DealDamageCommandData, KnockedOutByAttackCommand } from "../../logic/commands/monster-action-commands.model";
-import { StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
+import { GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { ApplyFlinchCommand, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
 import { EventCommandQueueService } from "../event-command-queue/event-command-queue.service";
 import { EventCommand, CommandData } from "../../logic/commands/event-command.model";
 import { FlinchedCommand } from "../../logic/commands/ongoing-turn-commands.model";
+import { PlayerType } from "../../logic/player-type.mode";
 
 export const UpdateGameStateUtil = {
   applyFlinch,
@@ -25,6 +26,7 @@ export const UpdateGameStateUtil = {
   removeStatusEffect,
 }
 
+function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }
 function getActionModifier(key: CardCompositeKey, type: ActionModifierType, value: number = 0, ongoing: boolean = false): Modifier<ActionModifierType> {
   return new Modifier<ActionModifierType>(key, type, value, ongoing);
 }
@@ -57,7 +59,7 @@ function dealDamage(gs: GameState, data: DealDamageCommandData, ecqs: EventComma
   const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
   monster.takeDamage(data.damageToDeal);
   if (monster.currentHp === 0) {
-    const opposingMonster = GameStateUtil.getMonsterByPlayer(gs, data.player === 'P' ? 'O' : 'P');
+    const opposingMonster = GameStateUtil.getMonsterByPlayer(gs, getOpposite(data.player));
     return new KnockedOutByAttackCommand(ecqs, { key: monster.key(), player: data.player, monsterName: monster.name, opposingMonsterName: opposingMonster.name })
   }
   if (GameStateUtil.isFaster(gs, data.player) && action.modifiers.contains('FLINCH')) {
@@ -110,4 +112,7 @@ function flinched(gs: GameState, data: StatModificationData) {
 function removeStatusEffect(gs: GameState, data: ApplyStatusEffectCommandData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.modifiers.remove(data.statusName);
+}
+function weak(gs: GameState, data: CommandData, ecqs: EventCommandQueueService) {
+  return new GainRandomStatPipCommand(ecqs, { key: 'pip', amount: 1, wasRandom: true })
 }
