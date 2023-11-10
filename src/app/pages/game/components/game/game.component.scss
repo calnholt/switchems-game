@@ -1,8 +1,28 @@
 #arena {
-  background-image: url("../../../../../assets/images/backgrounds/arena/frozen.png");
   background-size: cover;
   background-position-x: center;
   min-width: 1780px;
+
+  &.fall {
+    background-image: url("../../../../../assets/images/backgrounds/arena/fall.png");
+  }
+
+  &.frozen {
+    background-image: url("../../../../../assets/images/backgrounds/arena/frozen.png");
+  }
+
+  &.moon {
+    background-image: url("../../../../../assets/images/backgrounds/arena/moon.png");
+  }
+
+  &.jungle {
+    background-image: url("../../../../../assets/images/backgrounds/arena/jungle.png");
+  }
+
+  &.volcano {
+    background-image: url("../../../../../assets/images/backgrounds/arena/volcano.png");
+  }
+
 }
 
 #game {

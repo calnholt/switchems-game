@@ -23,6 +23,9 @@ export type ImageFile = string;
 
 export type CardTypes = `MONSTER` | `ACTION` | `BUFF` | 'EXTRA';
 
+export const ARENAS = ['fall', 'frozen', 'moon', 'jungle', 'volcano'] as const;
+export type ArenaType = typeof ARENAS[number]; 
+
 export const ICON_PATH: Path = `./assets/images`;
 export const BACKGROUNDS_PATH = ICON_PATH + `/backgrounds/`;
 export const SYMBOLS_PATH: Path = ICON_PATH + `/symbols/`;

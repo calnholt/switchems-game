@@ -5,6 +5,7 @@ import { PlayerCardManager } from '../../models/player/player-card-manager.model
 import { PlayerService } from '../../services/player/player.service';
 import { StandardAction } from '../../models/standard-action/standard-action.model';
 import { ImageUtil } from '~/app/shared/utils/image.util';
+import { ARENAS, ArenaType } from '~/app/shared/types/dataTypes';
 
 @Component({
   selector: 'sw-game',
@@ -17,6 +18,7 @@ export class GameComponent {
   statBoard!: StatBoard;
   activeMonster!: Monster;
   inactiveMonsters: Monster[] = [];
+  arena!: ArenaType;
 
   restStandardAction = new StandardAction('Rest', [
     ImageUtil.icons.draw, 
@@ -39,5 +41,11 @@ export class GameComponent {
     this.inactiveMonsters = this.playerService.inactiveMonsters;
     this.playerCardManager = this.playerService.playerCardManager;
     this.statBoard = this.playerService.statBoard;
+    this.arena = this.getRandomArena()
   }
+
+  getRandomArena(): ArenaType {
+    return ARENAS[Math.floor(Math.random() * ARENAS.length)];
+  }
+
 }
