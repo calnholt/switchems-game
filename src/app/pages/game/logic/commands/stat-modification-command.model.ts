@@ -7,8 +7,8 @@ export type STAT_MODIFICATION_COMMANDS =
   | 'TRUE_DAMAGE'
   | 'APPLY_FLINCH'
 
-interface StatModificationData extends CommandData {
-  statType?: 'attack' | 'defense' | 'speed' | 'pierce' | 'recoil';
+export interface StatModificationData extends CommandData {
+  statType: 'ATTACK' | 'DEFENSE' | 'SPEED' | 'PIERCE' | 'RECOIL';
   amount: number;
 }
 

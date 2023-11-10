@@ -9,12 +9,18 @@ export const GameStateUtil = {
   isWeak,
   isResistant,
   hasMoreHP,
+  getPlayerState, 
+  getOpponentPlayerState,
   getPlayerStates,
+  getMonsterByPlayer,
   getMonsterAction,
+  getMonsterActionByPlayer,
   dealsXDamage,
   getNumBuffSlotsUsed,
   opponentHasKnockedOutMonster,
   getFirstPlayer,
+  getStatBoardByPlayer,
+  getPlayerCardManagerByPlayer,
 }
 
 function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
@@ -52,10 +58,23 @@ function isFaster(gs: GameState, playerType: PlayerType) {
   return hasGreaterInitiative;
 }
 
+function getMonsterActionByPlayer(gs: GameState, playerType: PlayerType) {
+  const playerState = playerType === 'P' ? GameStateUtil.getPlayerState(gs, playerType) : GameStateUtil.getOpponentPlayerState(gs, playerType);
+  return GameStateUtil.getMonsterAction(playerState);
+}
+function getMonsterByPlayer(gs: GameState, playerType: PlayerType) {
+  const playerState = playerType === 'P' ? GameStateUtil.getPlayerState(gs, playerType) : GameStateUtil.getOpponentPlayerState(gs, playerType);
+  return playerState.activeMonster;
+}
 function getMonsterAction(ps: PlayerState) {
   return (ps.activeMonster.actions.find(a => a.key() === (ps.selectedAction.action as ISelectableAction).key()) as MonsterAction);
 }
-
+function getStatBoardByPlayer(gs: GameState, playerType: PlayerType) {
+  return getPlayerState(gs, playerType).statBoard;
+}
+function getPlayerCardManagerByPlayer(gs: GameState, playerType: PlayerType) {
+  return getPlayerState(gs, playerType).playerCardManager;
+}
 function isWeak(gs: GameState, playerType: PlayerType) {
   const { p, o } = getPlayerStates(gs, playerType);
   return o.activeMonster.weaknesses.includes(getMonsterAction(p).element);

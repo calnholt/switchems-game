@@ -5,6 +5,7 @@ export type ONGOING_TURN_COMMAND_TYPES =
   | 'PREVENT_FLINCH'
   | 'PREVENT_RECOIL'
   | 'SPEED_REVERSED'
+  | 'FLINCHED'
 
 interface OngoingTurnCommandData extends CommandData {
 
@@ -34,5 +35,14 @@ export class SpeedReversedCommand extends EventCommand<OngoingTurnCommandData> {
   }
   override getDisplayMessage(): string {
     return `Speeds are reversed this turn.`;
+  }
+}
+
+export class FlinchedCommand extends EventCommand<OngoingTurnCommandData> {
+  constructor(receiver: EventCommandQueueService, data: OngoingTurnCommandData) {
+    super(receiver, 'FLINCHED', data);
+  }
+  override getDisplayMessage(): string {
+    return `${this.data.monsterName} flinched.`;
   }
 }

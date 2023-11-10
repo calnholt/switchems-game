@@ -6,8 +6,7 @@ export type HAND_COMMAND_TYPES =
   | 'DISCARD'
   | 'RANDOM_DISCARD'
 
-interface HandCommandData extends CommandData {
-  skipMessage?: boolean;
+export interface HandCommandData extends CommandData {
   buffName?: string;
 }
 

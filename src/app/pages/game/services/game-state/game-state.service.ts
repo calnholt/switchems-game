@@ -5,7 +5,6 @@ import { Monster } from '../../models/monster/monster.model';
 import { PlayerCardManager } from '../../models/player/player-card-manager.model';
 import { StatBoard } from '../../models/stat-board/stat-board.model';
 import { SelectedAction } from '../selected-action/selected-action.model';
-import { PlayerTrackedEventsService, PlayerTrackedEventKey } from '../tracked-events/player-tracked-events.service';
 
 export interface GameState {
   p: PlayerState;
@@ -18,7 +17,6 @@ export interface PlayerState {
   playerCardManager: PlayerCardManager;
   statBoard: StatBoard;
   selectedAction: SelectedAction;
-  playerTrackedEvents: Map<PlayerTrackedEventKey, number | boolean>;
 }
 
 @Injectable({
@@ -29,7 +27,6 @@ export class GameStateService {
   constructor(
     private playerService: PlayerService,
     private selectedActionService: SelectedActionService,
-    private playerTrackedEventsService: PlayerTrackedEventsService,
   ) { }
 
   public getGameState(): GameState {
@@ -47,10 +44,6 @@ export class GameStateService {
       selectedAction, 
       oSelectedAction,
     } = this.selectedActionService;
-    const {
-      playerTrackedEvents,
-      oPlayerTrackedEvents
-    } = this.playerTrackedEventsService;
 
     return {
       p: {
@@ -59,7 +52,6 @@ export class GameStateService {
         inactiveMonsters,
         playerCardManager,
         statBoard,
-        playerTrackedEvents
       },
       o: {
         activeMonster: oActiveMonster,
@@ -67,7 +59,6 @@ export class GameStateService {
         inactiveMonsters: oInactiveMonsters,
         playerCardManager: oPlayerCardManager,
         statBoard: oStatBoard,
-        playerTrackedEvents: oPlayerTrackedEvents
       }
     }
   }

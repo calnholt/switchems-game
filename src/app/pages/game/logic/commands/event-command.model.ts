@@ -61,4 +61,5 @@ export interface CommandData {
   player: PlayerType;
   destroyOnTrigger?: boolean;
   triggersPrompt?: boolean;
+  skipMessage?: boolean;
 };

@@ -10,7 +10,7 @@ export type STAT_PIP_TYPES =
   | 'DISCARD_PIPS'
 
 export interface StatPipCommandData extends CommandData {
-  type: 'SPEED' | 'ATTACK' | 'DEFENSE' | 'RANDOM';
+  statType: "SPEED" | "ATTACK" | "DEFENSE";
   wasRandom?: boolean;
   amount: number,
 }
@@ -30,7 +30,7 @@ export class GainRandomStatPipCommand extends EventCommand<StatPipCommandData> {
     super(receiver, 'GAIN_RANDOM_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString()}${this.data.wasRandom ? ' randomly' : ''} gained ${this.data.amount} ${this.data.type.toLowerCase()} pips.`;
+    return `${this.getPlayerString()}${this.data.wasRandom ? ' randomly' : ''} gained ${this.data.amount} ${this.data.statType.toLowerCase()} pips.`;
   }
 }
 
@@ -39,7 +39,7 @@ export class CrushStatPipCommand extends EventCommand<StatPipCommandData> {
     super(receiver, 'CRUSH_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString()} crushed ${this.data.amount} ${this.data.type.toLowerCase()} pips.`;
+    return `${this.getPlayerString()} crushed ${this.data.amount} ${this.data.statType.toLowerCase()} pips.`;
   }
 }
 
@@ -48,7 +48,7 @@ export class ApplyStatPipsCommand extends EventCommand<StatPipCommandData> {
     super(receiver, 'APPLY_STAT_PIPS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString()} applied ${this.data.amount} ${this.data.type.toLowerCase()} pips.`;
+    return `${this.getPlayerString()} applied ${this.data.amount} ${this.data.statType.toLowerCase()} pips.`;
   }
 }
 
@@ -57,6 +57,6 @@ export class DiscardPipsCommand extends EventCommand<StatPipCommandData> {
     super(receiver, 'DISCARD_PIPS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString()} discarded ${this.data.amount} ${this.data.type.toLowerCase()} pips.`;
+    return `${this.getPlayerString()} discarded ${this.data.amount} ${this.data.statType.toLowerCase()} pips.`;
   }
 }

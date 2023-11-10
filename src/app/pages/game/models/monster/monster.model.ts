@@ -143,4 +143,9 @@ export class Monster implements IHaveTooltip, ISelectableAction {
     this._currentHp = total;
   }
 
+  takeDamage(value: number) {
+    let current = this._currentHp - value;
+    this._currentHp = current < 0 ? 0 : current;
+  }
+
 }
