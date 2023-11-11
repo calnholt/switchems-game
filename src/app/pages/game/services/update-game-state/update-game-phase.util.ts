@@ -1,13 +1,16 @@
 import { ApplyBuffCommand } from "../../logic/commands/buff-command.model";
 import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, RevealGamePhaseCommandData, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
+import { DealDamageCommand, FasterCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
+import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 import { EventUpdateMediatorService } from "../event-update-mediator.service";
 import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { UpdateGameStateService } from "./update-game-state.service";
+import { UpdateGameStateUtil } from "./update-game-state.util";
 
 export const UpdateGamePhaseUtil = {
   revealPhase,
@@ -106,16 +109,23 @@ function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
 function executeMonsterActionsPhase(gs: GameState, rc: EventUpdateMediatorService) {
   const { fasterPlayer, slowerPlayer } = GameStateUtil.getSpeedPlayers(gs);
   
-  function performMonsterAction(gs: GameState, player: PlayerType) {
+  function performMonsterAction(gs: GameState, player: PlayerType, opponent: PlayerType) {
     const playerState = GameStateUtil.getPlayerState(gs, player);
     const opponentState = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(player));
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'MONSTER') return;
 
-    // CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, rc, gs);
+    const opponentMonster = GameStateUtil.getMonsterByPlayer(gs, fasterPlayer);
+    CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, rc, gs);
+    const damage = DamageCalcUtil.calculateDamage(gs, player);
+    rc.pushFront(new DealDamageCommand({ damageToDeal: damage, key: opponentMonster.key(), player: opponent, ...GameStateUtil.getMonsterNames(gs, player, opponent) }))
   }
-
-  performMonsterAction(gs, fasterPlayer);
-  performMonsterAction(gs, slowerPlayer);
+  
+  // faster
+  const monster = GameStateUtil.getMonsterByPlayer(gs, fasterPlayer);
+  rc.pushFront(new FasterCommand({ key: monster.key(), player: fasterPlayer, ...GameStateUtil.getMonsterNames(gs, fasterPlayer, slowerPlayer) }));
+  
+  performMonsterAction(gs, fasterPlayer, slowerPlayer);
+  performMonsterAction(gs, slowerPlayer, fasterPlayer);
 
 }
 

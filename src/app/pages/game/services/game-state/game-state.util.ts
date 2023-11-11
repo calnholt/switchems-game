@@ -24,6 +24,7 @@ export const GameStateUtil = {
   getOppositePlayer,
   getInitiatives,
   getSpeedPlayers,
+  getMonsterNames,
 }
 
 function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
@@ -168,4 +169,8 @@ function getSpeedPlayers(gs: GameState) {
   const fasterPlayer = GameStateUtil.getFirstPlayer(gs, 'P');
   const slowerPlayer = GameStateUtil.getOppositePlayer(fasterPlayer);
   return { fasterPlayer, slowerPlayer };
+}
+
+function getMonsterNames(gs: GameState, player: PlayerType, opponent: PlayerType) {
+  return { monsterName: getMonsterByPlayer(gs, player).name, opposingMonsterName: getMonsterByPlayer(gs, opponent).name };
 }
