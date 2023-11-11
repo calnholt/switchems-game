@@ -33,7 +33,6 @@ export const UpdateGameStateUtil = {
   gainRandomStatPip,
   gainSwitchDefense,
   resistant,
-  setPhase,
 }
 
 function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }
@@ -173,37 +172,5 @@ function resistant(gs: GameState, data: BasicCommandData, rc: UpdateGameStateSer
     rc.enqueue(
       new GainSwitchDefenseCommandData(rc, { key: data.key, player: data.player })
     );
-  }
-}
-
-function setPhase(type: GamePhaseCommandType, rc: UpdateGameStateService) {
-  switch(type) {
-    case 'START_PHASE':
-      rc.enqueue(new StartGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
-      break;
-    case 'SELECTION_PHASE':
-      rc.enqueue(new SelectionGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
-      break;
-    case 'REVEAL_PHASE':
-      rc.enqueue(new RevealGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
-      break;
-    case 'APPLY_PIPS_PHASE':
-      rc.enqueue(new ApplyPipsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
-      break;
-    case 'APPLY_BUFFS_PHASE':
-      rc.enqueue(new ApplyBuffsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
-      break;
-    case 'SWITCH_ACTIONS_PHASE':
-      rc.enqueue(new SwitchActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
-      break;
-    case 'MONSTER_ACTIONS_PHASE':
-      rc.enqueue(new MonsterActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
-      break;
-    case 'STANDARD_ACTIONS_PHASE':
-      rc.enqueue(new StandardActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
-      break;
-    case 'END_PHASE':
-      rc.enqueue(new EndGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
-      break;
   }
 }

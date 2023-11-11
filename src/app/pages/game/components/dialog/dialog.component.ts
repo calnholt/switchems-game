@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { EventCommandQueueService } from '../../services/event-command-queue/event-command-queue.service';
-import { GamePhaseService } from '../../services/game-phase/game-phase.service';
+import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, pulseAnimation } from 'angular-animations';
 
 @Component({
   selector: 'sw-dialog',
   templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss']
+  styleUrls: ['./dialog.component.scss'],
+  animations: [
+    fadeInOnEnterAnimation({ duration: 200 }),
+    fadeOutOnLeaveAnimation({ duration: 200 }),
+  ]
 })
 export class DialogComponent {
 
@@ -14,7 +18,6 @@ export class DialogComponent {
 
   constructor(
     private ecqs: EventCommandQueueService,
-    private gamePhaseService: GamePhaseService,
   ) {
 
   }
@@ -24,17 +27,15 @@ export class DialogComponent {
       if (!command) return;
       this.show = command.type !== 'SELECTION_PHASE';
       if (command.skipMessage()) return;
-      this.message = command.getDisplayMessage();
+      setTimeout(() =>{
+        this.message = command.getDisplayMessage();
+      }, 300);
       
     });
-    // this.gamePhaseService.phase$.subscribe((phase) => {
-    //   if (phase === 'SELECTION') {
-    //     this.hide = true;
-    //   }
-    // });
   }
 
   next() {
+    this.message = '';
     this.ecqs.acknowledge();
   }
 

@@ -40,7 +40,10 @@ export class EventCommandQueueService {
     }
     this._isProcessing = true;
 
-    while (!this._queue.isEmpty() && !this._isAwaitingDecision && !this._isAwaitingAcknowledgement) {
+    while (!this._queue.isEmpty()) {
+      if (this._isAwaitingAcknowledgement || this._isAwaitingDecision) {
+        break;
+      }
       const command = this.dequeue();
       if (!command) break;
       if (command?.requiresDecision()) {
@@ -50,9 +53,7 @@ export class EventCommandQueueService {
         break; // Exit the loop and wait for the decision
       } else {
         command?.execute();
-        // if (!command.skipMessage()) {
-        //   this._isAwaitingAcknowledgement = true;
-        // }
+        this._isAwaitingAcknowledgement = !command.skipMessage();
         if (command?.data.destroyOnTrigger) {
           this.unregisterTrigger(command.type, command.data.key);
         }

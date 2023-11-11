@@ -10,7 +10,7 @@ import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
 import { UpdateGameStateService } from '../update-game-state/update-game-state.service';
 import { DrawCommand } from '../../logic/commands/hand-commands.model';
 import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
-import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
+import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, GamePhaseCommandType, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, SwitchActionsGamePhaseCommand } from '../../logic/commands/game-phase-commands.model';
 import { UpdateGameStateUtil } from '../update-game-state/update-game-state.util';
 
 @Injectable({
@@ -34,11 +34,11 @@ export class GamePhaseService {
 
   public startGame() {
     // UpdateGameStateUtil.setPhase('START_PHASE', this.ugss);
-    UpdateGameStateUtil.setPhase('SELECTION_PHASE', this.ugss);
+    this.ugss.enqueue(new SelectionGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
   }
 
   private processActionPhase() {
-    UpdateGameStateUtil.setPhase('REVEAL_PHASE', this.ugss);
+    this.ugss.enqueue(new RevealGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
     const gs: GameState = this.gameStateService.getGameState();
 
     // determine initiative player
@@ -47,19 +47,19 @@ export class GamePhaseService {
     const playerWithInitiative: PlayerType = this.getInitiativePlayer(initiative, oInitiative);
     const playerWithoutInitiative: PlayerType = GameStateUtil.getOppositePlayer(playerWithInitiative);
 
-    UpdateGameStateUtil.setPhase('APPLY_PIPS_PHASE', this.ugss);
+    this.ugss.enqueue(new ApplyPipsGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
 
     // initiative determines order
     this.applyStatPips(gs, playerWithInitiative);
     this.applyStatPips(gs, playerWithoutInitiative);
 
-    UpdateGameStateUtil.setPhase('APPLY_BUFFS_PHASE', this.ugss);
+    this.ugss.enqueue(new ApplyBuffsGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
 
     // initiative determines order
     this.applyBuffs(gs, playerWithInitiative);
     this.applyBuffs(gs, playerWithoutInitiative);
 
-    UpdateGameStateUtil.setPhase('SWITCH_ACTIONS_PHASE', this.ugss);
+    this.ugss.enqueue(new SwitchActionsGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
 
     // initiative determines order
     this.performSwitchAction(gs, playerWithInitiative);
@@ -69,24 +69,24 @@ export class GamePhaseService {
     const fasterPlayer = GameStateUtil.getFirstPlayer(gs, 'P');
     const slowerPlayer = GameStateUtil.getOppositePlayer(fasterPlayer);
 
-    UpdateGameStateUtil.setPhase('MONSTER_ACTIONS_PHASE', this.ugss);
+    this.ugss.enqueue(new MonsterActionsGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
 
     // speed determines order
     this.performMonsterAction(gs, fasterPlayer);
     this.performMonsterAction(gs, slowerPlayer);
 
-    UpdateGameStateUtil.setPhase('STANDARD_ACTIONS_PHASE', this.ugss);
+    this.ugss.enqueue(new StandardActionsGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
 
     // initiative determines order
     this.performStandardAction(gs, playerWithInitiative);
     this.performStandardAction(gs, playerWithoutInitiative);
 
-    UpdateGameStateUtil.setPhase('END_PHASE', this.ugss);
+    this.ugss.enqueue(new EndGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
 
     this.playerCleanup(gs, playerWithInitiative);
     this.playerCleanup(gs, playerWithoutInitiative);
 
-    UpdateGameStateUtil.setPhase('SELECTION_PHASE', this.ugss);
+    this.ugss.enqueue(new SelectionGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
 
   }
 

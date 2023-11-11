@@ -1,8 +1,14 @@
 <ng-container *ngIf="show">
-  <div id="dialog">
-    <div>
-      {{ message }}
+  <div id="dialog" [@fadeInOnEnter] [@fadeOutOnLeave]>
+    <div class="dialog-container">
+      <div *ngIf="message" class="text" [@fadeInOnEnter] [@fadeOutOnLeave]>
+        {{ message }}
+      </div>
     </div>
-    <div class="acknowledge-button" (click)="next()"></div>
+    <div>
+      <sw-pushable-button>
+        <div class="acknowledge-button" (click)="next()">Next</div>
+      </sw-pushable-button>
+    </div>
   </div>
 </ng-container>

@@ -119,7 +119,6 @@ export class UpdateGameStateService {
       case 'MONSTER_ACTIONS_PHASE':
       case 'STANDARD_ACTIONS_PHASE':
       case 'END_PHASE':
-        UpdateGameStateUtil.setPhase(ec.type, this);
         break;
 
     }
