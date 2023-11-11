@@ -1,16 +1,16 @@
 <div id="monster-element-breakdown">
-  <div class="element-info-container mr-1">
+  <div class="element-info-container">
     <div class="type">
       <img [src]="superEffectiveIcon">
     </div>
-    <div class="elements">
+    <div class="elements weaknesses">
       <ng-container *ngFor="let element of weaknesses" class="elements">
         <img class="element-icon" [src]="ImageUtil.getElementsPath(element)">
       </ng-container>
     </div>
   </div>
   <div class="element-info-container">
-    <div class="elements">
+    <div class="elements resistances">
       <ng-container *ngFor="let element of resistances">
         <img class="element-icon" [src]="ImageUtil.getElementsPath(element)">
       </ng-container>

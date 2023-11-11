@@ -12,20 +12,25 @@
     display: flex;
     align-items: center;
     border-radius: 6px;
-    background-color: #e9e9e9fa;
+    background-color: black;
 
     .type {
       display: flex;
       align-items: center;
       background-color: black;
       padding: 5px 3px;
-      border-radius: 10px;
       margin: 3px;
       color: white;
+      border-right: 1px solid white;
+
+      &.defense {
+        border-right: unset;
+        border-left: 1px solid white;
+      }
 
       .defense-value {
         font-size: 25px;
-        padding-left: 1px;
+        padding-left: 3px;
       }
 
       img {
@@ -41,6 +46,16 @@
     .elements {
       display: flex;
       align-items: center;
+      &.weaknesses {
+        img:last-child {
+          margin-right: 6px;
+        }
+      }
+      &.resistances {
+        img:first-child {
+          margin-left: 6px;
+        }
+      }
     }
   }
 }

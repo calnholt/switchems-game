@@ -11,9 +11,11 @@
 .embedded-icon {
   max-height: 19px;
 }
-.embedded-icon-inverse {
-  filter: invert(100%);
+.embedded-icon {
   max-height: 15px;
+  &.inverse {
+    filter: invert(100%);
+  }
 }
 .chunk {
   display: inline-block;
@@ -105,4 +107,35 @@ button {
   color: black;
   text-decoration: none;
   display: unset;
+}
+
+.stat-pip {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #36d317;
+  border: 3px solid black;
+  display: inline-flex;
+  &.inverse {
+    border: 3px solid white;
+  }
+}
+
+.gain-stat-pip {
+  font-family: $text-font;
+  font-size: 20px;
+  font-weight: 900;
+  display: inline-flex;
+  background: #dcf7dc;
+  border-radius: 4px;
+  padding: 2px 3px;
+  align-items: center;
+  color: black !important;
+  div:not(:last-child) {
+    margin-right: 2px;
+  }
+  img {
+    filter: invert(0) !important;
+    margin-right: 2px;
+  }
 }

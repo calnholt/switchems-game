@@ -25,7 +25,14 @@ function getAbilityText(text: string, termCss: Css = "embedded-term-text", image
   });
   IMAGE_CODES.forEach((image: Image) => {
     while (innerHtml.includes(image.key)) {
-      const html = `<img src="${image.path}" class="${imageCss} ${getImageClass(image.key)}">`;
+      let html = '';
+      // TODO: this is icky
+      if (image.key === '[PQ]') {
+        html = `<div class="stat-pip${imageCss.includes('inverse') ? ' inverse' : ''}"></div>`;
+      }
+      else {
+        html = `<img src="${image.path}" class="${imageCss} ${getImageClass(image.key)}">`;
+      }
       innerHtml = innerHtml.replace(image.key, html);
     }
   });
@@ -60,12 +67,12 @@ function convertInnerTextJson(innerHtml: string) {
       let html = "";
       const isCubes = obj.hasOwnProperty('stat') || obj.hasOwnProperty('num') || obj.hasOwnProperty('isPositive');
       if (isCubes) {
-        html = '<div class="chunk">';
+        html = '<div class="gain-stat-pip">';
         let cubeStr = '';
         for (let i = 0; i < obj.num; i++) {
-          cubeStr += '[PQ]' + ' ';
+          cubeStr += '<div class="stat-pip"></div>';
         }
-        html += `${cubeStr}[ARROW] [${['ATK', 'HOLLOW'].includes(obj.stat) ? 'ATK' : obj.stat}]</div>`;
+        html += `<div>+</div>[${['ATK', 'HOLLOW'].includes(obj.stat) ? 'ATK' : obj.stat}]${cubeStr}</div>`;
       }
       innerHtml = innerHtml.replace(jsonInText, html);
     } catch (error) {
