@@ -1,4 +1,3 @@
-import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { Buff } from "../monster/buff.model";
 import { Deck } from "./deck.model";
 import { DiscardPile } from "./discard-pile.model";
@@ -10,8 +9,6 @@ export class PlayerCardManager {
   private _hand: Hand;
   private _deck: Deck;
   private _discardPile: DiscardPile;
-  private _appliedBuffs: Buff[] = [];
-  private _appliedDiscards: Buff[] = [];
 
   constructor(cards: Buff[]) {
     this._hand = new Hand();
@@ -22,8 +19,6 @@ export class PlayerCardManager {
   public get hand() { return this._hand; }
   public get deck() { return this._deck; }
   public get discardPile() { return this._discardPile; }
-  public get appliedBuffs() { return this._appliedBuffs; }
-  public get appliedDiscards() { return this._appliedDiscards; }
 
   public drawCard(): DrawResultType {
     if (this._hand.hasMaxHandSize()) {
@@ -36,14 +31,6 @@ export class PlayerCardManager {
     }
     this._hand.addCardToHand(this._deck.draw());
     return 'DRAW';
-  }
-
-
-  public cleanupAppliedCards() {
-    this._discardPile.addMultiple(this._appliedDiscards);
-    this._discardPile.addMultiple(this._appliedBuffs);
-    this._appliedBuffs = [];
-    this._appliedDiscards = [];
   }
 
 }

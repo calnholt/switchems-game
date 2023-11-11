@@ -13,7 +13,8 @@ export class EventCommandQueueService {
   private _isProcessing = false;
   private _isAwaitingDecision = false;
 
-  constructor() { }
+  constructor(
+  ) { }
 
   public enqueue(event: EventCommand<CommandData>) {
     this._queue.enqueue(event);

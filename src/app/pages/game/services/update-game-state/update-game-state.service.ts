@@ -22,6 +22,7 @@ export class UpdateGameStateService {
     switch(ec.type) {
       case 'APPLY_BUFF':
         UpdateGameStateUtil.applyBuff(gs, data, this.ecqs);
+        break;
       case 'APPLY_BUFF_BELONGS': // trigger
         break;
       case 'APPLY_FLINCH': 
@@ -88,10 +89,12 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.removeStatusEffect(gs, data);
         break;
       case 'RESISTANT':
+        UpdateGameStateUtil.resistant(gs, data, this.ecqs);
         break;
       case 'SLOWER':
         break;
       case 'SPEED_REVERSED':
+        UpdateGameStateUtil.speedReversed(gs, data);
         break;
       // TODO: requires decision (ish)
       case 'SWITCH_IN':
@@ -99,8 +102,8 @@ export class UpdateGameStateService {
       case 'SWITCH_OUT':
         break;
       case 'TAKE_RECOIL_DAMAGE':
-        break;
       case 'TRUE_DAMAGE':
+        UpdateGameStateUtil.dealDamage(gs, data, this.ecqs);
         break;
       case 'WEAK':
         UpdateGameStateUtil.weak(data, this.ecqs);

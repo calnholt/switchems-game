@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { PlayerType } from "../../logic/player-type.mode";
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,10 @@ export class SeedableRngService {
   randomFloat(): number {
     // Create a floating point number in the range [0, 1)
     return this.randomInt() / (this.m - 1);
+  }
+
+  getRandomPlayer(): PlayerType { 
+    return this.randomIntOption(2) === 1 ? 'P' : 'O' 
   }
 
 }

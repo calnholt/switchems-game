@@ -47,6 +47,7 @@ export type MonsterModifierType =
   | "PREVENT_FLINCH"
   | "PREVENT_RECOIL"
   | "FLINCHED"
+  | "SPEED_REVERSED"
 
 export type ActionModifierType = 
   | "ATTACK"

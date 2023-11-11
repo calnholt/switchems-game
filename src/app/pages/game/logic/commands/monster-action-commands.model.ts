@@ -14,8 +14,7 @@ export type MONSTER_ACTION_COMMANDS =
   | 'DISABLE_ACTION_PROMPT'
 
 
-interface BasicCommandData extends CommandData {
-  monsterName?: string;
+export interface BasicCommandData extends CommandData {
   opposingMonsterName?: string;
 }
 
@@ -108,7 +107,7 @@ export class RemoveStatusCommand extends EventCommand<ApplyStatusEffectCommandDa
 }
 export class DisableActionPromptCommand extends EventCommand<BasicCommandData> {
   constructor(receiver: EventCommandQueueService, data: BasicCommandData) {
-    super(receiver, 'DISABLE_ACTION_PROMPT', { ...data, triggersPrompt: true });
+    super(receiver, 'DISABLE_ACTION_PROMPT', { ...data });
   }
   override getDisplayMessage(): string {
     return '';

@@ -12,26 +12,11 @@ export class StatBoard {
   }
 
   use(type: StatBoardSectionType) {
-    this.getSectionFromType(type).use();
+    this.getSectionFromType(type).remove();
   }
 
   gain(amount: number, type: StatBoardSectionType) {
     this.getSectionFromType(type).gain(amount);
-  }
-
-  gainRandom(amount: number) {
-    for (let i = 0; i < amount; i++) {
-      const random = Math.floor(Math.random() * 3);
-      if (random === 0) {
-        this.gain(1, 'ATTACK');
-      }
-      else if (random === 1) {
-        this.gain(1, 'DEFENSE');
-      }
-      else {
-        this.gain(1, 'SPEED');
-      }
-    }
   }
 
 };
@@ -43,14 +28,14 @@ export class StatBoardSection {
 
   constructor(max: number, current: number, type: StatBoardSectionType) {
     this._max = max;
-    this._current = ArrayUtil.getRandomIndex(max + 1); // TODO: replace with current
+    this._current = 0;
     this.type = type;
   }
 
   public get max() { return this._max }
   public get current() { return this._current }
 
-  use() {
+  remove() {
     this._current = 0;
   }
 

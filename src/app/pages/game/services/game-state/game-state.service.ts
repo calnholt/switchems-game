@@ -6,11 +6,12 @@ import { PlayerCardManager } from '../../models/player/player-card-manager.model
 import { StatBoard } from '../../models/stat-board/stat-board.model';
 import { SelectedAction } from '../selected-action/selected-action.model';
 import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
+import { PlayerType } from '../../logic/player-type.mode';
 
 export interface GameState {
   p: PlayerState;
   o: PlayerState;
-  getRandomInt: (value: number) => number;
+  rng: SeedableRngService;
 }
 
 export interface PlayerState {
@@ -63,7 +64,7 @@ export class GameStateService {
         playerCardManager: oPlayerCardManager,
         statBoard: oStatBoard,
       },
-      getRandomInt: this.seedableRngService.randomIntOption
+      rng: this.seedableRngService,
     }
   }
 

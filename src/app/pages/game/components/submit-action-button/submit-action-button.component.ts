@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
 import { StatBoardSectionType } from '../../models/stat-board/stat-board.model';
+import { GameStateService } from '../../services/game-state/game-state.service';
+import { GamePhaseService } from '../../services/game-phase/game-phase.service';
 
 @Component({
   selector: 'sw-submit-action-button',
@@ -17,6 +19,7 @@ export class SubmitActionButtonComponent {
 
   constructor(
     private selectedActionService: SelectedActionService,
+    private gamePhaseService: GamePhaseService
   ) {
 
   }
@@ -35,6 +38,10 @@ export class SubmitActionButtonComponent {
       return `${this.displayName} - GO!`;
     }
     return `${this.displayName} (requires discard)`;
+  }
+
+  submit() {
+    this.gamePhaseService.testActionPhase();
   }
 
 }

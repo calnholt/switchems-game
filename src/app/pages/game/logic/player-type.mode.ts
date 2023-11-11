@@ -1,1 +1,1 @@
-export type PlayerType = 'P' | 'O' | 'T';
+export type PlayerType = 'P' | 'O';

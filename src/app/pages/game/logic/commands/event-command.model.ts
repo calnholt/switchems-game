@@ -20,7 +20,7 @@ export abstract class EventCommand<T extends CommandData> {
   }
 
   public execute() {
-    this.receiver.enqueue(this);
+    // this.receiver.enqueue(this);
     this.receiver.fireTriggers(this.type);
   }
 
@@ -60,6 +60,6 @@ export interface CommandData {
   key: CardCompositeKey;
   player: PlayerType;
   destroyOnTrigger?: boolean;
-  triggersPrompt?: boolean;
+  ongoing?: boolean;
   skipMessage?: boolean;
 };

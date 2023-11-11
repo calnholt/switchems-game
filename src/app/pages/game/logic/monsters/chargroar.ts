@@ -44,7 +44,7 @@ function HyperChargeAction(key: CardCompositeKey, player: PlayerType, ecqs: Even
 function BlazingRoarAction(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService) {
   const cmdA = new GainRandomStatPipCommand(ecqs, { key, player, amount: 1 });
   cmdA.execute();
-  const cmdB = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'PIERCE' });
+  const cmdB = new StatModificationCommand(ecqs, { key, player, amount: 1, statType: 'PIERCE', ongoing: true });
   cmdB.executeAsTrigger('APPLY_BUFF');
 }
 

@@ -21,6 +21,7 @@ export const GameStateUtil = {
   getFirstPlayer,
   getStatBoardByPlayer,
   getPlayerCardManagerByPlayer,
+  getOppositePlayer,
 }
 
 function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
@@ -30,6 +31,10 @@ function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
 function getOpponentPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
   if (playerType === 'P') return gs.o;
   return gs.p;
+}
+
+function getOppositePlayer(playerType: PlayerType) {
+  return playerType === 'P' ? 'O' : 'P';
 }
 
 function isFaster(gs: GameState, playerType: PlayerType) {
@@ -108,7 +113,7 @@ function opponentHasKnockedOutMonster(gs: GameState, playerType: PlayerType) {
 
 function getFirstPlayer(gs: GameState, playerType: PlayerType): PlayerType {
   const { p, o } = getPlayerStates(gs, playerType);
-  if (!p.selectedAction.action || !o.selectedAction.action) return 'T';
+  if (!p.selectedAction.action || !o.selectedAction.action) return 'P';
   const monster = p.activeMonster;
   const oMonster = o.activeMonster;
   const initiative = monster.initiative;
@@ -133,6 +138,9 @@ function getFirstPlayer(gs: GameState, playerType: PlayerType): PlayerType {
     }
     if (speed !== oSpeed) {
       return speed > oSpeed ? 'P' : 'O';
+    }
+    if (initiative === oInitiative) {
+      return gs.rng.getRandomPlayer();
     }
     return initiative > oInitiative ? 'P' : 'O';
   }

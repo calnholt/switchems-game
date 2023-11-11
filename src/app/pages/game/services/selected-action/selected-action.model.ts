@@ -3,7 +3,7 @@ import { Buff } from "../../models/monster/buff.model";
 import { StatBoardSection } from "../../models/stat-board/stat-board.model";
 
 export class SelectedAction {
-  appliedBuffs: Buff[];
+  appliedBuffs: Buff[] = [];
   appliedDiscards: Buff[] = [];
   statBoardSection: StatBoardSection | undefined;
   action: ISelectableAction | undefined;
@@ -59,5 +59,11 @@ export class SelectedAction {
     else if (statBoardSection.current > 0 && this.action?.canApplyStat()) {
       this.statBoardSection = statBoardSection;
     }
+  }
+  clear() {
+    this.appliedBuffs = [];
+    this.appliedDiscards = [];
+    this.action = undefined;
+    this.statBoardSection = undefined;
   }
 }

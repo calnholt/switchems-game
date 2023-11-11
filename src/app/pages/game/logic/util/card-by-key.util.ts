@@ -1,17 +1,21 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { EventManagerService } from "../../services/event-manager/event-manager.service";
-import { GameStateService } from "../../services/game-state/game-state.service";
+import { GameState, GameStateService } from "../../services/game-state/game-state.service";
 import { PlayerType } from "../player-type.mode";
+import { EventCommandQueueService } from "../../services/event-command-queue/event-command-queue.service";
+import { Chargroar } from "../monsters/chargroar";
+import { UpdateGameStateUtil } from "../../services/update-game-state/update-game-state.util";
 
 export const CardByKeyUtil = {
   getCardByKey
 }
 
-function getCardByKey(key: CardCompositeKey, player: PlayerType, ems: EventManagerService, gss: GameStateService) {
+function getCardByKey(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService, gs: GameState) {
 
   switch (key) {
     // chargroar
     case CHARGROAR:
+      Chargroar.ChargroarMonster(key, player, ecqs);
       break;
     case getActionKey(CHARGROAR, 0):
       break;
@@ -181,11 +185,17 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, ems: EventManag
       break;
     case getBuffKey(FLEXFERNO, 3):
       break;
+    // ***
+    // TODO:
+    case 'SA_REST':
+    case 'SA_PREPARE':
+      UpdateGameStateUtil.gainRandomStatPip(gs, { key: 'SA_PREPARE', player, amount: 3 }, ecqs);
+      break;
   }
 }
 const CHARGROAR = 'CHARGROAR';
 const VULTUROCK = 'VULTUROCK';
-const WHAILSTROM = 'Whailstrom';
+const WHAILSTROM = 'WHAILSTROM';
 const ZAPPGUIN = 'ZAPPGUIN';
 const PHANTOMATON = 'PHANTOMATON';
 const STALAGROWTH = 'STALAGROWTH';
