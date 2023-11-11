@@ -1,7 +1,7 @@
 <div id="stat-board-section">
   <div class="stat-board-section-container">
     <div>
-      <sw-pushable-button [isActive]="statBoardSection.current > 0">
+      <sw-pushable-button [isActive]="statBoardSection.current > 0 && !disable">
         <div class="stat-board-section-button" (click)="onSelect()">
           <div>
             <img [src]="icon">

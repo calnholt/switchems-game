@@ -8,4 +8,5 @@ import { StatBoard } from '../../../models/stat-board/stat-board.model';
 })
 export class StatBoardComponent {
   @Input() statBoard: StatBoard = new StatBoard();
+  @Input() disable: boolean = false;
 }

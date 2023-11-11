@@ -1,11 +1,11 @@
 <div id="stat-board">
   <div>
-    <sw-stat-board-section [statBoardSection]="statBoard.attack" />
+    <sw-stat-board-section [statBoardSection]="statBoard.attack" [disable]="disable" />
   </div>
   <div>
-    <sw-stat-board-section [statBoardSection]="statBoard.speed" />
+    <sw-stat-board-section [statBoardSection]="statBoard.speed" [disable]="disable" />
   </div>
   <div>
-    <sw-stat-board-section [statBoardSection]="statBoard.defense" />
+    <sw-stat-board-section [statBoardSection]="statBoard.defense" [disable]="disable" />
   </div>
 </div>

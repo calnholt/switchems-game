@@ -19,6 +19,7 @@ import { SelectedActionService } from '~/app/pages/game/services/selected-action
 })
 export class StatBoardSectionComponent implements OnInit {
   @Input() statBoardSection!: StatBoardSection;
+  @Input() disable: boolean = false;
 
   icon!: Path;
 
@@ -55,6 +56,7 @@ export class StatBoardSectionComponent implements OnInit {
   }
 
   onSelect() {
+    if (this.disable) return;
     this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_APPLY_STAT, data: this.statBoardSection });
   }
 
