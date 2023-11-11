@@ -122,6 +122,7 @@ export class UpdateGameStateService {
       case 'SELECTION_PHASE':
         break;
       case 'REVEAL_PHASE':
+        UpdateGamePhaseUtil.executeRevealPhase(gs, this.mediator);
         break;
       case 'APPLY_PIPS_PHASE':
         UpdateGamePhaseUtil.executeApplyPipsPhase(gs, this.mediator);

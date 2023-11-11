@@ -6,12 +6,15 @@ import { PlayerCardManager } from '../../models/player/player-card-manager.model
 import { StatBoard } from '../../models/stat-board/stat-board.model';
 import { SelectedAction } from '../selected-action/selected-action.model';
 import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
-import { PlayerType } from '../../logic/player-type.mode';
+import { BehaviorSubject } from 'rxjs';
+import { CurrentGamePhase, CurrentGamePhaseService } from '../current-game-phase/current-game-phase.service';
+import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
 
 export interface GameState {
   p: PlayerState;
   o: PlayerState;
   rng: SeedableRngService;
+  currentPhase$: BehaviorSubject<GamePhaseCommandType>;
 }
 
 export interface PlayerState {
@@ -31,6 +34,7 @@ export class GameStateService {
     private playerService: PlayerService,
     private selectedActionService: SelectedActionService,
     private seedableRngService: SeedableRngService,
+    private currentGamePhaseService: CurrentGamePhaseService
   ) { }
 
   public getGameState(): GameState {
@@ -65,6 +69,7 @@ export class GameStateService {
         statBoard: oStatBoard,
       },
       rng: this.seedableRngService,
+      currentPhase$: this.currentGamePhaseService.currentPhase$,
     }
   }
 

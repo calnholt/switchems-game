@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GamePhaseService } from './game-phase.service';
+import { GameLoopService } from './game-loop.service';
 
 describe('ResolveActionsService', () => {
-  let service: GamePhaseService;
+  let service: GameLoopService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GamePhaseService);
+    service = TestBed.inject(GameLoopService);
   });
 
   it('should be created', () => {

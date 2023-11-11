@@ -27,7 +27,7 @@ function ChargroarMonster(key: CardCompositeKey, player: PlayerType, receiver: E
 function LightningFangAction(key: CardCompositeKey, player: PlayerType, receiver: EventUpdateMediatorService, gs: GameState) {
   if (GameStateUtil.isFaster(gs, player)) {
     const cmd = new StatModificationCommand({ key, player, amount: 3, statType: "ATTACK" });
-    receiver.pushFront(cmd);
+    receiver.enqueue(cmd);
   }
 }
 
@@ -37,43 +37,43 @@ function LightsOutAction(key: CardCompositeKey, player: PlayerType, receiver: Ev
 }
 
 function HyperChargeAction(key: CardCompositeKey, player: PlayerType, receiver: EventUpdateMediatorService) {
-  receiver.pushFront(new GainStatPipCommand({ key, player, amount: 3, statType: "ATTACK", destroyOnTrigger: true }));
-  receiver.pushFront(new StatModificationCommand({ key, player, amount: 3, statType: 'ATTACK' }));
+  receiver.enqueue(new GainStatPipCommand({ key, player, amount: 3, statType: "ATTACK", destroyOnTrigger: true }));
+  receiver.enqueue(new StatModificationCommand({ key, player, amount: 3, statType: 'ATTACK' }));
 }
 
 function BlazingRoarAction(key: CardCompositeKey, player: PlayerType, receiver: EventUpdateMediatorService) {
-  receiver.pushFront(new GainRandomStatPipCommand({ key, player, amount: 1 }));
+  receiver.enqueue(new GainRandomStatPipCommand({ key, player, amount: 1 }));
   const cmdB = new StatModificationCommand({ key, player, amount: 1, statType: 'PIERCE', ongoing: true });
   receiver.registerTrigger('APPLY_BUFF', cmdB);
 }
 
 function ChargeBuff(key: CardCompositeKey, player: PlayerType, receiver: EventUpdateMediatorService, gs: GameState) {
   const value = GameStateUtil.opponentHasKnockedOutMonster(gs, player) ? 2 : 1;
-  receiver.pushFront(new StatModificationCommand({ key, player, amount: value, statType: 'SPEED' }));
+  receiver.enqueue(new StatModificationCommand({ key, player, amount: value, statType: 'SPEED' }));
 }
 
 function RoarBuff(key: CardCompositeKey, player: PlayerType, receiver: EventUpdateMediatorService, gs: GameState) {
   const value = GameStateUtil.opponentHasKnockedOutMonster(gs, player) ? 2 : 1;
-  receiver.pushFront(new StatModificationCommand({ key, player, amount: value, statType: 'ATTACK' }));
+  receiver.enqueue(new StatModificationCommand({ key, player, amount: value, statType: 'ATTACK' }));
 }
 
 function RevengeBuff(key: CardCompositeKey, player: PlayerType, receiver: EventUpdateMediatorService, gs: GameState) {
   if (GameStateUtil.isResistant(gs, player)) {
-    receiver.pushFront(new StatModificationCommand({ key, player, amount: 1, statType: 'ATTACK' }));
-    receiver.pushFront(new StatModificationCommand({ key, player, amount: 2, statType: 'SPEED' }));
+    receiver.enqueue(new StatModificationCommand({ key, player, amount: 1, statType: 'ATTACK' }));
+    receiver.enqueue(new StatModificationCommand({ key, player, amount: 2, statType: 'SPEED' }));
   }
   else {
-    receiver.pushFront(new StatModificationCommand({ key, player, amount: 1, statType: 'RECOIL' }));
+    receiver.enqueue(new StatModificationCommand({ key, player, amount: 1, statType: 'RECOIL' }));
   }
 }
 
 function PreyUponBuff(key: CardCompositeKey, player: PlayerType, receiver: EventUpdateMediatorService, gs: GameState) {
   if (GameStateUtil.isWeak(gs, player)) {
-    receiver.pushFront(new StatModificationCommand({ key, player, amount: 1, statType: 'ATTACK' }));
-    receiver.pushFront(new StatModificationCommand({ key, player, amount: 2, statType: 'SPEED' }));
+    receiver.enqueue(new StatModificationCommand({ key, player, amount: 1, statType: 'ATTACK' }));
+    receiver.enqueue(new StatModificationCommand({ key, player, amount: 2, statType: 'SPEED' }));
   }
   else {
-    receiver.pushFront(new StatModificationCommand({ key, player, amount: 1, statType: 'RECOIL' }));
+    receiver.enqueue(new StatModificationCommand({ key, player, amount: 1, statType: 'RECOIL' }));
   }
 }
 

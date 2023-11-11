@@ -10,7 +10,6 @@ import { EventUpdateMediatorService } from "../event-update-mediator.service";
 import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { UpdateGameStateService } from "./update-game-state.service";
-import { UpdateGameStateUtil } from "./update-game-state.util";
 
 export const UpdateGamePhaseUtil = {
   revealPhase,
@@ -22,6 +21,7 @@ export const UpdateGamePhaseUtil = {
   endPhase,
   selectionPhase,
 
+  executeRevealPhase,
   executeApplyPipsPhase,
   executeApplyBuffs,
   executeSwitchActionsPhase,
@@ -55,21 +55,27 @@ function selectionPhase(gs: GameState, rc: EventUpdateMediatorService) {
   rc.enqueue(new SelectionGamePhaseCommand({ key: 'phase', player: 'P' }));
 }
 
+function executeRevealPhase(gs: GameState, rc: EventUpdateMediatorService) {
+  gs.currentPhase$.next('APPLY_PIPS_PHASE');
+}
+
 function executeApplyPipsPhase(gs: GameState, rc: EventUpdateMediatorService) {
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
-
+  
   function applyStatPips(player: PlayerType) {
     const playerState = GameStateUtil.getPlayerState(gs, player);
     const section = playerState.selectedAction.statBoardSection;
     if (section) {
-      rc.pushFront(
+      rc.enqueue(
         new ApplyStatPipsCommand({ key: 'pip', amount: section.current, player, statType: section.type })
-      );
+        );
+      }
     }
-  }
-
+    
   applyStatPips(playerWithInitiative);
   applyStatPips(playerWithoutInitiative);
+  
+  gs.currentPhase$.next('APPLY_BUFFS_PHASE');
 }
 
 function executeApplyBuffs(gs: GameState, rc: EventUpdateMediatorService) {
@@ -80,7 +86,7 @@ function executeApplyBuffs(gs: GameState, rc: EventUpdateMediatorService) {
     if (!appliedBuffs.length) return;
 
     appliedBuffs.forEach(buff => {
-      rc.pushFront(
+      rc.enqueue(
         new ApplyBuffCommand({ key: buff.key(), player, buffName: buff.name, monsterName: buff.monsterName })
       )
       CardByKeyUtil.getCardByKey(buff.key(), player, rc, gs);
@@ -89,6 +95,8 @@ function executeApplyBuffs(gs: GameState, rc: EventUpdateMediatorService) {
 
   applyBuffs(gs, playerWithInitiative);
   applyBuffs(gs, playerWithoutInitiative);
+
+  gs.currentPhase$.next('SWITCH_ACTIONS_PHASE');
 }
 
 function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
@@ -104,6 +112,7 @@ function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     // switch in command
   }
 
+  gs.currentPhase$.next('MONSTER_ACTIONS_PHASE');
 }
 
 function executeMonsterActionsPhase(gs: GameState, rc: EventUpdateMediatorService) {
@@ -117,16 +126,17 @@ function executeMonsterActionsPhase(gs: GameState, rc: EventUpdateMediatorServic
     const opponentMonster = GameStateUtil.getMonsterByPlayer(gs, fasterPlayer);
     CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, rc, gs);
     const damage = DamageCalcUtil.calculateDamage(gs, player);
-    rc.pushFront(new DealDamageCommand({ damageToDeal: damage, key: opponentMonster.key(), player: opponent, ...GameStateUtil.getMonsterNames(gs, player, opponent) }))
+    rc.enqueue(new DealDamageCommand({ damageToDeal: damage, key: opponentMonster.key(), player: opponent, ...GameStateUtil.getMonsterNames(gs, player, opponent) }))
   }
   
   // faster
   const monster = GameStateUtil.getMonsterByPlayer(gs, fasterPlayer);
-  rc.pushFront(new FasterCommand({ key: monster.key(), player: fasterPlayer, ...GameStateUtil.getMonsterNames(gs, fasterPlayer, slowerPlayer) }));
+  rc.enqueue(new FasterCommand({ key: monster.key(), player: fasterPlayer, ...GameStateUtil.getMonsterNames(gs, fasterPlayer, slowerPlayer) }));
   
   performMonsterAction(gs, fasterPlayer, slowerPlayer);
   performMonsterAction(gs, slowerPlayer, fasterPlayer);
 
+  gs.currentPhase$.next('STANDARD_ACTIONS_PHASE');
 }
 
 function executeStandardActionsPhase(gs: GameState, rc: EventUpdateMediatorService) {
@@ -141,6 +151,8 @@ function executeStandardActionsPhase(gs: GameState, rc: EventUpdateMediatorServi
 
   performStandardAction(gs, playerWithInitiative);
   performStandardAction(gs, playerWithoutInitiative);
+
+  gs.currentPhase$.next('END_PHASE');
 }
 
 function executeEndPhase(gs: GameState, rc: EventUpdateMediatorService) {
@@ -162,7 +174,7 @@ function executeEndPhase(gs: GameState, rc: EventUpdateMediatorService) {
       action.modifiers.eotClear();
     });
     // draw card(s)
-    rc.pushFront(
+    rc.enqueue(
       new DrawCommand({ key: 'eot', player })
     );
   }
@@ -170,4 +182,5 @@ function executeEndPhase(gs: GameState, rc: EventUpdateMediatorService) {
   playerCleanup(gs, playerWithInitiative);
   playerCleanup(gs, playerWithoutInitiative);
 
+  gs.currentPhase$.next('SELECTION_PHASE');
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
 import { StatBoardSectionType } from '../../models/stat-board/stat-board.model';
-import { GamePhaseService } from '../../services/game-phase/game-phase.service';
+import { GameLoopService } from '../../services/game-loop/game-loop.service';
 
 @Component({
   selector: 'sw-submit-action-button',
@@ -18,7 +18,7 @@ export class SubmitActionButtonComponent {
 
   constructor(
     private selectedActionService: SelectedActionService,
-    private gamePhaseService: GamePhaseService
+    private gamePhaseService: GameLoopService
   ) {
 
   }
