@@ -11,8 +11,8 @@ export interface HandCommandData extends CommandData {
 }
 
 export class DrawCommand extends EventCommand<HandCommandData> {
-  constructor(receiver: UpdateGameStateService, data: HandCommandData) {
-    super(receiver, 'DRAW', data);
+  constructor(data: HandCommandData) {
+    super('DRAW', data);
   }
   override getDisplayMessage(): string {
     return `${this.getPlayerString()} drew a card.`;
@@ -23,8 +23,8 @@ export class DrawCommand extends EventCommand<HandCommandData> {
 }
 
 export class DiscardCommand extends EventCommand<HandCommandData> {
-  constructor(receiver: UpdateGameStateService, data: HandCommandData) {
-    super(receiver, 'DISCARD', data);
+  constructor(data: HandCommandData) {
+    super('DISCARD', data);
   }
   override getDisplayMessage(): string {
     return `${this.getPlayerString()} discarded ${this.data.buffName}.`;
@@ -32,8 +32,8 @@ export class DiscardCommand extends EventCommand<HandCommandData> {
 }
 
 export class RandomDiscardCommand extends EventCommand<HandCommandData> {
-  constructor(receiver: UpdateGameStateService, data: HandCommandData) {
-    super(receiver, 'RANDOM_DISCARD', data);
+  constructor(data: HandCommandData) {
+    super('RANDOM_DISCARD', data);
   }
   override getDisplayMessage(): string {
     return `${this.getPlayerString()} randomly discarded ${this.data.buffName}.`;

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { GameState, GameStateService } from '../game-state/game-state.service';
-import { UpdateGameStateService } from '../update-game-state/update-game-state.service';
 import { SelectionGamePhaseCommand } from '../../logic/commands/game-phase-commands.model';
 import { UpdateGamePhaseUtil } from '../update-game-state/update-game-phase.util';
+import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
+import { EventUpdateMediatorService } from '../event-update-mediator.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class GamePhaseService {
 
   constructor(
     private gameStateService: GameStateService,
-    private ugss: UpdateGameStateService,
+    private med: EventUpdateMediatorService,
   ) { }
 
   public testActionPhase() {
@@ -23,27 +24,27 @@ export class GamePhaseService {
   }
 
   public startGame() {
-    this.ugss.enqueue(new SelectionGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
+    this.med.enqueue(new SelectionGamePhaseCommand({ key: 'phase', player: 'P' }));
   }
 
   private processActionPhase() {
     const gs: GameState = this.gameStateService.getGameState();
 
-    UpdateGamePhaseUtil.revealPhase(gs, this.ugss);
+    UpdateGamePhaseUtil.revealPhase(gs, this.med);
 
-    UpdateGamePhaseUtil.applyPipsPhase(gs, this.ugss);
+    UpdateGamePhaseUtil.applyPipsPhase(gs, this.med);
 
-    UpdateGamePhaseUtil.applyBuffsPhase(gs, this.ugss);
+    UpdateGamePhaseUtil.applyBuffsPhase(gs, this.med);
 
-    UpdateGamePhaseUtil.switchActionsPhase(gs, this.ugss);
+    UpdateGamePhaseUtil.switchActionsPhase(gs, this.med);
 
-    UpdateGamePhaseUtil.monsterActionsPhase(gs, this.ugss);
+    UpdateGamePhaseUtil.monsterActionsPhase(gs, this.med);
 
-    UpdateGamePhaseUtil.standardActionsPhase(gs, this.ugss);
+    UpdateGamePhaseUtil.standardActionsPhase(gs, this.med);
 
-    UpdateGamePhaseUtil.endPhase(gs, this.ugss);
+    UpdateGamePhaseUtil.endPhase(gs, this.med);
 
-    UpdateGamePhaseUtil.selectionPhase(gs, this.ugss);
+    UpdateGamePhaseUtil.selectionPhase(gs, this.med);
   }
 
 }

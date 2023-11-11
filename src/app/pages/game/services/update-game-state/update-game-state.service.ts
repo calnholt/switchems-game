@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { CommandData, EventCommand, EventCommandType } from '../../logic/commands/event-command.model';
 import { GameStateService } from '../game-state/game-state.service';
 import { UpdateGameStateUtil } from './update-game-state.util';
-import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
 import { UpdateGamePhaseUtil } from './update-game-phase.util';
+import { EventUpdateMediatorService } from '../event-update-mediator.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,14 @@ export class UpdateGameStateService {
 
   constructor(
     private gameStateService: GameStateService,
-    private ecqs: EventCommandQueueService,
-  ) { }
+    private mediator: EventUpdateMediatorService,
+  ) { 
+    this.mediator.executeEvent$.subscribe((value) => {
+      if (value) {
+        this.execute(value);
+      }
+    })
+  }
 
   // functions that take EventCommandQueueService as param can potentially add new commands to the queue
   public execute(ec: EventCommand<CommandData>) {
@@ -22,7 +28,7 @@ export class UpdateGameStateService {
     const data = ec.data as any;
     switch(ec.type) {
       case 'APPLY_BUFF':
-        UpdateGameStateUtil.applyBuff(gs, data, this);
+        UpdateGameStateUtil.applyBuff(gs, data, this.mediator);
         break;
       case 'APPLY_BUFF_BELONGS': // trigger
         break;
@@ -39,7 +45,7 @@ export class UpdateGameStateService {
       case 'CRUSH_STAT_PIP':
         break;
       case 'DEAL_DAMAGE':
-        UpdateGameStateUtil.dealDamage(gs, data, this);
+        UpdateGameStateUtil.dealDamage(gs, data, this.mediator);
         break;
       // TODO: requires decision
       case 'DISABLE_ACTION_PROMPT':
@@ -65,7 +71,7 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.gainSwitchDefense(gs, data);
         break;
       case 'GAIN_RANDOM_STAT_PIP':
-        UpdateGameStateUtil.gainRandomStatPip(gs, data, this);
+        UpdateGameStateUtil.gainRandomStatPip(gs, data, this.mediator);
         break;
       case 'GAIN_STAT_PIP':
         UpdateGameStateUtil.gainStatPip(gs, data);
@@ -90,7 +96,7 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.removeStatusEffect(gs, data);
         break;
       case 'RESISTANT':
-        UpdateGameStateUtil.resistant(gs, data, this);
+        UpdateGameStateUtil.resistant(gs, data, this.mediator);
         break;
       case 'SLOWER':
         break;
@@ -104,7 +110,7 @@ export class UpdateGameStateService {
         break;
       case 'TAKE_RECOIL_DAMAGE':
       case 'TRUE_DAMAGE':
-        UpdateGameStateUtil.dealDamage(gs, data, this);
+        UpdateGameStateUtil.dealDamage(gs, data, this.mediator);
         break;
       case 'WEAK':
         UpdateGameStateUtil.weak(data, this);
@@ -118,37 +124,25 @@ export class UpdateGameStateService {
       case 'REVEAL_PHASE':
         break;
       case 'APPLY_PIPS_PHASE':
-        UpdateGamePhaseUtil.executeApplyPipsPhase(gs, this);
+        UpdateGamePhaseUtil.executeApplyPipsPhase(gs, this.mediator);
         break;
       case 'APPLY_BUFFS_PHASE':
-        UpdateGamePhaseUtil.executeApplyBuffs(gs, this);
+        UpdateGamePhaseUtil.executeApplyBuffs(gs, this.mediator);
         break;
       case 'SWITCH_ACTIONS_PHASE':
         UpdateGamePhaseUtil.executeSwitchActionsPhase(gs, this);
         break;
       case 'MONSTER_ACTIONS_PHASE':
-        UpdateGamePhaseUtil.executeMonsterActionsPhase(gs, this);
+        UpdateGamePhaseUtil.executeMonsterActionsPhase(gs, this.mediator);
         break;
       case 'STANDARD_ACTIONS_PHASE':
-        UpdateGamePhaseUtil.executeStandardActionsPhase(gs, this);
+        UpdateGamePhaseUtil.executeStandardActionsPhase(gs, this.mediator);
         break;
       case 'END_PHASE':
-        UpdateGamePhaseUtil.executeEndPhase(gs, this);
+        UpdateGamePhaseUtil.executeEndPhase(gs, this.mediator);
         break;
 
     }
-    this.ecqs.fireTriggers(data.type);
-  }
-
-  // TODO: i think this is really sloppy
-  public enqueue(event: EventCommand<CommandData>) {
-    this.ecqs.enqueue(event);
-  }
-  public pushFront(event: EventCommand<CommandData>) {
-    this.ecqs.pushFront(event);
-  }
-  public registerTrigger(type: EventCommandType, command: EventCommand<CommandData>) {
-    this.ecqs.registerTrigger(type, command);
   }
 
 }

@@ -2,14 +2,15 @@ import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interfac
 import { GameState } from "../../services/game-state/game-state.service";
 import { PlayerType } from "../player-type.mode";
 import { Chargroar } from "../monsters/chargroar";
-import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { StandardActions } from "../standard-actions/standard-actions";
+import { EventCommandQueueService } from "../../services/event-command-queue/event-command-queue.service";
+import { EventUpdateMediatorService } from "../../services/event-update-mediator.service";
 
 export const CardByKeyUtil = {
   getCardByKey
 }
 
-function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
+function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: EventUpdateMediatorService, gs: GameState) {
 
   switch (key) {
     // chargroar

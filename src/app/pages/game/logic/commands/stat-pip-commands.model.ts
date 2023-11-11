@@ -15,8 +15,8 @@ export interface StatPipCommandData extends CommandData {
 }
 
 export class GainStatPipCommand extends EventCommand<StatPipCommandData> {
-  constructor(receiver: UpdateGameStateService, data: StatPipCommandData) {
-    super(receiver, 'GAIN_STAT_PIP', data);
+  constructor(data: StatPipCommandData) {
+    super('GAIN_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} ${this.data.wasRandom ? 'randomly ' : ''}gained ${this.data.amount} ${this.data.statType.toLowerCase()} pip${this.data.amount > 2 ? 's' : ''}.`;
@@ -29,8 +29,8 @@ export interface GainRandomStatPipCommandData extends CommandData {
 }
 
 export class GainRandomStatPipCommand extends EventCommand<GainRandomStatPipCommandData> {
-  constructor(receiver: UpdateGameStateService, data: GainRandomStatPipCommandData) {
-    super(receiver, 'GAIN_RANDOM_STAT_PIP', data);
+  constructor(data: GainRandomStatPipCommandData) {
+    super('GAIN_RANDOM_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
     return ``;
@@ -41,8 +41,8 @@ export class GainRandomStatPipCommand extends EventCommand<GainRandomStatPipComm
 }
 
 export class CrushStatPipCommand extends EventCommand<StatPipCommandData> {
-  constructor(receiver: UpdateGameStateService, data: StatPipCommandData) {
-    super(receiver, 'CRUSH_STAT_PIP', data);
+  constructor(data: StatPipCommandData) {
+    super('CRUSH_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
     return `${this.getPlayerString()} crushed ${this.data.amount} ${this.data.statType.toLowerCase()} pips.`;
@@ -50,8 +50,8 @@ export class CrushStatPipCommand extends EventCommand<StatPipCommandData> {
 }
 
 export class ApplyStatPipsCommand extends EventCommand<StatPipCommandData> {
-  constructor(receiver: UpdateGameStateService, data: StatPipCommandData) {
-    super(receiver, 'APPLY_STAT_PIPS', data);
+  constructor(data: StatPipCommandData) {
+    super('APPLY_STAT_PIPS', data);
   }
   override getDisplayMessage(): string {
     return `${this.getPlayerString()} applied ${this.data.amount} ${this.data.statType.toLowerCase()} pips.`;
@@ -59,8 +59,8 @@ export class ApplyStatPipsCommand extends EventCommand<StatPipCommandData> {
 }
 
 export class DiscardPipsCommand extends EventCommand<StatPipCommandData> {
-  constructor(receiver: UpdateGameStateService, data: StatPipCommandData) {
-    super(receiver, 'DISCARD_PIPS', data);
+  constructor(data: StatPipCommandData) {
+    super('DISCARD_PIPS', data);
   }
   override getDisplayMessage(): string {
     return `${this.getPlayerString()} discarded ${this.data.amount} ${this.data.statType.toLowerCase()} pips.`;

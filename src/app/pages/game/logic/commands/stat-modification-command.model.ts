@@ -13,8 +13,8 @@ export interface StatModificationData extends CommandData {
 }
 
 export class StatModificationCommand extends EventCommand<StatModificationData> {
-  constructor(receiver: UpdateGameStateService, data: StatModificationData) {
-    super(receiver, 'MODIFY_STAT', data);
+  constructor(data: StatModificationData) {
+    super('MODIFY_STAT', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} gained ${this.data.amount} ${this.data.statType}.`;
@@ -26,8 +26,8 @@ export interface HealCommandData extends CommandData {
 }
 
 export class HealCommand extends EventCommand<HealCommandData> {
-  constructor(receiver: UpdateGameStateService, data: HealCommandData) {
-    super(receiver, 'HEAL', data);
+  constructor(data: HealCommandData) {
+    super('HEAL', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} healed ${this.data.amount} HP.`;
@@ -35,8 +35,8 @@ export class HealCommand extends EventCommand<HealCommandData> {
 }
 
 export class TrueDamageCommand extends EventCommand<StatModificationData> {
-  constructor(receiver: UpdateGameStateService, data: StatModificationData) {
-    super(receiver, 'TRUE_DAMAGE', data);
+  constructor(data: StatModificationData) {
+    super('TRUE_DAMAGE', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} was dealt ${this.data.amount} damage.`;
@@ -44,8 +44,8 @@ export class TrueDamageCommand extends EventCommand<StatModificationData> {
 }
 
 export class ApplyFlinchCommand extends EventCommand<StatModificationData> {
-  constructor(receiver: UpdateGameStateService, data: StatModificationData) {
-    super(receiver, 'APPLY_FLINCH', data);
+  constructor(data: StatModificationData) {
+    super('APPLY_FLINCH', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} flinched.`;

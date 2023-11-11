@@ -19,8 +19,8 @@ export interface BasicCommandData extends CommandData {
 }
 
 export class FasterCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
-    super(receiver, 'FASTER', data);
+  constructor(data: BasicCommandData) {
+    super('FASTER', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} is faster than ${this.data.opposingMonsterName}.`;
@@ -28,8 +28,8 @@ export class FasterCommand extends EventCommand<BasicCommandData> {
 }
 
 export class SlowerCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
-    super(receiver, 'SLOWER', data);
+  constructor(data: BasicCommandData) {
+    super('SLOWER', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} is faster than ${this.data.opposingMonsterName}.`;
@@ -37,8 +37,8 @@ export class SlowerCommand extends EventCommand<BasicCommandData> {
 }
 
 export class ResistantCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
-    super(receiver, 'RESISTANT', data);
+  constructor(data: BasicCommandData) {
+    super('RESISTANT', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} is resistant to ${this.data.opposingMonsterName}'s attack.`;
@@ -46,8 +46,8 @@ export class ResistantCommand extends EventCommand<BasicCommandData> {
 }
 
 export class WeakCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
-    super(receiver, 'WEAK', data);
+  constructor(data: BasicCommandData) {
+    super('WEAK', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} is weak to ${this.data.opposingMonsterName}'s attack.`;
@@ -59,8 +59,8 @@ export interface DealDamageCommandData extends BasicCommandData {
 }
 
 export class DealDamageCommand extends EventCommand<DealDamageCommandData> {
-  constructor(receiver: UpdateGameStateService, data: DealDamageCommandData) {
-    super(receiver, 'DEAL_DAMAGE', data);
+  constructor(data: DealDamageCommandData) {
+    super('DEAL_DAMAGE', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} dealt ${this.data.damageToDeal} to ${this.data.opposingMonsterName}.`;
@@ -68,8 +68,8 @@ export class DealDamageCommand extends EventCommand<DealDamageCommandData> {
 }
 
 export class TakeRecoilDamageCommand extends EventCommand<DealDamageCommandData> {
-  constructor(receiver: UpdateGameStateService, data: DealDamageCommandData) {
-    super(receiver, 'TAKE_RECOIL_DAMAGE', data);
+  constructor(data: DealDamageCommandData) {
+    super('TAKE_RECOIL_DAMAGE', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} takes ${this.data.damageToDeal} from recoil.`;
@@ -77,8 +77,8 @@ export class TakeRecoilDamageCommand extends EventCommand<DealDamageCommandData>
 }
 
 export class KnockedOutByAttackCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
-    super(receiver, 'KNOCKED_OUT_BY_ATTACK', data);
+  constructor(data: BasicCommandData) {
+    super('KNOCKED_OUT_BY_ATTACK', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} was KO'd by ${this.data.opposingMonsterName}.`;
@@ -90,24 +90,24 @@ export interface ApplyStatusEffectCommandData extends BasicCommandData {
 }
 
 export class ApplyStatusCommand extends EventCommand<ApplyStatusEffectCommandData> {
-  constructor(receiver: UpdateGameStateService, data: ApplyStatusEffectCommandData) {
-    super(receiver, 'APPLY_STATUS_EFFECT', data);
+  constructor(data: ApplyStatusEffectCommandData) {
+    super('APPLY_STATUS_EFFECT', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} received a ${this.data.statusName.toLowerCase()} status condition.`;
   }
 }
 export class RemoveStatusCommand extends EventCommand<ApplyStatusEffectCommandData> {
-  constructor(receiver: UpdateGameStateService, data: ApplyStatusEffectCommandData) {
-    super(receiver, 'REMOVE_STATUS_EFFECT', data);
+  constructor(data: ApplyStatusEffectCommandData) {
+    super('REMOVE_STATUS_EFFECT', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.statusName} was removed from ${this.data.monsterName}.`;
   }
 }
 export class DisableActionPromptCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
-    super(receiver, 'DISABLE_ACTION_PROMPT', { ...data });
+  constructor(data: BasicCommandData) {
+    super('DISABLE_ACTION_PROMPT', { ...data });
   }
   override getDisplayMessage(): string {
     return '';

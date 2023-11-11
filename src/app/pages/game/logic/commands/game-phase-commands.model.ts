@@ -18,8 +18,8 @@ export interface GamePhaseCommandData extends CommandData {
 }
 
 export class StartGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
-  constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
-    super(receiver, 'START_PHASE', data);
+  constructor(data: GamePhaseCommandData) {
+    super('START_PHASE', data);
   }
   override getDisplayMessage(): string {
     return ``;
@@ -30,8 +30,8 @@ export class StartGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
 }
 
 export class SelectionGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
-  constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
-    super(receiver, 'SELECTION_PHASE', data);
+  constructor(data: GamePhaseCommandData) {
+    super('SELECTION_PHASE', data);
   }
   override getDisplayMessage(): string {
     return ``;
@@ -46,8 +46,8 @@ export interface RevealGamePhaseCommandData extends CommandData {
 }
 
 export class RevealGamePhaseCommand extends EventCommand<RevealGamePhaseCommandData> {
-  constructor(receiver: UpdateGameStateService, data: RevealGamePhaseCommandData) {
-    super(receiver, 'REVEAL_PHASE', data);
+  constructor(data: RevealGamePhaseCommandData) {
+    super('REVEAL_PHASE', data);
   }
   override getDisplayMessage(): string {
     const name = `The opponent selected ${this.data.opponentAction.action?.getDisplayName()}`;
@@ -68,8 +68,8 @@ export class RevealGamePhaseCommand extends EventCommand<RevealGamePhaseCommandD
   }
 }
 export class ApplyPipsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
-  constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
-    super(receiver, 'APPLY_PIPS_PHASE', data);
+  constructor(data: GamePhaseCommandData) {
+    super('APPLY_PIPS_PHASE', data);
   }
   override getDisplayMessage(): string {
     return `apply pips phase`;
@@ -79,8 +79,8 @@ export class ApplyPipsGamePhaseCommand extends EventCommand<GamePhaseCommandData
   }
 }
 export class ApplyBuffsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
-  constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
-    super(receiver, 'APPLY_BUFFS_PHASE', data);
+  constructor(data: GamePhaseCommandData) {
+    super('APPLY_BUFFS_PHASE', data);
   }
   override getDisplayMessage(): string {
     return `apply buff phase`;
@@ -90,8 +90,8 @@ export class ApplyBuffsGamePhaseCommand extends EventCommand<GamePhaseCommandDat
   }
 }
 export class SwitchActionsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
-  constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
-    super(receiver, 'SWITCH_ACTIONS_PHASE', data);
+  constructor(data: GamePhaseCommandData) {
+    super('SWITCH_ACTIONS_PHASE', data);
   }
   override getDisplayMessage(): string {
     return `switch actions phase`;
@@ -101,8 +101,8 @@ export class SwitchActionsGamePhaseCommand extends EventCommand<GamePhaseCommand
   }
 }
 export class MonsterActionsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
-  constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
-    super(receiver, 'MONSTER_ACTIONS_PHASE', data);
+  constructor(data: GamePhaseCommandData) {
+    super('MONSTER_ACTIONS_PHASE', data);
   }
   override getDisplayMessage(): string {
     return `monster actions phase`;
@@ -112,8 +112,8 @@ export class MonsterActionsGamePhaseCommand extends EventCommand<GamePhaseComman
   }
 }
 export class StandardActionsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
-  constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
-    super(receiver, 'STANDARD_ACTIONS_PHASE', data);
+  constructor(data: GamePhaseCommandData) {
+    super('STANDARD_ACTIONS_PHASE', data);
   }
   override getDisplayMessage(): string {
     return `standard action phase`;
@@ -123,8 +123,8 @@ export class StandardActionsGamePhaseCommand extends EventCommand<GamePhaseComma
   }
 }
 export class EndGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
-  constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
-    super(receiver, 'END_PHASE', data);
+  constructor(data: GamePhaseCommandData) {
+    super('END_PHASE', data);
   }
   override getDisplayMessage(): string {
     return `end phase`;

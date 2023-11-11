@@ -12,8 +12,8 @@ export interface BuffCommandData extends CommandData {
 }
 
 export class ApplyBuffCommand extends EventCommand<BuffCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BuffCommandData) {
-    super(receiver, 'APPLY_BUFF', data);
+  constructor(data: BuffCommandData) {
+    super('APPLY_BUFF', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} was buffed with ${this.data.buffName}.`;
@@ -21,8 +21,8 @@ export class ApplyBuffCommand extends EventCommand<BuffCommandData> {
 }
 
 export class ApplyBuffBelongsCommand extends EventCommand<BuffCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BuffCommandData) {
-    super(receiver, 'APPLY_BUFF_BELONGS', data);
+  constructor(data: BuffCommandData) {
+    super('APPLY_BUFF_BELONGS', data);
   }
   public override skipMessage(): boolean {
     return true;
@@ -33,8 +33,8 @@ export class ApplyBuffBelongsCommand extends EventCommand<BuffCommandData> {
 }
 
 export class FlipBelongsCommand extends EventCommand<BuffCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BuffCommandData) {
-    super(receiver, 'FLIP_BELONGS', data);
+  constructor(data: BuffCommandData) {
+    super('FLIP_BELONGS', data);
   }
   override getDisplayMessage(): string {
     return `The flipped card belongs to ${this.data.monsterName}.`;

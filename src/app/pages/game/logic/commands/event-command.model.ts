@@ -7,25 +7,14 @@ import { BUFF_COMMANDS } from "./buff-command.model";
 import { HAND_COMMAND_TYPES } from "./hand-commands.model";
 import { ONGOING_TURN_COMMAND_TYPES } from "./ongoing-turn-commands.model";
 import { PlayerType } from "../player-type.mode";
-import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { GamePhaseCommandType } from "./game-phase-commands.model";
 
 export abstract class EventCommand<T extends CommandData> {
-  readonly receiver: UpdateGameStateService;
   readonly type: EventCommandType;
   readonly data: T;
-  constructor(receiver: UpdateGameStateService, type: EventCommandType, data: T) {
-    this.receiver = receiver; // The entity that knows how to execute the action
+  constructor(type: EventCommandType, data: T) {
     this.type = type;
     this.data = data;
-  }
-
-  public execute() {
-    this.receiver.execute(this);
-  }
-
-  public executeAsTrigger(type: EventCommandType) {
-    this.receiver.registerTrigger(type, this);
   }
 
   abstract getDisplayMessage(): string;

@@ -12,8 +12,8 @@ interface OngoingTurnCommandData extends CommandData {
 }
 
 export class PreventFlinchCommand extends EventCommand<OngoingTurnCommandData> {
-  constructor(receiver: UpdateGameStateService, data: OngoingTurnCommandData) {
-    super(receiver, 'PREVENT_FLINCH', data);
+  constructor(data: OngoingTurnCommandData) {
+    super('PREVENT_FLINCH', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} can't be flinched this turn.`;
@@ -21,8 +21,8 @@ export class PreventFlinchCommand extends EventCommand<OngoingTurnCommandData> {
 }
 
 export class PreventRecoilCommand extends EventCommand<OngoingTurnCommandData> {
-  constructor(receiver: UpdateGameStateService, data: OngoingTurnCommandData) {
-    super(receiver, 'PREVENT_RECOIL', data);
+  constructor(data: OngoingTurnCommandData) {
+    super('PREVENT_RECOIL', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} doesn't take damage from recoil this turn.`;
@@ -30,8 +30,8 @@ export class PreventRecoilCommand extends EventCommand<OngoingTurnCommandData> {
 }
 
 export class SpeedReversedCommand extends EventCommand<OngoingTurnCommandData> {
-  constructor(receiver: UpdateGameStateService, data: OngoingTurnCommandData) {
-    super(receiver, 'SPEED_REVERSED', data);
+  constructor(data: OngoingTurnCommandData) {
+    super('SPEED_REVERSED', data);
   }
   override getDisplayMessage(): string {
     return `Speeds are reversed this turn.`;
@@ -39,8 +39,8 @@ export class SpeedReversedCommand extends EventCommand<OngoingTurnCommandData> {
 }
 
 export class FlinchedCommand extends EventCommand<OngoingTurnCommandData> {
-  constructor(receiver: UpdateGameStateService, data: OngoingTurnCommandData) {
-    super(receiver, 'FLINCHED', data);
+  constructor(data: OngoingTurnCommandData) {
+    super('FLINCHED', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} flinched.`;

@@ -3,6 +3,8 @@ import { Dequeue } from '~/app/shared/classes/queue.model';
 import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 import { EventCommand, CommandData, EventCommandType } from '../../logic/commands/event-command.model';
 import { BehaviorSubject } from 'rxjs';
+import { UpdateGameStateService } from '../update-game-state/update-game-state.service';
+import { EventUpdateMediatorService } from '../event-update-mediator.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,14 +23,33 @@ export class EventCommandQueueService {
   public get isProcessing(): boolean { return this._isProcessing; }
 
   constructor(
-  ) { }
+    private mediator: EventUpdateMediatorService,
+  ) { 
+    this.mediator.receiveTrigger$.subscribe((value) => {
+      if (value) {
+        this.registerTrigger(value?.type, value?.event)
+      }
+    });
+    this.mediator.enqueueEvent$.subscribe((value) => {
+      if (value) {
+        this.enqueue(value);
+      }
+    });
+    this.mediator.pushFrontEvent$.subscribe((value) => {
+      if (value) {
+        this.pushFront(value);
+      }
+    });
+  }
 
   public enqueue(event: EventCommand<CommandData>) {
+    console.log("enqueue", event);
     this._queue.enqueue(event);
     this.processQueue(); // Start processing if not already doing so
   }
 
   public pushFront(event: EventCommand<CommandData>) {
+    console.log("pushFront", event);
     this._queue.pushFront(event);
     this.processQueue(); // Start processing if not already doing so
   }
@@ -57,7 +78,8 @@ export class EventCommandQueueService {
         this.awaitPlayerDecision(command);
         break; // Exit the loop and wait for the decision
       } else {
-        command?.execute();
+        this.mediator.execute(command);
+        this.fireTriggers(command.type);
         this._isAwaitingAcknowledgement = !command.skipMessage();
         if (command?.data.destroyOnTrigger) {
           this.unregisterTrigger(command.type, command.data.key);
