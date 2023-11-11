@@ -108,8 +108,13 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   function performMonsterAction(gs: GameState, player: PlayerType) {
     const playerState = GameStateUtil.getPlayerState(gs, player);
     const opponentState = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(player));
+    if (playerState.selectedAction.action?.getSelectableActionType() !== 'MONSTER') return;
 
+    CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, rc, gs);
   }
+
+  performMonsterAction(gs, fasterPlayer);
+  performMonsterAction(gs, slowerPlayer);
 
 }
 

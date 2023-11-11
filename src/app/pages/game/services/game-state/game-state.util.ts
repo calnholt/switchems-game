@@ -35,7 +35,7 @@ function getOpponentPlayerState(gs: GameState, playerType: PlayerType): PlayerSt
   return gs.p;
 }
 
-function getOppositePlayer(playerType: PlayerType) {
+function getOppositePlayer(playerType: PlayerType): PlayerType {
   return playerType === 'P' ? 'O' : 'P';
 }
 

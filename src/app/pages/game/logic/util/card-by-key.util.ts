@@ -17,20 +17,28 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: Updat
       Chargroar.ChargroarMonster(key, player, receiver);
       break;
     case getActionKey(CHARGROAR, 0):
+      Chargroar.LightningFangAction(key, player, receiver, gs);
       break;
     case getActionKey(CHARGROAR, 1):
+      Chargroar.LightsOutAction(key, player, receiver);
       break;
     case getActionKey(CHARGROAR, 2):
+      Chargroar.HyperChargeAction(key, player, receiver)
       break;
     case getActionKey(CHARGROAR, 3):
+      Chargroar.BlazingRoarAction(key, player, receiver);
       break;
     case getBuffKey(CHARGROAR, 0):
+      Chargroar.ChargeBuff(key, player, receiver, gs);
       break;
     case getBuffKey(CHARGROAR, 1):
+      Chargroar.RoarBuff(key, player, receiver, gs);
       break;
     case getBuffKey(CHARGROAR, 2):
+      Chargroar.RevengeBuff(key, player, receiver, gs);
       break;
     case getBuffKey(CHARGROAR, 3):
+      Chargroar.PreyUponBuff(key, player, receiver, gs)
       break;
     // ***
     case VULTUROCK:
