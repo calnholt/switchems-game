@@ -23,6 +23,7 @@ export const GameStateUtil = {
   getPlayerCardManagerByPlayer,
   getOppositePlayer,
   getInitiatives,
+  getSpeedPlayers,
 }
 
 function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
@@ -161,4 +162,10 @@ function getInitiativePlayer(initiative: number, oInitiative: number, gs: GameSt
     return gs.rng.getRandomPlayer();
   }
   return initiative > oInitiative ? 'P' : 'O';
+}
+
+function getSpeedPlayers(gs: GameState) {
+  const fasterPlayer = GameStateUtil.getFirstPlayer(gs, 'P');
+  const slowerPlayer = GameStateUtil.getOppositePlayer(fasterPlayer);
+  return { fasterPlayer, slowerPlayer };
 }

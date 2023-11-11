@@ -27,51 +27,28 @@ export const UpdateGamePhaseUtil = {
 }
 
 function revealPhase(gs: GameState, rc: UpdateGameStateService) {
-  rc.enqueue(
-    new RevealGamePhaseCommand(rc, { opponentAction: gs.o.selectedAction, key: 'phase', player: 'P'})
-  );
+  rc.enqueue(new RevealGamePhaseCommand(rc, { opponentAction: gs.o.selectedAction, key: 'phase', player: 'P'}));
 }
-
 function applyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
-  rc.enqueue(
-    new ApplyPipsGamePhaseCommand(rc, { key: 'phase', player: 'P' })
-  );
+  rc.enqueue(new ApplyPipsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
 }
-
 function applyBuffsPhase(gs: GameState, rc: UpdateGameStateService) {
-  rc.enqueue(
-    new ApplyBuffsGamePhaseCommand(rc, { key: 'phase', player: 'P' })
-  );
+  rc.enqueue(new ApplyBuffsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
 }
-
 function switchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
-  rc.enqueue(
-    new SwitchActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' })
-  );
+  rc.enqueue(new SwitchActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
 }
-
 function monsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
-  rc.enqueue(
-    new MonsterActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' })
-  );
+  rc.enqueue(new MonsterActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
 }
-
 function standardActionsPhase(gs: GameState, rc: UpdateGameStateService) {
-  rc.enqueue(
-    new StandardActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' })
-  );
+  rc.enqueue(new StandardActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
 }
-
 function endPhase(gs: GameState, rc: UpdateGameStateService) {
-  rc.enqueue(
-    new EndGamePhaseCommand(rc, { key: 'phase', player: 'P' })
-  );
+  rc.enqueue(new EndGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
 }
-
 function selectionPhase(gs: GameState, rc: UpdateGameStateService) {
-  rc.enqueue(
-    new SelectionGamePhaseCommand(rc, { key: 'phase', player: 'P' })
-  );
+  rc.enqueue(new SelectionGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
 }
 
 function executeApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
@@ -126,8 +103,14 @@ function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
 }
 
 function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
-    // const playerState = GameStateUtil.getPlayerState(gs, player);
-    // const opponentState = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(player));
+  const { fasterPlayer, slowerPlayer } = GameStateUtil.getSpeedPlayers(gs);
+  
+  function performMonsterAction(gs: GameState, player: PlayerType) {
+    const playerState = GameStateUtil.getPlayerState(gs, player);
+    const opponentState = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(player));
+
+  }
+
 }
 
 function executeStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) {
