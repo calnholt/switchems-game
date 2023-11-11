@@ -108,6 +108,20 @@ export class UpdateGameStateService {
       case 'WEAK':
         UpdateGameStateUtil.weak(data, this);
         break;
+
+      // phases
+      case 'START_PHASE':
+      case 'SELECTION_PHASE':
+      case 'REVEAL_PHASE':
+      case 'APPLY_PIPS_PHASE':
+      case 'APPLY_BUFFS_PHASE':
+      case 'SWITCH_ACTIONS_PHASE':
+      case 'MONSTER_ACTIONS_PHASE':
+      case 'STANDARD_ACTIONS_PHASE':
+      case 'END_PHASE':
+        UpdateGameStateUtil.setPhase(ec.type, this);
+        break;
+
     }
     this.ecqs.fireTriggers(data.type);
   }

@@ -8,6 +8,7 @@ import { HAND_COMMAND_TYPES } from "./hand-commands.model";
 import { ONGOING_TURN_COMMAND_TYPES } from "./ongoing-turn-commands.model";
 import { PlayerType } from "../player-type.mode";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
+import { GamePhaseCommandType } from "./game-phase-commands.model";
 
 export abstract class EventCommand<T extends CommandData> {
   readonly receiver: UpdateGameStateService;
@@ -53,6 +54,7 @@ export type EventCommandType =
   | BUFF_COMMANDS
   | HAND_COMMAND_TYPES
   | ONGOING_TURN_COMMAND_TYPES
+  | GamePhaseCommandType
 
 export interface CommandData {
   monsterName?: string;

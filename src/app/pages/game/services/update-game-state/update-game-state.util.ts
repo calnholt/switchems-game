@@ -12,6 +12,7 @@ import { PlayerType } from "../../logic/player-type.mode";
 import { ApplyBuffBelongsCommand, BuffCommandData } from "../../logic/commands/buff-command.model";
 import { GainSwitchDefenseCommandData, SwitchCommandData } from "../../logic/commands/swtich-commands.model";
 import { UpdateGameStateService } from "./update-game-state.service";
+import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, GamePhaseCommandType, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, StartGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
 
 export const UpdateGameStateUtil = {
   applyBuff,
@@ -32,7 +33,7 @@ export const UpdateGameStateUtil = {
   gainRandomStatPip,
   gainSwitchDefense,
   resistant,
-  takeRecoilDamage,
+  setPhase,
 }
 
 function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }
@@ -147,13 +148,14 @@ function weak(data: CommandData, rc: UpdateGameStateService) {
 }
 // basically an intermediary action that sets the actual pips gained
 function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc: UpdateGameStateService) {
+  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   for (let i = 0;  i < data.amount; i++) {
     const random = gs.rng.randomIntOption(3);
     let type: 'ATTACK' | 'SPEED' | 'DEFENSE' = 'ATTACK';
     if (random === 1) type = 'SPEED';
     if (random === 2) type = 'DEFENSE'; 
     rc.enqueue(
-      new GainStatPipCommand(rc, { key: 'pip', amount: 1, player: data.player, statType: type })
+      new GainStatPipCommand(rc, { key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name })
     );
   }
 }
@@ -174,6 +176,34 @@ function resistant(gs: GameState, data: BasicCommandData, rc: UpdateGameStateSer
   }
 }
 
-function takeRecoilDamage(gs: GameState, data: BasicCommandData) {
-
+function setPhase(type: GamePhaseCommandType, rc: UpdateGameStateService) {
+  switch(type) {
+    case 'START_PHASE':
+      rc.enqueue(new StartGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
+      break;
+    case 'SELECTION_PHASE':
+      rc.enqueue(new SelectionGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
+      break;
+    case 'REVEAL_PHASE':
+      rc.enqueue(new RevealGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
+      break;
+    case 'APPLY_PIPS_PHASE':
+      rc.enqueue(new ApplyPipsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
+      break;
+    case 'APPLY_BUFFS_PHASE':
+      rc.enqueue(new ApplyBuffsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
+      break;
+    case 'SWITCH_ACTIONS_PHASE':
+      rc.enqueue(new SwitchActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
+      break;
+    case 'MONSTER_ACTIONS_PHASE':
+      rc.enqueue(new MonsterActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
+      break;
+    case 'STANDARD_ACTIONS_PHASE':
+      rc.enqueue(new StandardActionsGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
+      break;
+    case 'END_PHASE':
+      rc.enqueue(new EndGamePhaseCommand(rc, { key: 'phase', player: 'P' }));
+      break;
+  }
 }

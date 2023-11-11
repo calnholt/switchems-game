@@ -16,6 +16,7 @@ import { MonsterHpComponent } from './components/monster/monster-hp/monster-hp.c
 import { MonsterElementBreakdownComponent } from './components/monster/monster-element-breakdown/monster-element-breakdown.component';
 import { StandardActionComponent } from './components/standard-action/standard-action.component';
 import { SubmitActionButtonComponent } from './components/submit-action-button/submit-action-button.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { SubmitActionButtonComponent } from './components/submit-action-button/s
     MonsterElementBreakdownComponent,
     StandardActionComponent,
     SubmitActionButtonComponent,
+    DialogComponent,
   ],
   exports: [
     MonsterActionComponent,

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Queue } from '~/app/shared/classes/queue.model';
 import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 import { EventCommand, CommandData, EventCommandType } from '../../logic/commands/event-command.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,12 @@ export class EventCommandQueueService {
   private _triggers = new Map<EventCommandType, EventCommand<CommandData>[]>();
   private _isProcessing = false;
   private _isAwaitingDecision = false;
+  private _isAwaitingAcknowledgement = false;
+
+  private _event$ = new BehaviorSubject<EventCommand<CommandData> | undefined>(undefined);
+
+  public get event$() { return this._event$; }
+  public get isProcessing(): boolean { return this._isProcessing; }
 
   constructor(
   ) { }
@@ -22,7 +29,9 @@ export class EventCommandQueueService {
   }
 
   public dequeue(): EventCommand<CommandData> | undefined {
-    return this._queue.dequeue();
+    const command = this._queue.dequeue();
+    this._event$.next(command);
+    return command;
   }
 
   public processQueue() {
@@ -31,8 +40,8 @@ export class EventCommandQueueService {
     }
     this._isProcessing = true;
 
-    while (!this._queue.isEmpty() && !this._isAwaitingDecision) {
-      const command = this._queue.dequeue();
+    while (!this._queue.isEmpty() && !this._isAwaitingDecision && !this._isAwaitingAcknowledgement) {
+      const command = this.dequeue();
       if (!command) break;
       if (command?.requiresDecision()) {
         // The command requires a player decision to proceed
@@ -41,6 +50,9 @@ export class EventCommandQueueService {
         break; // Exit the loop and wait for the decision
       } else {
         command?.execute();
+        // if (!command.skipMessage()) {
+        //   this._isAwaitingAcknowledgement = true;
+        // }
         if (command?.data.destroyOnTrigger) {
           this.unregisterTrigger(command.type, command.data.key);
         }
@@ -50,8 +62,9 @@ export class EventCommandQueueService {
     this._isProcessing = false;
   }
 
-  public get isProcessing(): boolean {
-    return this._isProcessing;
+  public acknowledge() {
+    this._isAwaitingAcknowledgement = false;
+    this.processQueue();
   }
 
   private awaitPlayerDecision(command: EventCommand<CommandData> | undefined) {

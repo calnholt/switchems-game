@@ -9,6 +9,9 @@ import { StandardAction } from '../../models/standard-action/standard-action.mod
 import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
 import { UpdateGameStateService } from '../update-game-state/update-game-state.service';
 import { DrawCommand } from '../../logic/commands/hand-commands.model';
+import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
+import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
+import { UpdateGameStateUtil } from '../update-game-state/update-game-state.util';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +21,8 @@ export class GamePhaseService {
   constructor(
     private gameStateService: GameStateService,
     private rng: SeedableRngService,
-    private ugss: UpdateGameStateService
+    private ugss: UpdateGameStateService,
+    private eqcs: EventCommandQueueService,
   ) { }
 
   public testActionPhase() {
@@ -28,7 +32,13 @@ export class GamePhaseService {
     this.processActionPhase();
   }
 
+  public startGame() {
+    // UpdateGameStateUtil.setPhase('START_PHASE', this.ugss);
+    UpdateGameStateUtil.setPhase('SELECTION_PHASE', this.ugss);
+  }
+
   private processActionPhase() {
+    UpdateGameStateUtil.setPhase('REVEAL_PHASE', this.ugss);
     const gs: GameState = this.gameStateService.getGameState();
 
     // determine initiative player
@@ -37,13 +47,19 @@ export class GamePhaseService {
     const playerWithInitiative: PlayerType = this.getInitiativePlayer(initiative, oInitiative);
     const playerWithoutInitiative: PlayerType = GameStateUtil.getOppositePlayer(playerWithInitiative);
 
+    UpdateGameStateUtil.setPhase('APPLY_PIPS_PHASE', this.ugss);
+
     // initiative determines order
     this.applyStatPips(gs, playerWithInitiative);
     this.applyStatPips(gs, playerWithoutInitiative);
 
+    UpdateGameStateUtil.setPhase('APPLY_BUFFS_PHASE', this.ugss);
+
     // initiative determines order
     this.applyBuffs(gs, playerWithInitiative);
     this.applyBuffs(gs, playerWithoutInitiative);
+
+    UpdateGameStateUtil.setPhase('SWITCH_ACTIONS_PHASE', this.ugss);
 
     // initiative determines order
     this.performSwitchAction(gs, playerWithInitiative);
@@ -53,16 +69,24 @@ export class GamePhaseService {
     const fasterPlayer = GameStateUtil.getFirstPlayer(gs, 'P');
     const slowerPlayer = GameStateUtil.getOppositePlayer(fasterPlayer);
 
+    UpdateGameStateUtil.setPhase('MONSTER_ACTIONS_PHASE', this.ugss);
+
     // speed determines order
     this.performMonsterAction(gs, fasterPlayer);
     this.performMonsterAction(gs, slowerPlayer);
+
+    UpdateGameStateUtil.setPhase('STANDARD_ACTIONS_PHASE', this.ugss);
 
     // initiative determines order
     this.performStandardAction(gs, playerWithInitiative);
     this.performStandardAction(gs, playerWithoutInitiative);
 
+    UpdateGameStateUtil.setPhase('END_PHASE', this.ugss);
+
     this.playerCleanup(gs, playerWithInitiative);
     this.playerCleanup(gs, playerWithoutInitiative);
+
+    UpdateGameStateUtil.setPhase('SELECTION_PHASE', this.ugss);
 
   }
 
@@ -139,5 +163,11 @@ export class GamePhaseService {
     );
   }
 
+  private phaseEvent(type: GamePhaseCommandType) {
+    switch(type) {
+      case 'START_PHASE':
+        
+    }
+  }
 
 }
