@@ -1,6 +1,5 @@
-import { StatBoardSectionType } from "~/app/pages/game/models/stat-board/stat-board.model";
 import { CommandData, EventCommand } from "./event-command.model";
-import { EventCommandQueueService } from "~/app/pages/game/services/event-command-queue/event-command-queue.service";
+import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 
 export type STAT_PIP_TYPES = 
   | 'GAIN_RANDOM_STAT_PIP' 
@@ -16,7 +15,7 @@ export interface StatPipCommandData extends CommandData {
 }
 
 export class GainStatPipCommand extends EventCommand<StatPipCommandData> {
-  constructor(receiver: EventCommandQueueService, data: StatPipCommandData) {
+  constructor(receiver: UpdateGameStateService, data: StatPipCommandData) {
     super(receiver, 'GAIN_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
@@ -30,7 +29,7 @@ export interface GainRandomStatPipCommandData extends CommandData {
 }
 
 export class GainRandomStatPipCommand extends EventCommand<GainRandomStatPipCommandData> {
-  constructor(receiver: EventCommandQueueService, data: GainRandomStatPipCommandData) {
+  constructor(receiver: UpdateGameStateService, data: GainRandomStatPipCommandData) {
     super(receiver, 'GAIN_RANDOM_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
@@ -42,7 +41,7 @@ export class GainRandomStatPipCommand extends EventCommand<GainRandomStatPipComm
 }
 
 export class CrushStatPipCommand extends EventCommand<StatPipCommandData> {
-  constructor(receiver: EventCommandQueueService, data: StatPipCommandData) {
+  constructor(receiver: UpdateGameStateService, data: StatPipCommandData) {
     super(receiver, 'CRUSH_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
@@ -51,7 +50,7 @@ export class CrushStatPipCommand extends EventCommand<StatPipCommandData> {
 }
 
 export class ApplyStatPipsCommand extends EventCommand<StatPipCommandData> {
-  constructor(receiver: EventCommandQueueService, data: StatPipCommandData) {
+  constructor(receiver: UpdateGameStateService, data: StatPipCommandData) {
     super(receiver, 'APPLY_STAT_PIPS', data);
   }
   override getDisplayMessage(): string {
@@ -60,7 +59,7 @@ export class ApplyStatPipsCommand extends EventCommand<StatPipCommandData> {
 }
 
 export class DiscardPipsCommand extends EventCommand<StatPipCommandData> {
-  constructor(receiver: EventCommandQueueService, data: StatPipCommandData) {
+  constructor(receiver: UpdateGameStateService, data: StatPipCommandData) {
     super(receiver, 'DISCARD_PIPS', data);
   }
   override getDisplayMessage(): string {

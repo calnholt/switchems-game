@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { GameState, GameStateService } from '../game-state/game-state.service';
 import { PlayerType } from '../../logic/player-type.mode';
 import { GameStateUtil } from '../game-state/game-state.util';
-import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
 import { ApplyStatPipsCommand } from '../../logic/commands/stat-pip-commands.model';
 import { CardByKeyUtil } from '../../logic/util/card-by-key.util';
 import { ApplyBuffCommand } from '../../logic/commands/buff-command.model';
 import { StandardAction } from '../../models/standard-action/standard-action.model';
 import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
+import { UpdateGameStateService } from '../update-game-state/update-game-state.service';
+import { DrawCommand } from '../../logic/commands/hand-commands.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,8 @@ export class GamePhaseService {
 
   constructor(
     private gameStateService: GameStateService,
-    private ecqs: EventCommandQueueService,
     private rng: SeedableRngService,
+    private ugss: UpdateGameStateService
   ) { }
 
   public testActionPhase() {
@@ -77,8 +78,8 @@ export class GamePhaseService {
     const playerState = GameStateUtil.getPlayerState(gs, player);
     const section = playerState.selectedAction.statBoardSection;
     if (section) {
-      this.ecqs.enqueue(
-        new ApplyStatPipsCommand(this.ecqs, { key: 'pip', amount: section.current, player, statType: section.type })
+      this.ugss.enqueue(
+        new ApplyStatPipsCommand(this.ugss, { key: 'pip', amount: section.current, player, statType: section.type })
       );
     }
   }
@@ -88,10 +89,10 @@ export class GamePhaseService {
     if (!!appliedBuffs.length) return;
 
     appliedBuffs.forEach(buff => {
-      this.ecqs.enqueue(
-        new ApplyBuffCommand(this.ecqs, { key: buff.key(), player, buffName: buff.name, monsterName: buff.monsterName })
+      this.ugss.enqueue(
+        new ApplyBuffCommand(this.ugss, { key: buff.key(), player, buffName: buff.name, monsterName: buff.monsterName })
       )
-      CardByKeyUtil.getCardByKey(buff.key(), player, this.ecqs, gs);
+      CardByKeyUtil.getCardByKey(buff.key(), player, this.ugss, gs);
     })
   }
 
@@ -115,7 +116,7 @@ export class GamePhaseService {
     const playerState = GameStateUtil.getPlayerState(gs, player);
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'STANDARD') return;
 
-    CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, this.ecqs, gs);
+    CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, this.ugss, gs);
   }
 
   private playerCleanup(gs: GameState, player: PlayerType) {
@@ -133,7 +134,9 @@ export class GamePhaseService {
       action.modifiers.eotClear();
     });
     // draw card(s)
-    playerState.playerCardManager.drawCard();
+    this.ugss.enqueue(
+      new DrawCommand(this.ugss, { key: 'eot', player })
+    );
   }
 
 

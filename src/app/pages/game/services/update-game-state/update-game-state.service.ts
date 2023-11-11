@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CommandData, EventCommand } from '../../logic/commands/event-command.model';
+import { CommandData, EventCommand, EventCommandType } from '../../logic/commands/event-command.model';
 import { GameStateService } from '../game-state/game-state.service';
 import { UpdateGameStateUtil } from './update-game-state.util';
 import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
@@ -11,17 +11,17 @@ export class UpdateGameStateService {
 
   constructor(
     private gameStateService: GameStateService,
-    private ecqs: EventCommandQueueService
+    private ecqs: EventCommandQueueService,
   ) { }
 
   // functions that take EventCommandQueueService as param can potentially add new commands to the queue
-  public update(ec: EventCommand<CommandData>): EventCommand<CommandData> | undefined {
+  public execute(ec: EventCommand<CommandData>) {
     const gs = this.gameStateService.getGameState();
     // TODO: kinda bad
     const data = ec.data as any;
     switch(ec.type) {
       case 'APPLY_BUFF':
-        UpdateGameStateUtil.applyBuff(gs, data, this.ecqs);
+        UpdateGameStateUtil.applyBuff(gs, data, this);
         break;
       case 'APPLY_BUFF_BELONGS': // trigger
         break;
@@ -38,7 +38,7 @@ export class UpdateGameStateService {
       case 'CRUSH_STAT_PIP':
         break;
       case 'DEAL_DAMAGE':
-        UpdateGameStateUtil.dealDamage(gs, data, this.ecqs);
+        UpdateGameStateUtil.dealDamage(gs, data, this);
         break;
       // TODO: requires decision
       case 'DISABLE_ACTION_PROMPT':
@@ -64,7 +64,7 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.gainSwitchDefense(gs, data);
         break;
       case 'GAIN_RANDOM_STAT_PIP':
-        UpdateGameStateUtil.gainRandomStatPip(gs, data, this.ecqs);
+        UpdateGameStateUtil.gainRandomStatPip(gs, data, this);
         break;
       case 'GAIN_STAT_PIP':
         UpdateGameStateUtil.gainStatPip(gs, data);
@@ -89,7 +89,7 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.removeStatusEffect(gs, data);
         break;
       case 'RESISTANT':
-        UpdateGameStateUtil.resistant(gs, data, this.ecqs);
+        UpdateGameStateUtil.resistant(gs, data, this);
         break;
       case 'SLOWER':
         break;
@@ -103,12 +103,21 @@ export class UpdateGameStateService {
         break;
       case 'TAKE_RECOIL_DAMAGE':
       case 'TRUE_DAMAGE':
-        UpdateGameStateUtil.dealDamage(gs, data, this.ecqs);
+        UpdateGameStateUtil.dealDamage(gs, data, this);
         break;
       case 'WEAK':
-        UpdateGameStateUtil.weak(data, this.ecqs);
+        UpdateGameStateUtil.weak(data, this);
         break;
     }
-    return undefined;
+    this.ecqs.fireTriggers(data.type);
   }
+
+  // TODO: i think this is really sloppy
+  public enqueue(event: EventCommand<CommandData>) {
+    this.ecqs.enqueue(event);
+  }
+  public registerTrigger(type: EventCommandType, command: EventCommand<CommandData>) {
+    this.ecqs.registerTrigger(type, command);
+  }
+
 }

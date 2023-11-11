@@ -1,4 +1,4 @@
-import { EventCommandQueueService } from "~/app/pages/game/services/event-command-queue/event-command-queue.service";
+import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { CommandData, EventCommand } from "./event-command.model";
 
 export type MONSTER_ACTION_COMMANDS =
@@ -19,7 +19,7 @@ export interface BasicCommandData extends CommandData {
 }
 
 export class FasterCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: EventCommandQueueService, data: BasicCommandData) {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
     super(receiver, 'FASTER', data);
   }
   override getDisplayMessage(): string {
@@ -28,7 +28,7 @@ export class FasterCommand extends EventCommand<BasicCommandData> {
 }
 
 export class SlowerCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: EventCommandQueueService, data: BasicCommandData) {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
     super(receiver, 'SLOWER', data);
   }
   override getDisplayMessage(): string {
@@ -37,7 +37,7 @@ export class SlowerCommand extends EventCommand<BasicCommandData> {
 }
 
 export class ResistantCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: EventCommandQueueService, data: BasicCommandData) {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
     super(receiver, 'RESISTANT', data);
   }
   override getDisplayMessage(): string {
@@ -46,7 +46,7 @@ export class ResistantCommand extends EventCommand<BasicCommandData> {
 }
 
 export class WeakCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: EventCommandQueueService, data: BasicCommandData) {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
     super(receiver, 'WEAK', data);
   }
   override getDisplayMessage(): string {
@@ -59,7 +59,7 @@ export interface DealDamageCommandData extends BasicCommandData {
 }
 
 export class DealDamageCommand extends EventCommand<DealDamageCommandData> {
-  constructor(receiver: EventCommandQueueService, data: DealDamageCommandData) {
+  constructor(receiver: UpdateGameStateService, data: DealDamageCommandData) {
     super(receiver, 'DEAL_DAMAGE', data);
   }
   override getDisplayMessage(): string {
@@ -68,7 +68,7 @@ export class DealDamageCommand extends EventCommand<DealDamageCommandData> {
 }
 
 export class TakeRecoilDamageCommand extends EventCommand<DealDamageCommandData> {
-  constructor(receiver: EventCommandQueueService, data: DealDamageCommandData) {
+  constructor(receiver: UpdateGameStateService, data: DealDamageCommandData) {
     super(receiver, 'TAKE_RECOIL_DAMAGE', data);
   }
   override getDisplayMessage(): string {
@@ -77,7 +77,7 @@ export class TakeRecoilDamageCommand extends EventCommand<DealDamageCommandData>
 }
 
 export class KnockedOutByAttackCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: EventCommandQueueService, data: BasicCommandData) {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
     super(receiver, 'KNOCKED_OUT_BY_ATTACK', data);
   }
   override getDisplayMessage(): string {
@@ -90,7 +90,7 @@ export interface ApplyStatusEffectCommandData extends BasicCommandData {
 }
 
 export class ApplyStatusCommand extends EventCommand<ApplyStatusEffectCommandData> {
-  constructor(receiver: EventCommandQueueService, data: ApplyStatusEffectCommandData) {
+  constructor(receiver: UpdateGameStateService, data: ApplyStatusEffectCommandData) {
     super(receiver, 'APPLY_STATUS_EFFECT', data);
   }
   override getDisplayMessage(): string {
@@ -98,7 +98,7 @@ export class ApplyStatusCommand extends EventCommand<ApplyStatusEffectCommandDat
   }
 }
 export class RemoveStatusCommand extends EventCommand<ApplyStatusEffectCommandData> {
-  constructor(receiver: EventCommandQueueService, data: ApplyStatusEffectCommandData) {
+  constructor(receiver: UpdateGameStateService, data: ApplyStatusEffectCommandData) {
     super(receiver, 'REMOVE_STATUS_EFFECT', data);
   }
   override getDisplayMessage(): string {
@@ -106,7 +106,7 @@ export class RemoveStatusCommand extends EventCommand<ApplyStatusEffectCommandDa
   }
 }
 export class DisableActionPromptCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: EventCommandQueueService, data: BasicCommandData) {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
     super(receiver, 'DISABLE_ACTION_PROMPT', { ...data });
   }
   override getDisplayMessage(): string {

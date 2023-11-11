@@ -1,4 +1,4 @@
-import { EventCommandQueueService } from "~/app/pages/game/services/event-command-queue/event-command-queue.service";
+import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { CommandData, EventCommand } from "./event-command.model";
 
 export type HAND_COMMAND_TYPES = 
@@ -11,7 +11,7 @@ export interface HandCommandData extends CommandData {
 }
 
 export class DrawCommand extends EventCommand<HandCommandData> {
-  constructor(receiver: EventCommandQueueService, data: HandCommandData) {
+  constructor(receiver: UpdateGameStateService, data: HandCommandData) {
     super(receiver, 'DRAW', data);
   }
   override getDisplayMessage(): string {
@@ -23,7 +23,7 @@ export class DrawCommand extends EventCommand<HandCommandData> {
 }
 
 export class DiscardCommand extends EventCommand<HandCommandData> {
-  constructor(receiver: EventCommandQueueService, data: HandCommandData) {
+  constructor(receiver: UpdateGameStateService, data: HandCommandData) {
     super(receiver, 'DISCARD', data);
   }
   override getDisplayMessage(): string {
@@ -32,7 +32,7 @@ export class DiscardCommand extends EventCommand<HandCommandData> {
 }
 
 export class RandomDiscardCommand extends EventCommand<HandCommandData> {
-  constructor(receiver: EventCommandQueueService, data: HandCommandData) {
+  constructor(receiver: UpdateGameStateService, data: HandCommandData) {
     super(receiver, 'RANDOM_DISCARD', data);
   }
   override getDisplayMessage(): string {

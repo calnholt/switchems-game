@@ -1,4 +1,3 @@
-import { EventCommandQueueService } from "~/app/pages/game/services/event-command-queue/event-command-queue.service";
 import { STAT_PIP_TYPES } from "./stat-pip-commands.model";
 import { SWITCH_TYPES } from "./swtich-commands.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
@@ -8,20 +7,20 @@ import { BUFF_COMMANDS } from "./buff-command.model";
 import { HAND_COMMAND_TYPES } from "./hand-commands.model";
 import { ONGOING_TURN_COMMAND_TYPES } from "./ongoing-turn-commands.model";
 import { PlayerType } from "../player-type.mode";
+import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 
 export abstract class EventCommand<T extends CommandData> {
-  readonly receiver: EventCommandQueueService;
+  readonly receiver: UpdateGameStateService;
   readonly type: EventCommandType;
   readonly data: T;
-  constructor(receiver: EventCommandQueueService, type: EventCommandType, data: T) {
+  constructor(receiver: UpdateGameStateService, type: EventCommandType, data: T) {
     this.receiver = receiver; // The entity that knows how to execute the action
     this.type = type;
     this.data = data;
   }
 
   public execute() {
-    // this.receiver.enqueue(this);
-    this.receiver.fireTriggers(this.type);
+    this.receiver.execute(this);
   }
 
   public executeAsTrigger(type: EventCommandType) {

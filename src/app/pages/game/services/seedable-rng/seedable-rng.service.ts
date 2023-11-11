@@ -12,7 +12,7 @@ export class SeedableRngService {
 
   private seed: number;
   constructor() {
-    this.seed = 1;
+    this.seed = Math.floor(Math.random() * 10000);
   }
 
   setSeed(seed: number) {

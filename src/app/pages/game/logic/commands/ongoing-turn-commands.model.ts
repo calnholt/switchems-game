@@ -1,4 +1,4 @@
-import { EventCommandQueueService } from "~/app/pages/game/services/event-command-queue/event-command-queue.service";
+import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { CommandData, EventCommand } from "./event-command.model";
 
 export type ONGOING_TURN_COMMAND_TYPES =
@@ -12,7 +12,7 @@ interface OngoingTurnCommandData extends CommandData {
 }
 
 export class PreventFlinchCommand extends EventCommand<OngoingTurnCommandData> {
-  constructor(receiver: EventCommandQueueService, data: OngoingTurnCommandData) {
+  constructor(receiver: UpdateGameStateService, data: OngoingTurnCommandData) {
     super(receiver, 'PREVENT_FLINCH', data);
   }
   override getDisplayMessage(): string {
@@ -21,7 +21,7 @@ export class PreventFlinchCommand extends EventCommand<OngoingTurnCommandData> {
 }
 
 export class PreventRecoilCommand extends EventCommand<OngoingTurnCommandData> {
-  constructor(receiver: EventCommandQueueService, data: OngoingTurnCommandData) {
+  constructor(receiver: UpdateGameStateService, data: OngoingTurnCommandData) {
     super(receiver, 'PREVENT_RECOIL', data);
   }
   override getDisplayMessage(): string {
@@ -30,7 +30,7 @@ export class PreventRecoilCommand extends EventCommand<OngoingTurnCommandData> {
 }
 
 export class SpeedReversedCommand extends EventCommand<OngoingTurnCommandData> {
-  constructor(receiver: EventCommandQueueService, data: OngoingTurnCommandData) {
+  constructor(receiver: UpdateGameStateService, data: OngoingTurnCommandData) {
     super(receiver, 'SPEED_REVERSED', data);
   }
   override getDisplayMessage(): string {
@@ -39,7 +39,7 @@ export class SpeedReversedCommand extends EventCommand<OngoingTurnCommandData> {
 }
 
 export class FlinchedCommand extends EventCommand<OngoingTurnCommandData> {
-  constructor(receiver: EventCommandQueueService, data: OngoingTurnCommandData) {
+  constructor(receiver: UpdateGameStateService, data: OngoingTurnCommandData) {
     super(receiver, 'FLINCHED', data);
   }
   override getDisplayMessage(): string {

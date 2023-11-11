@@ -1,4 +1,4 @@
-import { EventCommandQueueService } from "~/app/pages/game/services/event-command-queue/event-command-queue.service";
+import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { CommandData, EventCommand } from "./event-command.model";
 
 export type BUFF_COMMANDS = 
@@ -12,7 +12,7 @@ export interface BuffCommandData extends CommandData {
 }
 
 export class ApplyBuffCommand extends EventCommand<BuffCommandData> {
-  constructor(receiver: EventCommandQueueService, data: BuffCommandData) {
+  constructor(receiver: UpdateGameStateService, data: BuffCommandData) {
     super(receiver, 'APPLY_BUFF', data);
   }
   override getDisplayMessage(): string {
@@ -21,7 +21,7 @@ export class ApplyBuffCommand extends EventCommand<BuffCommandData> {
 }
 
 export class ApplyBuffBelongsCommand extends EventCommand<BuffCommandData> {
-  constructor(receiver: EventCommandQueueService, data: BuffCommandData) {
+  constructor(receiver: UpdateGameStateService, data: BuffCommandData) {
     super(receiver, 'APPLY_BUFF_BELONGS', data);
   }
   public override skipMessage(): boolean {
@@ -33,7 +33,7 @@ export class ApplyBuffBelongsCommand extends EventCommand<BuffCommandData> {
 }
 
 export class FlipBelongsCommand extends EventCommand<BuffCommandData> {
-  constructor(receiver: EventCommandQueueService, data: BuffCommandData) {
+  constructor(receiver: UpdateGameStateService, data: BuffCommandData) {
     super(receiver, 'FLIP_BELONGS', data);
   }
   override getDisplayMessage(): string {

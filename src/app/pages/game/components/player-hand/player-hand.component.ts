@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { Buff } from '../../models/monster/buff.model';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
+import { PlayerService } from '../../services/player/player.service';
 
 @Component({
   selector: 'sw-player-hand',
@@ -9,8 +10,7 @@ import { SelectedActionService } from '../../services/selected-action/selected-a
   styleUrls: ['./player-hand.component.scss']
 })
 export class PlayerHandComponent {
-  @Input() buffs: Buff[] = [];
-
+  buffs: Buff[] = [];
   unapplied!: Buff[];
   appliedAsDiscard: Buff[] = [];
   appliedAsBuff: Buff[] = [];
@@ -18,15 +18,13 @@ export class PlayerHandComponent {
   buffPath = ImageUtil.icons.buff;
   discardPath = ImageUtil.icons.discard;
 
-  constructor(private selectedActionService: SelectedActionService) {
+  constructor(
+    private selectedActionService: SelectedActionService,
+    private playerService: PlayerService  
+  ) {
   }
 
   ngOnInit() {
-    if (this.dupeCheck()) {
-      window.postMessage('hand contains dupe');
-      return;
-    }
-    this.unapplied = this.buffs;
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
       // TODO: update logic so applied cards are not returned to their original index,
       // but rather pushed to the back of the applied array (low priority)
@@ -36,10 +34,10 @@ export class PlayerHandComponent {
       this.appliedAsBuff = selectedAction.appliedBuffs;
       this.appliedAsDiscard = selectedAction.appliedDiscards;
     });
-  }
-
-  dupeCheck() {
-    return new Set(this.buffs.map(b => b.key())).size < this.buffs.length;
+    this.playerService.playerCardManager.hand$.subscribe((hand) => {
+      this.buffs = hand.cards;
+      this.unapplied = this.buffs;
+    });
   }
 
 }

@@ -1,21 +1,20 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { EventManagerService } from "../../services/event-manager/event-manager.service";
-import { GameState, GameStateService } from "../../services/game-state/game-state.service";
+import { GameState } from "../../services/game-state/game-state.service";
 import { PlayerType } from "../player-type.mode";
-import { EventCommandQueueService } from "../../services/event-command-queue/event-command-queue.service";
 import { Chargroar } from "../monsters/chargroar";
 import { UpdateGameStateUtil } from "../../services/update-game-state/update-game-state.util";
+import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 
 export const CardByKeyUtil = {
   getCardByKey
 }
 
-function getCardByKey(key: CardCompositeKey, player: PlayerType, ecqs: EventCommandQueueService, gs: GameState) {
+function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
 
   switch (key) {
     // chargroar
     case CHARGROAR:
-      Chargroar.ChargroarMonster(key, player, ecqs);
+      Chargroar.ChargroarMonster(key, player, receiver);
       break;
     case getActionKey(CHARGROAR, 0):
       break;
@@ -189,7 +188,7 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, ecqs: EventComm
     // TODO:
     case 'SA_REST':
     case 'SA_PREPARE':
-      UpdateGameStateUtil.gainRandomStatPip(gs, { key: 'SA_PREPARE', player, amount: 3 }, ecqs);
+      UpdateGameStateUtil.gainRandomStatPip(gs, { key: 'SA_PREPARE', player, amount: 3 }, receiver);
       break;
   }
 }

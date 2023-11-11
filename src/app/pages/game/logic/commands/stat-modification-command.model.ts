@@ -1,4 +1,4 @@
-import { EventCommandQueueService } from "~/app/pages/game/services/event-command-queue/event-command-queue.service";
+import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { CommandData, EventCommand } from "./event-command.model";
 
 export type STAT_MODIFICATION_COMMANDS = 
@@ -13,7 +13,7 @@ export interface StatModificationData extends CommandData {
 }
 
 export class StatModificationCommand extends EventCommand<StatModificationData> {
-  constructor(receiver: EventCommandQueueService, data: StatModificationData) {
+  constructor(receiver: UpdateGameStateService, data: StatModificationData) {
     super(receiver, 'MODIFY_STAT', data);
   }
   override getDisplayMessage(): string {
@@ -22,7 +22,7 @@ export class StatModificationCommand extends EventCommand<StatModificationData> 
 }
 
 export class HealCommand extends EventCommand<StatModificationData> {
-  constructor(receiver: EventCommandQueueService, data: StatModificationData) {
+  constructor(receiver: UpdateGameStateService, data: StatModificationData) {
     super(receiver, 'HEAL', data);
   }
   override getDisplayMessage(): string {
@@ -31,7 +31,7 @@ export class HealCommand extends EventCommand<StatModificationData> {
 }
 
 export class TrueDamageCommand extends EventCommand<StatModificationData> {
-  constructor(receiver: EventCommandQueueService, data: StatModificationData) {
+  constructor(receiver: UpdateGameStateService, data: StatModificationData) {
     super(receiver, 'TRUE_DAMAGE', data);
   }
   override getDisplayMessage(): string {
@@ -40,7 +40,7 @@ export class TrueDamageCommand extends EventCommand<StatModificationData> {
 }
 
 export class ApplyFlinchCommand extends EventCommand<StatModificationData> {
-  constructor(receiver: EventCommandQueueService, data: StatModificationData) {
+  constructor(receiver: UpdateGameStateService, data: StatModificationData) {
     super(receiver, 'APPLY_FLINCH', data);
   }
   override getDisplayMessage(): string {

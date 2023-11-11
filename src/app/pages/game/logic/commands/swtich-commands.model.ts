@@ -1,4 +1,4 @@
-import { EventCommandQueueService } from "~/app/pages/game/services/event-command-queue/event-command-queue.service";
+import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { CommandData, EventCommand } from "./event-command.model";
 
 export type SWITCH_TYPES =
@@ -10,7 +10,7 @@ export interface SwitchCommandData extends CommandData {
 }
 
 export class SwitchInCommandData extends EventCommand<SwitchCommandData> {
-  constructor(receiver: EventCommandQueueService, data: SwitchCommandData) {
+  constructor(receiver: UpdateGameStateService, data: SwitchCommandData) {
     super(receiver, 'SWITCH_IN', data);
   }
   override getDisplayMessage(): string {
@@ -18,7 +18,7 @@ export class SwitchInCommandData extends EventCommand<SwitchCommandData> {
   }
 }
 export class SwitchOutCommandData extends EventCommand<SwitchCommandData> {
-  constructor(receiver: EventCommandQueueService, data: SwitchCommandData) {
+  constructor(receiver: UpdateGameStateService, data: SwitchCommandData) {
     super(receiver, 'SWITCH_OUT', data);
   }
   override getDisplayMessage(): string {
@@ -27,7 +27,7 @@ export class SwitchOutCommandData extends EventCommand<SwitchCommandData> {
 }
 
 export class GainSwitchDefenseCommandData extends EventCommand<SwitchCommandData> {
-  constructor(receiver: EventCommandQueueService, data: SwitchCommandData) {
+  constructor(receiver: UpdateGameStateService, data: SwitchCommandData) {
     super(receiver, 'GAIN_SWITCH_DEFENSE', data);
   }
   override getDisplayMessage(): string {
