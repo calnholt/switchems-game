@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MonsterActiveComponent } from './monster.component';
+import { MonsterComponent } from './monster.component';
 
 describe('MonsterActiveComponent', () => {
-  let component: MonsterActiveComponent;
-  let fixture: ComponentFixture<MonsterActiveComponent>;
+  let component: MonsterComponent;
+  let fixture: ComponentFixture<MonsterComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [MonsterActiveComponent]
+      declarations: [MonsterComponent]
     });
-    fixture = TestBed.createComponent(MonsterActiveComponent);
+    fixture = TestBed.createComponent(MonsterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -24,22 +24,25 @@ export class GameComponent {
   oActiveMonster!: Monster;
   oStatBoard!: StatBoard;
 
+  cardsInMyHand = 0;
+  cardsInMyOpponentsHand = 0;
+
   restStandardAction = new StandardAction('Rest', [
-    ImageUtil.icons.draw, 
-    ImageUtil.icons.draw, 
+    ImageUtil.icons.draw,
+    ImageUtil.icons.draw,
     ImageUtil.icons.hp
   ]);
   prepareStandardAction = new StandardAction('Prepare', [
-    ImageUtil.icons.draw, 
-    ImageUtil.icons.randomCube, 
-    ImageUtil.icons.randomCube, 
-    ImageUtil.icons.randomCube, 
+    ImageUtil.icons.draw,
+    ImageUtil.icons.randomCube,
+    ImageUtil.icons.randomCube,
+    ImageUtil.icons.randomCube,
   ]);
 
   constructor(
     private playerService: PlayerService,
     private gamePhaseService: GamePhaseService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.activeMonster = this.playerService.activeMonster;
@@ -51,6 +54,15 @@ export class GameComponent {
     this.oStatBoard = this.playerService.oStatBoard;
 
     this.arena = this.getRandomArena();
+
+    this.playerService.playerCardManager.hand$.subscribe((hand) => {
+      this.cardsInMyHand = hand.cardsInHand();
+    });
+
+    this.playerService.oPlayerCardManager.hand$.subscribe((hand) => {
+      this.cardsInMyOpponentsHand = hand.cardsInHand();
+    });
+
   }
 
   ngAfterViewInit() {

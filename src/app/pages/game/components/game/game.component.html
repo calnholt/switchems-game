@@ -18,13 +18,11 @@
       <div class="action-container">
         <div class="inactive-monster-container">
           <ng-container *ngFor="let monster of inactiveMonsters">
-            <sw-pushable-button>
-              <sw-monster [monster]="monster" [isActive]="false" />
-            </sw-pushable-button>
+            <sw-monster [monster]="monster" [isActive]="false" [cardsInHand]="cardsInMyHand" />
           </ng-container>
         </div>
         <div>
-          <sw-monster-action-grid [actions]="activeMonster.actions" />
+          <sw-monster-action-grid [actions]="activeMonster.actions" [cardsInHand]="cardsInMyHand" />
           <sw-player-hand />
         </div>
       </div>

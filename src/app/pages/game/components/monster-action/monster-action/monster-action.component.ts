@@ -15,6 +15,7 @@ import { SelectedActionService } from '../../../services/selected-action/selecte
 })
 export class MonsterActionComponent {
   @Input({ required: true }) action!: MonsterAction;
+  @Input() cardsInHand = 0;
 
   terms: Term[] = [];
 

@@ -18,6 +18,9 @@
   &.selected {
     filter: brightness(100%);
   }
+  &.unselectable:hover {
+    filter: brightness(85%);
+  }
 
   .sw-card-title {
     border-radius: 4px 4px 0px 0px;

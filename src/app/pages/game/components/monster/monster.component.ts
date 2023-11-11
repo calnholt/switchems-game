@@ -11,10 +11,11 @@ import { SelectedActionService } from '../../services/selected-action/selected-a
   templateUrl: './monster.component.html',
   styleUrls: ['./monster.component.scss']
 })
-export class MonsterActiveComponent implements OnInit {
+export class MonsterComponent implements OnInit {
   @Input() monster!: Monster;
   @Input() isActive: boolean = false;
   @Input() isOpponent: boolean = false;
+  @Input() cardsInHand = 0;
   
   monsterIcon!: Path;
   superEffectiveIcon!: Path;

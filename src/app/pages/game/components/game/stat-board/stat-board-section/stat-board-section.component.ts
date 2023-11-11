@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, pulseAnimation, slideInLeftAnimation, slideInLeftOnEnterAnimation, slideOutLeftOnLeaveAnimation, slideOutRightOnLeaveAnimation } from 'angular-animations';
+import { bounceInOnEnterAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, pulseAnimation, slideInLeftAnimation, slideInLeftOnEnterAnimation, slideOutLeftOnLeaveAnimation, slideOutRightOnLeaveAnimation } from 'angular-animations';
 import { StatBoardSection, StatBoardSectionType } from 'src/app/pages/game/models/stat-board/stat-board.model';
 import { Path } from 'src/app/shared/types/dataTypes';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
@@ -15,6 +15,7 @@ import { SelectedActionService } from '~/app/pages/game/services/selected-action
     slideInLeftOnEnterAnimation({ duration: 100 }),
     fadeInOnEnterAnimation({ duration: 100 }),
     fadeOutOnLeaveAnimation({ duration: 100 }),
+    bounceInOnEnterAnimation({ duration: 1000 })
   ]
 })
 export class StatBoardSectionComponent implements OnInit {

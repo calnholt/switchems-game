@@ -1,19 +1,29 @@
-<div id="monster" (click)="onSelect()">
-  <div class="monster-container {{!isActive ? 'inactive' : ''}} {{selected ? 'selected' : ''}}" [ngClass]="backgroundClass" >
-    <img [src]="monsterIcon" 
-      cardInfoTooltip
-      class="{{isOpponent ? 'reverse' : ''}}"
-      [object]="monster" 
-      tooltipType="MONSTER" />
-    <div *ngIf="!isActive" class="discard-container">
-      <img [ngClass]="{'selected' : numDiscards > 0}" [src]="discardIcon" />
-      <img [ngClass]="{'selected' : numDiscards > 1}" [src]="discardIcon" />
+<ng-container *ngIf="isActive">
+  <ng-container *ngTemplateOutlet="monsterTemplate"></ng-container>
+</ng-container>
+<ng-container *ngIf="!isActive">
+  <sw-pushable-button [isActive]="cardsInHand >= 2">
+    <ng-container *ngTemplateOutlet="monsterTemplate"></ng-container>
+  </sw-pushable-button>
+</ng-container>
+
+<ng-template #monsterTemplate>
+  <div id="monster" (click)="onSelect()">
+    <div class="monster-container {{backgroundClass}}"
+      [ngClass]="{
+        'inactive' : !isActive, 
+        'selected' : selected, 
+        'unselectable': cardsInHand < 2 && !isActive
+      }">
+      <img [src]="monsterIcon" cardInfoTooltip class="{{isOpponent ? 'reverse' : ''}}" [object]="monster"
+        tooltipType="MONSTER" />
+      <div *ngIf="!isActive" class="discard-container">
+        <img [ngClass]="{'selected' : numDiscards > 0}" [src]="discardIcon" />
+        <img [ngClass]="{'selected' : numDiscards > 1}" [src]="discardIcon" />
+      </div>
+      <sw-monster-hp [hp]="monster.hp" [currentHp]="monster.currentHp" [initiative]="monster.initiative" />
+      <sw-monster-element-breakdown [style.width]="'100%'" [weaknesses]="monster.weaknesses"
+        [resistances]="monster.resistances" [switchDefense]="monster.switchDefense" />
     </div>
-    <sw-monster-hp [hp]="monster.hp" 
-      [currentHp]="monster.currentHp" 
-      [initiative]="monster.initiative" />
-    <sw-monster-element-breakdown [style.width]="'100%'" [weaknesses]="monster.weaknesses"
-      [resistances]="monster.resistances"
-      [switchDefense]="monster.switchDefense"/>
   </div>
-</div>
+</ng-template>

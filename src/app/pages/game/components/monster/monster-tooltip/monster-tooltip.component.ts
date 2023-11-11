@@ -15,12 +15,13 @@ import { ITooltip } from '~/app/shared/interfaces/ITooltip.interface';
 })
 export class MonsterTooltipComponent extends ITooltip implements AfterViewInit {
   @Input() monster!: Monster;
+  isActive = false;
 
   @ViewChild('ref') ref!: ElementRef<any>;
 
   ngAfterViewInit() {
     const offsetHeight = (this.ref.nativeElement as HTMLElement).offsetHeight;
-    this.top = this.top + (Math.abs(offsetHeight - 200) / 2);
+    this.top = this.top + (Math.abs(offsetHeight - (this.bottom - this.top)) / 2);
   }
 
   // animation callback
@@ -32,9 +33,10 @@ export class MonsterTooltipComponent extends ITooltip implements AfterViewInit {
 
   tooltipSetup = (monster: Monster, nativeElement: HTMLElement) => {
     this.monster = monster;
-    const { right, top } = nativeElement.getBoundingClientRect();
+    const { right, top, bottom } = nativeElement.getBoundingClientRect();
     this.left = right + 5;
     this.top = top;
+    this.bottom = bottom;
   }
 
 }

@@ -8,7 +8,7 @@
           </div>
           <div class="pip-container">
             <ng-container *ngFor="let _ of [].constructor(statBoardSection.current)">
-              <div class="circle occupied"></div>
+              <div class="circle occupied" [@bounceInOnEnter] ></div>
             </ng-container>
             <ng-container *ngFor="let _ of [].constructor(statBoardSection.max - statBoardSection.current)">
               <div class="circle open"></div>

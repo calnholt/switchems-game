@@ -4,6 +4,7 @@ import { Buff } from '../../models/monster/buff.model';
 import { SelectedActionService } from '../selected-action/selected-action.service';
 import { ISelectableAction } from '~/app/shared/interfaces/ISelectableAction.interface';
 import { StatBoardSection } from '../../models/stat-board/stat-board.model';
+import { PlayerService } from '../player/player.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class GameUISelectionService {
 
   constructor(
     private selectedActionService: SelectedActionService,
+    private playerService: PlayerService,
   ) { }
 
   public sendEvent(event: GameUISelectionEvent) {
@@ -61,6 +63,9 @@ export class GameUISelectionService {
     const { action } = this.selectedActionService;
     if (newSelectedAction.key() === action?.key()) {
       return;
+    }
+    if (this.playerService.playerCardManager.hand.cardsInHand() < newSelectedAction.getNumOfDiscardSlots()) {
+      return
     }
     this.selectedActionService.selectAction(newSelectedAction);
   }

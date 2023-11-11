@@ -66,6 +66,8 @@ export class MonsterAction implements ISelectableAction, IHaveTooltip {
   get isUsed(): boolean { return this._isUsed; }
   get isDisabled(): boolean { return this._isDisabled; }
   get draw(): number { return this._draw; }
+  get buffs(): number { return this._currentBuffSlots; }
+  get discards(): number { return this._currentDiscardSlots; }
 
   getAbilityTextWithoutTerms(): string {
     return AbilityTextUtil.getAbilityTextWithoutTerms(this._text);
