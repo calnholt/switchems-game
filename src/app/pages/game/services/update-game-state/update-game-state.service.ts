@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CommandData, EventCommand } from '../../logic/commands/event-command.model';
 import { GameStateService } from '../game-state/game-state.service';
 import { UpdateGameStateUtil } from './update-game-state.util';
-import { ApplyStatusEffectCommandData } from '../../logic/commands/monster-action-commands.model';
 import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
 
 @Injectable({
@@ -12,30 +11,34 @@ export class UpdateGameStateService {
 
   constructor(
     private gameStateService: GameStateService,
-    private eventCommandQueueService: EventCommandQueueService
+    private ecqs: EventCommandQueueService
   ) { }
 
+  // functions that take EventCommandQueueService as param can potentially add new commands to the queue
   public update(ec: EventCommand<CommandData>): EventCommand<CommandData> | undefined {
     const gs = this.gameStateService.getGameState();
+    // TODO: kinda bad
+    const data = ec.data as any;
     switch(ec.type) {
       case 'APPLY_BUFF':
+        UpdateGameStateUtil.applyBuff(gs, data, this.ecqs);
+      case 'APPLY_BUFF_BELONGS': // trigger
         break;
-      case 'APPLY_BUFF_BELONGS':
-        break;
-      case 'APPLY_FLINCH':
-        UpdateGameStateUtil.applyFlinch(gs, ec.data as any);
+      case 'APPLY_FLINCH': 
+        UpdateGameStateUtil.applyFlinch(gs, data);
         break;
       case 'APPLY_STATUS_EFFECT':
-        UpdateGameStateUtil.applyStatusEffect(gs, ec.data as any);
+        UpdateGameStateUtil.applyStatusEffect(gs, data);
         break;
       case 'APPLY_STAT_PIPS':
-        UpdateGameStateUtil.applyStatPips(gs, ec.data as any);
+        UpdateGameStateUtil.applyStatPips(gs, data);
         break;
       // TODO: requires decision
       case 'CRUSH_STAT_PIP':
         break;
       case 'DEAL_DAMAGE':
-        return UpdateGameStateUtil.dealDamage(gs, ec.data as any, this.eventCommandQueueService);
+        UpdateGameStateUtil.dealDamage(gs, data, this.ecqs);
+        break;
       // TODO: requires decision
       case 'DISABLE_ACTION_PROMPT':
         break;
@@ -46,42 +49,43 @@ export class UpdateGameStateService {
       case 'DISCARD_PIPS':
         break;
       case 'DRAW':
-        UpdateGameStateUtil.draw(gs, ec.data as any);
-        break;
       case 'DRAW_FROM_ICON':
-        UpdateGameStateUtil.draw(gs, ec.data as any);
-        
+        UpdateGameStateUtil.draw(gs, data);
         break;
-      case 'FASTER':
+      case 'FASTER': // trigger
         break;
       case 'FLINCHED':
-        UpdateGameStateUtil.flinched(gs, ec.data as any);
+        UpdateGameStateUtil.flinched(gs, data);
         break;
       case 'FLIP_BELONGS':
         break;
+      case 'GAIN_SWITCH_DEFENSE':
+        UpdateGameStateUtil.gainSwitchDefense(gs, data);
+        break;
       case 'GAIN_RANDOM_STAT_PIP':
+        UpdateGameStateUtil.gainRandomStatPip(gs, data, this.ecqs);
         break;
       case 'GAIN_STAT_PIP':
-        UpdateGameStateUtil.gainStatPip(gs, ec.data as any);
+        UpdateGameStateUtil.gainStatPip(gs, data);
         break;
       case 'HEAL':
-        UpdateGameStateUtil.heal(gs, ec.data as any);
+        UpdateGameStateUtil.heal(gs, data);
         break;
       case 'KNOCKED_OUT_BY_ATTACK':
         break;
       case 'MODIFY_STAT':
-        UpdateGameStateUtil.modifyStat(gs, ec.data as any);
+        UpdateGameStateUtil.modifyStat(gs, data);
         break;
       case 'PREVENT_FLINCH':
-        UpdateGameStateUtil.preventFlinch(gs, ec.data as any);
+        UpdateGameStateUtil.preventFlinch(gs, data);
         break;
       case 'PREVENT_RECOIL':
-        UpdateGameStateUtil.preventRecoil(gs, ec.data as any);
+        UpdateGameStateUtil.preventRecoil(gs, data);
         break;
       case 'RANDOM_DISCARD':
         break;
       case 'REMOVE_STATUS_EFFECT':
-        UpdateGameStateUtil.removeStatusEffect(gs, ec.data as any);
+        UpdateGameStateUtil.removeStatusEffect(gs, data);
         break;
       case 'RESISTANT':
         break;
@@ -99,6 +103,7 @@ export class UpdateGameStateService {
       case 'TRUE_DAMAGE':
         break;
       case 'WEAK':
+        UpdateGameStateUtil.weak(data, this.ecqs);
         break;
     }
     return undefined;

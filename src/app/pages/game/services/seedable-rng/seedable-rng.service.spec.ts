@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SeedService } from './seed.service';
+import { SeedableRngService } from './seedable-rng.service';
 
 describe('SeedService', () => {
-  let service: SeedService;
+  let service: SeedableRngService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SeedService);
+    service = TestBed.inject(SeedableRngService);
   });
 
   it('should be created', () => {

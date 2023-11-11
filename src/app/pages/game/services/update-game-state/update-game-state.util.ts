@@ -3,15 +3,18 @@ import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyStatusEffectCommandData, DealDamageCommandData, KnockedOutByAttackCommand } from "../../logic/commands/monster-action-commands.model";
-import { GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
+import { GainRandomStatPipCommand, GainRandomStatPipCommandData, GainStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
 import { EventCommandQueueService } from "../event-command-queue/event-command-queue.service";
-import { EventCommand, CommandData } from "../../logic/commands/event-command.model";
+import { CommandData } from "../../logic/commands/event-command.model";
 import { FlinchedCommand } from "../../logic/commands/ongoing-turn-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
+import { ApplyBuffBelongsCommand, BuffCommandData } from "../../logic/commands/buff-command.model";
+import { SwitchCommandData } from "../../logic/commands/swtich-commands.model";
 
 export const UpdateGameStateUtil = {
+  applyBuff,
   applyFlinch,
   applyStatusEffect,
   applyStatPips,
@@ -24,7 +27,9 @@ export const UpdateGameStateUtil = {
   preventRecoil,
   flinched,
   removeStatusEffect,
+  weak,
   gainRandomStatPip,
+  gainSwitchDefense,
 }
 
 function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }
@@ -33,6 +38,15 @@ function getActionModifier(key: CardCompositeKey, type: ActionModifierType, valu
 }
 function getMonsterModifier(key: CardCompositeKey, type: MonsterModifierType, value: number = 0, ongoing: boolean = false): Modifier<MonsterModifierType> {
   return new Modifier<MonsterModifierType>(key, type, value, ongoing);
+}
+
+function applyBuff(gs: GameState, data: BuffCommandData, ecqs: EventCommandQueueService) {
+  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  if (monster.name !== data.monsterName) return;
+  // buff belongs to monster, send belongs command
+  ecqs.enqueue(
+    new ApplyBuffBelongsCommand(ecqs, { key: data.key, player: data.player, buffName: data.buffName, monsterName: data.monsterName })
+  );
 }
 
 function applyFlinch(gs: GameState, data: StatModificationData) {
@@ -46,7 +60,7 @@ function applyStatusEffect(gs: GameState, data: ApplyStatusEffectCommandData) {
 function applyStatPips(gs: GameState, data: StatPipCommandData) {
   if (data.statType === 'DEFENSE') {
     const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-    monster.modifiers.add(getMonsterModifier('pip', data.statType, data.amount, true))
+    monster.modifiers.add(getMonsterModifier('pip', data.statType, data.amount))
   }
   else {
     const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
@@ -55,18 +69,21 @@ function applyStatPips(gs: GameState, data: StatPipCommandData) {
 }
 
 // dealing damage can result in different events
-function dealDamage(gs: GameState, data: DealDamageCommandData, ecqs: EventCommandQueueService): EventCommand<CommandData> | undefined {
+function dealDamage(gs: GameState, data: DealDamageCommandData, ecqs: EventCommandQueueService) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
   monster.takeDamage(data.damageToDeal);
   if (monster.currentHp === 0) {
     const opposingMonster = GameStateUtil.getMonsterByPlayer(gs, getOpposite(data.player));
-    return new KnockedOutByAttackCommand(ecqs, { key: monster.key(), player: data.player, monsterName: monster.name, opposingMonsterName: opposingMonster.name })
+    ecqs.enqueue(
+      new KnockedOutByAttackCommand(ecqs, { key: monster.key(), player: data.player, monsterName: monster.name, opposingMonsterName: opposingMonster.name })
+    )
   }
   if (GameStateUtil.isFaster(gs, data.player) && action.modifiers.contains('FLINCH')) {
-    return new FlinchedCommand(ecqs, { key: monster.key(), player: data.player });
+    ecqs.enqueue(
+      new FlinchedCommand(ecqs, { key: monster.key(), player: data.player })
+    )
   }
-  return undefined;
 }
 
 function draw(gs: GameState, data: HandCommandData) {
@@ -90,7 +107,7 @@ function knockedOutByAttack(gs: GameState, data: StatModificationData) {
 function modifyStat(gs: GameState, data: StatModificationData) {
   if (data.statType === 'DEFENSE') {
     const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-    monster.modifiers.add(getMonsterModifier('mod', data.statType, data.amount, true))
+    monster.modifiers.add(getMonsterModifier('mod', data.statType, data.amount))
   }
   else {
     const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
@@ -114,9 +131,28 @@ function removeStatusEffect(gs: GameState, data: ApplyStatusEffectCommandData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.modifiers.remove(data.statusName);
 }
-function weak(gs: GameState, data: CommandData, ecqs: EventCommandQueueService) {
-  return new GainRandomStatPipCommand(ecqs, { key: 'pip', amount: 1 })
+function weak(data: CommandData, ecqs: EventCommandQueueService) {
+  // when a monster is weak, push random pip event for super effective
+  return new GainRandomStatPipCommand(ecqs, { key: 'pip', player: data.player, amount: 1 });
 }
-function gainRandomStatPip() {
+// basically an intermediary action that sets the actual pips gained
+function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, ecqs: EventCommandQueueService) {
+  for (let i = 0;  i < data.amount; i++) {
+    const random = gs.getRandomInt(3);
+    let type: 'ATTACK' | 'SPEED' | 'DEFENSE' = 'ATTACK';
+    if (random === 1) type = 'SPEED';
+    if (random === 2) type = 'DEFENSE'; 
+    ecqs.enqueue(
+      new GainStatPipCommand(ecqs, { key: 'pip', amount: 1, player: data.player, statType: type })
+    );
+  }
+}
 
+function gainSwitchDefense(gs: GameState, data: SwitchCommandData) {
+  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  monster.modifiers.add(getMonsterModifier('mod', 'DEFENSE', monster.getSwitchDefenseValue(), true))
+}
+
+function resistant() {
+  
 }

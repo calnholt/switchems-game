@@ -5,10 +5,12 @@ import { Monster } from '../../models/monster/monster.model';
 import { PlayerCardManager } from '../../models/player/player-card-manager.model';
 import { StatBoard } from '../../models/stat-board/stat-board.model';
 import { SelectedAction } from '../selected-action/selected-action.model';
+import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
 
 export interface GameState {
   p: PlayerState;
   o: PlayerState;
+  getRandomInt: (value: number) => number;
 }
 
 export interface PlayerState {
@@ -27,6 +29,7 @@ export class GameStateService {
   constructor(
     private playerService: PlayerService,
     private selectedActionService: SelectedActionService,
+    private seedableRngService: SeedableRngService,
   ) { }
 
   public getGameState(): GameState {
@@ -59,7 +62,8 @@ export class GameStateService {
         inactiveMonsters: oInactiveMonsters,
         playerCardManager: oPlayerCardManager,
         statBoard: oStatBoard,
-      }
+      },
+      getRandomInt: this.seedableRngService.randomIntOption
     }
   }
 

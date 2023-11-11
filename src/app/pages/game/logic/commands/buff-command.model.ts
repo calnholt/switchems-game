@@ -7,7 +7,7 @@ export type BUFF_COMMANDS =
   | 'FLIP_BELONGS'
   | 'DRAW_FROM_ICON'
 
-interface BuffCommandData extends CommandData {
+export interface BuffCommandData extends CommandData {
   buffName: string;
 }
 
