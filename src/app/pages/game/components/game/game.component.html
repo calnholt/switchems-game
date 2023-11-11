@@ -5,7 +5,11 @@
     </div>
     <div class="d-flex">
       <sw-stat-board [statBoard]="statBoard" />
-      <sw-monster [monster]="activeMonster" [isActive]="true" />
+      <div class="monsters-container">
+        <sw-monster [monster]="activeMonster" [isActive]="true" />
+        <sw-monster [monster]="oActiveMonster" [isActive]="true" [isOpponent]="true" />
+      </div>
+      <sw-stat-board [statBoard]="oStatBoard" />
     </div>
     <div class="actions-container">
       <div class="d-flex justify-content-center">

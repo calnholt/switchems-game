@@ -20,6 +20,9 @@ export class GameComponent {
   inactiveMonsters: Monster[] = [];
   arena!: ArenaType;
 
+  oActiveMonster!: Monster;
+  oStatBoard!: StatBoard;
+
   restStandardAction = new StandardAction('Rest', [
     ImageUtil.icons.draw, 
     ImageUtil.icons.draw, 
@@ -41,7 +44,11 @@ export class GameComponent {
     this.inactiveMonsters = this.playerService.inactiveMonsters;
     this.playerCardManager = this.playerService.playerCardManager;
     this.statBoard = this.playerService.statBoard;
-    this.arena = this.getRandomArena()
+
+    this.oActiveMonster = this.playerService.oActiveMonster;
+    this.oStatBoard = this.playerService.oStatBoard;
+
+    this.arena = this.getRandomArena();
   }
 
   getRandomArena(): ArenaType {

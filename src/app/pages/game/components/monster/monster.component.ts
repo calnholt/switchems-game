@@ -14,6 +14,7 @@ import { SelectedActionService } from '../../services/selected-action/selected-a
 export class MonsterActiveComponent implements OnInit {
   @Input() monster!: Monster;
   @Input() isActive: boolean = false;
+  @Input() isOpponent: boolean = false;
   
   monsterIcon!: Path;
   superEffectiveIcon!: Path;

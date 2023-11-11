@@ -1,7 +1,8 @@
 <div id="monster" (click)="onSelect()">
   <div class="monster-container {{!isActive ? 'inactive' : ''}} {{selected ? 'selected' : ''}}" [ngClass]="backgroundClass" >
     <img [src]="monsterIcon" 
-      cardInfoTooltip 
+      cardInfoTooltip
+      class="{{isOpponent ? 'reverse' : ''}}"
       [object]="monster" 
       tooltipType="MONSTER" />
     <div *ngIf="!isActive" class="discard-container">

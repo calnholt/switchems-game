@@ -1,6 +1,7 @@
 @import '../../../../../assets/styles/constants.scss';
 
 #monster {
+
   .monster-container {
     display: flex;
     flex-direction: column;
@@ -10,9 +11,13 @@
     font-size: 21px;
     line-height: 70%;
 
+    
     img {
       height: 300px;
       cursor: pointer;
+      &.reverse {
+        transform: scaleX(-1);
+      }
     }
 
     &.inactive:hover {
