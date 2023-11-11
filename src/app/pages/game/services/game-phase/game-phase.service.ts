@@ -29,13 +29,14 @@ export class GamePhaseService {
 
   public testActionPhase() {
     const gs: GameState = this.gameStateService.getGameState();
-    gs.p.selectedAction.action = new StandardAction('PREPARE', []);
     gs.o.selectedAction.action = new StandardAction('PREPARE', []);
-    this.processActionPhase();
+    if (gs.p.selectedAction.isCostFulfilled() && gs.o.selectedAction.isCostFulfilled()) {
+      this.processActionPhase();
+    }
+    // gs.o.selectedAction.action = new StandardAction('PREPARE', []);
   }
 
   public startGame() {
-    // UpdateGameStateUtil.setPhase('START_PHASE', this.ugss);
     this.ugss.enqueue(new SelectionGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
   }
 

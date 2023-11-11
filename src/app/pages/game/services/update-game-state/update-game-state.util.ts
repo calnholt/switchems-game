@@ -4,7 +4,7 @@ import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/m
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, KnockedOutByAttackCommand } from "../../logic/commands/monster-action-commands.model";
 import { GainRandomStatPipCommand, GainRandomStatPipCommandData, GainStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
-import { StatModificationData } from "../../logic/commands/stat-modification-command.model";
+import { HealCommandData, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
 import { CommandData } from "../../logic/commands/event-command.model";
 import { FlinchedCommand } from "../../logic/commands/ongoing-turn-commands.model";
@@ -100,7 +100,7 @@ function gainStatPip(gs: GameState, data: StatPipCommandData) {
   const statBoard = GameStateUtil.getStatBoardByPlayer(gs, data.player);
   statBoard.gain(data.amount, data.statType);
 }
-function heal(gs: GameState, data: StatModificationData) {
+function heal(gs: GameState, data: HealCommandData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.heal(data.amount);
 }
@@ -153,8 +153,8 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
     let type: 'ATTACK' | 'SPEED' | 'DEFENSE' = 'ATTACK';
     if (random === 1) type = 'SPEED';
     if (random === 2) type = 'DEFENSE'; 
-    rc.enqueue(
-      new GainStatPipCommand(rc, { key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name })
+    rc.pushFront(
+      new GainStatPipCommand(rc, { key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true })
     );
   }
 }

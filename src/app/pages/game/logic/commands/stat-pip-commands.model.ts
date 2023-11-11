@@ -19,7 +19,7 @@ export class GainStatPipCommand extends EventCommand<StatPipCommandData> {
     super(receiver, 'GAIN_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} gained ${this.data.amount} ${this.data.statType.toLowerCase()} pip${this.data.amount > 2 ? 's' : ''}.`;
+    return `${this.data.monsterName} ${this.data.wasRandom ? 'randomly ' : ''}gained ${this.data.amount} ${this.data.statType.toLowerCase()} pip${this.data.amount > 2 ? 's' : ''}.`;
   }
   override skipMessage(): boolean { return false; }
 }

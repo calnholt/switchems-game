@@ -4,6 +4,7 @@ import { PlayerType } from "../player-type.mode";
 import { Chargroar } from "../monsters/chargroar";
 import { UpdateGameStateUtil } from "../../services/update-game-state/update-game-state.util";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
+import { StandardActions } from "../standard-actions/standard-actions";
 
 export const CardByKeyUtil = {
   getCardByKey
@@ -187,8 +188,10 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: Updat
     // ***
     // TODO:
     case 'SA_REST':
+      StandardActions.rest(key, player, receiver, gs);
+      break;
     case 'SA_PREPARE':
-      UpdateGameStateUtil.gainRandomStatPip(gs, { key: 'SA_PREPARE', player, amount: 3 }, receiver);
+      StandardActions.prepare(key, player, receiver, gs);
       break;
   }
 }

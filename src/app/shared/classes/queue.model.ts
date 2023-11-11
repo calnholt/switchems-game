@@ -1,8 +1,12 @@
-export class Queue<T> {
+export class Dequeue<T> {
   private items: T[] = [];
 
   enqueue(item: T): void {
     this.items.push(item);
+  }
+
+  pushFront(item: T): void {
+    this.items.unshift(item);
   }
 
   dequeue(): T | undefined {

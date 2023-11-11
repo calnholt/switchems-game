@@ -21,8 +21,12 @@ export class StatModificationCommand extends EventCommand<StatModificationData> 
   }
 }
 
-export class HealCommand extends EventCommand<StatModificationData> {
-  constructor(receiver: UpdateGameStateService, data: StatModificationData) {
+export interface HealCommandData extends CommandData {
+  amount: number;
+}
+
+export class HealCommand extends EventCommand<HealCommandData> {
+  constructor(receiver: UpdateGameStateService, data: HealCommandData) {
     super(receiver, 'HEAL', data);
   }
   override getDisplayMessage(): string {

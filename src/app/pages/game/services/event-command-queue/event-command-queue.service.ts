@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Queue } from '~/app/shared/classes/queue.model';
+import { Dequeue } from '~/app/shared/classes/queue.model';
 import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 import { EventCommand, CommandData, EventCommandType } from '../../logic/commands/event-command.model';
 import { BehaviorSubject } from 'rxjs';
@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class EventCommandQueueService {
 
-  private _queue = new Queue<EventCommand<CommandData>>();
+  private _queue = new Dequeue<EventCommand<CommandData>>();
   private _triggers = new Map<EventCommandType, EventCommand<CommandData>[]>();
   private _isProcessing = false;
   private _isAwaitingDecision = false;
@@ -25,6 +25,11 @@ export class EventCommandQueueService {
 
   public enqueue(event: EventCommand<CommandData>) {
     this._queue.enqueue(event);
+    this.processQueue(); // Start processing if not already doing so
+  }
+
+  public pushFront(event: EventCommand<CommandData>) {
+    this._queue.pushFront(event);
     this.processQueue(); // Start processing if not already doing so
   }
 

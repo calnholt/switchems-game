@@ -1,5 +1,5 @@
-<sw-pushable-button>
-  <div id="submit-action-button" (click)="submit()">
+<sw-pushable-button [isActive]="isCostFulfilled">
+  <div id="submit-action-button" [ngClass]="{'active' : isCostFulfilled}" (click)="submit()">
     <span>{{ label }}</span>
   </div>
 </sw-pushable-button>
