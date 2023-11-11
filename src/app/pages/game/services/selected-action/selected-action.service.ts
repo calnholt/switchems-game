@@ -4,6 +4,7 @@ import { ISelectableAction } from '~/app/shared/interfaces/ISelectableAction.int
 import { Buff } from '../../models/monster/buff.model';
 import { SelectedAction } from './selected-action.model';
 import { StatBoardSection } from '../../models/stat-board/stat-board.model';
+import { StandardAction } from '../../models/standard-action/standard-action.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { StatBoardSection } from '../../models/stat-board/stat-board.model';
 export class SelectedActionService {
 
   private _selectedAction$: BehaviorSubject<SelectedAction> = new BehaviorSubject(new SelectedAction(undefined));
-  private _oSelectedAction = new SelectedAction(undefined);
+  private _oSelectedAction = new SelectedAction(new StandardAction('PREPARE', []));
 
   public get selectedAction$() { return this._selectedAction$; } 
   public get selectedAction() { return this._selectedAction$.value; }

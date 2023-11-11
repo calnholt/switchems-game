@@ -22,6 +22,7 @@ export const GameStateUtil = {
   getStatBoardByPlayer,
   getPlayerCardManagerByPlayer,
   getOppositePlayer,
+  getInitiatives,
 }
 
 function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
@@ -144,4 +145,20 @@ function getFirstPlayer(gs: GameState, playerType: PlayerType): PlayerType {
     }
     return initiative > oInitiative ? 'P' : 'O';
   }
+}
+
+function getInitiatives(gs: GameState) {
+  // determine initiative player
+  const initiative: number = gs.p.activeMonster.initiative;
+  const oInitiative: number = gs.o.activeMonster.initiative;
+  const playerWithInitiative: PlayerType = getInitiativePlayer(initiative, oInitiative, gs);
+  const playerWithoutInitiative: PlayerType = GameStateUtil.getOppositePlayer(playerWithInitiative);
+  return { playerWithInitiative, playerWithoutInitiative };
+}
+
+function getInitiativePlayer(initiative: number, oInitiative: number, gs: GameState): PlayerType {
+  if (initiative === oInitiative) {
+    return gs.rng.getRandomPlayer();
+  }
+  return initiative > oInitiative ? 'P' : 'O';
 }

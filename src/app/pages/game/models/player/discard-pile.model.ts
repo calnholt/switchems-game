@@ -4,6 +4,10 @@ import { Buff } from "../monster/buff.model";
 export class DiscardPile {
   private _cards: Buff[] = [];
 
+  constructor() {
+    this._cards = [];
+  }
+
   /**
  * Empties the discard pile and returns all of the cards in it
  */
@@ -15,7 +19,7 @@ export class DiscardPile {
 
   add(card: Buff) { this._cards.unshift(card); }
 
-  addMultiple(cards: Buff[]) { cards.forEach(this.add); }
+  addMultiple(cards: Buff[]) { cards.forEach(card => this._cards.push(card)); }
 
   remove(key: CardCompositeKey): Buff { 
     const index = this._cards.findIndex(card => card.key() === key);

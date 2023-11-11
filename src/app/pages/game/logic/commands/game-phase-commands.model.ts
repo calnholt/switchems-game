@@ -1,5 +1,6 @@
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { CommandData, EventCommand } from "./event-command.model";
+import { SelectedAction } from "../../services/selected-action/selected-action.model";
 
 export type GamePhaseCommandType = 
   | 'START_PHASE'
@@ -39,15 +40,31 @@ export class SelectionGamePhaseCommand extends EventCommand<GamePhaseCommandData
     return true;
   }
 }
-export class RevealGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
-  constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
+
+export interface RevealGamePhaseCommandData extends CommandData {
+  opponentAction: SelectedAction;
+}
+
+export class RevealGamePhaseCommand extends EventCommand<RevealGamePhaseCommandData> {
+  constructor(receiver: UpdateGameStateService, data: RevealGamePhaseCommandData) {
     super(receiver, 'REVEAL_PHASE', data);
   }
   override getDisplayMessage(): string {
-    return ``;
-  }
-  public override skipMessage(): boolean {
-    return true;
+    const name = `The opponent selected ${this.data.opponentAction.action?.getDisplayName()}`;
+    const { appliedBuffs, appliedDiscards, statBoardSection } = this.data.opponentAction;
+    let pips = '';
+    if (statBoardSection) {
+      pips = ` using ${statBoardSection.current} ${statBoardSection.type.toLowerCase()}`
+    }
+    let buffs = '';
+    if (appliedBuffs.length) {
+      buffs = ` with buffs: ${appliedBuffs.map(b => b.name).join(", ")}`;
+    }
+    let discards = '';
+    if (appliedDiscards.length) {
+      discards = `, discarding: ${appliedBuffs.map(b => b.name)}`
+    }
+    return `${name}${pips}${buffs}${discards}`;
   }
 }
 export class ApplyPipsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
@@ -55,10 +72,10 @@ export class ApplyPipsGamePhaseCommand extends EventCommand<GamePhaseCommandData
     super(receiver, 'APPLY_PIPS_PHASE', data);
   }
   override getDisplayMessage(): string {
-    return ``;
+    return `apply pips phase`;
   }
   public override skipMessage(): boolean {
-    return true;
+    return false;
   }
 }
 export class ApplyBuffsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
@@ -66,10 +83,10 @@ export class ApplyBuffsGamePhaseCommand extends EventCommand<GamePhaseCommandDat
     super(receiver, 'APPLY_BUFFS_PHASE', data);
   }
   override getDisplayMessage(): string {
-    return ``;
+    return `apply buff phase`;
   }
   public override skipMessage(): boolean {
-    return true;
+    return false;
   }
 }
 export class SwitchActionsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
@@ -77,10 +94,10 @@ export class SwitchActionsGamePhaseCommand extends EventCommand<GamePhaseCommand
     super(receiver, 'SWITCH_ACTIONS_PHASE', data);
   }
   override getDisplayMessage(): string {
-    return ``;
+    return `switch actions phase`;
   }
   public override skipMessage(): boolean {
-    return true;
+    return false;
   }
 }
 export class MonsterActionsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
@@ -88,10 +105,10 @@ export class MonsterActionsGamePhaseCommand extends EventCommand<GamePhaseComman
     super(receiver, 'MONSTER_ACTIONS_PHASE', data);
   }
   override getDisplayMessage(): string {
-    return ``;
+    return `monster actions phase`;
   }
   public override skipMessage(): boolean {
-    return true;
+    return false;
   }
 }
 export class StandardActionsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
@@ -99,10 +116,10 @@ export class StandardActionsGamePhaseCommand extends EventCommand<GamePhaseComma
     super(receiver, 'STANDARD_ACTIONS_PHASE', data);
   }
   override getDisplayMessage(): string {
-    return ``;
+    return `standard action phase`;
   }
   public override skipMessage(): boolean {
-    return true;
+    return false;
   }
 }
 export class EndGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
@@ -110,9 +127,9 @@ export class EndGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
     super(receiver, 'END_PHASE', data);
   }
   override getDisplayMessage(): string {
-    return ``;
+    return `end phase`;
   }
   public override skipMessage(): boolean {
-    return true;
+    return false;
   }
 }

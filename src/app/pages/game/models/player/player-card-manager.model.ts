@@ -3,6 +3,7 @@ import { Buff } from "../monster/buff.model";
 import { Deck } from "./deck.model";
 import { DiscardPile } from "./discard-pile.model";
 import { Hand } from "./hand.model";
+import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 
 export class PlayerCardManager {
   private _hand$: BehaviorSubject<Hand>;
@@ -31,6 +32,11 @@ export class PlayerCardManager {
     this.hand.addCardToHand(this._deck.draw());
     // push changes
     this._hand$.next(this.hand);
+  }
+
+  public cleanup(cardsToDiscard: Buff[]) {
+    this.hand.removeCardByKeys(cardsToDiscard.map(c => c.key()));
+    this.discardPile.addMultiple(cardsToDiscard);
   }
 
 }

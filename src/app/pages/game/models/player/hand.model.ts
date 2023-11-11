@@ -26,4 +26,8 @@ export class Hand {
     return this._cards.find(card => card.key() === key) as Buff;
   }
 
+  removeCardByKeys(keys: CardCompositeKey[]) {
+    this._cards = this._cards.filter(c => !keys.includes(c.key()));
+  }
+
 }

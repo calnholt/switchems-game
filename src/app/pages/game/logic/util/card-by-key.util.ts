@@ -2,7 +2,6 @@ import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interfac
 import { GameState } from "../../services/game-state/game-state.service";
 import { PlayerType } from "../player-type.mode";
 import { Chargroar } from "../monsters/chargroar";
-import { UpdateGameStateUtil } from "../../services/update-game-state/update-game-state.util";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { StandardActions } from "../standard-actions/standard-actions";
 

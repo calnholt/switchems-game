@@ -2,7 +2,7 @@ import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interfac
 import { ISelectableAction, SelectedActionType } from "~/app/shared/interfaces/ISelectableAction.interface";
 import { Path } from "~/app/shared/types/dataTypes";
 
-const STANDARD_ACTION_DESCRIPTION = `These actions resolve after monster actions, regardless if your active monster was KO'd this turn.`;
+const STANDARD_ACTION_DESCRIPTION = `This action resolves after monster actions, regardless if your active monster was KO'd this turn.`;
 
 export class StandardAction implements ISelectableAction {
   private _name: string;
