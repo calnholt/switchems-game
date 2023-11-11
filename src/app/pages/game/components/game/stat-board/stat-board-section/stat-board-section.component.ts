@@ -35,6 +35,7 @@ export class StatBoardSectionComponent implements OnInit {
 
   ngOnInit() {
     this.icon = this.getPathFromType(this.statBoardSection.type);
+    if (this.disable) return;
     this.selectedActionService.selectedAction$.subscribe(({ statBoardSection }) => {
       if (statBoardSection?.type === this.statBoardSection.type) {
         this.isApplied = true;

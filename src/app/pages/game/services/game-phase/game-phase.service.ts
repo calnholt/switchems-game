@@ -12,6 +12,7 @@ import { DrawCommand } from '../../logic/commands/hand-commands.model';
 import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
 import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, GamePhaseCommandType, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, SwitchActionsGamePhaseCommand } from '../../logic/commands/game-phase-commands.model';
 import { UpdateGameStateUtil } from '../update-game-state/update-game-state.util';
+import { SelectedActionService } from '../selected-action/selected-action.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class GamePhaseService {
     private rng: SeedableRngService,
     private ugss: UpdateGameStateService,
     private eqcs: EventCommandQueueService,
+    private selectedActionService: SelectedActionService
   ) { }
 
   public testActionPhase() {
@@ -43,7 +45,7 @@ export class GamePhaseService {
 
     // determine initiative player
     const initiative: number = gs.p.activeMonster.initiative;
-    const oInitiative: number = gs.p.activeMonster.initiative;
+    const oInitiative: number = gs.o.activeMonster.initiative;
     const playerWithInitiative: PlayerType = this.getInitiativePlayer(initiative, oInitiative);
     const playerWithoutInitiative: PlayerType = GameStateUtil.getOppositePlayer(playerWithInitiative);
 
@@ -149,6 +151,7 @@ export class GamePhaseService {
     playerState.playerCardManager.discardPile.addMultiple(playerState.selectedAction.appliedBuffs);
     playerState.playerCardManager.discardPile.addMultiple(playerState.selectedAction.appliedDiscards);
     playerState.selectedAction.clear();
+    this.selectedActionService.selectedAction$.next(playerState.selectedAction);
 
     // handle team aura
     // cleanup triggers
@@ -161,13 +164,6 @@ export class GamePhaseService {
     this.ugss.enqueue(
       new DrawCommand(this.ugss, { key: 'eot', player })
     );
-  }
-
-  private phaseEvent(type: GamePhaseCommandType) {
-    switch(type) {
-      case 'START_PHASE':
-        
-    }
   }
 
 }
