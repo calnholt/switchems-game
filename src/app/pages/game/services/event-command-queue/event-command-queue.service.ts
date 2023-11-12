@@ -3,6 +3,7 @@ import { Dequeue } from '~/app/shared/classes/queue.model';
 import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 import { EventCommand, CommandData, EventCommandType } from '../../logic/commands/event-command.model';
 import { BehaviorSubject } from 'rxjs';
+import { CurrentPhaseService } from '../current-phase/current-phase.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,15 +22,11 @@ export class EventCommandQueueService {
   public get isProcessing(): boolean { return this._isProcessing; }
 
   constructor(
+    private currentPhaseService: CurrentPhaseService,
   ) { }
 
   public enqueue(event: EventCommand<CommandData>) {
     this._queue.enqueue(event);
-    this.processQueue(); // Start processing if not already doing so
-  }
-
-  public pushFront(event: EventCommand<CommandData>) {
-    this._queue.pushFront(event);
     this.processQueue(); // Start processing if not already doing so
   }
 
@@ -65,12 +62,18 @@ export class EventCommandQueueService {
       }
     }
 
+    if (this._queue.isEmpty()) {
+      this.currentPhaseService.goToNextPhase();
+    }
+
     this._isProcessing = false;
   }
 
   public acknowledge() {
     this._isAwaitingAcknowledgement = false;
-    this.processQueue();
+    if (this.currentPhaseService.currentPhase !== 'SELECTION_PHASE') {
+      this.processQueue();
+    }
   }
 
   private awaitPlayerDecision(command: EventCommand<CommandData> | undefined) {

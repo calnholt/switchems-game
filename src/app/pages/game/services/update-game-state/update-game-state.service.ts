@@ -144,9 +144,7 @@ export class UpdateGameStateService {
   public enqueue(event: EventCommand<CommandData>) {
     this.ecqs.enqueue(event);
   }
-  public pushFront(event: EventCommand<CommandData>) {
-    this.ecqs.pushFront(event);
-  }
+  
   public registerTrigger(type: EventCommandType, command: EventCommand<CommandData>) {
     this.ecqs.registerTrigger(type, command);
   }

@@ -152,7 +152,7 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
     let type: 'ATTACK' | 'SPEED' | 'DEFENSE' = 'ATTACK';
     if (random === 1) type = 'SPEED';
     if (random === 2) type = 'DEFENSE'; 
-    rc.pushFront(
+    rc.enqueue(
       new GainStatPipCommand(rc, { key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true })
     );
   }

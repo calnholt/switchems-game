@@ -58,7 +58,7 @@ function executeApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
     const playerState = GameStateUtil.getPlayerState(gs, player);
     const section = playerState.selectedAction.statBoardSection;
     if (section) {
-      rc.pushFront(
+      rc.enqueue(
         new ApplyStatPipsCommand(rc, { key: 'pip', amount: section.current, player, statType: section.type })
       );
     }
@@ -76,7 +76,7 @@ function executeApplyBuffs(gs: GameState, rc: UpdateGameStateService) {
     if (!appliedBuffs.length) return;
 
     appliedBuffs.forEach(buff => {
-      rc.pushFront(
+      rc.enqueue(
         new ApplyBuffCommand(rc, { key: buff.key(), player, buffName: buff.name, monsterName: buff.monsterName })
       )
       CardByKeyUtil.getCardByKey(buff.key(), player, rc, gs);
@@ -151,7 +151,7 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
       action.modifiers.eotClear();
     });
     // draw card(s)
-    rc.pushFront(
+    rc.enqueue(
       new DrawCommand(rc, { key: 'eot', player })
     );
   }

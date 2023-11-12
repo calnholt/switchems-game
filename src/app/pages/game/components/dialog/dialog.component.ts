@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { EventCommandQueueService } from '../../services/event-command-queue/event-command-queue.service';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, pulseAnimation } from 'angular-animations';
+import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 
 @Component({
   selector: 'sw-dialog',
@@ -14,10 +15,11 @@ import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, pulseAnimation } from 
 export class DialogComponent {
 
   message: string = '';
-  show: boolean = true;
+  show: boolean = false;
 
   constructor(
     private ecqs: EventCommandQueueService,
+    private currentPhaseService: CurrentPhaseService,
   ) {
 
   }
@@ -30,7 +32,12 @@ export class DialogComponent {
       setTimeout(() =>{
         this.message = command.getDisplayMessage();
       }, 300);
-      
+    });
+    this.currentPhaseService.currentPhase$.subscribe((value) => {
+      if (value === 'SELECTION_PHASE') {
+        this.show = false;
+        this.message = '';
+      }
     });
   }
 
