@@ -12,6 +12,7 @@ import { PlayerType } from "../../logic/player-type.mode";
 import { ApplyBuffBelongsCommand, BuffCommandData } from "../../logic/commands/buff-command.model";
 import { GainSwitchDefenseCommandData, SwitchCommandData } from "../../logic/commands/swtich-commands.model";
 import { UpdateGameStateService } from "./update-game-state.service";
+import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 
 export const UpdateGameStateUtil = {
   applyBuff,
@@ -147,15 +148,30 @@ function weak(data: CommandData, rc: UpdateGameStateService) {
 // basically an intermediary action that sets the actual pips gained
 function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc: UpdateGameStateService) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  let [speed, attack, defense] = [0,0,0]
   for (let i = 0;  i < data.amount; i++) {
     const random = gs.rng.randomIntOption(3);
     let type: 'ATTACK' | 'SPEED' | 'DEFENSE' = 'ATTACK';
-    if (random === 1) type = 'SPEED';
-    if (random === 2) type = 'DEFENSE'; 
+    if (random === 0) {
+      type = 'ATTACK';
+      attack++;
+    }
+    if (random === 1) {
+      type = 'SPEED';
+      speed++;
+    }
+    if (random === 2){
+      type = 'DEFENSE'; 
+      defense++;
+    }
     rc.enqueue(
-      new GainStatPipCommand(rc, { key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true, skipMessage: false })
+      new GainStatPipCommand(rc, { key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true, skipMessage: true })
     );
   }
+  const message = `${monster.name} gained:${attack > 0 ? ` ${attack} attack` : ''}${speed > 0 ? ` ${speed} speed` : ''}${defense > 0 ? ` ${defense} defense`  : ''} pips.`
+  rc.enqueue(
+    new DescriptiveMessageCommand(rc, { key: 'msg', player: data.player, message: message })
+  )
 }
 
 function gainSwitchDefense(gs: GameState, data: SwitchCommandData) {

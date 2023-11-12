@@ -20,5 +20,5 @@ function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameSta
 }
 function prepare(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
   receiver.enqueue(new DrawCommand(receiver, { key, player }));
-  receiver.enqueue(new GainRandomStatPipCommand(receiver, { key, player, amount: 3, monsterName: GameStateUtil.getMonsterByPlayer(gs, player).name, origin }));
+  receiver.enqueue(new GainRandomStatPipCommand(receiver, { key, player, amount: 3, monsterName: GameStateUtil.getMonsterByPlayer(gs, player).name, origin, skipMessage: true }));
 }
