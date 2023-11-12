@@ -75,7 +75,9 @@ export class EventCommandQueueService {
 
   public acknowledge() {
     this._isAwaitingAcknowledgement = false;
-    this.processQueue();
+    if (this.currentPhaseService.currentPhase !== 'SELECTION_PHASE') {
+      this.processQueue();
+    }
   }
 
   private awaitPlayerDecision(command: EventCommand<CommandData> | undefined) {

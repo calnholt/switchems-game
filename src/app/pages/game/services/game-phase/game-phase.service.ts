@@ -16,7 +16,7 @@ export class GamePhaseService {
     private currentPhaseService: CurrentPhaseService,
   ) {
     this.currentPhaseService.currentPhase$.subscribe((value)=> {
-      if (value !== 'SELECTION_PHASE')
+      // if (value !== 'SELECTION_PHASE')
         this.gameLoop(value);
     });
   }
@@ -57,9 +57,9 @@ export class GamePhaseService {
       case 'END_PHASE':
         UpdateGamePhaseUtil.endPhase(gs, this.ugss);
       break;
-      // case 'SELECTION_PHASE':
-      //   UpdateGamePhaseUtil.selectionPhase(gs, this.ugss);
-      // break;
+      case 'SELECTION_PHASE':
+        UpdateGamePhaseUtil.selectionPhase(gs, this.ugss);
+      break;
     }
   }
 

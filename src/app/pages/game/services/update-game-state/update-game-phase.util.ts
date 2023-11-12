@@ -156,7 +156,7 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
     );
   }
 
-  playerCleanup(gs, playerWithInitiative);
-  playerCleanup(gs, playerWithoutInitiative);
+  playerCleanup(gs, 'P');
+  // playerCleanup(gs, playerWithoutInitiative);
 
 }
