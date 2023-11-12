@@ -23,7 +23,7 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: Updat
       Chargroar.LightsOutAction(key, player, receiver);
       break;
     case getActionKey(CHARGROAR, 2):
-      Chargroar.HyperChargeAction(key, player, receiver)
+      Chargroar.HyperChargeAction(key, player, receiver, gs)
       break;
     case getActionKey(CHARGROAR, 3):
       Chargroar.BlazingRoarAction(key, player, receiver);

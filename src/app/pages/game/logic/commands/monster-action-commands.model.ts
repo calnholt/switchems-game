@@ -15,7 +15,6 @@ export type MONSTER_ACTION_COMMANDS =
 
 
 export interface BasicCommandData extends CommandData {
-  opposingMonsterName?: string;
 }
 
 export class FasterCommand extends EventCommand<BasicCommandData> {
@@ -23,7 +22,7 @@ export class FasterCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'FASTER', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is faster than ${this.data.opposingMonsterName}.`;
+    return `${this.data.monsterName} is faster than ${this.data.opponentMonsterName}.`;
   }
 }
 
@@ -32,7 +31,7 @@ export class SlowerCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'SLOWER', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is faster than ${this.data.opposingMonsterName}.`;
+    return `${this.data.monsterName} is faster than ${this.data.opponentMonsterName}.`;
   }
 }
 
@@ -41,7 +40,7 @@ export class ResistantCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'RESISTANT', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is resistant to ${this.data.opposingMonsterName}'s attack.`;
+    return `${this.data.monsterName} is resistant to ${this.data.opponentMonsterName}'s attack.`;
   }
 }
 
@@ -50,7 +49,7 @@ export class WeakCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'WEAK', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is weak to ${this.data.opposingMonsterName}'s attack.`;
+    return `${this.data.monsterName} is weak to ${this.data.opponentMonsterName}'s attack.`;
   }
 }
 
@@ -63,7 +62,7 @@ export class DealDamageCommand extends EventCommand<DealDamageCommandData> {
     super(receiver, 'DEAL_DAMAGE', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} dealt ${this.data.damageToDeal} to ${this.data.opposingMonsterName}.`;
+    return `${this.data.monsterName} dealt ${this.data.damageToDeal} to ${this.data.opponentMonsterName}.`;
   }
 }
 
@@ -81,7 +80,7 @@ export class KnockedOutByAttackCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'KNOCKED_OUT_BY_ATTACK', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} was KO'd by ${this.data.opposingMonsterName}.`;
+    return `${this.data.monsterName} was KO'd by ${this.data.opponentMonsterName}.`;
   }
 }
 
@@ -111,9 +110,5 @@ export class DisableActionPromptCommand extends EventCommand<BasicCommandData> {
   }
   override getDisplayMessage(): string {
     return '';
-  }
-
-  public override skipMessage(): boolean {
-    return true;
   }
 }

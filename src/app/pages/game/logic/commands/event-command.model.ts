@@ -9,6 +9,7 @@ import { ONGOING_TURN_COMMAND_TYPES } from "./ongoing-turn-commands.model";
 import { PlayerType } from "../player-type.mode";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { GamePhaseCommandType } from "./game-phase-commands.model";
+import { MessageCommandType } from "./message-command.model";
 
 export abstract class EventCommand<T extends CommandData> {
   readonly receiver: UpdateGameStateService;
@@ -29,10 +30,6 @@ export abstract class EventCommand<T extends CommandData> {
   }
 
   abstract getDisplayMessage(): string;
-
-  public skipMessage(): boolean {
-    return false;
-  }
 
   // In the EventCommand class or its subclasses
   public requiresDecision(): boolean {
@@ -55,12 +52,15 @@ export type EventCommandType =
   | HAND_COMMAND_TYPES
   | ONGOING_TURN_COMMAND_TYPES
   | GamePhaseCommandType
+  | MessageCommandType
 
 export interface CommandData {
   monsterName?: string;
+  opponentMonsterName?: string;
   key: CardCompositeKey;
   player: PlayerType;
   destroyOnTrigger?: boolean;
   ongoing?: boolean;
   skipMessage?: boolean;
+  origin?: string;
 };

@@ -6,6 +6,7 @@ import { DisableActionPromptCommand } from "../commands/monster-action-commands.
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { GameState } from "../../services/game-state/game-state.service";
 import { GameStateUtil } from "../../services/game-state/game-state.util";
+import { DescriptiveMessageCommand } from "../commands/message-command.model";
 
 export const Chargroar = {
   ChargroarMonster,
@@ -36,9 +37,12 @@ function LightsOutAction(key: CardCompositeKey, player: PlayerType, receiver: Up
   cmd.executeAsTrigger('KNOCKED_OUT_BY_ATTACK');
 }
 
-function HyperChargeAction(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService) {
-  receiver.enqueue(new GainStatPipCommand(receiver, { key, player, amount: 3, statType: "ATTACK", destroyOnTrigger: true }));
-  receiver.enqueue(new StatModificationCommand(receiver, { key, player, amount: 3, statType: 'ATTACK' }));
+function HyperChargeAction(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
+  const shared = { key, player };
+  const monsterNames = GameStateUtil.getMonsterNames(gs, player);
+  receiver.enqueue(new GainStatPipCommand(receiver, { ...shared, amount: 3, statType: "ATTACK", ...monsterNames, origin: 'Hypercharge', skipMessage: true }));
+  receiver.enqueue(new StatModificationCommand(receiver, { ...shared, amount: 1, statType: 'DEFENSE', ...monsterNames, origin: 'Hypercharge', skipMessage: true }));
+  receiver.enqueue(new DescriptiveMessageCommand(receiver, { ...shared, message: "Chargoar gained 3 attack pips and 1 defense from Hypercharge!" }));
 }
 
 function BlazingRoarAction(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService) {

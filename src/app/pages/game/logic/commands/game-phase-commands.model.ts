@@ -24,9 +24,6 @@ export class StartGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
   override getDisplayMessage(): string {
     return ``;
   }
-  public override skipMessage(): boolean {
-    return true;
-  }
 }
 
 export class SelectionGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
@@ -35,9 +32,6 @@ export class SelectionGamePhaseCommand extends EventCommand<GamePhaseCommandData
   }
   override getDisplayMessage(): string {
     return ``;
-  }
-  public override skipMessage(): boolean {
-    return true;
   }
 }
 
@@ -74,9 +68,6 @@ export class ApplyPipsGamePhaseCommand extends EventCommand<GamePhaseCommandData
   override getDisplayMessage(): string {
     return `apply pips phase`;
   }
-  public override skipMessage(): boolean {
-    return false;
-  }
 }
 export class ApplyBuffsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
   constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
@@ -84,9 +75,6 @@ export class ApplyBuffsGamePhaseCommand extends EventCommand<GamePhaseCommandDat
   }
   override getDisplayMessage(): string {
     return `apply buff phase`;
-  }
-  public override skipMessage(): boolean {
-    return false;
   }
 }
 export class SwitchActionsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
@@ -96,9 +84,6 @@ export class SwitchActionsGamePhaseCommand extends EventCommand<GamePhaseCommand
   override getDisplayMessage(): string {
     return `switch actions phase`;
   }
-  public override skipMessage(): boolean {
-    return false;
-  }
 }
 export class MonsterActionsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
   constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
@@ -106,9 +91,6 @@ export class MonsterActionsGamePhaseCommand extends EventCommand<GamePhaseComman
   }
   override getDisplayMessage(): string {
     return `monster actions phase`;
-  }
-  public override skipMessage(): boolean {
-    return false;
   }
 }
 export class StandardActionsGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
@@ -118,9 +100,6 @@ export class StandardActionsGamePhaseCommand extends EventCommand<GamePhaseComma
   override getDisplayMessage(): string {
     return `standard action phase`;
   }
-  public override skipMessage(): boolean {
-    return false;
-  }
 }
 export class EndGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
   constructor(receiver: UpdateGameStateService, data: GamePhaseCommandData) {
@@ -128,8 +107,5 @@ export class EndGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
   }
   override getDisplayMessage(): string {
     return `end phase`;
-  }
-  public override skipMessage(): boolean {
-    return false;
   }
 }

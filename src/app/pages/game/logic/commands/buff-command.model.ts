@@ -24,9 +24,6 @@ export class ApplyBuffBelongsCommand extends EventCommand<BuffCommandData> {
   constructor(receiver: UpdateGameStateService, data: BuffCommandData) {
     super(receiver, 'APPLY_BUFF_BELONGS', data);
   }
-  public override skipMessage(): boolean {
-    return true;
-  }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} applied a buff that belongs to it.`;
   }

@@ -24,6 +24,7 @@ export const GameStateUtil = {
   getOppositePlayer,
   getInitiatives,
   getSpeedPlayers,
+  getMonsterNames,
 }
 
 function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
@@ -101,7 +102,7 @@ function dealsXDamage(gs: GameState, playerType: PlayerType, x: number) {
   return DamageCalcUtil.calculateDamage(gs, playerType) >= x;
 }
 
-function getPlayerStates(gs: GameState, playerType: PlayerType) {
+function getPlayerStates(gs: GameState, playerType: PlayerType = 'P') {
   return { p: getPlayerState(gs, playerType), o: getOpponentPlayerState(gs, playerType) };
 }
 
@@ -168,4 +169,8 @@ function getSpeedPlayers(gs: GameState) {
   const fasterPlayer = GameStateUtil.getFirstPlayer(gs, 'P');
   const slowerPlayer = GameStateUtil.getOppositePlayer(fasterPlayer);
   return { fasterPlayer, slowerPlayer };
+}
+
+function getMonsterNames(gs: GameState, playerType: PlayerType) {
+  return { monsterName: GameStateUtil.getMonsterByPlayer(gs, playerType).name, opponentMonsterName: GameStateUtil.getMonsterByPlayer(gs, getOppositePlayer(playerType)).name };
 }

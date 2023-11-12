@@ -3,7 +3,7 @@ import { CommandData, EventCommand, EventCommandType } from '../../logic/command
 import { GameStateService } from '../game-state/game-state.service';
 import { UpdateGameStateUtil } from './update-game-state.util';
 import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
-import { UpdateGamePhaseUtil } from './update-game-phase.util';
+import { GamePhaseUtil } from './game-phase.util';
 
 @Injectable({
   providedIn: 'root'
@@ -118,22 +118,22 @@ export class UpdateGameStateService {
       case 'REVEAL_PHASE':
         break;
       case 'APPLY_PIPS_PHASE':
-        UpdateGamePhaseUtil.executeApplyPipsPhase(gs, this);
+        GamePhaseUtil.executeApplyPipsPhase(gs, this);
         break;
       case 'APPLY_BUFFS_PHASE':
-        UpdateGamePhaseUtil.executeApplyBuffs(gs, this);
+        GamePhaseUtil.executeApplyBuffs(gs, this);
         break;
       case 'SWITCH_ACTIONS_PHASE':
-        UpdateGamePhaseUtil.executeSwitchActionsPhase(gs, this);
+        GamePhaseUtil.executeSwitchActionsPhase(gs, this);
         break;
       case 'MONSTER_ACTIONS_PHASE':
-        UpdateGamePhaseUtil.executeMonsterActionsPhase(gs, this);
+        GamePhaseUtil.executeMonsterActionsPhase(gs, this);
         break;
       case 'STANDARD_ACTIONS_PHASE':
-        UpdateGamePhaseUtil.executeStandardActionsPhase(gs, this);
+        GamePhaseUtil.executeStandardActionsPhase(gs, this);
         break;
       case 'END_PHASE':
-        UpdateGamePhaseUtil.executeEndPhase(gs, this);
+        GamePhaseUtil.executeEndPhase(gs, this);
         break;
 
     }

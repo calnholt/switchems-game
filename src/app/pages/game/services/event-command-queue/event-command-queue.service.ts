@@ -27,6 +27,7 @@ export class EventCommandQueueService {
 
   public enqueue(event: EventCommand<CommandData>) {
     this._queue.enqueue(event);
+    console.log(event);
     this.processQueue(); // Start processing if not already doing so
   }
 
@@ -55,7 +56,8 @@ export class EventCommandQueueService {
         break; // Exit the loop and wait for the decision
       } else {
         command?.execute();
-        this._isAwaitingAcknowledgement = !command.skipMessage();
+        this._isAwaitingAcknowledgement = !!!command.data.skipMessage;
+        // this._isAwaitingAcknowledgement = false;
         if (command?.data.destroyOnTrigger) {
           this.unregisterTrigger(command.type, command.data.key);
         }

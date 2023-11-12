@@ -80,7 +80,7 @@ function dealDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameSt
   if (monster.currentHp === 0) {
     const opposingMonster = GameStateUtil.getMonsterByPlayer(gs, getOpposite(data.player));
     rc.enqueue(
-      new KnockedOutByAttackCommand(rc, { key: monster.key(), player: data.player, monsterName: monster.name, opposingMonsterName: opposingMonster.name })
+      new KnockedOutByAttackCommand(rc, { key: monster.key(), player: data.player, monsterName: monster.name, opponentMonsterName: opposingMonster.name })
     )
   }
   if (GameStateUtil.isFaster(gs, data.player) && action.modifiers.contains('FLINCH')) {
@@ -153,7 +153,7 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
     if (random === 1) type = 'SPEED';
     if (random === 2) type = 'DEFENSE'; 
     rc.enqueue(
-      new GainStatPipCommand(rc, { key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true })
+      new GainStatPipCommand(rc, { key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true, skipMessage: false })
     );
   }
 }

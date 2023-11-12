@@ -17,9 +17,6 @@ export class DrawCommand extends EventCommand<HandCommandData> {
   override getDisplayMessage(): string {
     return `${this.getPlayerString()} drew a card.`;
   }
-  override skipMessage(): boolean {
-    return !!this.data.skipMessage;
-  }
 }
 
 export class DiscardCommand extends EventCommand<HandCommandData> {

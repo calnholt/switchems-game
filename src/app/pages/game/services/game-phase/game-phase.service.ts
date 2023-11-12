@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { GameState, GameStateService } from '../game-state/game-state.service';
 import { UpdateGameStateService } from '../update-game-state/update-game-state.service';
 import { GamePhaseCommandType, SelectionGamePhaseCommand } from '../../logic/commands/game-phase-commands.model';
-import { UpdateGamePhaseUtil } from '../update-game-state/update-game-phase.util';
+import { GamePhaseUtil } from '../update-game-state/game-phase.util';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
 
 @Injectable({
@@ -37,28 +37,53 @@ export class GamePhaseService {
     const gs: GameState = this.gameStateService.getGameState();
     switch (phase) {
       case 'REVEAL_PHASE':
-        UpdateGamePhaseUtil.revealPhase(gs, this.ugss);
+        GamePhaseUtil.revealPhase(gs, this.ugss);
         break;
       case 'APPLY_PIPS_PHASE':
-        UpdateGamePhaseUtil.applyPipsPhase(gs, this.ugss);
+        if (GamePhaseUtil.isApplyPipsPhaseApplicable(gs)) {
+          GamePhaseUtil.applyPipsPhase(gs, this.ugss);
+        }
+        else {
+          this.currentPhaseService.goToNextPhase();
+        }
         break;
       case 'APPLY_BUFFS_PHASE':
-        UpdateGamePhaseUtil.applyBuffsPhase(gs, this.ugss);
+        if (GamePhaseUtil.isApplyBuffsPhaseApplicable(gs)) {
+          GamePhaseUtil.applyBuffsPhase(gs, this.ugss);
+        }
+        else {
+          this.currentPhaseService.goToNextPhase();
+        }
         break;
       case 'SWITCH_ACTIONS_PHASE':
-        UpdateGamePhaseUtil.switchActionsPhase(gs, this.ugss);
+        if (GamePhaseUtil.isSwitchActionPhaseApplicable(gs)) {
+          GamePhaseUtil.switchActionsPhase(gs, this.ugss);
+        }
+        else {
+          this.currentPhaseService.goToNextPhase();
+        }
         break;
       case 'MONSTER_ACTIONS_PHASE':
-        UpdateGamePhaseUtil.monsterActionsPhase(gs, this.ugss);
+        if (GamePhaseUtil.isMonsterActionPhaseApplicable(gs)) {
+          GamePhaseUtil.monsterActionsPhase(gs, this.ugss);
+        }
+        else {
+          this.currentPhaseService.goToNextPhase();
+        }
         break;
       case 'STANDARD_ACTIONS_PHASE':
-        UpdateGamePhaseUtil.standardActionsPhase(gs, this.ugss);
+        if (GamePhaseUtil.isStandardActionPhaseApplicable(gs)) {
+          GamePhaseUtil.standardActionsPhase(gs, this.ugss);
+        }
+        else {
+          this.currentPhaseService.goToNextPhase();
+        }
         break;
       case 'END_PHASE':
-        UpdateGamePhaseUtil.endPhase(gs, this.ugss);
+        GamePhaseUtil.endPhase(gs, this.ugss);
         break;
       case 'SELECTION_PHASE':
-        UpdateGamePhaseUtil.selectionPhase(gs, this.ugss);
+        GamePhaseUtil.selectionPhase(gs, this.ugss);
         break;
     }
   }

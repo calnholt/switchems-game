@@ -17,7 +17,7 @@ export class StatModificationCommand extends EventCommand<StatModificationData> 
     super(receiver, 'MODIFY_STAT', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} gained ${this.data.amount} ${this.data.statType}.`;
+    return `${this.data.monsterName} gained ${this.data.amount} ${this.data.statType.toLowerCase()} from ${this.data.origin}.`;
   }
 }
 
