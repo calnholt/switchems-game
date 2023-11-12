@@ -37,8 +37,8 @@ function LightsOutAction(key: CardCompositeKey, player: PlayerType, receiver: Up
 }
 
 function HyperChargeAction(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService) {
-  receiver.pushFront(new GainStatPipCommand(receiver, { key, player, amount: 3, statType: "ATTACK", destroyOnTrigger: true }));
-  receiver.pushFront(new StatModificationCommand(receiver, { key, player, amount: 3, statType: 'ATTACK' }));
+  receiver.enqueue(new GainStatPipCommand(receiver, { key, player, amount: 3, statType: "ATTACK", destroyOnTrigger: true }));
+  receiver.enqueue(new StatModificationCommand(receiver, { key, player, amount: 3, statType: 'ATTACK' }));
 }
 
 function BlazingRoarAction(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService) {

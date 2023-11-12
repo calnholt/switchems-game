@@ -6,7 +6,6 @@ import { PlayerService } from '../../services/player/player.service';
 import { StandardAction } from '../../models/standard-action/standard-action.model';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { ARENAS, ArenaType } from '~/app/shared/types/dataTypes';
-import { GamePhaseService } from '../../services/game-phase/game-phase.service';
 
 @Component({
   selector: 'sw-game',
@@ -41,7 +40,6 @@ export class GameComponent {
 
   constructor(
     private playerService: PlayerService,
-    private gamePhaseService: GamePhaseService
   ) { }
 
   ngOnInit() {
@@ -63,10 +61,6 @@ export class GameComponent {
       this.cardsInMyOpponentsHand = hand.cardsInHand();
     });
 
-  }
-
-  ngAfterViewInit() {
-    this.gamePhaseService.startGame();
   }
 
   getRandomArena(): ArenaType {

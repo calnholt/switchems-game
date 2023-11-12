@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
+import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { EventCommandQueueService } from '../../services/event-command-queue/event-command-queue.service';
-import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, pulseAnimation } from 'angular-animations';
 
 @Component({
   selector: 'sw-dialog',
@@ -14,7 +14,7 @@ import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, pulseAnimation } from 
 export class DialogComponent {
 
   message: string = '';
-  show: boolean = true;
+  show: boolean = false;
 
   constructor(
     private ecqs: EventCommandQueueService,

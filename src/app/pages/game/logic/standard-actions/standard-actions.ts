@@ -13,11 +13,11 @@ export const StandardActions = {
 };
 
 function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
-  receiver.pushFront(new DrawCommand(receiver, { key, player }));
-  receiver.pushFront(new DrawCommand(receiver, { key, player }));
-  receiver.pushFront(new HealCommand(receiver, { key, player, amount: 1, monsterName: GameStateUtil.getMonsterByPlayer(gs, player).name }));
+  receiver.enqueue(new DrawCommand(receiver, { key, player }));
+  receiver.enqueue(new DrawCommand(receiver, { key, player }));
+  receiver.enqueue(new HealCommand(receiver, { key, player, amount: 1, monsterName: GameStateUtil.getMonsterByPlayer(gs, player).name }));
 }
 function prepare(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
-  receiver.pushFront(new DrawCommand(receiver, { key, player }));
-  receiver.pushFront(new GainRandomStatPipCommand(receiver, { key, player, amount: 3, monsterName: GameStateUtil.getMonsterByPlayer(gs, player).name }));
+  receiver.enqueue(new DrawCommand(receiver, { key, player }));
+  receiver.enqueue(new GainRandomStatPipCommand(receiver, { key, player, amount: 3, monsterName: GameStateUtil.getMonsterByPlayer(gs, player).name }));
 }
