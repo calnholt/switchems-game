@@ -29,4 +29,8 @@ export class BattleAnimationService {
     this.battleAniState$.next(this.battleAniState);
   }
 
+  public isAnimating() {
+    return this.battleAniState.isAnimating();
+  }
+
 }

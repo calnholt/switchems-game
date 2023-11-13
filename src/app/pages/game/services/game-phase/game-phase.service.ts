@@ -16,7 +16,6 @@ export class GamePhaseService {
     private currentPhaseService: CurrentPhaseService,
   ) {
     this.currentPhaseService.currentPhase$.subscribe((value) => {
-      // if (value !== 'SELECTION_PHASE')
       this.gameLoop(value);
     });
   }
@@ -29,9 +28,10 @@ export class GamePhaseService {
     // gs.o.selectedAction.action = new StandardAction('PREPARE', []);
   }
 
-  public startGame() {
-    // this.ugss.enqueue(new SelectionGamePhaseCommand(this.ugss, { key: 'phase', player: 'P' }));
-  }
+  // this is the full action phase game loop. each phase resolves in order. 
+  // when a new phase starts (initiated by an empty event queue from EventQueueCommandService),
+  // a new phase is added to the queue, which is then processed, which will add new events
+  // we skip all phases that aren't entered (based on action selections by players).
 
   private gameLoop(phase: GamePhaseCommandType) {
     const gs: GameState = this.gameStateService.getGameState();

@@ -37,6 +37,10 @@ export class EventCommandQueueService {
     return command;
   }
 
+  // handles the processing of game events. all state changes result from event commands.
+  // all state changes result from the data of an event command. these events drive all game logic.
+  // some events require the player to make inputs, which effectively pauses the queue
+
   public processQueue() {
     if (this._isProcessing) {
       return;

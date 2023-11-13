@@ -24,7 +24,10 @@ export class BattleAnimationState {
     this._opponentState = 'N/A';
   }
 
-  
+  isAnimating() {
+    return this._playerState !== 'N/A' || this._opponentState !== 'N/A';
+  }
+
   getType(isPlayer: boolean) {
     return isPlayer ? this._playerState : this._opponentState;
   }

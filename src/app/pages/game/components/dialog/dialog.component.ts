@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { EventCommandQueueService } from '../../services/event-command-queue/event-command-queue.service';
-import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, pulseAnimation } from 'angular-animations';
+import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
+import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
 
 @Component({
   selector: 'sw-dialog',
@@ -16,10 +17,12 @@ export class DialogComponent {
 
   message: string = '';
   show: boolean = false;
+  allowNext = true;
 
   constructor(
     private ecqs: EventCommandQueueService,
     private currentPhaseService: CurrentPhaseService,
+    private battleAniService: BattleAnimationService
   ) {
 
   }
@@ -39,11 +42,16 @@ export class DialogComponent {
         this.message = '';
       }
     });
+    this.battleAniService.battleAniState$.subscribe((state) => {
+      this.allowNext = !state.isAnimating();
+    })
   }
 
   next() {
-    this.message = '';
-    this.ecqs.acknowledge();
+    if (this.allowNext) {
+      this.message = '';
+      this.ecqs.acknowledge();
+    }
   }
 
 }
