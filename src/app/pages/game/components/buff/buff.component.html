@@ -11,7 +11,7 @@
     {{buff.name}}
   </div>
   <div>
-    <ng-container *ngIf="isHovering">
+    <ng-container *ngIf="isHovering && enabled">
       <div *ngIf="displayApplyToBuffButton" 
         class="apply-as buff"  
         [ngClass]="{'applied' : isAppliedAsBuff}" 

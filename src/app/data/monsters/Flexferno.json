@@ -54,7 +54,7 @@
   "buffs": [
     {
       "buffName": "Sauna",
-      "buffText": "Whenever your monster rolls a [ATK], the attack gains <div>+1[ATK].</div>~AURA~",
+      "buffText": "Whenever your gain a random [ATK] [PQ], the attack gains <div>+1[ATK].</div>~AURA~",
       "auraDuration": 6,
       "lastUpdated": "Tue, 24 Jan 2023 13:23:17 GMT"
     },
@@ -77,7 +77,7 @@
   "monsterId": 2,
   "name": "Flexferno",
   "switchIn": "When this monster <b>switches in</b>, <div>{\"num\": 1, \"stat\": \"ATK\"}</div>",
-  "passive": "Whenever this monster rolls a [ATK], the attack gains <div>+1[ATK].</div>",
+  "passive": "Whenever this monster gains a random <div>[ATK] [PQ]</div>, the attack gains <div>+1[ATK].</div>",
   "hp": 8,
   "promiseDescription": "<b>Flexferno</b> loves himself some <b>Flexferno</b>! A few strong flips can devastate an enemy monster.",
   "initiative": 20,

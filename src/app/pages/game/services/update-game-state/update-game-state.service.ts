@@ -39,8 +39,8 @@ export class UpdateGameStateService {
       // TODO: requires decision
       case 'CRUSH_STAT_PIP':
         break;
-      case 'DEAL_DAMAGE':
-        UpdateGameStateUtil.dealDamage(gs, data, this);
+      case 'DEAL_ATTACK_DAMAGE':
+        UpdateGameStateUtil.dealAttackDamage(gs, data, this);
         break;
       // TODO: requires decision
       case 'DISABLE_ACTION_PROMPT':

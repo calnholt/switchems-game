@@ -3,6 +3,7 @@ import { CommandData, EventCommand } from "./event-command.model";
 import { SelectedAction } from "../../services/selected-action/selected-action.model";
 
 export type GamePhaseCommandType = 
+  | 'START_OF_GAME'
   | 'START_PHASE'
   | 'SELECTION_PHASE'
   | 'REVEAL_PHASE'

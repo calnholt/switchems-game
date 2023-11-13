@@ -6,7 +6,7 @@ import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.m
   providedIn: 'root'
 })
 export class CurrentPhaseService {
-  private _currentPhase = new BehaviorSubject<GamePhaseCommandType>('SELECTION_PHASE');
+  private _currentPhase = new BehaviorSubject<GamePhaseCommandType>('START_OF_GAME');
 
   // Observable that other services/components can subscribe to
   currentPhase$ = this._currentPhase.asObservable();
@@ -18,6 +18,7 @@ export class CurrentPhaseService {
   // Method to transition to the next phase
   goToNextPhase() {
     const nextPhase = this.calculateNextPhase();
+    console.log('going to next phase', nextPhase);
     this._currentPhase.next(nextPhase);
   }
 

@@ -8,6 +8,7 @@ import { SelectedActionService } from '../../services/selected-action/selected-a
 import { flashAnimation, rubberBandAnimation, wobbleAnimation } from 'angular-animations';
 import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
 import { AnimationEvent } from '@angular/animations';
+import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 
 @Component({
   selector: 'sw-monster',
@@ -21,7 +22,7 @@ import { AnimationEvent } from '@angular/animations';
 })
 export class MonsterComponent implements OnInit {
   @Input() monster!: Monster;
-  @Input() isActive: boolean = false;
+  @Input() isActiveMonster: boolean = false;
   @Input() isOpponent: boolean = false;
   @Input() cardsInHand = 0;
   
@@ -33,6 +34,7 @@ export class MonsterComponent implements OnInit {
   backgroundClass!: Css;
   selected = false;
   numDiscards = 0;
+  enabled = true;
 
   attacking = false;
   takingDamage = false;
@@ -42,6 +44,7 @@ export class MonsterComponent implements OnInit {
     private eventManagerService: EventManagerService,
     private selectedActionService: SelectedActionService,
     private battleAnimationService: BattleAnimationService,
+    private currentPhaseService: CurrentPhaseService,
   ) {
     
   }
@@ -51,6 +54,7 @@ export class MonsterComponent implements OnInit {
     this.superEffectiveIcon = ImageUtil.icons.superEffective;
     this.switchDefenseIcon = ImageUtil.icons.switchDefense;
     this.backgroundClass = this.monster.elements.map(e => e.toString().toLowerCase()).join("");
+    // update discard icons when paying for switch action
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
       if (!selectedAction?.action) {
         return;
@@ -64,16 +68,20 @@ export class MonsterComponent implements OnInit {
         this.numDiscards = 0;
       }
     });    
+    // update animation states
     this.battleAnimationService.battleAniState$.subscribe((state) => {
-      if (!state || !this.isActive) return;
+      if (!state || !this.isActiveMonster) return;
       if (state.getType(!this.isOpponent) === 'ATTACKING') this.animateAttacking();
       if (state.getType(!this.isOpponent) === 'TAKING_DAMAGE') this.animateTakingDamage();
       if (state.getType(!this.isOpponent) === 'USING_SPECIAL') this.animateUsingSpecial();
     });
+    this.currentPhaseService.currentPhase$.subscribe((phase) => {
+      this.enabled = phase === 'SELECTION_PHASE';
+    });
   }
 
   onSelect() {
-    if (!this.isActive) {
+    if (!this.isActiveMonster && this.enabled) {
       this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_ACTION, data: this.monster })
     }
   }

@@ -3,6 +3,7 @@ import { bounceInOnEnterAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimati
 import { StatBoardSection, StatBoardSectionType } from 'src/app/pages/game/models/stat-board/stat-board.model';
 import { Path } from 'src/app/shared/types/dataTypes';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
+import { CurrentPhaseService } from '~/app/pages/game/services/current-phase/current-phase.service';
 import { EventManagerService } from '~/app/pages/game/services/event-manager/event-manager.service';
 import { GameUISelectionEventType } from '~/app/pages/game/services/game-ui-selection/game-ui-selection-event.model';
 import { SelectedActionService } from '~/app/pages/game/services/selected-action/selected-action.service';
@@ -24,6 +25,7 @@ export class StatBoardSectionComponent implements OnInit {
 
   icon!: Path;
 
+  enabled = false;
   isApplied = false;
   aniState = false;
   arrowSrc = ImageUtil.icons.arrow;
@@ -31,6 +33,7 @@ export class StatBoardSectionComponent implements OnInit {
   constructor(
     private selectedActionService: SelectedActionService,
     private eventManagerService: EventManagerService,
+    private currentPhaseService: CurrentPhaseService,
   ) { }
 
   ngOnInit() {
@@ -44,6 +47,9 @@ export class StatBoardSectionComponent implements OnInit {
         this.isApplied = false;
       }
     });
+    this.currentPhaseService.currentPhase$.subscribe((phase) => {
+      this.enabled = phase === 'SELECTION_PHASE';
+    })
   }
 
   getPathFromType(type: StatBoardSectionType) {

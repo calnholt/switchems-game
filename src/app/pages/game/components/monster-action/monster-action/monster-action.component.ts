@@ -7,6 +7,7 @@ import { MonsterAction } from '../../../models/monster/monster-action.model';
 import { EventManagerService } from '../../../services/event-manager/event-manager.service';
 import { GameUISelectionEventType } from '../../../services/game-ui-selection/game-ui-selection-event.model';
 import { SelectedActionService } from '../../../services/selected-action/selected-action.service';
+import { CurrentPhaseService } from '../../../services/current-phase/current-phase.service';
 
 @Component({
   selector: 'sw-monster-action',
@@ -25,10 +26,12 @@ export class MonsterActionComponent {
   statusImg: Path = "";
 
   isSelected = false;
+  enabled = true;
 
   constructor(
     private eventManagerService: EventManagerService,
     private selectedActionService: SelectedActionService,
+    private currentPhaseService: CurrentPhaseService,
   ) {
 
   }
@@ -47,10 +50,15 @@ export class MonsterActionComponent {
       }
       this.isSelected = selectedAction.action.key() === this.action.key();
     });
+    this.currentPhaseService.currentPhase$.subscribe((phase) => {
+      this.enabled = phase === 'SELECTION_PHASE';
+    });
   }
 
   selectAction() {
-    this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_ACTION, data: this.action })
+    if (this.enabled) {
+      this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_ACTION, data: this.action })
+    }
   }
 
 }

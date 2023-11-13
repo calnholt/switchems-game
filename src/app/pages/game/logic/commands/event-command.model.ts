@@ -1,5 +1,5 @@
 import { STAT_PIP_TYPES } from "./stat-pip-commands.model";
-import { SWITCH_TYPES } from "./swtich-commands.model";
+import { SWITCH_TYPES } from "./switch-commands.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { MONSTER_ACTION_COMMANDS } from "./monster-action-commands.model";
 import { STAT_MODIFICATION_COMMANDS } from "./stat-modification-command.model";

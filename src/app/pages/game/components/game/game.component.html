@@ -6,8 +6,8 @@
     <div class="d-flex">
       <sw-stat-board [statBoard]="statBoard" />
       <div class="monsters-container">
-        <sw-monster [monster]="activeMonster" [isActive]="true" />
-        <sw-monster [monster]="oActiveMonster" [isActive]="true" [isOpponent]="true" />
+        <sw-monster [monster]="activeMonster" [isActiveMonster]="true" />
+        <sw-monster [monster]="oActiveMonster" [isActiveMonster]="true" [isOpponent]="true" />
       </div>
       <sw-stat-board [statBoard]="oStatBoard" [disable]="true" />
     </div>
@@ -18,7 +18,7 @@
       <div class="action-container">
         <div class="inactive-monster-container">
           <ng-container *ngFor="let monster of inactiveMonsters">
-            <sw-monster [monster]="monster" [isActive]="false" [cardsInHand]="cardsInMyHand" />
+            <sw-monster [monster]="monster" [isActiveMonster]="false" [cardsInHand]="cardsInMyHand" />
           </ng-container>
         </div>
         <div>

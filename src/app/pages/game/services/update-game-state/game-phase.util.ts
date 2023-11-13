@@ -2,13 +2,14 @@ import { ApplyBuffCommand } from "../../logic/commands/buff-command.model";
 import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, RevealGamePhaseCommandData, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
-import { DealDamageCommand, FasterCommand } from "../../logic/commands/monster-action-commands.model";
+import { DealAttackDamageCommand, FasterCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
+import { CommandUtil } from "./command.util";
 import { UpdateGameStateService } from "./update-game-state.service";
 
 export const GamePhaseUtil = {
@@ -81,11 +82,15 @@ function executeApplyBuffs(gs: GameState, rc: UpdateGameStateService) {
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
 
   function applyBuffs(gs: GameState, player: PlayerType) {
+    const monsterNames = GameStateUtil.getMonsterNames(gs, player);
     const appliedBuffs = GameStateUtil.getPlayerState(gs, player).selectedAction.appliedBuffs;
     if (!appliedBuffs.length) return;
 
     appliedBuffs.forEach(buff => {
-      new ApplyBuffCommand(rc, { key: buff.key(), player, buffName: buff.name, monsterName: buff.monsterName, display: true }).enqueue();
+      // need to fire event per slot used, but only show the message for the first one
+      for (let i = 0; i < buff.buffSlots; i++) {
+        new ApplyBuffCommand(rc, { key: buff.key(), player, buffName: buff.name, monsterName: monsterNames.monsterName, display: i > 0 }).enqueue();
+      }
       CardByKeyUtil.getCardByKey(buff.key(), player, rc, gs);
     });
   }
@@ -116,6 +121,7 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     const playerState = GameStateUtil.getPlayerState(gs, player);
     const opponentState = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(player));
     const monsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
+    const monster = GameStateUtil.getMonsterByPlayer(gs, player);
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'MONSTER') return;
 
     const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
@@ -124,10 +130,22 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     if (action.attack) {
       const damage = DamageCalcUtil.calculateDamage(gs, player);
       if (damage) {
-        new DealDamageCommand(rc, { key: 'damage', player: player, damageToDeal: damage, ...monsterNames }).enqueue();
+        new DealAttackDamageCommand(rc, { key: 'damage', player: player, damageToDeal: damage, ...monsterNames }).enqueue();
         const message = `${monsterNames.monsterName} used ${action.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
         new DescriptiveMessageCommand(rc, { key: 'msg', player, message }).enqueue();
       }
+    }
+    // super effective check
+    if (GameStateUtil.isWeak(gs, player)) {
+      new WeakCommand(rc, { key: 'weak', player: GameStateUtil.getOppositePlayer(player) }).enqueue();
+      const pip = CommandUtil.gainRandomStatPip(gs, { key: 'pip', player, amount: 1 }, rc);
+      const msg = `The attack was super effective! ${monsterNames.monsterName} gained 1 ${pip.attack ? 'attack' : ''}${pip.speed ? 'speed' : ''}${pip.defense ? 'defense' : ''} pip.`
+      new DescriptiveMessageCommand(rc, { key: 'msg', player, message: msg }).enqueue();
+    }
+    // recoil check
+    const recoil = action.modifiers.sumByType('RECOIL');
+    if (recoil > 0 && !monster.modifiers.getByType('PREVENT_RECOIL').length) {
+      new TakeRecoilDamageCommand(rc, { key: 'recoil', player, monsterName: monsterNames.monsterName, damageToDeal: recoil, display: true }).enqueue();
     }
   }
 

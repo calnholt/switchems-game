@@ -28,7 +28,7 @@ export class EventCommandQueueService {
 
   public enqueue(event: EventCommand<CommandData>) {
     this._queue.enqueue(event);
-    console.log(event);
+    console.log('enqueue', event);
     this.processQueue(); // Start processing if not already doing so
   }
 
@@ -60,6 +60,7 @@ export class EventCommandQueueService {
         this.awaitPlayerDecision(command);
         break; // Exit the loop and wait for the decision
       } else {
+        console.log('execute', command);
         command?.execute();
         this._isAwaitingAcknowledgement = !!command.data.display;
         if (command?.data.destroyOnTrigger && command.data.parent) {
@@ -69,6 +70,7 @@ export class EventCommandQueueService {
     }
 
     if (this._queue.isEmpty()) {
+      this._isProcessing = false;
       this.currentPhaseService.goToNextPhase();
       this._isAwaitingAcknowledgement = false;
       this._isAwaitingDecision = false;

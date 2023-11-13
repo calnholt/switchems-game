@@ -11,6 +11,7 @@ export class Chargroar extends MonsterLogic {
   override addTriggers(): void {
     // switch in
     new DisableActionPromptCommand(this.rc, this.data).executeAsTrigger('SWITCH_IN');
+    // blazing roar
     new StatModificationCommand(this.rc, { 
       ...this.data, 
       amount: 1, 

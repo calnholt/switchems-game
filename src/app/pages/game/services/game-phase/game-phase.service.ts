@@ -11,6 +11,8 @@ import { Chargroar } from '../../logic/monsters/chargroar.model';
 })
 export class GamePhaseService {
 
+  loaded = false;
+
   constructor(
     private gameStateService: GameStateService,
     private ugss: UpdateGameStateService,
@@ -19,7 +21,6 @@ export class GamePhaseService {
     this.currentPhaseService.currentPhase$.subscribe((value) => {
       this.gameLoop(value);
     });
-    this.startGame();
   }
 
   public testActionPhase() {
@@ -92,6 +93,15 @@ export class GamePhaseService {
         GamePhaseUtil.endPhase(gs, this.ugss);
         break;
       case 'SELECTION_PHASE':
+        if (!this.loaded) {
+          this.loaded = true;
+        }
+        else {
+          GamePhaseUtil.selectionPhase(gs, this.ugss);
+        }
+        break;
+      case 'START_OF_GAME':
+        this.startGame();
         GamePhaseUtil.selectionPhase(gs, this.ugss);
         break;
     }

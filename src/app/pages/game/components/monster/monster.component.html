@@ -1,8 +1,8 @@
-<ng-container *ngIf="isActive">
+<ng-container *ngIf="isActiveMonster">
   <ng-container *ngTemplateOutlet="monsterTemplate"></ng-container>
 </ng-container>
-<ng-container *ngIf="!isActive">
-  <sw-pushable-button [isActive]="cardsInHand >= 2">
+<ng-container *ngIf="!isActiveMonster">
+  <sw-pushable-button [isActive]="cardsInHand >= 2 && enabled">
     <ng-container *ngTemplateOutlet="monsterTemplate"></ng-container>
   </sw-pushable-button>
 </ng-container>
@@ -11,9 +11,9 @@
   <div id="monster" (click)="onSelect()">
     <div class="monster-container {{backgroundClass}}"
       [ngClass]="{
-        'inactive' : !isActive, 
+        'inactive' : !isActiveMonster, 
         'selected' : selected, 
-        'unselectable': cardsInHand < 2 && !isActive
+        'unselectable': (cardsInHand < 2 && !isActiveMonster) || !enabled
       }">
       <div
       [@wobble]="attacking"
@@ -29,7 +29,7 @@
           tooltipType="MONSTER" 
           />
       </div>
-      <div *ngIf="!isActive" class="discard-container">
+      <div *ngIf="!isActiveMonster" class="discard-container">
         <img [ngClass]="{'selected' : numDiscards > 0}" [src]="discardIcon" />
         <img [ngClass]="{'selected' : numDiscards > 1}" [src]="discardIcon" />
       </div>

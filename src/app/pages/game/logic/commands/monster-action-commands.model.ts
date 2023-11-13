@@ -6,7 +6,7 @@ export type MONSTER_ACTION_COMMANDS =
   | 'SLOWER'
   | 'RESISTANT'
   | 'WEAK'
-  | 'DEAL_DAMAGE'
+  | 'DEAL_ATTACK_DAMAGE'
   | 'KNOCKED_OUT_BY_ATTACK'
   | 'TAKE_RECOIL_DAMAGE'
   | 'APPLY_STATUS_EFFECT'
@@ -57,9 +57,9 @@ export interface DealDamageCommandData extends BasicCommandData {
   damageToDeal: number,
 }
 
-export class DealDamageCommand extends EventCommand<DealDamageCommandData> {
+export class DealAttackDamageCommand extends EventCommand<DealDamageCommandData> {
   constructor(receiver: UpdateGameStateService, data: DealDamageCommandData) {
-    super(receiver, 'DEAL_DAMAGE', data);
+    super(receiver, 'DEAL_ATTACK_DAMAGE', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} dealt ${this.data.damageToDeal} to ${this.data.opponentMonsterName}.`;
@@ -71,7 +71,7 @@ export class TakeRecoilDamageCommand extends EventCommand<DealDamageCommandData>
     super(receiver, 'TAKE_RECOIL_DAMAGE', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} takes ${this.data.damageToDeal} from recoil.`;
+    return `${this.data.monsterName} takes ${this.data.damageToDeal} damage from recoil.`;
   }
 }
 

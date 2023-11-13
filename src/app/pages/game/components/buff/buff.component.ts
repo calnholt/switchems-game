@@ -8,6 +8,7 @@ import { Buff } from '../../models/monster/buff.model';
 import { EventManagerService } from '../../services/event-manager/event-manager.service';
 import { GameUISelectionEventType } from '../../services/game-ui-selection/game-ui-selection-event.model';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
+import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 
 @Component({
   selector: 'sw-buff',
@@ -27,6 +28,8 @@ export class BuffComponent extends IHover implements OnInit {
   discardPath = ImageUtil.icons.discard;
   teamAuraPath = ImageUtil.icons.teamAura;
 
+  enabled = true;
+
   animationState = false;
   isAppliedAsBuff = false;
   isAppliedAsDiscard = false;
@@ -36,7 +39,8 @@ export class BuffComponent extends IHover implements OnInit {
   constructor(
     private monsterService: MonsterDataService,
     private eventManagerService: EventManagerService,
-    private selectedActionService: SelectedActionService
+    private selectedActionService: SelectedActionService,
+    private currentPhaseService: CurrentPhaseService,
   ) {
     super();
   }
@@ -54,6 +58,9 @@ export class BuffComponent extends IHover implements OnInit {
       this.animationState =  this.isAppliedAsBuff || this.isAppliedAsDiscard;
       this.displayApplyToBuffButton = selectedAction.canApplyBuff(this.buff) || this.isAppliedAsBuff;
       this.displayApplyToDiscardButton = selectedAction.canApplyDiscard(this.buff) || this.isAppliedAsDiscard;
+    });
+    this.currentPhaseService.currentPhase$.subscribe((phase) => {
+      this.enabled = phase === 'SELECTION_PHASE';
     });
   }
 

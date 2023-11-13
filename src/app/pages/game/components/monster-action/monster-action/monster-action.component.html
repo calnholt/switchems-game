@@ -1,4 +1,4 @@
-<sw-pushable-button [isActive]="!(action.isDisabled || action.isLocked) && cardsInHand >= action.discards" >
+<sw-pushable-button [isActive]="!(action.isDisabled || action.isLocked) && cardsInHand >= action.discards && enabled" >
   <div id="monster-action"
     class="{{action.element.toString().toLowerCase()}}-action"
     (click)="selectAction()" 

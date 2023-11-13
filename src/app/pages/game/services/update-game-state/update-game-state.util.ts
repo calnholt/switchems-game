@@ -10,7 +10,7 @@ import { CommandData } from "../../logic/commands/event-command.model";
 import { FlinchedCommand } from "../../logic/commands/ongoing-turn-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { ApplyBuffBelongsCommand, BuffCommandData } from "../../logic/commands/buff-command.model";
-import { GainSwitchDefenseCommandData, SwitchCommandData } from "../../logic/commands/swtich-commands.model";
+import { GainSwitchDefenseCommandData, SwitchCommandData } from "../../logic/commands/switch-commands.model";
 import { UpdateGameStateService } from "./update-game-state.service";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 
@@ -19,6 +19,7 @@ export const UpdateGameStateUtil = {
   applyFlinch,
   applyStatusEffect,
   applyStatPips,
+  dealAttackDamage,
   dealDamage,
   draw,
   gainStatPip,
@@ -72,8 +73,7 @@ function applyStatPips(gs: GameState, data: StatPipCommandData) {
   statBoard.getSectionFromType(data.statType).remove();
 }
 
-// dealing damage can result in different events
-function dealDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameStateService) {
+function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameStateService) {
   const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   const attack = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
   const targetMonster = GameStateUtil.getMonsterByPlayer(gs, GameStateUtil.getOppositePlayer(data.player));
@@ -85,6 +85,16 @@ function dealDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameSt
   }
   if (GameStateUtil.isFaster(gs, data.player) && attack.modifiers.contains('FLINCH')) {
     new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player }).enqueue();
+  }
+}
+
+function dealDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameStateService) {
+  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  monster.takeDamage(data.damageToDeal);
+  gs.battleAniService.update(data.player === 'P', 'TAKING_DAMAGE');
+  if (monster.currentHp === 0) {
+    const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
+    new KnockedOutByAttackCommand(rc, { key: monster.key(), player: data.player, ...monsterNames, display: true }).enqueue();
   }
 }
 

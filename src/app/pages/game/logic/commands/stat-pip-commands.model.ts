@@ -25,6 +25,7 @@ export class GainStatPipCommand extends EventCommand<StatPipCommandData> {
 
 export interface GainRandomStatPipCommandData extends CommandData {
   amount: number,
+  superEffective?: boolean;
 }
 
 export class GainRandomStatPipCommand extends EventCommand<GainRandomStatPipCommandData> {
