@@ -4,6 +4,7 @@ import { GameStateService } from '../game-state/game-state.service';
 import { UpdateGameStateUtil } from './update-game-state.util';
 import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
 import { GamePhaseUtil } from './game-phase.util';
+import { CommandUtil } from './command.util';
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +66,7 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.gainSwitchDefense(gs, data);
         break;
       case 'GAIN_RANDOM_STAT_PIP':
-        UpdateGameStateUtil.gainRandomStatPip(gs, data, this);
+        CommandUtil.gainRandomStatPip(gs, data, this);
         break;
       case 'GAIN_STAT_PIP':
         UpdateGameStateUtil.gainStatPip(gs, data);

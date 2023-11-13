@@ -28,7 +28,7 @@ export class DialogComponent {
     this.ecqs.event$.subscribe((command) => {
       if (!command) return;
       this.show = command.type !== 'SELECTION_PHASE';
-      if (command.data.skipMessage) return;
+      if (!command.data.display) return;
       setTimeout(() =>{
         this.message = command.getDisplayMessage();
       }, 300);

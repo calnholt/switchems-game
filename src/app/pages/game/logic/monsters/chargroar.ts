@@ -40,9 +40,9 @@ function LightsOutAction(key: CardCompositeKey, player: PlayerType, receiver: Up
 function HyperChargeAction(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
   const shared = { key, player };
   const monsterNames = GameStateUtil.getMonsterNames(gs, player);
-  receiver.enqueue(new GainStatPipCommand(receiver, { ...shared, amount: 3, statType: "ATTACK", ...monsterNames, origin: 'Hypercharge', skipMessage: true }));
-  receiver.enqueue(new StatModificationCommand(receiver, { ...shared, amount: 1, statType: 'DEFENSE', ...monsterNames, origin: 'Hypercharge', skipMessage: true }));
-  receiver.enqueue(new DescriptiveMessageCommand(receiver, { ...shared, message: "Chargoar gained 3 attack pips and 1 defense from Hypercharge!" }));
+  receiver.enqueue(new GainStatPipCommand(receiver, { ...shared, amount: 3, statType: "ATTACK", ...monsterNames }));
+  receiver.enqueue(new StatModificationCommand(receiver, { ...shared, amount: 1, statType: 'DEFENSE', ...monsterNames }));
+  receiver.enqueue(new DescriptiveMessageCommand(receiver, { ...shared, message: "Chargoar gained 3 attack pips and +1 defense from Hypercharge!" }));
 }
 
 function BlazingRoarAction(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService) {

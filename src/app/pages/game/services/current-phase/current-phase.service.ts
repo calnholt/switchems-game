@@ -34,7 +34,7 @@ export class CurrentPhaseService {
       'END_PHASE'
     ];
     const currentPhaseIndex = allPhases.indexOf(this._currentPhase.value);
-    const nextIndex = (currentPhaseIndex) >= allPhases.length ? 0 : (currentPhaseIndex + 1);
+    const nextIndex = (currentPhaseIndex + 1) >= allPhases.length ? 0 : (currentPhaseIndex + 1);
     return allPhases[nextIndex] as GamePhaseCommandType;
   }
 

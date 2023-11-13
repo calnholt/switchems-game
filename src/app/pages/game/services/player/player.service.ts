@@ -19,6 +19,9 @@ export class PlayerService {
     this._opponent = new Player(this.getRandomStart());
     this._player.playerCardManager.drawCard();
     this._player.playerCardManager.drawCard();
+    this._player.playerCardManager.drawCard();
+    this._player.playerCardManager.drawCard();
+    this._player.playerCardManager.drawCard();
     this._opponent.playerCardManager.drawCard();
     this._opponent.playerCardManager.drawCard();
   }

@@ -56,8 +56,7 @@ export class EventCommandQueueService {
         break; // Exit the loop and wait for the decision
       } else {
         command?.execute();
-        this._isAwaitingAcknowledgement = !!!command.data.skipMessage;
-        // this._isAwaitingAcknowledgement = false;
+        this._isAwaitingAcknowledgement = !!command.data.display;
         if (command?.data.destroyOnTrigger) {
           this.unregisterTrigger(command.type, command.data.key);
         }
@@ -66,6 +65,8 @@ export class EventCommandQueueService {
 
     if (this._queue.isEmpty()) {
       this.currentPhaseService.goToNextPhase();
+      this._isAwaitingAcknowledgement = false;
+      this._isAwaitingDecision = false;
     }
 
     this._isProcessing = false;

@@ -10,7 +10,7 @@ export type MessageCommandType =
 
   export class DescriptiveMessageCommand extends EventCommand<MessageData> {
     constructor(receiver: UpdateGameStateService, data: MessageData) {
-      super(receiver, 'DESCRIPTIVE', data);
+      super(receiver, 'DESCRIPTIVE', { ...data, display: true});
     }
     override getDisplayMessage(): string {
       return this.data.message;

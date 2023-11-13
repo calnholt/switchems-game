@@ -6,6 +6,8 @@ import { DrawCommand } from "../commands/hand-commands.model";
 import { GainRandomStatPipCommand } from "../commands/stat-pip-commands.model";
 import { GameState } from "../../services/game-state/game-state.service";
 import { GameStateUtil } from "../../services/game-state/game-state.util";
+import { DescriptiveMessageCommand } from "../commands/message-command.model";
+import { CommandUtil } from "../../services/update-game-state/command.util";
 
 export const StandardActions = {
   rest,
@@ -14,11 +16,28 @@ export const StandardActions = {
 
 function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
   const values = { key, player };
-  receiver.enqueue(new DrawCommand(receiver, values));
-  receiver.enqueue(new DrawCommand(receiver, { key, player }));
-  receiver.enqueue(new HealCommand(receiver, { key, player, amount: 1, monsterName: GameStateUtil.getMonsterByPlayer(gs, player).name, origin: 'Rest' }));
+  const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 2}, receiver);
+  const hpHealed = CommandUtil.heal(gs, { ...values, amount: 1}, receiver);
+  const monster = GameStateUtil.getPlayerState(gs, player).activeMonster;
+  let message = `${monster.name} rested, `;
+  if (numberOfCardsDrawn > 0) {
+    message += ` drawing ${numberOfCardsDrawn} card${numberOfCardsDrawn > 1 ? 's' : ''}`
+  }
+  if (hpHealed > 0) {
+    message += ` ${hpHealed > 0 ? 'and ' : ''}healed 1 HP`;
+  }
+  message += '.';
+  new DescriptiveMessageCommand(receiver, { ...values, message: message }).enqueue();
 }
 function prepare(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
-  receiver.enqueue(new DrawCommand(receiver, { key, player }));
-  receiver.enqueue(new GainRandomStatPipCommand(receiver, { key, player, amount: 3, monsterName: GameStateUtil.getMonsterByPlayer(gs, player).name, origin, skipMessage: true }));
+  const values = { key, player };
+  const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 2}, receiver);
+  const randomPipsGained = CommandUtil.gainRandomStatPip(gs, { ...values, amount: 3}, receiver);
+  const monster = GameStateUtil.getPlayerState(gs, player).activeMonster;
+  let message = `${monster.name} prepared, ${randomPipsGained.message}`;
+  if (numberOfCardsDrawn) {
+    message += ` and drew one card`
+  }
+  message += '.';
+  new DescriptiveMessageCommand(receiver, { ...values, message: message }).enqueue();
 }

@@ -21,6 +21,10 @@ export abstract class EventCommand<T extends CommandData> {
     this.data = data;
   }
 
+  public enqueue() {
+    this.receiver.enqueue(this);
+  }
+
   public execute() {
     this.receiver.execute(this);
   }
@@ -61,6 +65,6 @@ export interface CommandData {
   player: PlayerType;
   destroyOnTrigger?: boolean;
   ongoing?: boolean;
-  skipMessage?: boolean;
+  display?: boolean;
   origin?: string;
 };

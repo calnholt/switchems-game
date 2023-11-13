@@ -30,7 +30,6 @@ export const UpdateGameStateUtil = {
   flinched,
   removeStatusEffect,
   weak,
-  gainRandomStatPip,
   gainSwitchDefense,
   resistant,
 }
@@ -93,7 +92,9 @@ function dealDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameSt
 
 function draw(gs: GameState, data: HandCommandData) {
   const pcm = GameStateUtil.getPlayerCardManagerByPlayer(gs, data.player);
-  pcm.drawCard();
+  for (let i = 0; i < (data?.amount as number) ?? 1; i++) {
+    pcm.drawCard();
+  }
 }
 
 function gainStatPip(gs: GameState, data: StatPipCommandData) {
@@ -144,34 +145,6 @@ function removeStatusEffect(gs: GameState, data: ApplyStatusEffectCommandData) {
 function weak(data: CommandData, rc: UpdateGameStateService) {
   // when a monster is weak, push random pip event for super effective
   return new GainRandomStatPipCommand(rc, { key: 'pip', player: data.player, amount: 1 });
-}
-// basically an intermediary action that sets the actual pips gained
-function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc: UpdateGameStateService) {
-  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  let [speed, attack, defense] = [0,0,0]
-  for (let i = 0;  i < data.amount; i++) {
-    const random = gs.rng.randomIntOption(3);
-    let type: 'ATTACK' | 'SPEED' | 'DEFENSE' = 'ATTACK';
-    if (random === 0) {
-      type = 'ATTACK';
-      attack++;
-    }
-    if (random === 1) {
-      type = 'SPEED';
-      speed++;
-    }
-    if (random === 2){
-      type = 'DEFENSE'; 
-      defense++;
-    }
-    rc.enqueue(
-      new GainStatPipCommand(rc, { key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true, skipMessage: true })
-    );
-  }
-  const message = `${monster.name} gained:${attack > 0 ? ` ${attack} attack` : ''}${speed > 0 ? ` ${speed} speed` : ''}${defense > 0 ? ` ${defense} defense`  : ''} pips.`
-  rc.enqueue(
-    new DescriptiveMessageCommand(rc, { key: 'msg', player: data.player, message: message })
-  )
 }
 
 function gainSwitchDefense(gs: GameState, data: SwitchCommandData) {

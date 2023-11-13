@@ -8,6 +8,7 @@ export type HAND_COMMAND_TYPES =
 
 export interface HandCommandData extends CommandData {
   buffName?: string;
+  amount: number;
 }
 
 export class DrawCommand extends EventCommand<HandCommandData> {
