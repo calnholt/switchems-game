@@ -117,8 +117,10 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     const opponentState = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(player));
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'MONSTER') return;
 
+    const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
     // add monster action effect(s) to queue
     CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, rc, gs);
+    gs.battleAniService.update(player === 'P', action.attack ? 'ATTACKING' : 'USING_SPECIAL');
   }
   const monsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
 
@@ -138,6 +140,7 @@ function executeStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) 
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'STANDARD') return;
 
     CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, rc, gs);
+    gs.battleAniService.update(player === 'P', 'USING_SPECIAL');
   }
 
   performStandardAction(gs, playerWithInitiative);

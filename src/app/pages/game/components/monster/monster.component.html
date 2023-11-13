@@ -15,8 +15,20 @@
         'selected' : selected, 
         'unselectable': cardsInHand < 2 && !isActive
       }">
-      <img [src]="monsterIcon" cardInfoTooltip class="{{isOpponent ? 'reverse' : ''}}" [object]="monster"
-        tooltipType="MONSTER" />
+      <div
+      [@wobble]="attacking"
+      (@wobble.done)="aniDone($event)"
+      [@flash]="takingDamage"
+      (@flash.done)="aniDone($event)"
+      [@rubberBand]="usingSpecial"
+      (@rubberBand.done)="aniDone($event)">
+        <img [src]="monsterIcon" 
+          cardInfoTooltip 
+          class="{{isOpponent ? 'reverse' : ''}}" 
+          [object]="monster"
+          tooltipType="MONSTER" 
+          />
+      </div>
       <div *ngIf="!isActive" class="discard-container">
         <img [ngClass]="{'selected' : numDiscards > 0}" [src]="discardIcon" />
         <img [ngClass]="{'selected' : numDiscards > 1}" [src]="discardIcon" />

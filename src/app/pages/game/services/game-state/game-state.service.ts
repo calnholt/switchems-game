@@ -7,11 +7,13 @@ import { StatBoard } from '../../models/stat-board/stat-board.model';
 import { SelectedAction } from '../selected-action/selected-action.model';
 import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
 import { PlayerType } from '../../logic/player-type.mode';
+import { BattleAnimationService } from '../battle-animation/battle-animation.service';
 
 export interface GameState {
   p: PlayerState;
   o: PlayerState;
   rng: SeedableRngService;
+  battleAniService: BattleAnimationService;
 }
 
 export interface PlayerState {
@@ -31,6 +33,7 @@ export class GameStateService {
     private playerService: PlayerService,
     private selectedActionService: SelectedActionService,
     private seedableRngService: SeedableRngService,
+    private battleAniService: BattleAnimationService,
   ) { }
 
   public getGameState(): GameState {
@@ -65,6 +68,7 @@ export class GameStateService {
         statBoard: oStatBoard,
       },
       rng: this.seedableRngService,
+      battleAniService: this.battleAniService,
     }
   }
 
