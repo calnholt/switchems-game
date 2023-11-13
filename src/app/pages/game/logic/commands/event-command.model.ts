@@ -14,11 +14,14 @@ import { MessageCommandType } from "./message-command.model";
 export abstract class EventCommand<T extends CommandData> {
   readonly receiver: UpdateGameStateService;
   readonly type: EventCommandType;
-  readonly data: T;
+  private _data: T;
+
+  public get data() { return this._data; }
+
   constructor(receiver: UpdateGameStateService, type: EventCommandType, data: T) {
     this.receiver = receiver; // The entity that knows how to execute the action
     this.type = type;
-    this.data = data;
+    this._data = data;
   }
 
   public enqueue() {
@@ -30,6 +33,7 @@ export abstract class EventCommand<T extends CommandData> {
   }
 
   public executeAsTrigger(type: EventCommandType) {
+    this._data.parent = type;
     this.receiver.registerTrigger(type, this);
   }
 
@@ -42,7 +46,7 @@ export abstract class EventCommand<T extends CommandData> {
   }
 
   protected getPlayerString(): string {
-    return this.data.player === 'P' ? 'You' : 'Opponent';
+    return this._data.player === 'P' ? 'You' : 'Opponent';
   }
 }
 
@@ -63,8 +67,9 @@ export interface CommandData {
   opponentMonsterName?: string;
   key: CardCompositeKey;
   player: PlayerType;
-  destroyOnTrigger?: boolean;
+  destroyOnTrigger?: boolean; // single turn trigger flag
   ongoing?: boolean;
-  display?: boolean;
+  display?: boolean; // determines if we display event as a message
   origin?: string;
+  parent?: EventCommandType;
 };

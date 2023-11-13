@@ -1,9 +1,9 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { GameState } from "../../services/game-state/game-state.service";
 import { PlayerType } from "../player-type.mode";
-import { Chargroar } from "../monsters/chargroar";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { StandardActions } from "../standard-actions/standard-actions";
+import { Chargroar } from "../monsters/chargroar.model";
 
 export const CardByKeyUtil = {
   getCardByKey
@@ -11,34 +11,13 @@ export const CardByKeyUtil = {
 
 function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
 
-  switch (key) {
+  const monsterKey = key.substring(0, key.indexOf("_"));
+  const cardKey = key.substring(key.indexOf("_") + 1, key.length);
+
+  switch (monsterKey) {
     // chargroar
     case CHARGROAR:
-      Chargroar.ChargroarMonster(key, player, receiver);
-      break;
-    case getActionKey(CHARGROAR, 0):
-      Chargroar.LightningFangAction(key, player, receiver, gs);
-      break;
-    case getActionKey(CHARGROAR, 1):
-      Chargroar.LightsOutAction(key, player, receiver);
-      break;
-    case getActionKey(CHARGROAR, 2):
-      Chargroar.HyperChargeAction(key, player, receiver, gs)
-      break;
-    case getActionKey(CHARGROAR, 3):
-      Chargroar.BlazingRoarAction(key, player, receiver);
-      break;
-    case getBuffKey(CHARGROAR, 0):
-      Chargroar.ChargeBuff(key, player, receiver, gs);
-      break;
-    case getBuffKey(CHARGROAR, 1):
-      Chargroar.RoarBuff(key, player, receiver, gs);
-      break;
-    case getBuffKey(CHARGROAR, 2):
-      Chargroar.RevengeBuff(key, player, receiver, gs);
-      break;
-    case getBuffKey(CHARGROAR, 3):
-      Chargroar.PreyUponBuff(key, player, receiver, gs)
+      new Chargroar(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     // ***
     case VULTUROCK:
@@ -192,8 +171,8 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: Updat
       break;
     case getBuffKey(FLEXFERNO, 3):
       break;
-    // ***
-    // TODO:
+  }
+  switch(key) {
     case 'SA_REST':
       StandardActions.rest(key, player, receiver, gs);
       break;

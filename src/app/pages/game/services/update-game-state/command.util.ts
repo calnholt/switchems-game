@@ -30,7 +30,7 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
       type = 'DEFENSE'; 
       defense++;
     }
-    new GainStatPipCommand(rc, { key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true }).enqueue();
+    new GainStatPipCommand(rc, { ...data, key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true }).enqueue();
   }
   return { 
     attack, speed, defense, 

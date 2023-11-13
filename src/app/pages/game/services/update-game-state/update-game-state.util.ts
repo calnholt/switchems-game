@@ -74,19 +74,17 @@ function applyStatPips(gs: GameState, data: StatPipCommandData) {
 
 // dealing damage can result in different events
 function dealDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameStateService) {
-  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
-  monster.takeDamage(data.damageToDeal);
-  if (monster.currentHp === 0) {
-    const opposingMonster = GameStateUtil.getMonsterByPlayer(gs, getOpposite(data.player));
-    rc.enqueue(
-      new KnockedOutByAttackCommand(rc, { key: monster.key(), player: data.player, monsterName: monster.name, opponentMonsterName: opposingMonster.name })
-    )
+  const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  const attack = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
+  const targetMonster = GameStateUtil.getMonsterByPlayer(gs, GameStateUtil.getOppositePlayer(data.player));
+  targetMonster.takeDamage(data.damageToDeal);
+  gs.battleAniService.update(data.player === 'P', attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
+  if (targetMonster.currentHp === 0) {
+    const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
+    new KnockedOutByAttackCommand(rc, { key: attackingMonster.key(), player: data.player, ...monsterNames, display: true }).enqueue();
   }
-  if (GameStateUtil.isFaster(gs, data.player) && action.modifiers.contains('FLINCH')) {
-    rc.enqueue(
-      new FlinchedCommand(rc, { key: monster.key(), player: data.player })
-    )
+  if (GameStateUtil.isFaster(gs, data.player) && attack.modifiers.contains('FLINCH')) {
+    new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player }).enqueue();
   }
 }
 

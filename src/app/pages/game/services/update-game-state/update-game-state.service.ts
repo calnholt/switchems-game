@@ -138,7 +138,7 @@ export class UpdateGameStateService {
         break;
 
     }
-    this.ecqs.fireTriggers(data.type);
+    this.ecqs.fireTriggers(ec.type, ec.data.key,ec.data.player);
   }
 
   // TODO: i think this is really sloppy

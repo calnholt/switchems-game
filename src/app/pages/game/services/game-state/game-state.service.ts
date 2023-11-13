@@ -6,7 +6,6 @@ import { PlayerCardManager } from '../../models/player/player-card-manager.model
 import { StatBoard } from '../../models/stat-board/stat-board.model';
 import { SelectedAction } from '../selected-action/selected-action.model';
 import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
-import { PlayerType } from '../../logic/player-type.mode';
 import { BattleAnimationService } from '../battle-animation/battle-animation.service';
 
 export interface GameState {

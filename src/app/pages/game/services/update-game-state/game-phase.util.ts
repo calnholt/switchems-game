@@ -1,10 +1,12 @@
 import { ApplyBuffCommand } from "../../logic/commands/buff-command.model";
 import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, RevealGamePhaseCommandData, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
-import { FasterCommand } from "../../logic/commands/monster-action-commands.model";
+import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
+import { DealDamageCommand, FasterCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
+import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { UpdateGameStateService } from "./update-game-state.service";
@@ -83,9 +85,7 @@ function executeApplyBuffs(gs: GameState, rc: UpdateGameStateService) {
     if (!appliedBuffs.length) return;
 
     appliedBuffs.forEach(buff => {
-      rc.enqueue(
-        new ApplyBuffCommand(rc, { key: buff.key(), player, buffName: buff.name, monsterName: buff.monsterName })
-      )
+      new ApplyBuffCommand(rc, { key: buff.key(), player, buffName: buff.name, monsterName: buff.monsterName, display: true }).enqueue();
       CardByKeyUtil.getCardByKey(buff.key(), player, rc, gs);
     });
   }
@@ -115,17 +115,25 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   function performMonsterAction(gs: GameState, player: PlayerType) {
     const playerState = GameStateUtil.getPlayerState(gs, player);
     const opponentState = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(player));
+    const monsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'MONSTER') return;
 
     const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
     // add monster action effect(s) to queue
     CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, rc, gs);
-    gs.battleAniService.update(player === 'P', action.attack ? 'ATTACKING' : 'USING_SPECIAL');
+    if (action.attack) {
+      const damage = DamageCalcUtil.calculateDamage(gs, player);
+      if (damage) {
+        new DealDamageCommand(rc, { key: 'damage', player: player, damageToDeal: damage, ...monsterNames }).enqueue();
+        const message = `${monsterNames.monsterName} used ${action.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
+        new DescriptiveMessageCommand(rc, { key: 'msg', player, message }).enqueue();
+      }
+    }
   }
-  const monsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
 
   // add faster event to queue
-  new FasterCommand(rc, { key: 'faster', player: fasterPlayer, ...monsterNames }).enqueue();
+  const monsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
+  new FasterCommand(rc, { key: 'faster', player: fasterPlayer, ...monsterNames, display: true }).enqueue();
 
   performMonsterAction(gs, fasterPlayer);
   performMonsterAction(gs, slowerPlayer);

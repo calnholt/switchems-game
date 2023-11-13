@@ -27,6 +27,7 @@ export const ImageUtil = {
     teamAura: getSymbolsPath('aura'),
     hp: getSymbolsPath('heart'),
     arrow: getSymbolsPath('arrow'),
+    pierce: getSymbolsPath('pierce'),
   },
   monsters: {
     Chargroar: getMonstersPath('chargroar'),

@@ -4,6 +4,7 @@ import { UpdateGameStateService } from '../update-game-state/update-game-state.s
 import { GamePhaseCommandType, SelectionGamePhaseCommand } from '../../logic/commands/game-phase-commands.model';
 import { GamePhaseUtil } from '../update-game-state/game-phase.util';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
+import { Chargroar } from '../../logic/monsters/chargroar.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class GamePhaseService {
     this.currentPhaseService.currentPhase$.subscribe((value) => {
       this.gameLoop(value);
     });
+    this.startGame();
   }
 
   public testActionPhase() {
@@ -26,6 +28,13 @@ export class GamePhaseService {
       this.currentPhaseService.goToNextPhase();
     }
     // gs.o.selectedAction.action = new StandardAction('PREPARE', []);
+  }
+
+  public startGame() {
+    const gs = this.gameStateService.getGameState();
+    if (gs.p.activeMonster.key() === 'CHARGROAR') {
+      new Chargroar('CHARGROAR', '', 'P', gs, this.ugss).addTriggers();
+    }
   }
 
   // this is the full action phase game loop. each phase resolves in order. 

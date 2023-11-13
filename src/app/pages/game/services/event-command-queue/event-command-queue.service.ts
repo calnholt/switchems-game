@@ -4,6 +4,7 @@ import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interfac
 import { EventCommand, CommandData, EventCommandType } from '../../logic/commands/event-command.model';
 import { BehaviorSubject } from 'rxjs';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
+import { PlayerType } from '../../logic/player-type.mode';
 
 @Injectable({
   providedIn: 'root'
@@ -61,8 +62,8 @@ export class EventCommandQueueService {
       } else {
         command?.execute();
         this._isAwaitingAcknowledgement = !!command.data.display;
-        if (command?.data.destroyOnTrigger) {
-          this.unregisterTrigger(command.type, command.data.key);
+        if (command?.data.destroyOnTrigger && command.data.parent) {
+          this.unregisterTrigger(command.data.parent, command.data.key);
         }
       }
     }
@@ -101,14 +102,19 @@ export class EventCommandQueueService {
   public registerTrigger(eventType: EventCommandType, command: EventCommand<CommandData>) {
     const triggersForEvent = this._triggers.get(eventType) || [];
     triggersForEvent.push(command);
+    console.log('trigger added', command);
     this._triggers.set(eventType, triggersForEvent);
   }
 
   // Execute triggers for a specific event
-  public fireTriggers(eventType: EventCommandType) {
+  public fireTriggers(eventType: EventCommandType, key: CardCompositeKey, player: PlayerType) {
     const triggers = this._triggers.get(eventType);
     if (triggers) {
-      triggers.forEach(trigger => this.enqueue(trigger));
+      triggers.forEach(trigger => {
+        if (trigger.data.player === player) {
+          this.enqueue(trigger)
+        }
+      });
     }
   }
 
@@ -116,6 +122,9 @@ export class EventCommandQueueService {
     const triggersForEvent = this._triggers.get(eventType);
     if (triggersForEvent) {
       this._triggers.set(eventType, triggersForEvent.filter(trig => trig.data.key !== key));
+    }
+    if (!this._triggers.get(eventType)?.length) {
+      this._triggers.delete(eventType);
     }
   }
 
