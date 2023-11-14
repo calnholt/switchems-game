@@ -26,10 +26,10 @@ export class EventCommandQueueService {
     private currentPhaseService: CurrentPhaseService,
   ) { }
 
-  public enqueue(event: EventCommand<CommandData>) {
+  public enqueue(event: EventCommand<CommandData>, force: boolean = false) {
     this._queue.enqueue(event);
     console.log('enqueue', event);
-    this.preProcess(event);
+    this.preProcess(event, force);
   }
 
   public pushFront(event: EventCommand<CommandData>) {
@@ -38,19 +38,19 @@ export class EventCommandQueueService {
     this.preProcess(event);
   }
   
-  public preProcess(event: EventCommand<CommandData>) {
+  public preProcess(event: EventCommand<CommandData>, force: boolean = false) {
     if (event.data.updateMonsterPlayerTriggers) {
       console.log('cleanup triggers');
       this.unregisterRemoveOnSwitchTriggers();
     }
-    if (event.data.display || event.data.key === 'phase') {
+    if (event.data.display || event.data.key === 'phase' || force) {
       this.processQueue(); // Start processing if not already doing so
     }
   }
 
   public enqueueDecision(event: EventCommand<CommandData>) {
     this._isAwaitingAcknowledgement = false;
-    this.enqueue(event);
+    this.enqueue(event, true);
   }
 
   public dequeue(): EventCommand<CommandData> | undefined {
@@ -79,6 +79,7 @@ export class EventCommandQueueService {
       if (command?.requiresDecision()) {
         // The command requires a player decision to proceed
         this._isAwaitingDecision = true;
+        console.log('currentQueue', this._queue);
         break; // Exit the loop and wait for the decision
       } else {
         console.log('execute', command);

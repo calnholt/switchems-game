@@ -150,7 +150,7 @@ export class UpdateGameStateService {
   }
 
   public enqueueDecision(event: EventCommand<CommandData>) {
-    this.ecqs.enqueue(event);
+    this.ecqs.enqueue(event, true);
   }
 
   public pushFront(event: EventCommand<CommandData>) {
