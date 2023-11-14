@@ -11,32 +11,18 @@ export class Chargroar extends MonsterLogic {
   override addTriggers(): void {
     // switch in
     new DisableActionPromptCommand(this.rc, { ...this.data, destroyOnTrigger: true }).executeAsTrigger('SWITCH_IN');
-    // blazing roar
-    new StatModificationCommand(this.rc, { 
-      ...this.data, 
-      amount: 1, 
-      statType: 'PIERCE', 
-      ongoing: true, 
+    // Lighting Fang
+    new StatModificationCommand(this.rc, {
+      ...this.data,
+      key: 'CHARGROAR_A0',
+      amount: 3,
+      statType: "ATTACK",
+      origin: 'Lightning Fang',
       removeOnSwitch: true,
-      display: true,
-      origin: 'Blazing Roar',
-    }).executeAsTrigger('APPLY_BUFF');
-  }
-  override action1(): void {
-    if (GameStateUtil.isFaster(this.gs, this.player)) {
-      const data: StatModificationData = {
-        ...this.data,
-        amount: 3,
-        statType: "ATTACK",
-        origin: 'Lightning Fang',
-      };
-      new StatModificationCommand(this.rc, data).enqueue();
-    }
-  }
-
-  override action2(): void {
+    }).executeAsTrigger('FASTER');
     const data: StatPipCommandData = {
       ...this.data,
+      key: 'CHARGROAR_A1',
       amount: 2,
       statType: "SPEED",
       destroyOnTrigger: true, 
@@ -44,6 +30,21 @@ export class Chargroar extends MonsterLogic {
       origin: 'Lights Out'
     };
     new GainStatPipCommand(this.rc, data).executeAsTrigger('KNOCKED_OUT_BY_ATTACK');
+    // blazing roar
+    new StatModificationCommand(this.rc, { 
+      ...this.data, 
+      key: 'CHARGROAR_A3',
+      amount: 1, 
+      statType: 'PIERCE', 
+      removeOnSwitch: true,
+      display: true,
+      origin: 'Blazing Roar',
+    }).executeAsTrigger('APPLY_BUFF');
+  }
+  override action1(): void {
+  }
+
+  override action2(): void {
   }
 
   override action3(): void {

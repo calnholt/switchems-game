@@ -5,6 +5,10 @@ export class Dequeue<T> {
     this.items.push(item);
   }
 
+  pushFront(item: T): void {
+    this.items.unshift(item);
+  }
+
   dequeue(): T | undefined {
     if (this.isEmpty()) {
       return undefined;

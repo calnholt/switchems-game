@@ -10,6 +10,7 @@ import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
+import { SelectedAction } from "../selected-action/selected-action.model";
 import { CommandUtil } from "./command.util";
 import { UpdateGameStateService } from "./update-game-state.service";
 
@@ -131,15 +132,10 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     // add monster action effect(s) to queue
     CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, rc, gs);
     if (action.attack) {
-      const damage = DamageCalcUtil.calculateDamage(gs, player);
-      if (damage) {
-        new DealAttackDamageCommand(rc, { key: 'damage', player: player, damageToDeal: damage, ...monsterNames }).enqueue();
-        const message = `${monsterNames.monsterName} used ${action.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
-        new DescriptiveMessageCommand(rc, { key: 'msg', player, message }).enqueue();
-      }
+        new DealAttackDamageCommand(rc, { key: 'damage', player: player, ...monsterNames, damageToDeal: 999 }).enqueue();
     }
     // super effective check
-    if (GameStateUtil.isWeak(gs, player)) {
+    if (GameStateUtil.isWeak(gs, player) && !action.isStatus) {
       new WeakCommand(rc, { key: 'weak', player: GameStateUtil.getOppositePlayer(player) }).enqueue();
       const pip = CommandUtil.gainRandomStatPip(gs, { key: 'pip', player, amount: 1 }, rc);
       const msg = `The attack was super effective! ${monsterNames.monsterName} gained 1 ${pip.attack ? 'attack' : ''}${pip.speed ? 'speed' : ''}${pip.defense ? 'defense' : ''} pip.`
@@ -151,10 +147,10 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
       new TakeRecoilDamageCommand(rc, { key: 'recoil', player, monsterName: monsterNames.monsterName, damageToDeal: recoil, display: true }).enqueue();
     }
   }
-
+  const action = GameStateUtil.getMonsterActionByPlayer(gs, fasterPlayer);
   // add faster event to queue
   const monsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
-  new FasterCommand(rc, { key: 'faster', player: fasterPlayer, ...monsterNames, display: true }).enqueue();
+  new FasterCommand(rc, { key: action.key(), player: fasterPlayer, ...monsterNames, display: true }).enqueue();
 
   performMonsterAction(gs, fasterPlayer);
   performMonsterAction(gs, slowerPlayer);
@@ -186,6 +182,8 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
     playerState.playerCardManager.cleanup(playerState.selectedAction.appliedBuffs);
     playerState.playerCardManager.cleanup(playerState.selectedAction.appliedDiscards);
     playerState.selectedAction.clear();
+    gs.selectedActionService.selectedAction$.next(new SelectedAction(undefined));
+
 
     // // handle team aura
     // // cleanup triggers
@@ -199,7 +197,7 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
   }
 
   playerCleanup(gs, playerWithInitiative);
-  playerCleanup(gs, playerWithoutInitiative);
+  // playerCleanup(gs, playerWithoutInitiative);
 
 }
 

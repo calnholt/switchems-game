@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { Buff } from '../../models/monster/buff.model';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
@@ -24,6 +24,12 @@ export class PlayerHandComponent {
   ) {
   }
 
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes['buffs']) {
+  //     this.ngOnInit();
+  //   }
+  // }
+
   ngOnInit() {
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
       // TODO: update logic so applied cards are not returned to their original index,
@@ -37,6 +43,8 @@ export class PlayerHandComponent {
     this.playerService.playerCardManager.hand$.subscribe((hand) => {
       this.buffs = hand.cards;
       this.unapplied = this.buffs;
+      this.appliedAsDiscard = [];
+      this.appliedAsBuff = [];
     });
   }
 

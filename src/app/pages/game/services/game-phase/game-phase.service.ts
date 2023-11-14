@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GameState, GameStateService } from '../game-state/game-state.service';
 import { UpdateGameStateService } from '../update-game-state/update-game-state.service';
-import { GamePhaseCommandType, SelectionGamePhaseCommand } from '../../logic/commands/game-phase-commands.model';
+import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
 import { GamePhaseUtil } from '../update-game-state/game-phase.util';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
 import { Chargroar } from '../../logic/monsters/chargroar.model';
@@ -18,6 +18,7 @@ export class GamePhaseService {
     private ugss: UpdateGameStateService,
     private currentPhaseService: CurrentPhaseService,
   ) {
+    this.startGame();
     this.currentPhaseService.currentPhase$.subscribe((value) => {
       this.gameLoop(value);
     });
@@ -106,4 +107,5 @@ export class GamePhaseService {
         break;
     }
   }
+
 }

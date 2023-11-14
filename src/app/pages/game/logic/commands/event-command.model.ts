@@ -32,6 +32,10 @@ export abstract class EventCommand<T extends CommandData> {
     this.receiver.enqueueDecision(this);
   }
 
+  public pushFront() {
+    this.receiver.pushFront(this);
+  }
+
   public execute() {
     this.receiver.execute(this);
   }
@@ -78,4 +82,5 @@ export interface CommandData {
   parent?: EventCommandType;
   updateMonsterPlayerTriggers?: boolean; // true on switch out, need to clean up irrelevant triggers
   removeOnSwitch?: boolean; // denotes a trigger that's cleared after switch
+  endOfPhase?: boolean;
 };

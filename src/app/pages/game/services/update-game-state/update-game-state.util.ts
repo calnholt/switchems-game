@@ -14,6 +14,7 @@ import { GainSwitchDefenseCommand, SwitchCommandData, SwitchInCommand } from "..
 import { UpdateGameStateService } from "./update-game-state.service";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 import { Monster } from "../../models/monster/monster.model";
+import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 
 export const UpdateGameStateUtil = {
   applyBuff,
@@ -77,13 +78,18 @@ function applyStatPips(gs: GameState, data: StatPipCommandData) {
 }
 
 function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameStateService) {
-  const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
   const attack = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
+  const damage = DamageCalcUtil.calculateDamage(gs, data.player);
   const targetMonster = GameStateUtil.getMonsterByPlayer(gs, GameStateUtil.getOppositePlayer(data.player));
-  targetMonster.takeDamage(data.damageToDeal);
+  if (damage) {
+    targetMonster.takeDamage(DamageCalcUtil.calculateDamage(gs, data.player));
+    const message = `${monsterNames.monsterName} used ${attack.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
+    new DescriptiveMessageCommand(rc, { key: 'msg', player: data.player, message }).pushFront();
+  }
+  const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   gs.battleAniService.update(data.player === 'P', attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
   if (targetMonster.currentHp === 0) {
-    const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
     new KnockedOutByAttackCommand(rc, { key: attackingMonster.key(), player: data.player, ...monsterNames, display: true }).enqueue();
   }
   if (GameStateUtil.isFaster(gs, data.player) && attack.modifiers.contains('FLINCH')) {

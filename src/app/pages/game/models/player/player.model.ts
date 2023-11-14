@@ -39,5 +39,9 @@ export class Player {
     const updatedInactive = this._inactiveMonsters.value.filter(m => m.key() !== key).concat(activeCopy);
     this._inactiveMonsters.next(updatedInactive);
   }
+
+  public cleanup() {
+    
+  }
   
 }

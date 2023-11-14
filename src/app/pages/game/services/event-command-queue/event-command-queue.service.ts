@@ -29,11 +29,23 @@ export class EventCommandQueueService {
   public enqueue(event: EventCommand<CommandData>) {
     this._queue.enqueue(event);
     console.log('enqueue', event);
+    this.preProcess(event);
+  }
+
+  public pushFront(event: EventCommand<CommandData>) {
+    this._queue.pushFront(event);
+    console.log('pushFront', event);
+    this.preProcess(event);
+  }
+  
+  public preProcess(event: EventCommand<CommandData>) {
     if (event.data.updateMonsterPlayerTriggers) {
       console.log('cleanup triggers');
       this.unregisterRemoveOnSwitchTriggers();
     }
-    this.processQueue(); // Start processing if not already doing so
+    if (event.data.display || event.data.key === 'phase') {
+      this.processQueue(); // Start processing if not already doing so
+    }
   }
 
   public enqueueDecision(event: EventCommand<CommandData>) {
@@ -57,11 +69,12 @@ export class EventCommandQueueService {
     }
     this._isProcessing = true;
 
+    let command;
     while (!this._queue.isEmpty()) {
       if (this._isAwaitingAcknowledgement || this._isAwaitingDecision) {
         break;
       }
-      const command = this.dequeue();
+      command = this.dequeue();
       if (!command) break;
       if (command?.requiresDecision()) {
         // The command requires a player decision to proceed
@@ -71,6 +84,10 @@ export class EventCommandQueueService {
         console.log('execute', command);
         command?.execute();
         this._isAwaitingAcknowledgement = !!command.data.display;
+        if (this._isAwaitingAcknowledgement) {
+          console.log('currentQueue', this._queue);
+        }
+        this.fireTriggers(command.type, command.data.key, command.data.player);
         if (command?.data.destroyOnTrigger && command.data.parent) {
           this.unregisterTrigger(command.data.parent, command.data.key);
         }
@@ -79,7 +96,9 @@ export class EventCommandQueueService {
 
     if (this._queue.isEmpty() && !this._isAwaitingDecision) {
       this._isProcessing = false;
-      this.currentPhaseService.goToNextPhase();
+      if (command?.type !== 'SELECTION_PHASE') {
+        this.currentPhaseService.goToNextPhase();
+      }
       this._isAwaitingAcknowledgement = false;
       this._isAwaitingDecision = false;
     }
@@ -107,8 +126,9 @@ export class EventCommandQueueService {
     const triggers = this._triggers.get(eventType);
     if (triggers) {
       triggers.forEach(trigger => {
-        if (trigger.data.player === player) {
-          this.enqueue(trigger)
+        if (trigger.data.player === player && trigger.data.key === key) {
+          console.log('enqueue trigger', trigger)
+          this.pushFront(trigger);
         }
       });
     }

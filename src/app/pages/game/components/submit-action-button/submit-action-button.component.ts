@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
 import { StatBoardSectionType } from '../../models/stat-board/stat-board.model';
 import { GamePhaseService } from '../../services/game-phase/game-phase.service';
+import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 
 @Component({
   selector: 'sw-submit-action-button',
@@ -15,10 +16,12 @@ export class SubmitActionButtonComponent {
   label: string | null = 'Select an action';
   numBuffSlotsUsed: number = 0;
   statBoardSectionType: StatBoardSectionType | null = null;
+  enabled = true;
 
   constructor(
     private selectedActionService: SelectedActionService,
-    private gamePhaseService: GamePhaseService
+    private gamePhaseService: GamePhaseService,
+    private currentPhaseService: CurrentPhaseService,
   ) {
 
   }
@@ -30,6 +33,9 @@ export class SubmitActionButtonComponent {
       this.isCostFulfilled = selectedAction.isCostFulfilled();
       this.label = this.getDisplayText();
     })
+    this.currentPhaseService.currentPhase$.subscribe((phase) => {
+      this.enabled = phase === 'SELECTION_PHASE';
+    })
   }
 
   getDisplayText(): string {
@@ -40,7 +46,9 @@ export class SubmitActionButtonComponent {
   }
 
   submit() {
-    this.gamePhaseService.testActionPhase();
+    if (this.enabled) {
+      this.gamePhaseService.testActionPhase();
+    }
   }
 
 }

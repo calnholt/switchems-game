@@ -15,7 +15,7 @@ export type GamePhaseCommandType =
   | 'END_PHASE'
 
 export interface GamePhaseCommandData extends CommandData {
-
+  
 }
 
 export class StartGamePhaseCommand extends EventCommand<GamePhaseCommandData> {

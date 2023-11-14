@@ -112,7 +112,7 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.dealDamage(gs, data, this);
         break;
       case 'WEAK':
-        UpdateGameStateUtil.weak(data, this);
+        // UpdateGameStateUtil.weak(data, this);
         break;
 
       // phases
@@ -142,7 +142,6 @@ export class UpdateGameStateService {
         break;
 
     }
-    this.ecqs.fireTriggers(ec.type, ec.data.key,ec.data.player);
   }
 
   // TODO: i think this is really sloppy
@@ -152,6 +151,10 @@ export class UpdateGameStateService {
 
   public enqueueDecision(event: EventCommand<CommandData>) {
     this.ecqs.enqueue(event);
+  }
+
+  public pushFront(event: EventCommand<CommandData>) {
+    this.ecqs.pushFront(event);
   }
   
   public registerTrigger(type: EventCommandType, command: EventCommand<CommandData>) {

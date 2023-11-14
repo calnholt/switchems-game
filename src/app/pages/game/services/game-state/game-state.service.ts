@@ -15,6 +15,7 @@ export interface GameState {
   rng: SeedableRngService;
   battleAniService: BattleAnimationService;
   playerService: PlayerService;
+  selectedActionService: SelectedActionService;
 }
 
 export interface PlayerState {
@@ -76,6 +77,7 @@ export class GameStateService {
       rng: this.seedableRngService,
       battleAniService: this.battleAniService,
       playerService: this.playerService,
+      selectedActionService: this.selectedActionService,
     }
   }
 
