@@ -28,6 +28,7 @@ export const ImageUtil = {
     hp: getSymbolsPath('heart'),
     arrow: getSymbolsPath('arrow'),
     pierce: getSymbolsPath('pierce'),
+    lock: getSymbolsPath('lock'),
   },
   monsters: {
     Chargroar: getMonstersPath('chargroar'),

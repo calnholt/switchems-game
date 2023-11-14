@@ -15,8 +15,20 @@
   filter: brightness(85%);
   transition: filter 0.3s ease;
 
+  .locked {
+    background-image: url('../../../../../../assets/images/symbols/lock.png');
+    background-size: 130px;
+    background-position: center;
+    height: inherit;
+    background-repeat: no-repeat;
+    background-position-y: 65px;
+  }
+
   &.selected {
     filter: brightness(100%);
+  }
+  &.unselectable {
+    filter: brightness(85%);
   }
   &.unselectable:hover {
     filter: brightness(85%);

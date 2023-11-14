@@ -16,7 +16,7 @@ export class DrawCommand extends EventCommand<HandCommandData> {
     super(receiver, 'DRAW', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString()} drew a card.`;
+    return `${this.getPlayerString()} drew a card${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
   }
 }
 

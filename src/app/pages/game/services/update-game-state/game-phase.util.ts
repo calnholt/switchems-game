@@ -1,3 +1,4 @@
+import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyBuffCommand } from "../../logic/commands/buff-command.model";
 import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, RevealGamePhaseCommandData, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
@@ -39,7 +40,7 @@ export const GamePhaseUtil = {
 }
 
 function revealPhase(gs: GameState, rc: UpdateGameStateService) {
-  new RevealGamePhaseCommand(rc, { opponentAction: gs.o.selectedAction, key: 'phase', player: 'P', display: false }).enqueue();
+  new RevealGamePhaseCommand(rc, { opponentAction: gs.o.selectedAction, key: 'phase', player: 'P', display: true }).enqueue();
 }
 function applyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
   new ApplyPipsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
@@ -127,8 +128,14 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     const monsterNames = GameStateUtil.getMonsterNames(gs, player);
     const monster = GameStateUtil.getMonsterByPlayer(gs, player);
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'MONSTER') return;
-
+    
     const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
+
+    // draw cards check
+    if (action.draw > 0) {
+      new DrawCommand(rc, { key: 'draw', player, amount: action.draw,origin: action.name, display: true }).enqueue();
+    }
+
     // add monster action effect(s) to queue
     CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, rc, gs);
     if (action.attack) {
@@ -178,26 +185,26 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
 
   function playerCleanup(gs: GameState, player: PlayerType) {
     // move buffs and discards
-    const playerState = GameStateUtil.getPlayerState(gs, player);
-    playerState.playerCardManager.cleanup(playerState.selectedAction.appliedBuffs);
-    playerState.playerCardManager.cleanup(playerState.selectedAction.appliedDiscards);
-    playerState.selectedAction.clear();
-    gs.selectedActionService.selectedAction$.next(new SelectedAction(undefined));
+    const { selectedAction, playerCardManager, activeMonster } = GameStateUtil.getPlayerState(gs, player);
+    playerCardManager.cleanup(selectedAction.appliedBuffs);
+    playerCardManager.cleanup(selectedAction.appliedDiscards);
+    // TODO: fix (we just want the opponent to spam standard action for now)
+    if (player === 'P') {
+      gs.selectedActionService.selectedAction$.next(new SelectedAction(undefined));
+    }
+    // handle team auras
 
-
-    // // handle team aura
-    // // cleanup triggers
-    // // cleanup modifiers
-    playerState.activeMonster.modifiers.eotClear();
-    playerState.activeMonster.actions.forEach(action => {
+    activeMonster.eotCleanup(selectedAction.action?.key() as CardCompositeKey);
+    activeMonster.actions.forEach(action => {
       action.modifiers.eotClear();
     });
-    // draw card(s)
+    selectedAction.clear();
+    // draw card
     new DrawCommand(rc, { key: 'eot', player, amount: 1 }).enqueue();
   }
 
   playerCleanup(gs, playerWithInitiative);
-  // playerCleanup(gs, playerWithoutInitiative);
+  playerCleanup(gs, playerWithoutInitiative);
 
 }
 

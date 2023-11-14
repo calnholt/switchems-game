@@ -4,6 +4,8 @@ import { StatBoardSectionType } from '../../models/stat-board/stat-board.model';
 import { GamePhaseService } from '../../services/game-phase/game-phase.service';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 
+const LABEL = 'Select an action';
+
 @Component({
   selector: 'sw-submit-action-button',
   templateUrl: './submit-action-button.component.html',
@@ -13,7 +15,7 @@ export class SubmitActionButtonComponent {
 
   isCostFulfilled = false;
   displayName: string | null = null;
-  label: string | null = 'Select an action';
+  label: string | null = LABEL;
   numBuffSlotsUsed: number = 0;
   statBoardSectionType: StatBoardSectionType | null = null;
   enabled = true;
@@ -35,6 +37,9 @@ export class SubmitActionButtonComponent {
     })
     this.currentPhaseService.currentPhase$.subscribe((phase) => {
       this.enabled = phase === 'SELECTION_PHASE';
+      if (phase === 'SELECTION_PHASE') {
+        this.label = LABEL;
+      }
     })
   }
 

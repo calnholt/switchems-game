@@ -81,6 +81,6 @@ export interface CommandData {
   origin?: string;
   parent?: EventCommandType;
   updateMonsterPlayerTriggers?: boolean; // true on switch out, need to clean up irrelevant triggers
-  removeOnSwitch?: boolean; // denotes a trigger that's cleared after switch
-  endOfPhase?: boolean;
+  removeOnSwitchTrigger?: boolean; // denotes a trigger that's cleared after switch
+  removeEotTrigger?: boolean;
 };

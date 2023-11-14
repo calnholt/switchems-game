@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { bounceInOnEnterAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, pulseAnimation, slideInLeftAnimation, slideInLeftOnEnterAnimation, slideOutLeftOnLeaveAnimation, slideOutRightOnLeaveAnimation } from 'angular-animations';
+import { bounceInOnEnterAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, slideInLeftOnEnterAnimation } from 'angular-animations';
 import { StatBoardSection, StatBoardSectionType } from 'src/app/pages/game/models/stat-board/stat-board.model';
 import { Path } from 'src/app/shared/types/dataTypes';
 import { ImageUtil } from 'src/app/shared/utils/image.util';

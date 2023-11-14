@@ -21,9 +21,10 @@ export class MonsterActionComponent {
   terms: Term[] = [];
 
   elementImg: Path = "";
-  attackImg: Path = "";
-  speedImg: Path = "";
-  statusImg: Path = "";
+  attackImg: Path = ImageUtil.getSymbolsPath('attack');
+  speedImg: Path = ImageUtil.getSymbolsPath('speed');
+  statusImg: Path = ImageUtil.getSymbolsPath('status');
+  lockImg: Path = ImageUtil.getSymbolsPath('lock');
 
   isSelected = false;
   enabled = true;
@@ -40,9 +41,6 @@ export class MonsterActionComponent {
     if (this.action?.element) {
       this.elementImg = ImageUtil.getElementsPath(this.action?.element);
     }
-    this.attackImg = ImageUtil.getSymbolsPath('attack');
-    this.speedImg = ImageUtil.getSymbolsPath('speed');
-    this.statusImg = ImageUtil.getSymbolsPath('status');
     this.terms = AbilityTextUtil.getTermsFromText(this.action.text);
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
       if (!selectedAction.action) {
@@ -52,11 +50,12 @@ export class MonsterActionComponent {
     });
     this.currentPhaseService.currentPhase$.subscribe((phase) => {
       this.enabled = phase === 'SELECTION_PHASE';
+      this.isSelected = phase === 'SELECTION_PHASE';
     });
   }
 
   selectAction() {
-    if (this.enabled) {
+    if (this.enabled && !this.action.isDisabled) {
       this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_ACTION, data: this.action })
     }
   }

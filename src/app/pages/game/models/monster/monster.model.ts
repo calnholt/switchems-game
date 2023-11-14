@@ -84,6 +84,19 @@ export class Monster implements IHaveTooltip, ISelectableAction {
   public get isActive(): boolean { return this._isActive; }
 
   setIsActive(value: boolean) { this._isActive = value; }
+
+  setDisabledActions(key: CardCompositeKey) {
+    this._actions.forEach(a => a.setDisabled(a.key() === key));
+  }
+
+  eotCleanup(key: CardCompositeKey) {
+    this.setDisabledActions(key);
+    this.modifiers.eotClear();
+    this._actions.forEach(a => {
+      a.setDisabled(a.key() === key);
+      a.modifiers.eotClear();
+    });
+  }
   
   getEffectivenessArray(): number[] {
     const arrs = this._elements.map((el: ElemType) => StatUtil.getAdvantages(el)) ?? [];

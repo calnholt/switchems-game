@@ -100,6 +100,9 @@ export class EventCommandQueueService {
       if (command?.type !== 'SELECTION_PHASE') {
         this.currentPhaseService.goToNextPhase();
       }
+      else {
+        this.unregisterEotTriggers();
+      }
       this._isAwaitingAcknowledgement = false;
       this._isAwaitingDecision = false;
     }
@@ -148,7 +151,14 @@ export class EventCommandQueueService {
   private unregisterRemoveOnSwitchTriggers() {
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
-      this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[]).filter(cmd => cmd.data.removeOnSwitch));
+      this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[]).filter(cmd => cmd.data.removeOnSwitchTrigger));
+    });
+  }
+
+  private unregisterEotTriggers() {
+    const keys = [...this._triggers.keys()];
+    keys.forEach((key) => {
+      this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[]).filter(cmd => cmd.data.removeEotTrigger));
     });
   }
 

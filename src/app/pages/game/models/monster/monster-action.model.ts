@@ -73,6 +73,10 @@ export class MonsterAction implements ISelectableAction, IHaveTooltip {
     return AbilityTextUtil.getAbilityTextWithoutTerms(this._text);
   }
 
+  setDisabled(value: boolean) {
+    this._isDisabled = value;
+  }
+
   getAdvantages() {
     const map: Map<ElemType, number[]> = new Map();
     map.set('Death', [0, -1, 1, 1, -1, 0]);
