@@ -100,8 +100,12 @@ export class UpdateGameStateService {
         break;
       // TODO: requires decision (ish)
       case 'SWITCH_IN':
+        UpdateGameStateUtil.switchIn(gs, data, this)
         break;
       case 'SWITCH_OUT':
+        UpdateGameStateUtil.switchOut(gs, data, this)
+        break;
+      case 'SWITCH_OUT_PROMPT':
         break;
       case 'TAKE_RECOIL_DAMAGE':
       case 'TRUE_DAMAGE':
@@ -143,6 +147,10 @@ export class UpdateGameStateService {
 
   // TODO: i think this is really sloppy
   public enqueue(event: EventCommand<CommandData>) {
+    this.ecqs.enqueue(event);
+  }
+
+  public enqueueDecision(event: EventCommand<CommandData>) {
     this.ecqs.enqueue(event);
   }
   

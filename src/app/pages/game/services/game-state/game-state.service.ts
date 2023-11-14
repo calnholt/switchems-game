@@ -7,12 +7,14 @@ import { StatBoard } from '../../models/stat-board/stat-board.model';
 import { SelectedAction } from '../selected-action/selected-action.model';
 import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
 import { BattleAnimationService } from '../battle-animation/battle-animation.service';
+import { Player } from '../../models/player/player.model';
 
 export interface GameState {
   p: PlayerState;
   o: PlayerState;
   rng: SeedableRngService;
   battleAniService: BattleAnimationService;
+  playerService: PlayerService;
 }
 
 export interface PlayerState {
@@ -21,6 +23,7 @@ export interface PlayerState {
   playerCardManager: PlayerCardManager;
   statBoard: StatBoard;
   selectedAction: SelectedAction;
+  player: Player;
 }
 
 @Injectable({
@@ -45,6 +48,8 @@ export class GameStateService {
       oPlayerCardManager,
       statBoard,
       oStatBoard,
+      player,
+      oPlayer
     } = this.playerService;
     const {
       selectedAction, 
@@ -58,6 +63,7 @@ export class GameStateService {
         inactiveMonsters,
         playerCardManager,
         statBoard,
+        player,
       },
       o: {
         activeMonster: oActiveMonster,
@@ -65,9 +71,11 @@ export class GameStateService {
         inactiveMonsters: oInactiveMonsters,
         playerCardManager: oPlayerCardManager,
         statBoard: oStatBoard,
+        player: oPlayer,
       },
       rng: this.seedableRngService,
       battleAniService: this.battleAniService,
+      playerService: this.playerService,
     }
   }
 

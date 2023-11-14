@@ -4,15 +4,16 @@ import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/m
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, KnockedOutByAttackCommand } from "../../logic/commands/monster-action-commands.model";
 import { GainRandomStatPipCommand, GainRandomStatPipCommandData, GainStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
-import { HealCommandData, StatModificationData } from "../../logic/commands/stat-modification-command.model";
+import { HealCommand, HealCommandData, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
 import { CommandData } from "../../logic/commands/event-command.model";
 import { FlinchedCommand } from "../../logic/commands/ongoing-turn-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { ApplyBuffBelongsCommand, BuffCommandData } from "../../logic/commands/buff-command.model";
-import { GainSwitchDefenseCommandData, SwitchCommandData } from "../../logic/commands/switch-commands.model";
+import { GainSwitchDefenseCommand, SwitchCommandData, SwitchInCommand } from "../../logic/commands/switch-commands.model";
 import { UpdateGameStateService } from "./update-game-state.service";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
+import { Monster } from "../../models/monster/monster.model";
 
 export const UpdateGameStateUtil = {
   applyBuff,
@@ -33,6 +34,8 @@ export const UpdateGameStateUtil = {
   weak,
   gainSwitchDefense,
   resistant,
+  switchOut,
+  switchIn,
 }
 
 function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }
@@ -166,7 +169,22 @@ function resistant(gs: GameState, data: BasicCommandData, rc: UpdateGameStateSer
   // determine if switch defense occurs
   if (activeMonster.resistances.includes(action.element) && selectedAction.action?.getSelectableActionType() === 'SWITCH') {
     rc.enqueue(
-      new GainSwitchDefenseCommandData(rc, { key: data.key, player: data.player })
+      new GainSwitchDefenseCommand(rc, { key: data.key, player: data.player })
     );
   }
+}
+
+// clean up triggers
+// add new triggers
+function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
+  let switchingToMonster = GameStateUtil.getSwitchingToMonster(gs, data.player);
+  if (data.type === 'HEAL') {
+    new HealCommand(rc, { ...data, amount: 2, origin: 'Switch Out', display: true}).enqueue();
+  }
+  new SwitchInCommand(rc, { ...data, player: data.player, monsterName: switchingToMonster.name, display: true }).enqueue();
+}
+
+function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
+  gs.battleAniService.update(data.player === 'P', 'SWITCHING_OUT');
+  setTimeout(() => GameStateUtil.getPlayerState(gs, data.player).player.switch(data.key), 290);
 }

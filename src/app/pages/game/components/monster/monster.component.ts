@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Monster } from '../../models/monster/monster.model';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
 import { Css, Path } from 'src/app/shared/types/dataTypes';
 import { EventManagerService } from '../../services/event-manager/event-manager.service';
 import { GameUISelectionEventType } from '../../services/game-ui-selection/game-ui-selection-event.model';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
-import { flashAnimation, rubberBandAnimation, wobbleAnimation } from 'angular-animations';
+import { flashAnimation, rubberBandAnimation, slideInLeftAnimation, slideInLeftOnEnterAnimation, slideInRightAnimation, slideInRightOnEnterAnimation, slideOutLeftAnimation, slideOutLeftOnLeaveAnimation, slideOutRightAnimation, slideOutRightOnLeaveAnimation, wobbleAnimation } from 'angular-animations';
 import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
 import { AnimationEvent } from '@angular/animations';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
@@ -18,9 +18,13 @@ import { CurrentPhaseService } from '../../services/current-phase/current-phase.
     wobbleAnimation(),
     flashAnimation(),
     rubberBandAnimation(),
+    slideInLeftAnimation({ translate: '1000px', duration: 300 }),
+    slideInRightAnimation({ translate: '1000px', duration: 300 }),
+    slideOutRightAnimation({ translate: '1000px', duration: 300 }),
+    slideOutLeftAnimation({ translate: '1000px', duration: 300 }),
   ]
 })
-export class MonsterComponent implements OnInit {
+export class MonsterComponent implements OnInit, OnChanges {
   @Input() monster!: Monster;
   @Input() isActiveMonster: boolean = false;
   @Input() isOpponent: boolean = false;
@@ -39,6 +43,8 @@ export class MonsterComponent implements OnInit {
   attacking = false;
   takingDamage = false;
   usingSpecial = false;
+  switchingIn = true;
+  switchingOut = false;
 
   constructor(
     private eventManagerService: EventManagerService,
@@ -47,6 +53,12 @@ export class MonsterComponent implements OnInit {
     private currentPhaseService: CurrentPhaseService,
   ) {
     
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['monster']) {
+      this.ngOnInit();
+    }
   }
   
   ngOnInit(): void {
@@ -74,6 +86,8 @@ export class MonsterComponent implements OnInit {
       if (state.getType(!this.isOpponent) === 'ATTACKING') this.animateAttacking();
       if (state.getType(!this.isOpponent) === 'TAKING_DAMAGE') this.animateTakingDamage();
       if (state.getType(!this.isOpponent) === 'USING_SPECIAL') this.animateUsingSpecial();
+      if (state.getType(!this.isOpponent) === 'SWITCHING_IN') this.animateSwitchingIn();
+      if (state.getType(!this.isOpponent) === 'SWITCHING_OUT') this.animateSwitchingOut();
     });
     this.currentPhaseService.currentPhase$.subscribe((phase) => {
       this.enabled = phase === 'SELECTION_PHASE';
@@ -98,9 +112,18 @@ export class MonsterComponent implements OnInit {
     this.usingSpecial = false;
     setTimeout(() => { this.usingSpecial = true; }, 1);
   }
+  animateSwitchingIn() {
+    this.switchingIn = false;
+    setTimeout(() => { this.switchingIn = true; }, 1);
+  }
+  animateSwitchingOut() {
+    this.switchingOut = false;
+    setTimeout(() => { this.switchingOut = true; }, 1);
+  }
 
   aniDone(event: AnimationEvent) {
     this.battleAnimationService.done(!this.isOpponent);
   }
 
 }
+

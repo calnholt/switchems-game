@@ -17,6 +17,7 @@ import { MonsterElementBreakdownComponent } from './components/monster/monster-e
 import { StandardActionComponent } from './components/standard-action/standard-action.component';
 import { SubmitActionButtonComponent } from './components/submit-action-button/submit-action-button.component';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { SwitchOutDialogComponent } from './components/dialog/switch-out-dialog/switch-out-dialog.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
     StandardActionComponent,
     SubmitActionButtonComponent,
     DialogComponent,
+    SwitchOutDialogComponent,
   ],
   exports: [
     MonsterActionComponent,

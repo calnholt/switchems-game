@@ -6,6 +6,7 @@ import { PlayerService } from '../../services/player/player.service';
 import { StandardAction } from '../../models/standard-action/standard-action.model';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { ARENAS, ArenaType } from '~/app/shared/types/dataTypes';
+import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
 
 @Component({
   selector: 'sw-game',
@@ -19,7 +20,8 @@ export class GameComponent {
   activeMonster!: Monster;
   inactiveMonsters: Monster[] = [];
   arena!: ArenaType;
-
+  
+  oInactiveMonsters: Monster[] = [];
   oActiveMonster!: Monster;
   oStatBoard!: StatBoard;
 
@@ -40,16 +42,34 @@ export class GameComponent {
 
   constructor(
     private playerService: PlayerService,
+    private battleAniService: BattleAnimationService,
   ) { }
 
   ngOnInit() {
-    this.activeMonster = this.playerService.activeMonster;
-    this.inactiveMonsters = this.playerService.inactiveMonsters;
-    this.playerCardManager = this.playerService.playerCardManager;
-    this.statBoard = this.playerService.statBoard;
+    this.playerService.player.activeMonster$.subscribe((value) => {
+      this.activeMonster = value;
+      this.battleAniService.update(true, 'SWITCHING_IN');
+    });
+    this.playerService.player.inactiveMonsters$.subscribe((value) => {
+      this.inactiveMonsters = value;
+    });
+    this.playerService.player.playerCardManager$.subscribe((value) => {
+      this.playerCardManager = value;
+    });
+    this.playerService.player.statBoard$.subscribe((value) => {
+      this.statBoard = value;
+    });
 
-    this.oActiveMonster = this.playerService.oActiveMonster;
-    this.oStatBoard = this.playerService.oStatBoard;
+    this.playerService.oPlayer.activeMonster$.subscribe((value) => {
+      this.oActiveMonster = value;
+      this.battleAniService.update(false, 'SWITCHING_IN');
+    });
+    this.playerService.oPlayer.inactiveMonsters$.subscribe((value) => {
+      this.oInactiveMonsters = value;
+    });
+    this.playerService.oPlayer.statBoard$.subscribe((value) => {
+      this.oStatBoard = value;
+    });
 
     this.arena = this.getRandomArena();
 
@@ -60,7 +80,6 @@ export class GameComponent {
     this.playerService.oPlayerCardManager.hand$.subscribe((hand) => {
       this.cardsInMyOpponentsHand = hand.cardsInHand();
     });
-
   }
 
 

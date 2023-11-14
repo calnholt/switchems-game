@@ -3,6 +3,7 @@ import { GameState, PlayerState } from "./game-state.service";
 import { MonsterAction } from "../../models/monster/monster-action.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
+import { Monster } from "../../models/monster/monster.model";
 
 export const GameStateUtil = {
   isFaster,
@@ -25,6 +26,7 @@ export const GameStateUtil = {
   getInitiatives,
   getSpeedPlayers,
   getMonsterNames,
+  getSwitchingToMonster,
 }
 
 function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
@@ -173,4 +175,9 @@ function getSpeedPlayers(gs: GameState) {
 
 function getMonsterNames(gs: GameState, playerType: PlayerType) {
   return { monsterName: GameStateUtil.getMonsterByPlayer(gs, playerType).name, opponentMonsterName: GameStateUtil.getMonsterByPlayer(gs, getOppositePlayer(playerType)).name };
+}
+
+function getSwitchingToMonster(gs: GameState, playerType: PlayerType) {
+  const { selectedAction, inactiveMonsters } = getPlayerState(gs, playerType);
+  return inactiveMonsters.find(m => m.key() === selectedAction.action?.key()) as Monster;
 }

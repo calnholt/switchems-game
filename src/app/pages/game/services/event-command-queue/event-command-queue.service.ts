@@ -29,7 +29,16 @@ export class EventCommandQueueService {
   public enqueue(event: EventCommand<CommandData>) {
     this._queue.enqueue(event);
     console.log('enqueue', event);
+    if (event.data.updateMonsterPlayerTriggers) {
+      console.log('cleanup triggers');
+      this.unregisterRemoveOnSwitchTriggers();
+    }
     this.processQueue(); // Start processing if not already doing so
+  }
+
+  public enqueueDecision(event: EventCommand<CommandData>) {
+    this._isAwaitingAcknowledgement = false;
+    this.enqueue(event);
   }
 
   public dequeue(): EventCommand<CommandData> | undefined {
@@ -57,7 +66,6 @@ export class EventCommandQueueService {
       if (command?.requiresDecision()) {
         // The command requires a player decision to proceed
         this._isAwaitingDecision = true;
-        this.awaitPlayerDecision(command);
         break; // Exit the loop and wait for the decision
       } else {
         console.log('execute', command);
@@ -69,7 +77,7 @@ export class EventCommandQueueService {
       }
     }
 
-    if (this._queue.isEmpty()) {
+    if (this._queue.isEmpty() && !this._isAwaitingDecision) {
       this._isProcessing = false;
       this.currentPhaseService.goToNextPhase();
       this._isAwaitingAcknowledgement = false;
@@ -84,20 +92,6 @@ export class EventCommandQueueService {
     if (this.currentPhaseService.currentPhase !== 'SELECTION_PHASE') {
       this.processQueue();
     }
-  }
-
-  private awaitPlayerDecision(command: EventCommand<CommandData> | undefined) {
-    // This method should be connected to your UI logic to prompt for player input
-    // and should ultimately call `resolvePlayerDecision` with the player's decision.
-  }
-
-  public resolvePlayerDecision(decision: any) {
-    // Process the decision here
-    // ...
-
-    // After processing the decision, resume queue processing
-    this._isAwaitingDecision = false;
-    this.processQueue();
   }
 
   // Register a trigger for a specific event
@@ -128,6 +122,13 @@ export class EventCommandQueueService {
     if (!this._triggers.get(eventType)?.length) {
       this._triggers.delete(eventType);
     }
+  }
+
+  private unregisterRemoveOnSwitchTriggers() {
+    const keys = [...this._triggers.keys()];
+    keys.forEach((key) => {
+      this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[]).filter(cmd => cmd.data.removeOnSwitch));
+    });
   }
 
 }

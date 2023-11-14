@@ -32,7 +32,7 @@ export class PlayerService {
   public get inactiveMonsters() { return this._player.inactiveMonsters; }
   public get statBoard() { return this._player.statBoard; }
 
-  public get oPlayer() { return this._player; }
+  public get oPlayer() { return this._opponent; }
   public get oPlayerCardManager() { return this._opponent.playerCardManager; }
   public get oActiveMonster() { return this._opponent.activeMonster; }
   public get oInactiveMonsters() { return this._opponent.inactiveMonsters; }

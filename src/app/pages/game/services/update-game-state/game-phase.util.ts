@@ -4,6 +4,7 @@ import { DrawCommand } from "../../logic/commands/hand-commands.model";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 import { DealAttackDamageCommand, FasterCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
+import { SwitchOutPromptCommand } from "../../logic/commands/switch-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
@@ -103,14 +104,17 @@ function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
 
   function performSwitchAction(gs: GameState, player: PlayerType) {
+    const monsterNames = GameStateUtil.getMonsterNames(gs, player);
     const playerState = GameStateUtil.getPlayerState(gs, player);
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'SWITCH') {
       return;
     }
     // switch out dialog command
-    // switch out command
-    // switch in command
+    new SwitchOutPromptCommand(rc, { key: playerState.selectedAction.action.key(), player, ...monsterNames }).enqueue();
   }
+
+  performSwitchAction(gs, playerWithInitiative);
+  performSwitchAction(gs, playerWithoutInitiative);
 
 }
 
@@ -119,8 +123,7 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   
   function performMonsterAction(gs: GameState, player: PlayerType) {
     const playerState = GameStateUtil.getPlayerState(gs, player);
-    const opponentState = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(player));
-    const monsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
+    const monsterNames = GameStateUtil.getMonsterNames(gs, player);
     const monster = GameStateUtil.getMonsterByPlayer(gs, player);
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'MONSTER') return;
 

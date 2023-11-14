@@ -1,0 +1,21 @@
+<ng-container *ngIf="show">
+  <div id="dialog" [@fadeInOnEnter] [@fadeOutOnLeave]>
+    <div class="dialog-container">
+      <div class="text">
+        Choose your switch out option
+      </div>
+    </div>
+    <div class="d-flex justify-content-between">
+      <div>
+        <sw-pushable-button>
+          <div class="acknowledge-button two-option" (click)="heal()" >Heal 2HP</div>
+        </sw-pushable-button>
+      </div>
+      <div>
+        <sw-pushable-button>
+          <div class="acknowledge-button two-option" (click)="removeStatus()" >Remove Status Effects</div>
+        </sw-pushable-button>
+      </div>
+    </div>
+  </div>
+</ng-container>
