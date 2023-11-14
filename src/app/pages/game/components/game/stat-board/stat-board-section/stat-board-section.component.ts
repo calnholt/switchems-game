@@ -27,8 +27,10 @@ export class StatBoardSectionComponent implements OnInit {
 
   enabled = false;
   isApplied = false;
+  isApplyable = false;
   aniState = false;
   arrowSrc = ImageUtil.icons.arrow;
+
 
   constructor(
     private selectedActionService: SelectedActionService,
@@ -40,6 +42,9 @@ export class StatBoardSectionComponent implements OnInit {
     this.icon = this.getPathFromType(this.statBoardSection.type);
     if (this.disable) return;
     this.selectedActionService.selectedAction$.subscribe(({ statBoardSection }) => {
+      // TODO: update isApplyable by checking if the selected action is an attack action
+      // currently this isn't retrievable. consider just getting access to full action
+      // from interface function
       if (statBoardSection?.type === this.statBoardSection.type) {
         this.isApplied = true;
       }

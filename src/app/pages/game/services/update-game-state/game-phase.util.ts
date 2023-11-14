@@ -188,17 +188,17 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
     const { selectedAction, playerCardManager, activeMonster } = GameStateUtil.getPlayerState(gs, player);
     playerCardManager.cleanup(selectedAction.appliedBuffs);
     playerCardManager.cleanup(selectedAction.appliedDiscards);
-    // TODO: fix (we just want the opponent to spam standard action for now)
-    if (player === 'P') {
-      gs.selectedActionService.selectedAction$.next(new SelectedAction(undefined));
-    }
     // handle team auras
-
+    
     activeMonster.eotCleanup(selectedAction.action?.key() as CardCompositeKey);
     activeMonster.actions.forEach(action => {
       action.modifiers.eotClear();
     });
-    selectedAction.clear();
+    // TODO: fix (we just want the opponent to spam standard action for now)
+    if (player === 'P') {
+      gs.selectedActionService.selectedAction$.next(new SelectedAction(undefined));
+      selectedAction.clear();
+    }
     // draw card
     new DrawCommand(rc, { key: 'eot', player, amount: 1 }).enqueue();
   }
