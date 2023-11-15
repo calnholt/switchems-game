@@ -11,7 +11,7 @@ import { MonsterAction } from '~/app/pages/game/models/monster/monster-action.mo
 import { Buff } from '~/app/pages/game/models/monster/buff.model';
 import { Monster } from '~/app/pages/game/models/monster/monster.model';
 
-export const loadMonsters = (selectedMonster?: any): Array<Monster> => {
+export const convertJsonToObjs = (selectedMonster?: any): Array<Monster> => {
   if (selectedMonster) {
     return convertFromJSON([selectedMonster]);
   }

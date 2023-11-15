@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Monster } from "../../pages/game/models/monster/monster.model";
-import { loadMonsters } from "~/app/data/import/convert-json-cards";
+import { convertJsonToObjs } from "~/app/data/import/convert-json-cards";
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +9,12 @@ export class MonsterDataService {
 
   private monsters: Array<Monster> = [];
 
-  constructor() { }
+  constructor() {
+    this.loadMonsters();
+  }
 
   loadMonsters() {
-    this.monsters = loadMonsters();
-    this.monsters.sort((a,b) => a.name.localeCompare(b.name));
+    this.monsters = convertJsonToObjs().sort((a,b) => a.name.localeCompare(b.name));
   }
 
   getMonsters() {
@@ -26,9 +27,13 @@ export class MonsterDataService {
   getMonster(monsterName: string, useJson?: boolean): Monster {
     if (!this.monsters || useJson) {
       this.loadMonsters();
-      loadMonsters().find(m => m.name === monsterName);
+      convertJsonToObjs().find(m => m.name === monsterName);
     }
     return this.monsters.find(m => m.name === monsterName) as Monster;
+  }
+
+  getAllMonsters() {
+    return convertJsonToObjs().sort((a,b) => a.name.localeCompare(b.name));
   }
 
 }

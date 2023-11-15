@@ -38,7 +38,7 @@ export class PlayerService {
 
   getRandomStart(): Monster[] {
     const threeRandomMonsters = ArrayUtil.getRandomUniqueEntriesFromArray(
-      this.monsterService.getMonsters(), 3
+      this.monsterService.getAllMonsters(), 3
     );
     threeRandomMonsters[0].setIsActive(true);
     threeRandomMonsters[1].setIsActive(false);
