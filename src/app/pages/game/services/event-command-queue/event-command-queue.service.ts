@@ -88,7 +88,7 @@ export class EventCommandQueueService {
         if (this._isAwaitingAcknowledgement) {
           console.log('currentQueue', this._queue);
         }
-        this.fireTriggers(command.type, command.data.key, command.data.player);
+        this.fireTriggers(command.type, command.data.player);
         if (command?.data.destroyOnTrigger && command.data.parent) {
           this.unregisterTrigger(command.data.parent, command.data.key);
         }
@@ -129,11 +129,11 @@ export class EventCommandQueueService {
   }
 
   // Execute triggers for a specific event
-  public fireTriggers(eventType: EventCommandType, key: CardCompositeKey, player: PlayerType) {
+  public fireTriggers(eventType: EventCommandType, player: PlayerType) {
     const triggers = this._triggers.get(eventType);
     if (triggers) {
       triggers.forEach(trigger => {
-        if (trigger.data.player === player && trigger.data.key === key) {
+        if (trigger.data.player === player) {
           console.log('enqueue trigger', trigger)
           this.pushFront(trigger);
         }
