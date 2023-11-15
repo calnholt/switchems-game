@@ -27,6 +27,7 @@ export const GameStateUtil = {
   getSpeedPlayers,
   getMonsterNames,
   getSwitchingToMonster,
+
 }
 
 function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {

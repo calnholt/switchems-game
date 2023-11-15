@@ -5,6 +5,7 @@ import { UpdateGameStateUtil } from './update-game-state.util';
 import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
 import { GamePhaseUtil } from './game-phase.util';
 import { CommandUtil } from './command.util';
+import { KnockedOutCommand } from '../../logic/commands/monster-action-commands.model';
 
 @Injectable({
   providedIn: 'root'
@@ -75,6 +76,7 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.heal(gs, data);
         break;
       case 'KNOCKED_OUT_BY_ATTACK':
+        new KnockedOutCommand(this, data);
         break;
       case 'MODIFY_STAT':
         UpdateGameStateUtil.modifyStat(gs, data);
@@ -86,6 +88,9 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.preventRecoil(gs, data);
         break;
       case 'RANDOM_DISCARD':
+        break;
+      case 'RECOIL_CHECK':
+        UpdateGameStateUtil.recoilCheck(gs, data, this);
         break;
       case 'REMOVE_STATUS_EFFECT':
         UpdateGameStateUtil.removeStatusEffect(gs, data);

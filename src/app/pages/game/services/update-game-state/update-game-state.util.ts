@@ -2,8 +2,8 @@ import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, KnockedOutByAttackCommand } from "../../logic/commands/monster-action-commands.model";
-import { GainRandomStatPipCommand, GainRandomStatPipCommandData, GainStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
+import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, KnockedOutByAttackCommand, TakeRecoilDamageCommand } from "../../logic/commands/monster-action-commands.model";
+import { GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { HealCommand, HealCommandData, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
 import { CommandData } from "../../logic/commands/event-command.model";
@@ -13,7 +13,6 @@ import { ApplyBuffBelongsCommand, BuffCommandData } from "../../logic/commands/b
 import { GainSwitchDefenseCommand, SwitchCommandData, SwitchInCommand } from "../../logic/commands/switch-commands.model";
 import { UpdateGameStateService } from "./update-game-state.service";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
-import { Monster } from "../../models/monster/monster.model";
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 
 export const UpdateGameStateUtil = {
@@ -37,6 +36,7 @@ export const UpdateGameStateUtil = {
   resistant,
   switchOut,
   switchIn,
+  recoilCheck,
 }
 
 function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }
@@ -128,12 +128,14 @@ function knockedOutByAttack(gs: GameState, data: StatModificationData) {
   // player wins check
 }
 function modifyStat(gs: GameState, data: StatModificationData) {
-  if (data.statType === 'DEFENSE') {
+  if (['DEFENSE', 'RECOIL'].includes(data.statType)) {
     const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+    //@ts-ignore
     monster.modifiers.add(getMonsterModifier('mod', data.statType, data.amount))
   }
   else {
     const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
+    //@ts-ignore
     action.modifiers.add(getActionModifier('mod', data.statType, data.amount));
   }
 }
@@ -193,4 +195,12 @@ function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSe
 function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
   gs.battleAniService.update(data.player === 'P', 'SWITCHING_OUT');
   setTimeout(() => GameStateUtil.getPlayerState(gs, data.player).player.switch(data.key), 290);
+}
+
+function recoilCheck(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
+  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  const recoil = monster.modifiers.sumByType('RECOIL');
+  if (recoil > 0 && !monster.modifiers.getByType('PREVENT_RECOIL').length) {
+    new TakeRecoilDamageCommand(rc, { ...data, display: true, damageToDeal: recoil }).enqueue();
+  }
 }

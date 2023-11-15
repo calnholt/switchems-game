@@ -8,6 +8,7 @@ import { SelectedAction } from '../selected-action/selected-action.model';
 import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
 import { BattleAnimationService } from '../battle-animation/battle-animation.service';
 import { Player } from '../../models/player/player.model';
+import { MonsterAction } from '../../models/monster/monster-action.model';
 
 export interface GameState {
   p: PlayerState;
@@ -25,6 +26,7 @@ export interface PlayerState {
   statBoard: StatBoard;
   selectedAction: SelectedAction;
   player: Player;
+  monsterAction?: MonsterAction;
 }
 
 @Injectable({
@@ -65,6 +67,7 @@ export class GameStateService {
         playerCardManager,
         statBoard,
         player,
+        monsterAction: activeMonster.actions.find(a => a.key() === selectedAction.action?.key())
       },
       o: {
         activeMonster: oActiveMonster,
@@ -73,6 +76,7 @@ export class GameStateService {
         playerCardManager: oPlayerCardManager,
         statBoard: oStatBoard,
         player: oPlayer,
+        monsterAction: oActiveMonster.actions.find(a => a.key() === selectedAction.action?.key())
       },
       rng: this.seedableRngService,
       battleAniService: this.battleAniService,

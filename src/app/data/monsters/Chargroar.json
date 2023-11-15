@@ -74,7 +74,7 @@
     },
     {
       "buffName": "Prey Upon",
-      "buffText": "If the enemy monster is <b>weak</b> to this attack's element, this attack gains <div<+1[ATK]</div> and <div>+2[SPD].</div> If not, this attack gains <div><b>recoil 1</b></div>.~EFFECTIVE~~RECOIL~",
+      "buffText": "If the enemy monster is <b>weak</b> to this attack's element, this attack gains <div>+1[ATK]</div> and <div>+2[SPD].</div> If not, this attack gains <div><b>recoil 1</b></div>.~EFFECTIVE~~RECOIL~",
       "lastUpdated": "Fri, 27 Jan 2023 08:01:56 GMT"
     }
   ],

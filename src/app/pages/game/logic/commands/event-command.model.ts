@@ -83,4 +83,5 @@ export interface CommandData {
   updateMonsterPlayerTriggers?: boolean; // true on switch out, need to clean up irrelevant triggers
   removeOnSwitchTrigger?: boolean; // denotes a trigger that's cleared after switch
   removeEotTrigger?: boolean;
+  removeFromOtherTriggers?: boolean; // a single trigger that's looking at multiple events but should only fire once
 };

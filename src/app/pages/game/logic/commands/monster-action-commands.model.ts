@@ -8,7 +8,9 @@ export type MONSTER_ACTION_COMMANDS =
   | 'WEAK'
   | 'DEAL_ATTACK_DAMAGE'
   | 'KNOCKED_OUT_BY_ATTACK'
+  | 'KNOCKED_OUT'
   | 'TAKE_RECOIL_DAMAGE'
+  | 'RECOIL_CHECK'
   | 'APPLY_STATUS_EFFECT'
   | 'REMOVE_STATUS_EFFECT'
   | 'DISABLE_ACTION_PROMPT'
@@ -66,6 +68,14 @@ export class DealAttackDamageCommand extends EventCommand<DealDamageCommandData>
   }
 }
 
+export class RecoilCheckCommand extends EventCommand<BasicCommandData> {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+    super(receiver, 'RECOIL_CHECK', data);
+  }
+  override getDisplayMessage(): string {
+    return ``;
+  }
+}
 export class TakeRecoilDamageCommand extends EventCommand<DealDamageCommandData> {
   constructor(receiver: UpdateGameStateService, data: DealDamageCommandData) {
     super(receiver, 'TAKE_RECOIL_DAMAGE', data);
@@ -75,6 +85,14 @@ export class TakeRecoilDamageCommand extends EventCommand<DealDamageCommandData>
   }
 }
 
+export class KnockedOutCommand extends EventCommand<BasicCommandData> {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+    super(receiver, 'KNOCKED_OUT', data);
+  }
+  override getDisplayMessage(): string {
+    return `${this.data.monsterName} was KO'd!`;
+  }
+}
 export class KnockedOutByAttackCommand extends EventCommand<BasicCommandData> {
   constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
     super(receiver, 'KNOCKED_OUT_BY_ATTACK', data);

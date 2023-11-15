@@ -3,7 +3,7 @@ import { ApplyBuffCommand } from "../../logic/commands/buff-command.model";
 import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, RevealGamePhaseCommandData, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
-import { DealAttackDamageCommand, FasterCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
+import { DealAttackDamageCommand, FasterCommand, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
 import { SwitchOutPromptCommand } from "../../logic/commands/switch-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
@@ -124,10 +124,9 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   const { fasterPlayer, slowerPlayer } = GameStateUtil.getSpeedPlayers(gs);
   
   function performMonsterAction(gs: GameState, player: PlayerType) {
-    const playerState = GameStateUtil.getPlayerState(gs, player);
+    const { activeMonster, selectedAction } = GameStateUtil.getPlayerState(gs, player);
     const monsterNames = GameStateUtil.getMonsterNames(gs, player);
-    const monster = GameStateUtil.getMonsterByPlayer(gs, player);
-    if (playerState.selectedAction.action?.getSelectableActionType() !== 'MONSTER') return;
+    if (selectedAction.action?.getSelectableActionType() !== 'MONSTER') return;
     
     const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
 
@@ -137,7 +136,7 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     }
 
     // add monster action effect(s) to queue
-    CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, rc, gs);
+    CardByKeyUtil.getCardByKey(selectedAction.action?.key(), player, rc, gs);
     if (action.attack) {
         new DealAttackDamageCommand(rc, { key: 'damage', player: player, ...monsterNames, damageToDeal: 999 }).enqueue();
     }
@@ -148,11 +147,7 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
       const msg = `The attack was super effective! ${monsterNames.monsterName} gained 1 ${pip.attack ? 'attack' : ''}${pip.speed ? 'speed' : ''}${pip.defense ? 'defense' : ''} pip.`
       new DescriptiveMessageCommand(rc, { key: 'msg', player, message: msg }).enqueue();
     }
-    // recoil check
-    const recoil = action.modifiers.sumByType('RECOIL');
-    if (recoil > 0 && !monster.modifiers.getByType('PREVENT_RECOIL').length) {
-      new TakeRecoilDamageCommand(rc, { key: 'recoil', player, monsterName: monsterNames.monsterName, damageToDeal: recoil, display: true }).enqueue();
-    }
+    new RecoilCheckCommand(rc, { key: 'recoil', player, ...monsterNames }).enqueue();
   }
   const action = GameStateUtil.getMonsterActionByPlayer(gs, fasterPlayer);
   // add faster event to queue

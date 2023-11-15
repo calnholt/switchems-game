@@ -4,6 +4,7 @@ import { PlayerType } from "../player-type.mode";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { StandardActions } from "../standard-actions/standard-actions";
 import { Chargroar } from "../monsters/chargroar.model";
+import { Vulturock } from "../monsters/vulturock.model";
 
 export const CardByKeyUtil = {
   getCardByKey
@@ -13,6 +14,7 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: Updat
 
   const monsterKey = key.substring(0, key.indexOf("_"));
   const cardKey = key.substring(key.indexOf("_") + 1, key.length);
+  const shared = { monsterKey, cardKey, player, gs, receiver };
 
   switch (monsterKey) {
     // chargroar
@@ -21,22 +23,7 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: Updat
       break;
     // ***
     case VULTUROCK:
-      break;
-    case getActionKey(VULTUROCK, 0):
-      break;
-    case getActionKey(VULTUROCK, 1):
-      break;
-    case getActionKey(VULTUROCK, 2):
-      break;
-    case getActionKey(VULTUROCK, 3):
-      break;
-    case getBuffKey(VULTUROCK, 0):
-      break;
-    case getBuffKey(VULTUROCK, 1):
-      break;
-    case getBuffKey(VULTUROCK, 2):
-      break;
-    case getBuffKey(VULTUROCK, 3):
+      new Vulturock(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     // ***
     case WHAILSTROM:

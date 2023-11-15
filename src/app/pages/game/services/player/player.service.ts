@@ -15,7 +15,7 @@ export class PlayerService {
   constructor(
     private monsterService: MonsterDataService,
   ) {
-    this._player = new Player(this.getChargoarAsActive());
+    this._player = new Player(this.getMonsterAsActive('Vulturock'));
     this._opponent = new Player(this.getRandomStart());
     this._player.playerCardManager.drawCard();
     this._player.playerCardManager.drawCard();
@@ -46,9 +46,9 @@ export class PlayerService {
     return threeRandomMonsters;
   }
 
-  getChargoarAsActive() {
+  getMonsterAsActive(name: string) {
     let monsters = this.getRandomStart();
-    while (monsters[0].name !== 'Chargroar') {
+    while (monsters[0].name !== name) {
       monsters = this.getRandomStart();
     }
     return monsters;

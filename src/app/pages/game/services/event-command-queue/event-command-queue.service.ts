@@ -41,7 +41,7 @@ export class EventCommandQueueService {
   public preProcess(event: EventCommand<CommandData>, force: boolean = false) {
     if (event.data.updateMonsterPlayerTriggers) {
       console.log('cleanup triggers');
-      this.unregisterRemoveOnSwitchTriggers();
+      this.unregisterRemoveOnSwitchTriggers(event.data.player);
     }
     if (event.data.display || event.data.key === 'phase' || force) {
       this.processQueue(); // Start processing if not already doing so
@@ -92,6 +92,9 @@ export class EventCommandQueueService {
         if (command?.data.destroyOnTrigger && command.data.parent) {
           this.unregisterTrigger(command.data.parent, command.data.key);
         }
+        // if (command?.data.removeFromOtherTriggers) {
+        //   this.unregisterFromOtherTriggers(command.data.player, command.data.key);
+        // }
       }
     }
 
@@ -148,18 +151,28 @@ export class EventCommandQueueService {
     }
   }
 
-  private unregisterRemoveOnSwitchTriggers() {
+  private unregisterRemoveOnSwitchTriggers(playerType: PlayerType) {
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
-      this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[]).filter(cmd => cmd.data.removeOnSwitchTrigger));
+      this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[])
+          .filter(cmd => cmd.data.removeOnSwitchTrigger && cmd.data.player === playerType));
     });
   }
 
   private unregisterEotTriggers() {
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
-      this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[]).filter(cmd => cmd.data.removeEotTrigger));
+      this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[])
+          .filter(cmd => cmd.data.removeEotTrigger));
     });
   }
+  private unregisterFromOtherTriggers(playerType: PlayerType, key: CardCompositeKey) {
+    const keys = [...this._triggers.keys()];
+    keys.forEach((key) => {
+      this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[])
+          .filter(cmd => cmd.data.removeFromOtherTriggers && cmd.data.player === playerType && cmd.data.key === key));
+    });
+  }
+  
 
 }

@@ -21,6 +21,7 @@ export class Chargroar extends MonsterLogic {
       statType: "ATTACK",
       origin: 'Lightning Fang',
       destroyOnTrigger: true, 
+      removeEotTrigger: true,
     }).executeAsTrigger('FASTER');
   }
 
@@ -31,6 +32,7 @@ export class Chargroar extends MonsterLogic {
       amount: 2,
       statType: "SPEED",
       destroyOnTrigger: true, 
+      removeEotTrigger: true,
       display: true, 
       origin: 'Lights Out'
     }).executeAsTrigger('KNOCKED_OUT_BY_ATTACK');
