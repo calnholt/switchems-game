@@ -5,6 +5,7 @@ import { UpdateGameStateService } from "../../services/update-game-state/update-
 import { StandardActions } from "../standard-actions/standard-actions";
 import { Chargroar } from "../monsters/chargroar.model";
 import { Vulturock } from "../monsters/vulturock.model";
+import { Stalagrowth } from "../monsters/stalagrowth.model";
 
 export const CardByKeyUtil = {
   getCardByKey
@@ -84,22 +85,7 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: Updat
       break;
     // ***
     case STALAGROWTH:
-      break;
-    case getActionKey(STALAGROWTH, 0):
-      break;
-    case getActionKey(STALAGROWTH, 1):
-      break;
-    case getActionKey(STALAGROWTH, 2):
-      break;
-    case getActionKey(STALAGROWTH, 3):
-      break;
-    case getBuffKey(STALAGROWTH, 0):
-      break;
-    case getBuffKey(STALAGROWTH, 1):
-      break;
-    case getBuffKey(STALAGROWTH, 2):
-      break;
-    case getBuffKey(STALAGROWTH, 3):
+      new Stalagrowth(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     // ***
     case GALEAFFY:

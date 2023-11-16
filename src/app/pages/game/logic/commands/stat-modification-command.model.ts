@@ -44,11 +44,11 @@ export class TrueDamageCommand extends EventCommand<StatModificationData> {
   }
 }
 
-export class ApplyFlinchCommand extends EventCommand<StatModificationData> {
-  constructor(receiver: UpdateGameStateService, data: StatModificationData) {
+export class ApplyFlinchCommand extends EventCommand<CommandData> {
+  constructor(receiver: UpdateGameStateService, data: CommandData) {
     super(receiver, 'APPLY_FLINCH', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} flinched.`;
+    return `${this.data.monsterName} gained flinch!`;
   }
 }

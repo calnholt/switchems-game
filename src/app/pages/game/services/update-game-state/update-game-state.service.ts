@@ -37,6 +37,9 @@ export class UpdateGameStateService {
       case 'APPLY_STAT_PIPS':
         UpdateGameStateUtil.applyStatPips(gs, data);
         break;
+      case 'BUFF':
+        data.doBuff();
+        break;
       // TODO: requires decision
       case 'CRUSH_STAT_PIP':
         break;
@@ -80,6 +83,9 @@ export class UpdateGameStateService {
         break;
       case 'MODIFY_STAT':
         UpdateGameStateUtil.modifyStat(gs, data);
+        break;
+      case 'MONSTER_ACTION':
+        data.doMonsterAction();
         break;
       case 'PREVENT_FLINCH':
         UpdateGameStateUtil.preventFlinch(gs, data);

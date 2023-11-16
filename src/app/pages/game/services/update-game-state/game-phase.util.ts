@@ -1,9 +1,9 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { ApplyBuffCommand } from "../../logic/commands/buff-command.model";
+import { ApplyBuffCommand, BuffCommand } from "../../logic/commands/buff-command.model";
 import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, RevealGamePhaseCommandData, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
-import { DealAttackDamageCommand, FasterCommand, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
+import { DealAttackDamageCommand, FasterCommand, MonsterActionCommand, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
 import { SwitchOutPromptCommand, SwitchRoutineCommand } from "../../logic/commands/switch-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
@@ -110,7 +110,7 @@ function executeApplyBuffs(gs: GameState, rc: UpdateGameStateService) {
       for (let i = 0; i < buff.buffSlots; i++) {
         new ApplyBuffCommand(rc, { key: buff.key(), player, buffName: buff.name, monsterName: monsterNames.monsterName, display: i > 0 }).enqueue();
       }
-      CardByKeyUtil.getCardByKey(buff.key(), player, rc, gs);
+      new BuffCommand(rc, { key: 'buff', player, doBuff: () => { CardByKeyUtil.getCardByKey(buff.key(), player, rc, gs) }}).enqueue()
     });
   }
 
@@ -151,9 +151,15 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     }
 
     // add monster action effect(s) to queue
-    CardByKeyUtil.getCardByKey(selectedAction.action?.key(), player, rc, gs);
+    new MonsterActionCommand(rc, { 
+      key: 'ma', 
+      player, 
+      ...monsterNames,
+      doMonsterAction: () =>  { CardByKeyUtil.getCardByKey(selectedAction.action?.key() as string, player, rc, gs) },
+    }).enqueue()
+    
     if (action.attack) {
-        new DealAttackDamageCommand(rc, { key: 'damage', player: player, ...monsterNames, damageToDeal: 999 }).enqueue();
+      new DealAttackDamageCommand(rc, { key: 'damage', player: player, ...monsterNames, damageToDeal: 999 }).enqueue();
     }
     // super effective check
     if (GameStateUtil.isWeak(gs, player) && !action.isStatus) {

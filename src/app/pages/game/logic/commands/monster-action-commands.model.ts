@@ -2,6 +2,7 @@ import { UpdateGameStateService } from "../../services/update-game-state/update-
 import { CommandData, EventCommand } from "./event-command.model";
 
 export type MONSTER_ACTION_COMMANDS =
+  | 'MONSTER_ACTION'
   | 'FASTER'
   | 'SLOWER'
   | 'RESISTANT'
@@ -17,6 +18,20 @@ export type MONSTER_ACTION_COMMANDS =
 
 
 export interface BasicCommandData extends CommandData {
+
+}
+
+export interface MonsterActionCommandData extends CommandData {
+  doMonsterAction: () => void,
+}
+
+export class MonsterActionCommand extends EventCommand<MonsterActionCommandData> {
+  constructor(receiver: UpdateGameStateService, data: MonsterActionCommandData) {
+    super(receiver, 'MONSTER_ACTION', { ...data, display: false });
+  }
+  override getDisplayMessage(): string {
+    return ``;
+  }
 }
 
 export class FasterCommand extends EventCommand<BasicCommandData> {
