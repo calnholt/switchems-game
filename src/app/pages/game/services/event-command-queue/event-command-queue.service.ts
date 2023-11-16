@@ -50,6 +50,7 @@ export class EventCommandQueueService {
 
   public enqueueDecision(event: EventCommand<CommandData>) {
     this._isAwaitingAcknowledgement = false;
+    this._isAwaitingDecision = false;
     this.enqueue(event, true);
   }
 
@@ -163,7 +164,7 @@ export class EventCommandQueueService {
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
       this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[])
-          .filter(cmd => cmd.data.removeEotTrigger));
+          .filter(cmd => !cmd.data.removeEotTrigger));
     });
   }
   private unregisterFromOtherTriggers(playerType: PlayerType, key: CardCompositeKey) {

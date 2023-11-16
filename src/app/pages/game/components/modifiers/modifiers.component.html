@@ -1,0 +1,13 @@
+<div id="modifiers">
+  <div *ngIf="displayModifiers.length" class="mods-container">
+    <div class="mod" *ngFor="let mod of displayModifiers, index as i"  [ngClass]="{'middle' : displayModifiers.length !== 1 && (i < displayModifiers.length - 1)}">
+      <span  
+        [@fadeInOnEnter]
+        [@fadeOutOnLeave] 
+        class="text"
+      >
+          {{mod}}
+      </span>
+    </div>
+  </div>
+</div>

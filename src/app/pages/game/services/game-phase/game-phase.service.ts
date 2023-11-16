@@ -5,6 +5,7 @@ import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.m
 import { GamePhaseUtil } from '../update-game-state/game-phase.util';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
 import { Chargroar } from '../../logic/monsters/chargroar.model';
+import { SwitchInCommand } from '../../logic/commands/switch-commands.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,9 +35,9 @@ export class GamePhaseService {
 
   public startGame() {
     const gs = this.gameStateService.getGameState();
-    if (gs.p.activeMonster.key() === 'CHARGROAR') {
-      new Chargroar('CHARGROAR', '', 'P', gs, this.ugss).addTriggers();
-    }
+    // if (gs.p.activeMonster.key() === 'VULTUROCK') {
+    //   new Chargroar('VULTUROCK', '', 'P', gs, this.ugss).addTriggers();
+    // }
   }
 
   // this is the full action phase game loop. each phase resolves in order. 

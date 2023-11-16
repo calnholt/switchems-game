@@ -1,14 +1,18 @@
+import { Subject } from "rxjs";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 
 export class Modifiers<T> {
-  modifiers: Modifier<T>[] = [];
+  private _modifiers: Modifier<T>[] = [];
+  
+  public readonly modifiers$ = new Subject<Modifier<T>[]>();
 
   getByType(type: T): Modifier<T>[] {
-    return this.modifiers.filter(m => m.type === type);
+    return this._modifiers.filter(m => m.type === type);
   }
 
   remove(key: CardCompositeKey): void {
-    this.modifiers = this.modifiers.filter(m => m.key !== key);
+    this._modifiers = this._modifiers.filter(m => m.key !== key);
+    this.modifiers$.next(this._modifiers);
   }
 
   sumByType(type: T): number {
@@ -16,13 +20,17 @@ export class Modifiers<T> {
   }
 
   add(...modifiers: Modifier<T>[]): void {
-    this.modifiers = this.modifiers.concat(modifiers);
+    this._modifiers = this._modifiers.concat(modifiers);
+    this.modifiers$.next(this._modifiers);
   }
 
-  contains(type: T): boolean { return this.modifiers.map(m => m.type).includes(type); }
+  contains(type: T): boolean { return this._modifiers.map(m => m.type).includes(type); }
 
-  eotClear() { this.modifiers = this.modifiers.filter(m => m.ongoing); }
-  
+  eotClear() { 
+    this._modifiers = this._modifiers.filter(m => m.ongoing);
+    this.modifiers$.next(this._modifiers);
+  }
+
 }
 
 export class Modifier<T> {
@@ -35,6 +43,15 @@ export class Modifier<T> {
     this.type = type;
     this.value = value
     this.ongoing = ongoing;
+  }
+  summable() {
+    return [
+      'DEFENSE',
+      'RECOIL',
+      'ATTACK',
+      'SPEED',
+      'PIERCE',
+    ].includes(this.type as string);
   }
 };
 
@@ -49,12 +66,12 @@ export type MonsterModifierType =
   | "FLINCHED"
   | "SPEED_REVERSED"
   | "RECOIL"
-
-export type ActionModifierType = 
   | "ATTACK"
   | "SPEED"
   | "PIERCE"
   | "FLINCH"
+
+export type ActionModifierType = 
   | "BUFF"
   | "DISCARD"
 

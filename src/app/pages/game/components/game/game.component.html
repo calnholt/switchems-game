@@ -6,8 +6,22 @@
     <div class="d-flex">
       <sw-stat-board [statBoard]="statBoard" />
       <div class="monsters-container">
-        <sw-monster [monster]="activeMonster" [isActiveMonster]="true" />
-        <sw-monster [monster]="oActiveMonster" [isActiveMonster]="true" [isOpponent]="true" />
+        <div class="monster-container">
+          <div>
+            <sw-modifiers [modifiers]="modifiers" />
+          </div>
+          <div>
+            <sw-monster [monster]="activeMonster" [isActiveMonster]="true" />
+          </div>
+        </div>
+        <div class="monster-container">
+          <div>
+            <sw-monster [monster]="oActiveMonster" [isActiveMonster]="true" [isOpponent]="true" />
+          </div>
+          <div>
+            <sw-modifiers [modifiers]="oModifiers" />
+          </div>
+        </div>
       </div>
       <sw-stat-board [statBoard]="oStatBoard" [disable]="true" />
     </div>

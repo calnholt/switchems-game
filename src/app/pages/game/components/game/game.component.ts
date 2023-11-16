@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { Monster } from '../../models/monster/monster.model';
 import { StatBoard } from '../../models/stat-board/stat-board.model';
 import { PlayerCardManager } from '../../models/player/player-card-manager.model';
@@ -7,23 +7,29 @@ import { StandardAction } from '../../models/standard-action/standard-action.mod
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { ARENAS, ArenaType } from '~/app/shared/types/dataTypes';
 import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
+import { Modifier, Modifiers, MonsterModifierType } from '../../logic/modifiers/modifier.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'sw-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
-export class GameComponent {
+export class GameComponent implements OnChanges {
 
   playerCardManager!: PlayerCardManager;
   statBoard!: StatBoard;
   activeMonster!: Monster;
   inactiveMonsters: Monster[] = [];
   arena!: ArenaType;
+  modifiers: Modifier<MonsterModifierType>[] = [];
+  modifiersSub!: Subscription;
   
   oInactiveMonsters: Monster[] = [];
   oActiveMonster!: Monster;
   oStatBoard!: StatBoard;
+  oModifiers: Modifier<MonsterModifierType>[] = []
+  oModifiersSub!: Subscription;
 
   cardsInMyHand = 0;
   cardsInMyOpponentsHand = 0;
@@ -45,10 +51,23 @@ export class GameComponent {
     private battleAniService: BattleAnimationService,
   ) { }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['activeMonster']) {
+      console.log('');
+    }
+  }
+
   ngOnInit() {
     this.playerService.player.activeMonster$.subscribe((value) => {
+      if (this.modifiersSub) {
+        this.modifiersSub.unsubscribe();
+      }
       this.activeMonster = value;
       this.battleAniService.update(true, 'SWITCHING_IN');
+      this.modifiersSub = this.activeMonster.modifiers.modifiers$.subscribe((modifiers) => {
+        this.modifiers = modifiers;
+      });
+
     });
     this.playerService.player.inactiveMonsters$.subscribe((value) => {
       this.inactiveMonsters = value;
@@ -61,8 +80,14 @@ export class GameComponent {
     });
 
     this.playerService.oPlayer.activeMonster$.subscribe((value) => {
+      if (this.oModifiersSub) {
+        this.oModifiersSub.unsubscribe();
+      }
       this.oActiveMonster = value;
       this.battleAniService.update(false, 'SWITCHING_IN');
+      this.oModifiersSub = this.oActiveMonster.modifiers.modifiers$.subscribe((modifiers) => {
+        this.oModifiers = modifiers;
+      });
     });
     this.playerService.oPlayer.inactiveMonsters$.subscribe((value) => {
       this.oInactiveMonsters = value;

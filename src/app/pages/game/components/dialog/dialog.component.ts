@@ -30,7 +30,7 @@ export class DialogComponent {
   ngOnInit() {
     this.ecqs.event$.subscribe((command) => {
       if (!command) return;
-      this.show = command.type !== 'SELECTION_PHASE';
+      this.show = command.type !== 'SELECTION_PHASE' && !command.type.includes('PROMPT');
       if (!command.data.display) return;
       setTimeout(() =>{
         this.message = command.getDisplayMessage();

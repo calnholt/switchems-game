@@ -18,6 +18,7 @@ import { StandardActionComponent } from './components/standard-action/standard-a
 import { SubmitActionButtonComponent } from './components/submit-action-button/submit-action-button.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { SwitchOutDialogComponent } from './components/dialog/switch-out-dialog/switch-out-dialog.component';
+import { ModifiersComponent } from './components/modifiers/modifiers.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { SwitchOutDialogComponent } from './components/dialog/switch-out-dialog/
     SubmitActionButtonComponent,
     DialogComponent,
     SwitchOutDialogComponent,
+    ModifiersComponent,
   ],
   exports: [
     MonsterActionComponent,

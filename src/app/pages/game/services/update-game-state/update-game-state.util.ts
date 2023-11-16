@@ -57,22 +57,16 @@ function applyBuff(gs: GameState, data: BuffCommandData, rc: UpdateGameStateServ
 }
 
 function applyFlinch(gs: GameState, data: StatModificationData) {
-  const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
-  action.modifiers.add(getActionModifier(action.key(), 'FLINCH'));
+  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  monster.modifiers.add(getMonsterModifier(monster.key(), 'FLINCH'));
 }
 function applyStatusEffect(gs: GameState, data: ApplyStatusEffectCommandData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.modifiers.add(getMonsterModifier(monster.key(), data.statusName, 0, true))
 }
 function applyStatPips(gs: GameState, data: StatPipCommandData) {
-  if (data.statType === 'DEFENSE') {
-    const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-    monster.modifiers.add(getMonsterModifier('pip', data.statType, data.amount))
-  }
-  else {
-    const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
-    action.modifiers.add(getActionModifier('pip', data.statType, data.amount));
-  }
+  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  monster.modifiers.add(getMonsterModifier('pip', data.statType, data.amount))
   const statBoard = GameStateUtil.getStatBoardByPlayer(gs, data.player);
   statBoard.getSectionFromType(data.statType).remove();
 }
@@ -92,7 +86,7 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
   if (targetMonster.currentHp === 0) {
     new KnockedOutByAttackCommand(rc, { key: attackingMonster.key(), player: data.player, ...monsterNames, display: true }).enqueue();
   }
-  if (GameStateUtil.isFaster(gs, data.player) && attack.modifiers.contains('FLINCH')) {
+  if (GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH')) {
     new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player }).enqueue();
   }
 }
@@ -141,19 +135,19 @@ function modifyStat(gs: GameState, data: StatModificationData) {
 }
 function preventFlinch(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('mod', 'PREVENT_FLINCH', data.amount, true));
+  monster.modifiers.add(getMonsterModifier('mod', 'PREVENT_FLINCH', data.amount));
 }
 function preventRecoil(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('mod', 'PREVENT_RECOIL', data.amount, true));
+  monster.modifiers.add(getMonsterModifier('mod', 'PREVENT_RECOIL', data.amount));
 }
 function flinched(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('mod', 'FLINCHED', data.amount, true));
+  monster.modifiers.add(getMonsterModifier('mod', 'FLINCHED', data.amount));
 }
 function speedReversed(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('mod', 'SPEED_REVERSED', data.amount, true));
+  monster.modifiers.add(getMonsterModifier('mod', 'SPEED_REVERSED', data.amount));
 }
 
 
@@ -168,7 +162,7 @@ function weak(data: CommandData, rc: UpdateGameStateService) {
 
 function gainSwitchDefense(gs: GameState, data: SwitchCommandData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('mod', 'DEFENSE', monster.getSwitchDefenseValue(), true))
+  monster.modifiers.add(getMonsterModifier('mod', 'DEFENSE', monster.getSwitchDefenseValue()))
 }
 
 function resistant(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {

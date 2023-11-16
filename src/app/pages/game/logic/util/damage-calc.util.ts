@@ -2,6 +2,7 @@ import { MonsterAction } from "../../models/monster/monster-action.model";
 import { Monster } from "../../models/monster/monster.model";
 import { GameState, PlayerState } from "../../services/game-state/game-state.service";
 import { GameStateUtil } from "../../services/game-state/game-state.util";
+import { Modifiers, MonsterModifierType } from "../modifiers/modifier.model";
 import { PlayerType } from "../player-type.mode";
 
 export const DamageCalcUtil = {
@@ -10,11 +11,13 @@ export const DamageCalcUtil = {
 
 function calculateDamage(gs: GameState, playerType: PlayerType): number {
   const { p, o } = GameStateUtil.getPlayerStates(gs, playerType);
-  const action = GameStateUtil.getMonsterAction(p);
+  const { activeMonster } = p;
+  const { modifiers } = activeMonster;
+  const action = GameStateUtil.getMonsterAction(p) as MonsterAction;
 
-  let attack = getAttack(action);
+  let attack = getAttack(action, modifiers);
   let defense = getDefense(o.activeMonster) + getSwitchDefense(o, action);
-  let pierce = getPierce(action);
+  let pierce = getPierce(modifiers);
   if (pierce) {
     defense =- pierce;
     if (defense < 0) {
@@ -24,8 +27,8 @@ function calculateDamage(gs: GameState, playerType: PlayerType): number {
   return attack - defense;
 }
 
-function getAttack(action: MonsterAction): number {
-  return action.attack + action.modifiers.sumByType('ATTACK');
+function getAttack(action: MonsterAction, modifiers: Modifiers<MonsterModifierType>): number {
+  return action.attack + modifiers.sumByType('ATTACK');
 }
 
 function getDefense(monster: Monster): number {
@@ -39,6 +42,6 @@ function getSwitchDefense(o: PlayerState, action: MonsterAction): number {
   return o.activeMonster.getResistances().includes(action.element) ? o.activeMonster.getSwitchDefenseValue() : 0;
 }
 
-function getPierce(action: MonsterAction): number {
-  return action.modifiers.sumByType('PIERCE');
+function getPierce(modifiers: Modifiers<MonsterModifierType>): number {
+  return modifiers.sumByType('PIERCE');
 }

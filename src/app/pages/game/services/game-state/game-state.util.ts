@@ -56,9 +56,11 @@ function isFaster(gs: GameState, playerType: PlayerType) {
     return true;
   }
   const action = getMonsterAction(p);
+  const monster = getMonsterByPlayer(gs, playerType);
   const oAction = getMonsterAction(o);
-  const speed = action.speed + action.modifiers.sumByType('SPEED');
-  const oSpeed = oAction.speed + oAction.modifiers.sumByType('SPEED');
+  const oMonster = getMonsterByPlayer(gs, getOppositePlayer(playerType));
+  const speed = action.speed + monster.modifiers.sumByType('SPEED');
+  const oSpeed = oAction.speed + oMonster.modifiers.sumByType('SPEED');
   if (speed > oSpeed) {
     return true;
   }
