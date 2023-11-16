@@ -122,16 +122,8 @@ function knockedOutByAttack(gs: GameState, data: StatModificationData) {
   // player wins check
 }
 function modifyStat(gs: GameState, data: StatModificationData) {
-  if (['DEFENSE', 'RECOIL'].includes(data.statType)) {
-    const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-    //@ts-ignore
-    monster.modifiers.add(getMonsterModifier('mod', data.statType, data.amount))
-  }
-  else {
-    const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
-    //@ts-ignore
-    action.modifiers.add(getActionModifier('mod', data.statType, data.amount));
-  }
+  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  monster.modifiers.add(getMonsterModifier('mod', data.statType, data.amount))
 }
 function preventFlinch(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
