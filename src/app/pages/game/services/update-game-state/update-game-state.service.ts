@@ -153,6 +153,8 @@ export class UpdateGameStateService {
   }
 
   // TODO: i think this is really sloppy
+  // alternative is a mediator class with observables that push data to queue
+  // which tbh isn't that different and might lead to more complexity
   public enqueue(event: EventCommand<CommandData>) {
     this.ecqs.enqueue(event);
   }

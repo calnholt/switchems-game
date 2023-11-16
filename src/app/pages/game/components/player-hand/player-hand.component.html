@@ -1,9 +1,9 @@
 <div id="player-hand">
-  <ng-container *ngIf="unapplied.length">
+  <ng-container *ngIf="hand.length">
     <div class="card-separator-section unapplied">
       <div class="card-separator">
         <div class="section">hand</div>
-        <div class="buff" *ngFor="let buff of unapplied">
+        <div class="buff" *ngFor="let buff of hand">
           <sw-buff [buff]="buff" />
         </div>
       </div>
