@@ -10,7 +10,7 @@ import { CommandData } from "../../logic/commands/event-command.model";
 import { FlinchedCommand } from "../../logic/commands/ongoing-turn-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { ApplyBuffBelongsCommand, BuffCommandData } from "../../logic/commands/buff-command.model";
-import { GainSwitchDefenseCommand, SwitchCommandData, SwitchInCommand } from "../../logic/commands/switch-commands.model";
+import { GainSwitchDefenseCommand, SwitchCommandData, SwitchInCommand, SwitchOutCommand, SwitchOutPromptCommand } from "../../logic/commands/switch-commands.model";
 import { UpdateGameStateService } from "./update-game-state.service";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
@@ -37,6 +37,7 @@ export const UpdateGameStateUtil = {
   switchOut,
   switchIn,
   recoilCheck,
+  switchRoutine,
 }
 
 function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }
@@ -188,5 +189,15 @@ function recoilCheck(gs: GameState, data: BasicCommandData, rc: UpdateGameStateS
   const recoil = monster.modifiers.sumByType('RECOIL');
   if (recoil > 0 && !monster.modifiers.getByType('PREVENT_RECOIL').length) {
     new TakeRecoilDamageCommand(rc, { ...data, display: true, damageToDeal: recoil }).enqueue();
+  }
+}
+
+function switchRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
+  const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
+  if (activeMonster.modifiers.hasStatusEffect()) {
+    new SwitchOutPromptCommand(rc, { ...data }).enqueueDecision();
+  }
+  else {
+    new SwitchOutCommand(rc, { ...data, type: 'HEAL', }).pushFront();
   }
 }

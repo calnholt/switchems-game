@@ -5,7 +5,7 @@ import { DrawCommand } from "../../logic/commands/hand-commands.model";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 import { DealAttackDamageCommand, FasterCommand, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
-import { SwitchOutPromptCommand } from "../../logic/commands/switch-commands.model";
+import { SwitchOutPromptCommand, SwitchRoutineCommand } from "../../logic/commands/switch-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
@@ -25,6 +25,7 @@ export const GamePhaseUtil = {
   endPhase,
   selectionPhase,
 
+  executeRevealPhase,
   executeApplyPipsPhase,
   executeApplyBuffs,
   executeSwitchActionsPhase,
@@ -62,6 +63,21 @@ function endPhase(gs: GameState, rc: UpdateGameStateService) {
 }
 function selectionPhase(gs: GameState, rc: UpdateGameStateService) {
   new SelectionGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
+}
+
+function executeRevealPhase(gs: GameState, rc: UpdateGameStateService) {
+  const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
+
+  function reveal(player: PlayerType) {
+      // move buffs and discards
+      const { selectedAction, playerCardManager, activeMonster } = GameStateUtil.getPlayerState(gs, player);
+      playerCardManager.cleanup(selectedAction.appliedBuffs);
+      playerCardManager.cleanup(selectedAction.appliedDiscards);
+  }
+
+  reveal(playerWithInitiative);
+  reveal(playerWithoutInitiative);
+
 }
 
 function executeApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
@@ -111,8 +127,7 @@ function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'SWITCH') {
       return;
     }
-    // switch out dialog command
-    new SwitchOutPromptCommand(rc, { key: playerState.selectedAction.action.key(), player, ...monsterNames }).enqueue();
+    new SwitchRoutineCommand(rc, { key: playerState.selectedAction.action.key(), player, ...monsterNames }).enqueue();
   }
 
   performSwitchAction(gs, playerWithInitiative);
@@ -181,8 +196,6 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
   function playerCleanup(gs: GameState, player: PlayerType) {
     // move buffs and discards
     const { selectedAction, playerCardManager, activeMonster } = GameStateUtil.getPlayerState(gs, player);
-    playerCardManager.cleanup(selectedAction.appliedBuffs);
-    playerCardManager.cleanup(selectedAction.appliedDiscards);
     // handle team auras
     
     activeMonster.eotCleanup(selectedAction.action?.key() as CardCompositeKey);

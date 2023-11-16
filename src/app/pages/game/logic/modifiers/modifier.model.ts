@@ -31,6 +31,8 @@ export class Modifiers<T> {
     this.modifiers$.next(this._modifiers);
   }
 
+  hasStatusEffect(): boolean { return !!this._modifiers.find(m => m.statusEffect); }
+
 }
 
 export class Modifier<T> {
@@ -38,11 +40,13 @@ export class Modifier<T> {
   type: T;
   value: number;
   ongoing: boolean; // denotes if the modification should be removed EoT, default it to false since most aren't
-  constructor(key: CardCompositeKey, type: T, value: number = 0, ongoing = false) {
+  statusEffect: boolean; // denotes if the modification is a status effects
+  constructor(key: CardCompositeKey, type: T, value: number = 0, ongoing = false, statusEffect = false) {
     this.key = key;
     this.type = type;
     this.value = value
     this.ongoing = ongoing;
+    this.statusEffect = statusEffect;
   }
   summable() {
     return [

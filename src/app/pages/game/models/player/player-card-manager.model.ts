@@ -37,6 +37,7 @@ export class PlayerCardManager {
   public cleanup(cardsToDiscard: Buff[]) {
     this.hand.removeCardByKeys(cardsToDiscard.map(c => c.key()));
     this.discardPile.addMultiple(cardsToDiscard);
+    this.hand$.next(this.hand);
   }
 
 }

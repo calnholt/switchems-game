@@ -10,6 +10,7 @@ export type STAT_MODIFICATION_COMMANDS =
 export interface StatModificationData extends CommandData {
   statType: 'ATTACK' | 'DEFENSE' | 'SPEED' | 'PIERCE' | 'RECOIL';
   amount: number;
+  isStatusEffect?: boolean;
 }
 
 export class StatModificationCommand extends EventCommand<StatModificationData> {

@@ -32,10 +32,10 @@ export class EventCommandQueueService {
     this.preProcess(event, force);
   }
 
-  public pushFront(event: EventCommand<CommandData>) {
+  public pushFront(event: EventCommand<CommandData>, force: boolean = false) {
     this._queue.pushFront(event);
     console.log('pushFront', event);
-    this.preProcess(event);
+    this.preProcess(event, force);
   }
   
   public preProcess(event: EventCommand<CommandData>, force: boolean = false) {
@@ -52,6 +52,12 @@ export class EventCommandQueueService {
     this._isAwaitingAcknowledgement = false;
     this._isAwaitingDecision = false;
     this.enqueue(event, true);
+  }
+
+  public pushFrontDecision(event: EventCommand<CommandData>) {
+    this._isAwaitingAcknowledgement = false;
+    this._isAwaitingDecision = false;
+    this.pushFront(event, true);
   }
 
   public dequeue(): EventCommand<CommandData> | undefined {

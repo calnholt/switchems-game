@@ -103,7 +103,9 @@ export class UpdateGameStateService {
       case 'SPEED_REVERSED':
         UpdateGameStateUtil.speedReversed(gs, data);
         break;
-      // TODO: requires decision (ish)
+      case 'SWITCH_ROUTINE':
+        UpdateGameStateUtil.switchRoutine(gs, data, this);
+        break;
       case 'SWITCH_IN':
         UpdateGameStateUtil.switchIn(gs, data, this)
         break;
@@ -126,6 +128,7 @@ export class UpdateGameStateService {
       case 'SELECTION_PHASE':
         break;
       case 'REVEAL_PHASE':
+        GamePhaseUtil.executeRevealPhase(gs, this);
         break;
       case 'APPLY_PIPS_PHASE':
         GamePhaseUtil.executeApplyPipsPhase(gs, this);
@@ -156,6 +159,10 @@ export class UpdateGameStateService {
 
   public enqueueDecision(event: EventCommand<CommandData>) {
     this.ecqs.enqueueDecision(event);
+  }
+
+  public pushFrontDecision(event: EventCommand<CommandData>) {
+    this.ecqs.pushFrontDecision(event);
   }
 
   public pushFront(event: EventCommand<CommandData>) {

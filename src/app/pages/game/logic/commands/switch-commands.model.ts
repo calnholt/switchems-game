@@ -2,6 +2,7 @@ import { UpdateGameStateService } from "../../services/update-game-state/update-
 import { CommandData, EventCommand } from "./event-command.model";
 
 export type SWITCH_TYPES =
+  | 'SWITCH_ROUTINE'
   | 'SWITCH_OUT_PROMPT'
   | 'SWITCH_OUT'
   | 'SWITCH_IN'
@@ -11,6 +12,14 @@ export interface SwitchCommandData extends CommandData {
   type?: 'HEAL' | 'REMOVE_STATUS';
 }
 
+export class SwitchRoutineCommand extends EventCommand<SwitchCommandData> {
+  constructor(receiver: UpdateGameStateService, data: SwitchCommandData) {
+    super(receiver, 'SWITCH_ROUTINE', { ...data });
+  }
+  override getDisplayMessage(): string {
+    return ``;
+  }
+}
 export class SwitchOutPromptCommand extends EventCommand<SwitchCommandData> {
   constructor(receiver: UpdateGameStateService, data: SwitchCommandData) {
     super(receiver, 'SWITCH_OUT_PROMPT', { ...data });

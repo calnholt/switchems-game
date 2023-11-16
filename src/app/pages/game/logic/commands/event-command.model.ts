@@ -32,6 +32,10 @@ export abstract class EventCommand<T extends CommandData> {
     this.receiver.enqueueDecision(this);
   }
 
+  public pushFrontDecision() {
+    this.receiver.pushFrontDecision(this);
+  }
+
   public pushFront() {
     this.receiver.pushFront(this);
   }

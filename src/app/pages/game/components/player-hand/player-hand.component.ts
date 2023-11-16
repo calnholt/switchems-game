@@ -37,6 +37,7 @@ export class PlayerHandComponent {
       const { appliedBuffs, appliedDiscards } = selectedAction;
       const appliedKeys = appliedBuffs.map(b => b.key()).concat(appliedDiscards.map(b => b.key()));
       this.unapplied = this.buffs.filter(b => !appliedKeys.includes(b.key()));
+      
       this.appliedAsBuff = selectedAction.appliedBuffs;
       this.appliedAsDiscard = selectedAction.appliedDiscards;
     });

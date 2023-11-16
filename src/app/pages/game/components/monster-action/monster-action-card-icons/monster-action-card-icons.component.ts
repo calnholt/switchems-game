@@ -29,6 +29,8 @@ export class MonsterActionCardIconsComponent {
   ngOnInit() {
     this.playerCardManagerService.selectedAction$.subscribe((selectAction) => {
       if (!selectAction.action) {
+        this.buffSlotsUsed = 0;
+        this.discardSlotsUsed = 0;
         return;
       }
       if (selectAction.action.key() === this.action.key()){
