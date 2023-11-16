@@ -37,7 +37,7 @@ export class EventCommandQueueService {
     console.log('pushFront', event);
     this.preProcess(event, force);
   }
-  
+
   public preProcess(event: EventCommand<CommandData>, force: boolean = false) {
     if (event.data.updateMonsterPlayerTriggers) {
       console.log('cleanup triggers');
@@ -95,7 +95,7 @@ export class EventCommandQueueService {
         if (this._isAwaitingAcknowledgement) {
           console.log('currentQueue', this._queue);
         }
-        this.fireTriggers(command.type, command.data.player);
+        this.fireTriggers(command);
         if (command?.data.destroyOnTrigger && command.data.parent) {
           this.unregisterTrigger(command.data.parent, command.data.key);
         }
@@ -136,11 +136,17 @@ export class EventCommandQueueService {
   }
 
   // Execute triggers for a specific event
-  public fireTriggers(eventType: EventCommandType, player: PlayerType) {
-    const triggers = this._triggers.get(eventType);
+  public fireTriggers(command: EventCommand<CommandData>) {
+    const triggers = this._triggers.get(command.type);
     if (triggers) {
       triggers.forEach(trigger => {
-        if (trigger.data.player === player) {
+        if (trigger.data.monsterActionTrigger) {
+          if (command.data.key === trigger.data.key && trigger.data.player === command.data.player) {
+            console.log('enqueue trigger', trigger)
+            this.pushFront(trigger);
+          }
+        }
+        else if (trigger.data.player === command.data.player) {
           console.log('enqueue trigger', trigger)
           this.pushFront(trigger);
         }
@@ -162,7 +168,7 @@ export class EventCommandQueueService {
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
       this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[])
-          .filter(cmd => cmd.data.removeOnSwitchTrigger && cmd.data.player === playerType));
+        .filter(cmd => cmd.data.removeOnSwitchTrigger && cmd.data.player === playerType));
     });
   }
 
@@ -170,16 +176,16 @@ export class EventCommandQueueService {
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
       this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[])
-          .filter(cmd => !cmd.data.removeEotTrigger));
+        .filter(cmd => !cmd.data.removeEotTrigger));
     });
   }
   private unregisterFromOtherTriggers(playerType: PlayerType, key: CardCompositeKey) {
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
       this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[])
-          .filter(cmd => cmd.data.removeFromOtherTriggers && cmd.data.player === playerType && cmd.data.key === key));
+        .filter(cmd => cmd.data.removeFromOtherTriggers && cmd.data.player === playerType && cmd.data.key === key));
     });
   }
-  
+
 
 }

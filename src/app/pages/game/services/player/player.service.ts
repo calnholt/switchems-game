@@ -15,7 +15,7 @@ export class PlayerService {
   constructor(
     private monsterService: MonsterDataService,
   ) {
-    this._player = new Player(this.getMonsterAsActive('Vulturock'));
+    this._player = new Player(this.getMonsterAsActive('Chargroar'));
     this._opponent = new Player(this.getRandomStart());
     this._player.playerCardManager.drawCard();
     this._player.playerCardManager.drawCard();

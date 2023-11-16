@@ -35,9 +35,9 @@ export class GamePhaseService {
 
   public startGame() {
     const gs = this.gameStateService.getGameState();
-    // if (gs.p.activeMonster.key() === 'VULTUROCK') {
-    //   new Chargroar('VULTUROCK', '', 'P', gs, this.ugss).addTriggers();
-    // }
+    if (gs.p.activeMonster.key() === 'CHARGROAR') {
+      new Chargroar('CHARGROAR', '', 'P', gs, this.ugss).addTriggers();
+    }
   }
 
   // this is the full action phase game loop. each phase resolves in order. 

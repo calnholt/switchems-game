@@ -17,6 +17,13 @@ export class Vulturock extends MonsterLogic {
       destroyOnTrigger: true,
       origin: 'Switch In'
     }).executeAsTrigger('SWITCH_IN');
+
+    new HealCommand(this.rc, {
+      ...this.data,
+      amount: 6,
+      origin: "Scavenge",
+      display: true,
+    }).executeAsTrigger('KNOCKED_OUT');
   }
   override action1(): void {
     CommandUtil.gainRandomStatPip(this.gs, {
@@ -41,31 +48,25 @@ export class Vulturock extends MonsterLogic {
     }).pushFront();
   }
   override action3(): void {
-    new GainStatPipCommand(this.rc, {
+    new DescriptiveMessageCommand(this.rc, { 
       ...this.data, 
-      amount: 3, 
-      statType: "DEFENSE",
-      origin: 'Iron Defense',
-    }).enqueue();
+      message: "Vulturock gained 3 defense pips and +1 defense from Iron Defense!",
+    }).pushFront();
     new StatModificationCommand(this.rc, {
       ...this.data,
       amount: 1, 
       statType: "DEFENSE",
       origin: 'Iron Defense',
-    }).enqueue();
-    new DescriptiveMessageCommand(this.rc, { 
+    }).pushFront();
+    new GainStatPipCommand(this.rc, {
       ...this.data, 
-      message: "Vulturock gained 3 defense pips and +1 defense from Iron Defense!",
-    }).enqueue();
+      amount: 3, 
+      statType: "DEFENSE",
+      origin: 'Iron Defense',
+    }).pushFront();
   }
   override action4(): void {
-    const data = {
-      ...this.data,
-      amount: 6,
-      origin: "Scavenge",
-      display: true,
-    };
-    new HealCommand(this.rc, data).executeAsTrigger('KNOCKED_OUT');
+
   }
   override buff1(): void {
     new StatModificationCommand(this.rc, {
@@ -74,7 +75,7 @@ export class Vulturock extends MonsterLogic {
       statType: 'PIERCE',
       origin: 'Beak Drill',
       display: true,
-    }).enqueue();
+    }).pushFront();
   }
   override buff2(): void {
     const { monsterAction } = GameStateUtil.getOpponentPlayerState(this.gs, this.player);
@@ -85,39 +86,39 @@ export class Vulturock extends MonsterLogic {
         amount: 2,
         statType: 'RECOIL',
         origin: 'Hard Headed',
-      }).enqueue();
+      }).pushFront();
     }
   }
   override buff3(): void {
-    new HealCommand(this.rc, {
-      ...this.data,
-      amount: 1,
-    }).enqueue();
-    new PreventRecoilCommand(this.rc, {
-      ...this.data,
-    }).enqueue();
     new DescriptiveMessageCommand(this.rc, { 
       ...this.data, 
       message: `${this.monsterNames.monsterName} used Self Defense, healing 1HP and does not suffer from recoil damage this turn!`,
-    }).enqueue();
+    }).pushFront();
+    new HealCommand(this.rc, {
+      ...this.data,
+      amount: 1,
+    }).pushFront();
+    new PreventRecoilCommand(this.rc, {
+      ...this.data,
+    }).pushFront();
   }
   override buff4(): void {
+    new DescriptiveMessageCommand(this.rc, { 
+      ...this.data, 
+      message: `${this.monsterNames.monsterName} gains +2 attack and recoil 1 from Bigger Rocs!`,
+    }).pushFront();
     new StatModificationCommand(this.rc, {
       ...this.data,
       amount: 2,
       statType: 'ATTACK',
       origin: 'Bigger Rocs',
-    }).enqueue();
+    }).pushFront();
     new StatModificationCommand(this.rc, {
       ...this.data,
       amount: 1,
       statType: 'RECOIL',
       origin: 'Bigger Rocs',
-    }).enqueue();
-    new DescriptiveMessageCommand(this.rc, { 
-      ...this.data, 
-      message: `${this.monsterNames.monsterName} gains +2 attack and recoil 1 from Bigger Rocs!`,
-    }).enqueue();
+    }).pushFront();
   }
   
   

@@ -84,6 +84,7 @@ export interface CommandData {
   display?: boolean; // determines if we display event as a message
   origin?: string;
   parent?: EventCommandType;
+  monsterActionTrigger?: boolean; // denotes a trigger originating from a monster action
   updateMonsterPlayerTriggers?: boolean; // true on switch out, need to clean up irrelevant triggers
   removeOnSwitchTrigger?: boolean; // denotes a trigger that's cleared after switch
   removeEotTrigger?: boolean;

@@ -12,30 +12,44 @@ export class Chargroar extends MonsterLogic {
     // TODO:
     // switch in
     new DisableActionPromptCommand(this.rc, { ...this.data, destroyOnTrigger: true }).executeAsTrigger('SWITCH_IN');
-  }
-  override action1(): void {
+  
+    // action triggers
+    new GainStatPipCommand(this.rc, {
+      ...this.data,
+      key: 'CHARGROAR_A1',
+      amount: 2,
+      statType: "SPEED",
+      monsterActionTrigger: true,
+      display: true, 
+      origin: 'Lights Out'
+    }).executeAsTrigger('KNOCKED_OUT_BY_ATTACK');
+
     new StatModificationCommand(this.rc, {
       ...this.data,
       key: 'CHARGROAR_A0',
       amount: 3,
       statType: "ATTACK",
       origin: 'Lightning Fang',
-      destroyOnTrigger: true, 
-      removeEotTrigger: true,
+      monsterActionTrigger: true,
     }).executeAsTrigger('FASTER');
+
+    new StatModificationCommand(this.rc, { 
+      ...this.data, 
+      key: 'CHARGROAR_A3',
+      amount: 1, 
+      statType: 'PIERCE', 
+      monsterActionTrigger: true,
+      display: true,
+      origin: 'Blazing Roar',
+    }).executeAsTrigger('APPLY_BUFF');
+  
+  }
+  override action1(): void {
+
   }
 
   override action2(): void {
-    new GainStatPipCommand(this.rc, {
-      ...this.data,
-      key: 'CHARGROAR_A1',
-      amount: 2,
-      statType: "SPEED",
-      destroyOnTrigger: true, 
-      removeEotTrigger: true,
-      display: true, 
-      origin: 'Lights Out'
-    }).executeAsTrigger('KNOCKED_OUT_BY_ATTACK');
+
   }
 
   override action3(): void {
@@ -44,31 +58,20 @@ export class Chargroar extends MonsterLogic {
       amount: 3, 
       statType: "ATTACK",
       origin: 'Hypercharge',
-    }).enqueue();
+    }).pushFront();
     new StatModificationCommand(this.rc, {
       ...this.data,
       amount: 1, 
       statType: "DEFENSE",
       origin: 'Hypercharge',
-    }).enqueue();
+    }).pushFront();
     new DescriptiveMessageCommand(this.rc, { 
       ...this.data, 
       message: "Chargoar gained 3 attack pips and +1 defense from Hypercharge!",
-    }).enqueue();
+    }).pushFront();
   }
 
   override action4(): void {
-    // trigger
-    new StatModificationCommand(this.rc, { 
-      ...this.data, 
-      key: 'CHARGROAR_A3',
-      amount: 1, 
-      statType: 'PIERCE', 
-      removeOnSwitchTrigger: true,
-      removeEotTrigger: true,
-      display: true,
-      origin: 'Blazing Roar',
-    }).executeAsTrigger('APPLY_BUFF');
     CommandUtil.gainRandomStatPip(this.gs, {
       ...this.data,
       amount: 1,
@@ -84,7 +87,7 @@ export class Chargroar extends MonsterLogic {
       statType: 'SPEED',
       origin: 'Charge',
       display: true,
-    }).enqueue();
+    }).pushFront();
   }
 
   override buff2(): void {
@@ -94,28 +97,28 @@ export class Chargroar extends MonsterLogic {
       statType: 'ATTACK',
       origin: 'Roar',
       display: true,
-    }).enqueue();
+    }).pushFront();
   }
 
   override buff3(): void {
     if (GameStateUtil.isResistant(this.gs, this.player)) {
-      new StatModificationCommand(this.rc, { ...this.data, amount: 1, statType: 'ATTACK' }).enqueue();
-      new StatModificationCommand(this.rc, { ...this.data, amount: 2, statType: 'SPEED' }).enqueue();
-      new DescriptiveMessageCommand(this.rc, { ...this.data, message: `${this.monsterNames.monsterName} gained 1 attack and 2 speed from Revenge!` }).enqueue();
+      new DescriptiveMessageCommand(this.rc, { ...this.data, message: `${this.monsterNames.monsterName} gained 1 attack and 2 speed from Revenge!` }).pushFront();
+      new StatModificationCommand(this.rc, { ...this.data, amount: 1, statType: 'ATTACK' }).pushFront();
+      new StatModificationCommand(this.rc, { ...this.data, amount: 2, statType: 'SPEED' }).pushFront();
     }
     else {
-      new StatModificationCommand(this.rc, { ...this.data, amount: 1, statType: 'RECOIL', display: true, origin: 'Revenge' }).enqueue();
+      new StatModificationCommand(this.rc, { ...this.data, amount: 1, statType: 'RECOIL', display: true, origin: 'Revenge' }).pushFront();
     }
   }
 
   override buff4(): void {
     if (GameStateUtil.isWeak(this.gs, this.player)) {
-      new StatModificationCommand(this.rc, { ...this.data, amount: 1, statType: 'ATTACK' }).enqueue();
-      new StatModificationCommand(this.rc, { ...this.data, amount: 2, statType: 'SPEED' }).enqueue();
-      new DescriptiveMessageCommand(this.rc, { ...this.data, message: `${this.monsterNames.monsterName} gained 1 attack and 2 speed from Revenge!` }).enqueue();
+      new DescriptiveMessageCommand(this.rc, { ...this.data, message: `${this.monsterNames.monsterName} gained 1 attack and 2 speed from Revenge!` }).pushFront();
+      new StatModificationCommand(this.rc, { ...this.data, amount: 1, statType: 'ATTACK' }).pushFront();
+      new StatModificationCommand(this.rc, { ...this.data, amount: 2, statType: 'SPEED' }).pushFront();
     }
     else {
-      new StatModificationCommand(this.rc, { ...this.data, amount: 1, statType: 'RECOIL', display: true, origin: 'Prey Upon' }).enqueue();
+      new StatModificationCommand(this.rc, { ...this.data, amount: 1, statType: 'RECOIL', display: true, origin: 'Prey Upon' }).pushFront();
     }
   }
 }

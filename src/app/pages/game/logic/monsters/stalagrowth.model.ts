@@ -1,5 +1,6 @@
 import { GameStateUtil } from "../../services/game-state/game-state.util";
 import { CommandUtil } from "../../services/update-game-state/command.util";
+import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { ApplyFlinchCommand, HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
 import { GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { MonsterLogic } from "./monster-logic.model";
@@ -11,7 +12,7 @@ export class Stalagrowth extends MonsterLogic {
       amount: 1,
       statType: 'DEFENSE',
       display: true,
-    }).enqueue();
+    }).pushFront();
   }
   override action1(): void {
     throw new Error("Method not implemented.");
@@ -23,15 +24,19 @@ export class Stalagrowth extends MonsterLogic {
     new ApplyFlinchCommand(this.rc, {
       ...this.data,
       display: true,
-    }).enqueue();
+    }).pushFront();
   }
   override action4(): void {
-    CommandUtil.gainRandomStatPip(this.gs, {
+    const { message } = CommandUtil.gainRandomStatPip(this.gs, {
       ...this.data,
       amount: 2,
-      display: true,
       origin: 'Skewer'
     }, this.rc);
+    new DescriptiveMessageCommand(this.rc, {
+      ...this.data,
+      message: `${this.monsterNames.monsterName} used Skewer, ${message}.`,
+      display: true 
+    }).pushFront();
   }
   override buff1(): void {
     new HealCommand(this.rc, {
@@ -39,7 +44,7 @@ export class Stalagrowth extends MonsterLogic {
       amount: GameStateUtil.getMonsterByPlayer(this.gs, GameStateUtil.getOppositePlayer(this.player)).modifiers.hasStatusEffect() ? 2 : 1,
       origin: 'Regrowth',
       display: true,
-    }).enqueue();
+    }).pushFront();
   }
   override buff2(): void {
     new StatModificationCommand(this.rc, {
@@ -48,7 +53,7 @@ export class Stalagrowth extends MonsterLogic {
       statType: 'DEFENSE',
       display: true,
       origin: 'Mossy Overgrowth',
-    }).enqueue();
+    }).pushFront();
   }
   override buff3(): void {
     new GainStatPipCommand(this.rc,{
@@ -57,7 +62,7 @@ export class Stalagrowth extends MonsterLogic {
       statType: 'DEFENSE',
       origin: 'Rock Polish',
       display: true,
-    }).enqueue();
+    }).pushFront();
   }
   override buff4(): void {
     throw new Error("Method not implemented.");

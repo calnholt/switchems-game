@@ -15,134 +15,17 @@ function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: Updat
 
   const monsterKey = key.substring(0, key.indexOf("_"));
   const cardKey = key.substring(key.indexOf("_") + 1, key.length);
-  const shared = { monsterKey, cardKey, player, gs, receiver };
 
   switch (monsterKey) {
     // chargroar
     case CHARGROAR:
       new Chargroar(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
-    // ***
     case VULTUROCK:
       new Vulturock(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
-    // ***
-    case WHAILSTROM:
-      break;
-    case getActionKey(WHAILSTROM, 0):
-      break;
-    case getActionKey(WHAILSTROM, 1):
-      break;
-    case getActionKey(WHAILSTROM, 2):
-      break;
-    case getActionKey(WHAILSTROM, 3):
-      break;
-    case getBuffKey(WHAILSTROM, 0):
-      break;
-    case getBuffKey(WHAILSTROM, 1):
-      break;
-    case getBuffKey(WHAILSTROM, 2):
-      break;
-    case getBuffKey(WHAILSTROM, 3):
-      break;
-    // ***
-    case ZAPPGUIN:
-      break;
-    case getActionKey(ZAPPGUIN, 0):
-      break;
-    case getActionKey(ZAPPGUIN, 1):
-      break;
-    case getActionKey(ZAPPGUIN, 2):
-      break;
-    case getActionKey(ZAPPGUIN, 3):
-      break;
-    case getBuffKey(ZAPPGUIN, 0):
-      break;
-    case getBuffKey(ZAPPGUIN, 1):
-      break;
-    case getBuffKey(ZAPPGUIN, 2):
-      break;
-    case getBuffKey(ZAPPGUIN, 3):
-      break;
-    // ***
-    case PHANTOMATON:
-      break;
-    case getActionKey(PHANTOMATON, 0):
-      break;
-    case getActionKey(PHANTOMATON, 1):
-      break;
-    case getActionKey(PHANTOMATON, 2):
-      break;
-    case getActionKey(PHANTOMATON, 3):
-      break;
-    case getBuffKey(PHANTOMATON, 0):
-      break;
-    case getBuffKey(PHANTOMATON, 1):
-      break;
-    case getBuffKey(PHANTOMATON, 2):
-      break;
-    case getBuffKey(PHANTOMATON, 3):
-      break;
-    // ***
     case STALAGROWTH:
       new Stalagrowth(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
-      break;
-    // ***
-    case GALEAFFY:
-      break;
-    case getActionKey(GALEAFFY, 0):
-      break;
-    case getActionKey(GALEAFFY, 1):
-      break;
-    case getActionKey(GALEAFFY, 2):
-      break;
-    case getActionKey(GALEAFFY, 3):
-      break;
-    case getBuffKey(GALEAFFY, 0):
-      break;
-    case getBuffKey(GALEAFFY, 1):
-      break;
-    case getBuffKey(GALEAFFY, 2):
-      break;
-    case getBuffKey(GALEAFFY, 3):
-      break;
-    // ***
-    case DROWNIGATOR:
-      break;
-    case getActionKey(DROWNIGATOR, 0):
-      break;
-    case getActionKey(DROWNIGATOR, 1):
-      break;
-    case getActionKey(DROWNIGATOR, 2):
-      break;
-    case getActionKey(DROWNIGATOR, 3):
-      break;
-    case getBuffKey(DROWNIGATOR, 0):
-      break;
-    case getBuffKey(DROWNIGATOR, 1):
-      break;
-    case getBuffKey(DROWNIGATOR, 2):
-      break;
-    case getBuffKey(DROWNIGATOR, 3):
-      break;
-    // ***
-    case FLEXFERNO:
-      break;
-    case getActionKey(FLEXFERNO, 0):
-      break;
-    case getActionKey(FLEXFERNO, 1):
-      break;
-    case getActionKey(FLEXFERNO, 2):
-      break;
-    case getActionKey(FLEXFERNO, 3):
-      break;
-    case getBuffKey(FLEXFERNO, 0):
-      break;
-    case getBuffKey(FLEXFERNO, 1):
-      break;
-    case getBuffKey(FLEXFERNO, 2):
-      break;
-    case getBuffKey(FLEXFERNO, 3):
       break;
   }
   switch(key) {

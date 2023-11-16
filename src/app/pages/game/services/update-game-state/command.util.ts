@@ -30,7 +30,7 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
       type = 'DEFENSE'; 
       defense++;
     }
-    new GainStatPipCommand(rc, { ...data, key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true }).enqueue();
+    new GainStatPipCommand(rc, { ...data, key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true }).pushFront();
   }
   return { 
     attack, speed, defense, 
@@ -59,6 +59,6 @@ function heal(gs: GameState, data: HandCommandData, rc: UpdateGameStateService) 
     new HealCommand(rc, data).enqueue();
     return data.amount;
   }
-  new HealCommand(rc, { ...data, amount: hpDiff}).enqueue();
+  new HealCommand(rc, { ...data, amount: hpDiff}).pushFront();
   return hpDiff;
 }
