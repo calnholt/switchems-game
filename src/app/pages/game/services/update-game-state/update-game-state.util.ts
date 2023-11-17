@@ -80,19 +80,21 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
   const damage = DamageCalcUtil.calculateDamage(gs, data.player);
   const opponentPlayer = GameStateUtil.getOppositePlayer(data.player);
   const { activeMonster: opposingMonster, selectedAction: opposingSelectedAction } = GameStateUtil.getPlayerState(gs, opponentPlayer);
-  if (damage) {
+  const commands = [];
+  if (damage > 0) {
     opposingMonster.takeDamage(DamageCalcUtil.calculateDamage(gs, data.player));
     const message = `${monsterNames.monsterName} used ${attack.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
-    new DescriptiveMessageCommand(rc, { key: 'msg', player: data.player, message }).pushFront();
+    commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player: data.player, message }))
   }
   const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   gs.battleAniService.update(data.player === 'P', attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
+  if (damage > 0 && opposingMonster.currentHp > 0 && GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH') && opposingSelectedAction.action.getSelectableActionType() === 'MONSTER') {
+    commands.push(new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, display: true }));
+  }
   if (opposingMonster.currentHp === 0) {
-    new KnockedOutByAttackCommand(rc, { key: opposingMonster.key(), player: opponentPlayer, ...monsterNames, display: true }).enqueue();
+    commands.push(new KnockedOutByAttackCommand(rc, { key: opposingMonster.key(), player: opponentPlayer, ...monsterNames, display: true }));
   }
-  if (GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH') && opposingSelectedAction.action.getSelectableActionType() === 'MONSTER') {
-    new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, display: true }).pushFront();
-  }
+  commands.reverse().forEach(cmd => cmd.pushFront());
 }
 
 function dealDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameStateService) {
@@ -171,10 +173,12 @@ function resistant(gs: GameState, data: BasicCommandData, rc: UpdateGameStateSer
 // add new triggers
 function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
   let switchingToMonster = GameStateUtil.getSwitchingToMonster(gs, data.player);
+  const commands = [];
   if (data.type === 'HEAL') {
-    new HealCommand(rc, { ...data, amount: 2, origin: 'Switch Out', display: true}).enqueue();
+    commands.push(new HealCommand(rc, { ...data, amount: 2, origin: 'Switch Out', display: true}));
   }
-  new SwitchInCommand(rc, { ...data, player: data.player, monsterName: switchingToMonster.name, display: true }).enqueue();
+  commands.push(new SwitchInCommand(rc, { ...data, player: data.player, monsterName: switchingToMonster.name, display: true }));
+  commands.reverse().forEach(cmd => cmd.pushFront());
 }
 
 function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
@@ -193,7 +197,7 @@ function recoilCheck(gs: GameState, data: BasicCommandData, rc: UpdateGameStateS
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   const recoil = monster.modifiers.sumByType('RECOIL');
   if (recoil > 0 && !monster.modifiers.getByType('PREVENT_RECOIL').length) {
-    new TakeRecoilDamageCommand(rc, { ...data, display: true, damageToDeal: recoil }).enqueue();
+    new TakeRecoilDamageCommand(rc, { ...data, display: true, damageToDeal: recoil }).pushFront();
   }
 }
 
