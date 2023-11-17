@@ -205,7 +205,7 @@ function executeStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) 
   function performStandardAction(gs: GameState, player: PlayerType) {
     const playerState = GameStateUtil.getPlayerState(gs, player);
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'STANDARD') return;
-
+    // TODO: convert to event
     CardByKeyUtil.executeStandardAction(playerState.selectedAction.action?.key(), player, rc, gs);
     gs.battleAniService.update(player === 'P', 'USING_SPECIAL');
   }
