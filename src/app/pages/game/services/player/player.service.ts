@@ -46,14 +46,11 @@ export class PlayerService {
     return threeRandomMonsters;
   }
 
-  getSpecificStart(active: string, inactive1: string, inactive2: string): Monster[] {
-    const allMonsters = this.monsterService.getAllMonsters();
-    allMonsters.find(m => m.name === active)?.setIsActive(true);
-    return [
-      allMonsters.find(m => m.name === active) as Monster,
-      allMonsters.find(m => m.name === inactive1) as Monster,
-      allMonsters.find(m => m.name === inactive2) as Monster,
-    ];
+  getSpecificStart(...names: string[]): Monster[] {
+    const monsters = this.monsterService.getAllMonsters().filter(m => names.includes(m.name));
+    const rand: Monster = ArrayUtil.getRandomItemFromArray(monsters) as Monster
+    rand.setIsActive(true);
+    return monsters;
   }
 
   getMonsterAsActive(name: string) {
