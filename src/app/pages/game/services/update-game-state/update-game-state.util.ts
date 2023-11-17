@@ -39,6 +39,7 @@ export const UpdateGameStateUtil = {
   switchIn,
   recoilCheck,
   switchRoutine,
+  knockoutRoutine,
 }
 
 function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }
@@ -77,19 +78,20 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
   const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
   const attack = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
   const damage = DamageCalcUtil.calculateDamage(gs, data.player);
-  const targetMonster = GameStateUtil.getMonsterByPlayer(gs, GameStateUtil.getOppositePlayer(data.player));
+  const opponentPlayer = GameStateUtil.getOppositePlayer(data.player);
+  const { activeMonster: opposingMonster, selectedAction: opposingSelectedAction } = GameStateUtil.getPlayerState(gs, opponentPlayer);
   if (damage) {
-    targetMonster.takeDamage(DamageCalcUtil.calculateDamage(gs, data.player));
+    opposingMonster.takeDamage(DamageCalcUtil.calculateDamage(gs, data.player));
     const message = `${monsterNames.monsterName} used ${attack.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
     new DescriptiveMessageCommand(rc, { key: 'msg', player: data.player, message }).pushFront();
   }
   const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   gs.battleAniService.update(data.player === 'P', attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
-  if (targetMonster.currentHp === 0) {
-    new KnockedOutByAttackCommand(rc, { key: attackingMonster.key(), player: data.player, ...monsterNames, display: true }).enqueue();
+  if (opposingMonster.currentHp === 0) {
+    new KnockedOutByAttackCommand(rc, { key: opposingMonster.key(), player: opponentPlayer, ...monsterNames, display: true }).enqueue();
   }
-  if (GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH')) {
-    new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player }).enqueue();
+  if (GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH') && opposingSelectedAction.action?.getSelectableActionType() === 'MONSTER') {
+    new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, display: true }).pushFront();
   }
 }
 
@@ -181,8 +183,16 @@ function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSe
 }
 
 function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
+  const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
   gs.battleAniService.update(data.player === 'P', 'SWITCHING_OUT');
-  setTimeout(() => GameStateUtil.getPlayerState(gs, data.player).player.switch(data.key), 290);
+  // timeout syncs the animation...clunky
+  setTimeout(() => GameStateUtil.getPlayerState(gs, data.player).player.switch(data.key), 250);
+  new MonsterActionCommand(rc, { 
+    key: 'ma', 
+    player: data.player,
+    ...monsterNames,
+    doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs) },
+  }).pushFront();
 }
 
 function recoilCheck(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
@@ -200,5 +210,26 @@ function switchRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStat
   }
   else {
     new SwitchOutCommand(rc, { ...data, type: 'HEAL', }).pushFront();
+  }
+}
+
+function knockoutRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
+  const { inactiveMonsters } = GameStateUtil.getPlayerState(gs, data.player);
+  const availableMonsters = inactiveMonsters.filter(m => m.currentHp !== 0);
+   // switch to only other option without prompt
+  if (availableMonsters.length === 1) {
+    const monsterToSwitchTo = availableMonsters[0];
+    // switchIn(gs, { ...data, key: availableMonsters[0].key() }, rc);
+    new SwitchInCommand(rc, { ...data, player: data.player, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
+  }
+  // cpu chooses randomly
+  else if (data.player === 'O' && gs.cpu) {
+    const monsterToSwitchTo = availableMonsters[gs.rng.randomIntOption(2)];
+    switchIn(gs, { ...data, key: monsterToSwitchTo.key() }, rc);
+    new SwitchInCommand(rc, { ...data, player: data.player, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
+  }
+  // execute prompt
+  else {
+
   }
 }

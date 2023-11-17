@@ -78,6 +78,9 @@ export class UpdateGameStateService {
       case 'HEAL':
         UpdateGameStateUtil.heal(gs, data);
         break;
+      case 'KNOCKED_OUT':
+        UpdateGameStateUtil.knockoutRoutine(gs, data, this);
+        break;
       case 'KNOCKED_OUT_BY_ATTACK':
         new KnockedOutCommand(this, { ...data, display: false }).enqueue();
         break;

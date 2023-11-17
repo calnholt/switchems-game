@@ -13,10 +13,9 @@ export class Vulturock extends MonsterLogic {
       ...this.data,
       amount: 2,
       statType: 'SPEED',
-      key: 'VULTUROCK',
-      destroyOnTrigger: true,
-      origin: 'Switch In'
-    }).executeAsTrigger('SWITCH_IN');
+      origin: 'switching in',
+      display: true,
+    }).pushFront();
 
     new HealCommand(this.rc, {
       ...this.data,

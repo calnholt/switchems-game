@@ -175,7 +175,7 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
       player, 
       ...monsterNames,
       doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(selectedAction.action?.key() as string, player, rc, gs) },
-    }).enqueue()
+    }).enqueue();
     
     if (action.attack) {
       new DealAttackDamageCommand(rc, { key: 'damage', player: player, ...monsterNames, damageToDeal: 999 }).enqueue();
@@ -240,8 +240,6 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
   playerCleanup(gs, playerWithoutInitiative);
 
 }
-
-
 
 function isApplyPipsPhaseApplicable(gs: GameState) {
   const { p, o } = GameStateUtil.getPlayerStates(gs);

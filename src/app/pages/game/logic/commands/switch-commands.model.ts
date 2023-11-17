@@ -9,7 +9,7 @@ export type SWITCH_TYPES =
   | 'GAIN_SWITCH_DEFENSE'
 
 export interface SwitchCommandData extends CommandData {
-  type?: 'HEAL' | 'REMOVE_STATUS';
+  type?: 'HEAL' | 'REMOVE_STATUS' | 'KO';
 }
 
 export class SwitchRoutineCommand extends EventCommand<SwitchCommandData> {

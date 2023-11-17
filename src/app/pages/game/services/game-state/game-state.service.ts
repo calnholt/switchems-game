@@ -17,6 +17,7 @@ export interface GameState {
   battleAniService: BattleAnimationService;
   playerService: PlayerService;
   selectedActionService: SelectedActionService;
+  cpu: boolean;
 }
 
 export interface PlayerState {
@@ -82,6 +83,7 @@ export class GameStateService {
       battleAniService: this.battleAniService,
       playerService: this.playerService,
       selectedActionService: this.selectedActionService,
+      cpu: true,
     }
   }
 

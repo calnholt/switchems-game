@@ -15,7 +15,7 @@ export class PlayerService {
   constructor(
     private monsterService: MonsterDataService,
   ) {
-    this._player = new Player(this.getMonsterAsActive('Stalagrowth'));
+    this._player = new Player(this.getSpecificStart('Vulturock', 'Chargroar', 'Stalagrowth'));
     this._opponent = new Player(this.getRandomStart());
     this._player.playerCardManager.drawCard();
     this._player.playerCardManager.drawCard();
@@ -44,6 +44,16 @@ export class PlayerService {
     threeRandomMonsters[1].setIsActive(false);
     threeRandomMonsters[2].setIsActive(false);
     return threeRandomMonsters;
+  }
+
+  getSpecificStart(active: string, inactive1: string, inactive2: string): Monster[] {
+    const allMonsters = this.monsterService.getAllMonsters();
+    allMonsters.find(m => m.name === active)?.setIsActive(true);
+    return [
+      allMonsters.find(m => m.name === active) as Monster,
+      allMonsters.find(m => m.name === inactive1) as Monster,
+      allMonsters.find(m => m.name === inactive2) as Monster,
+    ];
   }
 
   getMonsterAsActive(name: string) {
