@@ -62,7 +62,9 @@ export class EventCommandQueueService {
 
   public dequeue(): EventCommand<CommandData> | undefined {
     const command = this._queue.dequeue();
-    this._event$.next(command);
+    if (command?.data.display) {
+      this._event$.next(command);
+    }
     return command;
   }
 
@@ -105,10 +107,18 @@ export class EventCommandQueueService {
       }
     }
 
-    if (this._queue.isEmpty() && !this._isAwaitingDecision) {
+    if (this._queue.isEmpty() && !this._isAwaitingDecision && !this._isAwaitingAcknowledgement) {
       this._isProcessing = false;
       if (command?.type !== 'SELECTION_PHASE') {
-        this.currentPhaseService.goToNextPhase();
+        if (this.currentPhaseService.currentPhase === 'END_PHASE') {
+          // not great but this was being called fast in quick succession when 
+          // going from END_PHASE to SELECTION_PHASE that the observables were
+          // getting sent in wrong order
+          setTimeout(() => { this.currentPhaseService.goToNextPhase(); }, 100);
+        }
+        else {
+          this.currentPhaseService.goToNextPhase();
+        }
       }
       else {
         this.unregisterEotTriggers();

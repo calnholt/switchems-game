@@ -130,6 +130,7 @@ export class UpdateGameStateService {
 
       // phases
       case 'START_PHASE':
+        GamePhaseUtil.executeStartGamePhase(gs, this);
         break;
       case 'SELECTION_PHASE':
         break;

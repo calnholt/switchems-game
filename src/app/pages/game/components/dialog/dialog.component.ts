@@ -16,7 +16,7 @@ import { BattleAnimationService } from '../../services/battle-animation/battle-a
 export class DialogComponent {
 
   message: string = '';
-  show: boolean = false;
+  show: boolean = true;
   allowNext = true;
 
   constructor(
@@ -30,8 +30,7 @@ export class DialogComponent {
   ngOnInit() {
     this.ecqs.event$.subscribe((command) => {
       if (!command) return;
-      this.show = command.type !== 'SELECTION_PHASE' && !command.type.includes('PROMPT');
-      if (!command.data.display) return;
+      this.show = true;
       setTimeout(() =>{
         this.message = command.getDisplayMessage();
       }, 300);

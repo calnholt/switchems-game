@@ -11,6 +11,7 @@ export class Stalagrowth extends MonsterLogic {
       ...this.data,
       amount: 1,
       statType: 'DEFENSE',
+      origin: 'switching in',
       display: true,
     }).pushFront();
   }

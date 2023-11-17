@@ -8,12 +8,13 @@ import { Vulturock } from "../monsters/vulturock.model";
 import { Stalagrowth } from "../monsters/stalagrowth.model";
 
 export const CardByKeyUtil = {
-  getCardByKey
+  executeCardByKey,
+  executeStandardAction,
 }
 
-function getCardByKey(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
+function executeCardByKey(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
 
-  const monsterKey = key.substring(0, key.indexOf("_"));
+  const monsterKey = key.includes("_") ? key.substring(0, key.indexOf("_")) : key;
   const cardKey = key.substring(key.indexOf("_") + 1, key.length);
 
   switch (monsterKey) {
@@ -49,3 +50,14 @@ const FLEXFERNO = 'FLEXFERNO';
 
 function getActionKey(name: string, i: number) { return `${CHARGROAR}_A${i}`; }
 function getBuffKey(name: string, i: number) { return `${CHARGROAR}_B${i}`; }
+
+function executeStandardAction(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
+  switch(key) {
+    case 'SA_REST':
+      StandardActions.rest(key, player, receiver, gs);
+      break;
+    case 'SA_PREPARE':
+      StandardActions.prepare(key, player, receiver, gs);
+      break;
+  }
+}

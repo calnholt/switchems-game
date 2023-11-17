@@ -1,6 +1,6 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyBuffCommand, BuffCommand } from "../../logic/commands/buff-command.model";
-import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, RevealGamePhaseCommandData, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
+import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, RevealGamePhaseCommandData, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, StartGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 import { DealAttackDamageCommand, FasterCommand, MonsterActionCommand, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
@@ -24,7 +24,9 @@ export const GamePhaseUtil = {
   standardActionsPhase,
   endPhase,
   selectionPhase,
+  startGamePhase,
 
+  executeStartGamePhase,
   executeRevealPhase,
   executeApplyPipsPhase,
   executeApplyBuffs,
@@ -63,6 +65,23 @@ function endPhase(gs: GameState, rc: UpdateGameStateService) {
 }
 function selectionPhase(gs: GameState, rc: UpdateGameStateService) {
   new SelectionGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
+}
+function startGamePhase(gs: GameState, rc: UpdateGameStateService) {
+  new StartGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
+}
+
+function executeStartGamePhase(gs: GameState, rc: UpdateGameStateService) {
+  const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
+  
+  function startPhaseByPlayer(player: PlayerType) {
+    const { activeMonster } = GameStateUtil.getPlayerState(gs, player);
+    const key = activeMonster.key();
+    new MonsterActionCommand(rc, { key, player, doMonsterAction: () => CardByKeyUtil.executeCardByKey(key, player, rc, gs) }).enqueue();
+  }
+
+  startPhaseByPlayer(playerWithInitiative);
+  startPhaseByPlayer(playerWithoutInitiative);
+  
 }
 
 function executeRevealPhase(gs: GameState, rc: UpdateGameStateService) {
@@ -110,7 +129,7 @@ function executeApplyBuffs(gs: GameState, rc: UpdateGameStateService) {
       for (let i = 0; i < buff.buffSlots; i++) {
         new ApplyBuffCommand(rc, { key: buff.key(), player, buffName: buff.name, monsterName: monsterNames.monsterName, display: i > 0 }).enqueue();
       }
-      new BuffCommand(rc, { key: 'buff', player, doBuff: () => { CardByKeyUtil.getCardByKey(buff.key(), player, rc, gs) }}).enqueue()
+      new BuffCommand(rc, { key: 'buff', player, doBuff: () => { CardByKeyUtil.executeCardByKey(buff.key(), player, rc, gs) }}).enqueue()
     });
   }
 
@@ -155,7 +174,7 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
       key: 'ma', 
       player, 
       ...monsterNames,
-      doMonsterAction: () =>  { CardByKeyUtil.getCardByKey(selectedAction.action?.key() as string, player, rc, gs) },
+      doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(selectedAction.action?.key() as string, player, rc, gs) },
     }).enqueue()
     
     if (action.attack) {
@@ -187,7 +206,7 @@ function executeStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) 
     const playerState = GameStateUtil.getPlayerState(gs, player);
     if (playerState.selectedAction.action?.getSelectableActionType() !== 'STANDARD') return;
 
-    CardByKeyUtil.getCardByKey(playerState.selectedAction.action?.key(), player, rc, gs);
+    CardByKeyUtil.executeStandardAction(playerState.selectedAction.action?.key(), player, rc, gs);
     gs.battleAniService.update(player === 'P', 'USING_SPECIAL');
   }
 

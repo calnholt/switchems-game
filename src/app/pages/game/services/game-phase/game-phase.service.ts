@@ -5,7 +5,6 @@ import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.m
 import { GamePhaseUtil } from '../update-game-state/game-phase.util';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
 import { Chargroar } from '../../logic/monsters/chargroar.model';
-import { SwitchInCommand } from '../../logic/commands/switch-commands.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,7 @@ export class GamePhaseService {
     private ugss: UpdateGameStateService,
     private currentPhaseService: CurrentPhaseService,
   ) {
-    this.startGame();
+    // this.startGame();
     this.currentPhaseService.currentPhase$.subscribe((value) => {
       this.gameLoop(value);
     });
@@ -103,8 +102,7 @@ export class GamePhaseService {
         }
         break;
       case 'START_OF_GAME':
-        this.startGame();
-        GamePhaseUtil.selectionPhase(gs, this.ugss);
+        GamePhaseUtil.startGamePhase(gs, this.ugss);
         break;
     }
   }
