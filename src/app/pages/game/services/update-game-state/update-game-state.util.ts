@@ -2,7 +2,7 @@ import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, KnockedOutByAttackCommand, MonsterActionCommand, TakeRecoilDamageCommand } from "../../logic/commands/monster-action-commands.model";
+import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, KnockedOutByAttackCommand, MonsterActionCommand, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { HealCommand, HealCommandData, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
@@ -15,6 +15,7 @@ import { UpdateGameStateService } from "./update-game-state.service";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
+import { CommandUtil } from "./command.util";
 
 export const UpdateGameStateUtil = {
   applyBuff,
@@ -75,18 +76,20 @@ function applyStatPips(gs: GameState, data: StatPipCommandData) {
 }
 
 function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameStateService) {
-  const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
-  const attack = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
-  const damage = DamageCalcUtil.calculateDamage(gs, data.player);
-  const opponentPlayer = GameStateUtil.getOppositePlayer(data.player);
+  const { player, key } = data;
+  const monsterNames = GameStateUtil.getMonsterNames(gs, player);
+  const attack = GameStateUtil.getMonsterActionByPlayer(gs, player);
+  const damage = DamageCalcUtil.calculateDamage(gs, player);
+  const opponentPlayer = GameStateUtil.getOppositePlayer(player);
   const { activeMonster: opposingMonster, selectedAction: opposingSelectedAction } = GameStateUtil.getPlayerState(gs, opponentPlayer);
+  const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
   const commands = [];
   if (damage > 0) {
-    opposingMonster.takeDamage(DamageCalcUtil.calculateDamage(gs, data.player));
+    opposingMonster.takeDamage(DamageCalcUtil.calculateDamage(gs, player));
     const message = `${monsterNames.monsterName} used ${attack.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
-    commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player: data.player, message }))
+    commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message }))
   }
-  const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, player);
   gs.battleAniService.update(data.player === 'P', attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
   if (damage > 0 && opposingMonster.currentHp > 0 && GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH') && opposingSelectedAction.action.getSelectableActionType() === 'MONSTER') {
     commands.push(new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, display: true }));
@@ -94,6 +97,13 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
   if (opposingMonster.currentHp === 0) {
     commands.push(new KnockedOutByAttackCommand(rc, { key: opposingMonster.key(), player: opponentPlayer, ...monsterNames, display: true }));
   }
+  if (damage > 0 && GameStateUtil.isWeak(gs, data.player) && !action.isStatus) {
+    new WeakCommand(rc, { key, player: GameStateUtil.getOppositePlayer(player) }).enqueue();
+    const pip = CommandUtil.gainRandomStatPip(gs, { key, player, amount: 1 }, rc);
+    const msg = `The attack was super effective! ${monsterNames.monsterName} gained 1 ${pip.attack ? 'attack' : ''}${pip.speed ? 'speed' : ''}${pip.defense ? 'defense' : ''} pip.`
+    commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message: msg }));
+  }
+  commands.push(new RecoilCheckCommand(rc, { key, player, ...monsterNames }));
   commands.reverse().forEach(cmd => cmd.pushFront());
 }
 

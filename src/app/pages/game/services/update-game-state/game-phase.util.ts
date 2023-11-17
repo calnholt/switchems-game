@@ -189,15 +189,9 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     if (action.attack) {
       new DealAttackDamageCommand(rc, { key, player: player, ...monsterNames, damageToDeal: 999 }).enqueue();
     }
-    // super effective check
-    if (GameStateUtil.isWeak(gs, player) && !action.isStatus) {
-      new WeakCommand(rc, { key, player: GameStateUtil.getOppositePlayer(player) }).enqueue();
-      const pip = CommandUtil.gainRandomStatPip(gs, { key, player, amount: 1 }, rc);
-      const msg = `The attack was super effective! ${monsterNames.monsterName} gained 1 ${pip.attack ? 'attack' : ''}${pip.speed ? 'speed' : ''}${pip.defense ? 'defense' : ''} pip.`
-      new DescriptiveMessageCommand(rc, { key: 'msg', player, message: msg }).enqueue();
-    }
-    new RecoilCheckCommand(rc, { key, player, ...monsterNames }).enqueue();
   }
+
+  
   const action = GameStateUtil.getPlayerState(gs, fasterPlayer).selectedAction.action;
   // add faster event to queue
   const monsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
