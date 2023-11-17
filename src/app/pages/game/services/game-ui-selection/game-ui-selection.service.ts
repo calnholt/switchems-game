@@ -61,7 +61,7 @@ export class GameUISelectionService {
 
   private toggleSelectedAction(newSelectedAction: ISelectableAction) {
     const { action } = this.selectedActionService;
-    if (newSelectedAction.key() === action?.key()) {
+    if (newSelectedAction.key() === action.key()) {
       return;
     }
     if (this.playerService.playerCardManager.hand.cardsInHand() < newSelectedAction.getNumOfDiscardSlots()) {

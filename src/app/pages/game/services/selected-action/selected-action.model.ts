@@ -2,19 +2,32 @@ import { ISelectableAction } from "~/app/shared/interfaces/ISelectableAction.int
 import { Buff } from "../../models/monster/buff.model";
 import { StatBoardSection } from "../../models/stat-board/stat-board.model";
 
+const EMPTY_ACTION: ISelectableAction = { 
+  key: () => '', 
+  canApplyStat: () => false, 
+  getDisplayName: () => '',
+  getNumOfBuffSlots: () => 0,
+  getNumOfDiscardSlots: () => 0,
+  getSelectableActionType: () => 'NONE',
+};
+
 export class SelectedAction {
   appliedBuffs: Buff[] = [];
   appliedDiscards: Buff[] = [];
   statBoardSection: StatBoardSection | undefined;
-  action: ISelectableAction | undefined;
-  constructor(action: ISelectableAction | undefined, buffs: Buff[] = [], discards: Buff[] = [], statBoardSection?: StatBoardSection | undefined) {
+  action: ISelectableAction;
+  constructor(
+    action: ISelectableAction = EMPTY_ACTION, 
+    buffs: Buff[] = [], 
+    discards: Buff[] = [], 
+    statBoardSection?: StatBoardSection | undefined) {
     this.appliedBuffs = buffs;
     this.appliedDiscards = discards;
     this.action = action;
     this.statBoardSection = statBoardSection;
   }
   isActionSelected(): boolean { return !!this.action; }
-  isCostFulfilled(): boolean { return this.getNumDiscardSlotsUsed() === this.action?.getNumOfDiscardSlots(); }
+  isCostFulfilled(): boolean { return this.getNumDiscardSlotsUsed() === this.action.getNumOfDiscardSlots(); }
   isAppliedAsBuff(buff: Buff): boolean { return this.appliedBuffs.map(b => b.key()).includes(buff.key()); }
   isAppliedAsDiscard(buff: Buff): boolean { return this.appliedDiscards.map(b => b.key()).includes(buff.key()); }
   canApplyBuff = (buff: Buff): boolean => { 
@@ -56,14 +69,14 @@ export class SelectedAction {
     if (this.statBoardSection?.type === statBoardSection.type) {
       this.statBoardSection = undefined;
     }
-    else if (statBoardSection.current > 0 && this.action?.canApplyStat()) {
+    else if (statBoardSection.current > 0 && this.action.canApplyStat()) {
       this.statBoardSection = statBoardSection;
     }
   }
   clear() {
     this.appliedBuffs = [];
     this.appliedDiscards = [];
-    this.action = undefined;
+    this.action = EMPTY_ACTION;
     this.statBoardSection = undefined;
   }
 }

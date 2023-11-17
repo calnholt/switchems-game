@@ -14,6 +14,7 @@ import { GameStateUtil } from "../game-state/game-state.util";
 import { SelectedAction } from "../selected-action/selected-action.model";
 import { CommandUtil } from "./command.util";
 import { UpdateGameStateService } from "./update-game-state.service";
+import { ISelectableAction } from "~/app/shared/interfaces/ISelectableAction.interface";
 
 export const GamePhaseUtil = {
   revealPhase,
@@ -103,8 +104,8 @@ function executeApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
 
   function applyStatPips(player: PlayerType) {
-    const playerState = GameStateUtil.getPlayerState(gs, player);
-    const section = playerState.selectedAction.statBoardSection;
+    const { selectedAction } = GameStateUtil.getPlayerState(gs, player);
+    const section = selectedAction.statBoardSection;
     if (section) {
       rc.enqueue(
         new ApplyStatPipsCommand(rc, { key: 'pip', amount: section.current, player, statType: section.type })
@@ -143,7 +144,7 @@ function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   function performSwitchAction(gs: GameState, player: PlayerType) {
     const monsterNames = GameStateUtil.getMonsterNames(gs, player);
     const playerState = GameStateUtil.getPlayerState(gs, player);
-    if (playerState.selectedAction.action?.getSelectableActionType() !== 'SWITCH') {
+    if (playerState.selectedAction.action.getSelectableActionType() !== 'SWITCH') {
       return;
     }
     new SwitchRoutineCommand(rc, { key: playerState.selectedAction.action.key(), player, ...monsterNames }).enqueue();
@@ -160,7 +161,7 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   function performMonsterAction(gs: GameState, player: PlayerType) {
     const { activeMonster, selectedAction } = GameStateUtil.getPlayerState(gs, player);
     const monsterNames = GameStateUtil.getMonsterNames(gs, player);
-    if (selectedAction.action?.getSelectableActionType() !== 'MONSTER') return;
+    if (selectedAction.action.getSelectableActionType() !== 'MONSTER') return;
     
     const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
 
@@ -174,7 +175,7 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
       key: 'ma', 
       player, 
       ...monsterNames,
-      doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(selectedAction.action?.key() as string, player, rc, gs) },
+      doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(selectedAction.action.key() as string, player, rc, gs) },
     }).enqueue();
     
     if (action.attack) {
@@ -204,9 +205,9 @@ function executeStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) 
 
   function performStandardAction(gs: GameState, player: PlayerType) {
     const playerState = GameStateUtil.getPlayerState(gs, player);
-    if (playerState.selectedAction.action?.getSelectableActionType() !== 'STANDARD') return;
+    if (playerState.selectedAction.action.getSelectableActionType() !== 'STANDARD') return;
     // TODO: convert to event
-    CardByKeyUtil.executeStandardAction(playerState.selectedAction.action?.key(), player, rc, gs);
+    CardByKeyUtil.executeStandardAction(playerState.selectedAction.action.key(), player, rc, gs);
     gs.battleAniService.update(player === 'P', 'USING_SPECIAL');
   }
 
@@ -223,13 +224,13 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
     const { selectedAction, playerCardManager, activeMonster } = GameStateUtil.getPlayerState(gs, player);
     // handle team auras
     
-    activeMonster.eotCleanup(selectedAction.action?.key() as CardCompositeKey);
+    activeMonster.eotCleanup(selectedAction.action.key() as CardCompositeKey);
     activeMonster.actions.forEach(action => {
       action.modifiers.eotClear();
     });
     // TODO: fix (we just want the opponent to spam standard action for now)
     if (player === 'P') {
-      gs.selectedActionService.selectedAction$.next(new SelectedAction(undefined));
+      gs.selectedActionService.selectedAction$.next(new SelectedAction());
       selectedAction.clear();
     }
     // draw card
@@ -251,13 +252,13 @@ function isApplyBuffsPhaseApplicable(gs: GameState) {
 }
 function isSwitchActionPhaseApplicable(gs: GameState) {
   const { p, o } = GameStateUtil.getPlayerStates(gs);
-  return [p.selectedAction.action?.getSelectableActionType(), o.selectedAction.action?.getSelectableActionType()].includes('SWITCH');
+  return [p.selectedAction.action.getSelectableActionType(), o.selectedAction.action.getSelectableActionType()].includes('SWITCH');
 }
 function isMonsterActionPhaseApplicable(gs: GameState) {
   const { p, o } = GameStateUtil.getPlayerStates(gs);
-  return [p.selectedAction.action?.getSelectableActionType(), o.selectedAction.action?.getSelectableActionType()].includes('MONSTER');
+  return [p.selectedAction.action.getSelectableActionType(), o.selectedAction.action.getSelectableActionType()].includes('MONSTER');
 }
 function isStandardActionPhaseApplicable(gs: GameState) {
   const { p, o } = GameStateUtil.getPlayerStates(gs);
-  return [p.selectedAction.action?.getSelectableActionType(), o.selectedAction.action?.getSelectableActionType()].includes('STANDARD');
+  return [p.selectedAction.action.getSelectableActionType(), o.selectedAction.action.getSelectableActionType()].includes('STANDARD');
 }

@@ -11,7 +11,7 @@ import { StandardAction } from '../../models/standard-action/standard-action.mod
 })
 export class SelectedActionService {
 
-  private _selectedAction$: BehaviorSubject<SelectedAction> = new BehaviorSubject(new SelectedAction(undefined));
+  private _selectedAction$: BehaviorSubject<SelectedAction> = new BehaviorSubject(new SelectedAction());
   private _oSelectedAction = new SelectedAction(new StandardAction('PREPARE', []));
 
   public get selectedAction$() { return this._selectedAction$; } 
@@ -72,5 +72,4 @@ export class SelectedActionService {
     ); 
   }
 
-  
 }

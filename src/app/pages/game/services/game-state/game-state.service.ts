@@ -68,7 +68,7 @@ export class GameStateService {
         playerCardManager,
         statBoard,
         player,
-        monsterAction: activeMonster.actions.find(a => a.key() === selectedAction.action?.key())
+        monsterAction: activeMonster.actions.find(a => a.key() === selectedAction.action.key())
       },
       o: {
         activeMonster: oActiveMonster,
@@ -77,7 +77,7 @@ export class GameStateService {
         playerCardManager: oPlayerCardManager,
         statBoard: oStatBoard,
         player: oPlayer,
-        monsterAction: oActiveMonster.actions.find(a => a.key() === selectedAction.action?.key())
+        monsterAction: oActiveMonster.actions.find(a => a.key() === selectedAction.action.key())
       },
       rng: this.seedableRngService,
       battleAniService: this.battleAniService,

@@ -45,7 +45,7 @@ export class RevealGamePhaseCommand extends EventCommand<RevealGamePhaseCommandD
     super(receiver, 'REVEAL_PHASE', data);
   }
   override getDisplayMessage(): string {
-    const name = `The opponent selected ${this.data.opponentAction.action?.getDisplayName()}`;
+    const name = `The opponent selected ${this.data.opponentAction.action.getDisplayName()}`;
     const { appliedBuffs, appliedDiscards, statBoardSection } = this.data.opponentAction;
     let pips = '';
     if (statBoardSection) {

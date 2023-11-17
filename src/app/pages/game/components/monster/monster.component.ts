@@ -68,9 +68,6 @@ export class MonsterComponent implements OnInit, OnChanges {
     this.backgroundClass = this.monster.elements.map(e => e.toString().toLowerCase()).join("");
     // update discard icons when paying for switch action
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
-      if (!selectedAction?.action) {
-        return;
-      }
       if (selectedAction.action.key() === this.monster.key()) {
         this.selected = true;
         this.numDiscards = selectedAction.appliedDiscards.length;

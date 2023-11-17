@@ -9,4 +9,4 @@ export interface ISelectableAction {
   canApplyStat: () => boolean;
 }
 
-export type SelectedActionType = 'MONSTER' | 'SWITCH' | 'STANDARD';
+export type SelectedActionType = 'MONSTER' | 'SWITCH' | 'STANDARD' | 'NONE';

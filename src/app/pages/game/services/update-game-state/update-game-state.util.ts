@@ -90,7 +90,7 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
   if (opposingMonster.currentHp === 0) {
     new KnockedOutByAttackCommand(rc, { key: opposingMonster.key(), player: opponentPlayer, ...monsterNames, display: true }).enqueue();
   }
-  if (GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH') && opposingSelectedAction.action?.getSelectableActionType() === 'MONSTER') {
+  if (GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH') && opposingSelectedAction.action.getSelectableActionType() === 'MONSTER') {
     new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, display: true }).pushFront();
   }
 }
@@ -165,7 +165,7 @@ function resistant(gs: GameState, data: BasicCommandData, rc: UpdateGameStateSer
   const action = GameStateUtil.getMonsterActionByPlayer(gs, getOpposite(data.player));
   const { activeMonster, selectedAction } = GameStateUtil.getPlayerState(gs, data.player);
   // determine if switch defense occurs
-  if (activeMonster.resistances.includes(action.element) && selectedAction.action?.getSelectableActionType() === 'SWITCH') {
+  if (activeMonster.resistances.includes(action.element) && selectedAction.action.getSelectableActionType() === 'SWITCH') {
     rc.enqueue(
       new GainSwitchDefenseCommand(rc, { key: data.key, player: data.player })
     );

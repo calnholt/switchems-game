@@ -38,8 +38,8 @@ export class MonsterActionComponent {
   }
 
   ngOnInit() {
-    if (this.action?.element) {
-      this.elementImg = ImageUtil.getElementsPath(this.action?.element);
+    if (this.action.element) {
+      this.elementImg = ImageUtil.getElementsPath(this.action.element);
     }
     this.terms = AbilityTextUtil.getTermsFromText(this.action.text);
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {

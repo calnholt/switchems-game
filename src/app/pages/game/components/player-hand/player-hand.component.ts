@@ -1,4 +1,4 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { Buff } from '../../models/monster/buff.model';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
@@ -36,18 +36,18 @@ export class PlayerHandComponent {
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
       const { appliedBuffs, appliedDiscards } = selectedAction;
       const appliedKeys = appliedBuffs.map(b => b.key()).concat(appliedDiscards.map(b => b.key()));
-      if (this.lastSelectedAction !== selectedAction.action?.key()) {
+      if (this.lastSelectedAction !== selectedAction.action.key()) {
         this.hand = this.hand.concat(this.appliedAsBuff).concat(this.appliedAsDiscard);
         this.appliedAsBuff = [];
         this.appliedAsDiscard = [];
-        this.lastSelectedAction = selectedAction.action?.key();
+        this.lastSelectedAction = selectedAction.action.key();
         return;
       }
       // return cards to hand in order presented when applied
       this.appliedAsBuff = appliedBuffs;
       this.appliedAsDiscard = appliedDiscards;
       this.hand = this.buffs.filter(b => !appliedKeys.includes(b.key()));
-      this.lastSelectedAction = selectedAction.action?.key();
+      this.lastSelectedAction = selectedAction.action.key();
     });
     this.playerService.playerCardManager.hand$.subscribe((hand) => {
       this.buffs = hand.cards;

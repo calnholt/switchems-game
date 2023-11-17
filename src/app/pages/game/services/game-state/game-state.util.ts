@@ -182,5 +182,5 @@ function getMonsterNames(gs: GameState, playerType: PlayerType) {
 
 function getSwitchingToMonster(gs: GameState, playerType: PlayerType) {
   const { selectedAction, inactiveMonsters } = getPlayerState(gs, playerType);
-  return inactiveMonsters.find(m => m.key() === selectedAction.action?.key()) as Monster;
+  return inactiveMonsters.find(m => m.key() === selectedAction.action.key()) as Monster;
 }

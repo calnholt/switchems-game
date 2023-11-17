@@ -36,7 +36,7 @@ function getDefense(monster: Monster): number {
 }
 
 function getSwitchDefense(o: PlayerState, action: MonsterAction): number {
-  if (o.selectedAction.action?.getSelectableActionType() !== 'SWITCH') {
+  if (o.selectedAction.action.getSelectableActionType() !== 'SWITCH') {
     return 0;
   }
   return o.activeMonster.getResistances().includes(action.element) ? o.activeMonster.getSwitchDefenseValue() : 0;
