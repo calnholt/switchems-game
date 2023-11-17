@@ -96,10 +96,8 @@ function executeRevealPhase(gs: GameState, rc: UpdateGameStateService) {
   function reveal(player: PlayerType) {
     const { selectedAction, playerCardManager } = GameStateUtil.getPlayerState(gs, player);
       // move buffs and discards
-      if (player !== 'P' && gs.cpu) {
-        playerCardManager.cleanup(selectedAction.appliedBuffs);
-        playerCardManager.cleanup(selectedAction.appliedDiscards);
-      }
+      playerCardManager.cleanup(selectedAction.appliedBuffs);
+      playerCardManager.cleanup(selectedAction.appliedDiscards);
   }
 
   reveal(playerWithInitiative);
@@ -233,7 +231,7 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
 
   function playerCleanup(gs: GameState, player: PlayerType) {
     // move buffs and discards
-    const { selectedAction, playerCardManager, activeMonster } = GameStateUtil.getPlayerState(gs, player);
+    const { selectedAction, playerCardManager, activeMonster, player: p } = GameStateUtil.getPlayerState(gs, player);
     // handle team auras
     
     activeMonster.eotCleanup(selectedAction.action.key() as CardCompositeKey);
