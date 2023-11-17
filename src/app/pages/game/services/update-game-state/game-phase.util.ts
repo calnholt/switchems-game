@@ -5,16 +5,15 @@ import { DrawCommand } from "../../logic/commands/hand-commands.model";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 import { DealAttackDamageCommand, FasterCommand, MonsterActionCommand, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
-import { SwitchOutPromptCommand, SwitchRoutineCommand } from "../../logic/commands/switch-commands.model";
+import { SwitchRoutineCommand } from "../../logic/commands/switch-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
-import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { SelectedAction } from "../selected-action/selected-action.model";
 import { CommandUtil } from "./command.util";
 import { UpdateGameStateService } from "./update-game-state.service";
-import { ISelectableAction } from "~/app/shared/interfaces/ISelectableAction.interface";
+import { CPUActionSelectUtil } from "./cpu-action-select.util";
 
 export const GamePhaseUtil = {
   revealPhase,
@@ -44,7 +43,12 @@ export const GamePhaseUtil = {
 }
 
 function revealPhase(gs: GameState, rc: UpdateGameStateService) {
-  new RevealGamePhaseCommand(rc, { opponentAction: gs.o.selectedAction, key: 'phase', player: 'P', display: true }).enqueue();
+  let selectedAction = GameStateUtil.getPlayerState(gs, 'O').selectedAction;
+  if (gs.cpu) {
+    selectedAction = CPUActionSelectUtil.getAction(GameStateUtil.getPlayerState(gs, 'O'));
+    gs.selectedActionService.setOpponentAction(selectedAction);
+  }
+  new RevealGamePhaseCommand(rc, { opponentAction: selectedAction, key: 'phase', player: 'P', display: true }).enqueue();
 }
 function applyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
   new ApplyPipsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
@@ -89,8 +93,8 @@ function executeRevealPhase(gs: GameState, rc: UpdateGameStateService) {
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
 
   function reveal(player: PlayerType) {
+    const { selectedAction, playerCardManager } = GameStateUtil.getPlayerState(gs, player);
       // move buffs and discards
-      const { selectedAction, playerCardManager, activeMonster } = GameStateUtil.getPlayerState(gs, player);
       playerCardManager.cleanup(selectedAction.appliedBuffs);
       playerCardManager.cleanup(selectedAction.appliedDiscards);
   }
@@ -108,7 +112,7 @@ function executeApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
     const section = selectedAction.statBoardSection;
     if (section) {
       rc.enqueue(
-        new ApplyStatPipsCommand(rc, { key: 'pip', amount: section.current, player, statType: section.type })
+        new ApplyStatPipsCommand(rc, { key: selectedAction.action.key(), amount: section.current, player, statType: section.type })
       );
     }
   }
@@ -122,15 +126,17 @@ function executeApplyBuffs(gs: GameState, rc: UpdateGameStateService) {
 
   function applyBuffs(gs: GameState, player: PlayerType) {
     const monsterNames = GameStateUtil.getMonsterNames(gs, player);
-    const appliedBuffs = GameStateUtil.getPlayerState(gs, player).selectedAction.appliedBuffs;
+    const { selectedAction } = GameStateUtil.getPlayerState(gs, player);
+    const { appliedBuffs } = selectedAction;
+    const key = selectedAction.action.key();
     if (!appliedBuffs.length) return;
 
     appliedBuffs.forEach(buff => {
       // need to fire event per slot used, but only show the message for the first one
       for (let i = 0; i < buff.buffSlots; i++) {
-        new ApplyBuffCommand(rc, { key: buff.key(), player, buffName: buff.name, monsterName: monsterNames.monsterName, display: i > 0 }).enqueue();
+        new ApplyBuffCommand(rc, { key, player, buffName: buff.name, monsterName: monsterNames.monsterName, display: i > 0 }).enqueue();
       }
-      new BuffCommand(rc, { key: 'buff', player, doBuff: () => { CardByKeyUtil.executeCardByKey(buff.key(), player, rc, gs) }}).enqueue()
+      new BuffCommand(rc, { key, player, doBuff: () => { CardByKeyUtil.executeCardByKey(buff.key(), player, rc, gs) }}).enqueue()
     });
   }
 
@@ -143,11 +149,11 @@ function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
 
   function performSwitchAction(gs: GameState, player: PlayerType) {
     const monsterNames = GameStateUtil.getMonsterNames(gs, player);
-    const playerState = GameStateUtil.getPlayerState(gs, player);
-    if (playerState.selectedAction.action.getSelectableActionType() !== 'SWITCH') {
+    const { selectedAction } = GameStateUtil.getPlayerState(gs, player);
+    if (selectedAction.action.getSelectableActionType() !== 'SWITCH') {
       return;
     }
-    new SwitchRoutineCommand(rc, { key: playerState.selectedAction.action.key(), player, ...monsterNames }).enqueue();
+    new SwitchRoutineCommand(rc, { key: selectedAction.action.key(), player, ...monsterNames }).enqueue();
   }
 
   performSwitchAction(gs, playerWithInitiative);
@@ -160,6 +166,7 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   
   function performMonsterAction(gs: GameState, player: PlayerType) {
     const { activeMonster, selectedAction } = GameStateUtil.getPlayerState(gs, player);
+    const key = selectedAction.action.key();
     const monsterNames = GameStateUtil.getMonsterNames(gs, player);
     if (selectedAction.action.getSelectableActionType() !== 'MONSTER') return;
     
@@ -167,28 +174,28 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
 
     // draw cards check
     if (action.draw > 0) {
-      new DrawCommand(rc, { key: 'draw', player, amount: action.draw,origin: action.name, display: true }).enqueue();
+      new DrawCommand(rc, { key, player, amount: action.draw,origin: action.name, display: true }).enqueue();
     }
 
     // add monster action effect(s) to queue
     new MonsterActionCommand(rc, { 
-      key: 'ma', 
+      key, 
       player, 
       ...monsterNames,
       doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(selectedAction.action.key() as string, player, rc, gs) },
     }).enqueue();
     
     if (action.attack) {
-      new DealAttackDamageCommand(rc, { key: 'damage', player: player, ...monsterNames, damageToDeal: 999 }).enqueue();
+      new DealAttackDamageCommand(rc, { key, player: player, ...monsterNames, damageToDeal: 999 }).enqueue();
     }
     // super effective check
     if (GameStateUtil.isWeak(gs, player) && !action.isStatus) {
-      new WeakCommand(rc, { key: 'weak', player: GameStateUtil.getOppositePlayer(player) }).enqueue();
-      const pip = CommandUtil.gainRandomStatPip(gs, { key: 'pip', player, amount: 1 }, rc);
+      new WeakCommand(rc, { key, player: GameStateUtil.getOppositePlayer(player) }).enqueue();
+      const pip = CommandUtil.gainRandomStatPip(gs, { key, player, amount: 1 }, rc);
       const msg = `The attack was super effective! ${monsterNames.monsterName} gained 1 ${pip.attack ? 'attack' : ''}${pip.speed ? 'speed' : ''}${pip.defense ? 'defense' : ''} pip.`
       new DescriptiveMessageCommand(rc, { key: 'msg', player, message: msg }).enqueue();
     }
-    new RecoilCheckCommand(rc, { key: 'recoil', player, ...monsterNames }).enqueue();
+    new RecoilCheckCommand(rc, { key, player, ...monsterNames }).enqueue();
   }
   const action = GameStateUtil.getMonsterActionByPlayer(gs, fasterPlayer);
   // add faster event to queue
@@ -228,13 +235,10 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
     activeMonster.actions.forEach(action => {
       action.modifiers.eotClear();
     });
-    // TODO: fix (we just want the opponent to spam standard action for now)
-    if (player === 'P') {
-      gs.selectedActionService.selectedAction$.next(new SelectedAction());
-      selectedAction.clear();
-    }
+    gs.selectedActionService.selectedAction$.next(new SelectedAction());
+    selectedAction.clear();
     // draw card
-    new DrawCommand(rc, { key: 'eot', player, amount: 1 }).enqueue();
+    new DrawCommand(rc, { key: selectedAction.action.key(), player, amount: 1 }).enqueue();
   }
 
   playerCleanup(gs, playerWithInitiative);

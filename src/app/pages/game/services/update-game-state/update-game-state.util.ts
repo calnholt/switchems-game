@@ -120,30 +120,25 @@ function heal(gs: GameState, data: HealCommandData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.heal(data.amount);
 }
-function knockedOutByAttack(gs: GameState, data: StatModificationData) {
-  // determine if switch dialog is needed
-  // auto switch if no option exists
-  // player wins check
-}
 function modifyStat(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('mod', data.statType, data.amount))
+  monster.modifiers.add(getMonsterModifier(data.key, data.statType, data.amount))
 }
 function preventFlinch(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('mod', 'PREVENT_FLINCH', data.amount));
+  monster.modifiers.add(getMonsterModifier(data.key, 'PREVENT_FLINCH', data.amount));
 }
 function preventRecoil(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('mod', 'PREVENT_RECOIL', data.amount));
+  monster.modifiers.add(getMonsterModifier(data.key, 'PREVENT_RECOIL', data.amount));
 }
 function flinched(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('mod', 'FLINCHED', data.amount));
+  monster.modifiers.add(getMonsterModifier(data.key, 'FLINCHED', data.amount));
 }
 function speedReversed(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('mod', 'SPEED_REVERSED', data.amount));
+  monster.modifiers.add(getMonsterModifier(data.key, 'SPEED_REVERSED', data.amount));
 }
 
 
@@ -153,12 +148,12 @@ function removeStatusEffect(gs: GameState, data: ApplyStatusEffectCommandData) {
 }
 function weak(data: CommandData, rc: UpdateGameStateService) {
   // when a monster is weak, push random pip event for super effective
-  return new GainRandomStatPipCommand(rc, { key: 'pip', player: data.player, amount: 1 });
+  return new GainRandomStatPipCommand(rc, { ...data, amount: 1 });
 }
 
 function gainSwitchDefense(gs: GameState, data: SwitchCommandData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('mod', 'DEFENSE', monster.getSwitchDefenseValue()))
+  monster.modifiers.add(getMonsterModifier(data.key, 'DEFENSE', monster.getSwitchDefenseValue()))
 }
 
 function resistant(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
@@ -188,8 +183,7 @@ function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSer
   // timeout syncs the animation...clunky
   setTimeout(() => GameStateUtil.getPlayerState(gs, data.player).player.switch(data.key), 250);
   new MonsterActionCommand(rc, { 
-    key: 'ma', 
-    player: data.player,
+    ...data,
     ...monsterNames,
     doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs) },
   }).pushFront();
@@ -219,7 +213,6 @@ function knockoutRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameSt
    // switch to only other option without prompt
   if (availableMonsters.length === 1) {
     const monsterToSwitchTo = availableMonsters[0];
-    // switchIn(gs, { ...data, key: availableMonsters[0].key() }, rc);
     new SwitchInCommand(rc, { ...data, player: data.player, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
   }
   // cpu chooses randomly

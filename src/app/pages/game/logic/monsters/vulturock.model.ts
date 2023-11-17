@@ -22,6 +22,7 @@ export class Vulturock extends MonsterLogic {
       amount: 6,
       origin: "Scavenge",
       display: true,
+      monsterActionTrigger: true,
     }).executeAsTrigger('KNOCKED_OUT');
   }
   override action1(): void {

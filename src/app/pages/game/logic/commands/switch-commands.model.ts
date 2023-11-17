@@ -33,7 +33,7 @@ export class SwitchOutPromptCommand extends EventCommand<SwitchCommandData> {
 }
 export class SwitchInCommand extends EventCommand<SwitchCommandData> {
   constructor(receiver: UpdateGameStateService, data: SwitchCommandData) {
-    super(receiver, 'SWITCH_IN', data);
+    super(receiver, 'SWITCH_IN', { ...data, updateMonsterPlayerTriggers: true });
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} is switching in.`;

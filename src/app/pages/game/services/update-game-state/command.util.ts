@@ -13,7 +13,7 @@ export const CommandUtil = {
 
 // basically an intermediary action that sets the actual pips gained
 function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc: UpdateGameStateService) {
-  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  const { activeMonster, selectedAction } = GameStateUtil.getPlayerState(gs, data.player);
   let [speed, attack, defense] = [0,0,0]
   for (let i = 0;  i < data.amount; i++) {
     const random = gs.rng.randomIntOption(3);
@@ -30,7 +30,15 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
       type = 'DEFENSE'; 
       defense++;
     }
-    new GainStatPipCommand(rc, { ...data, key: 'pip', amount: 1, player: data.player, statType: type, monsterName: monster.name, wasRandom: true }).pushFront();
+    new GainStatPipCommand(rc, { 
+      ...data, 
+      key: selectedAction.action.key(), 
+      amount: 1, 
+      player: data.player, 
+      statType: type, 
+      monsterName: activeMonster.name, 
+      wasRandom: true 
+    }).pushFront();
   }
   return { 
     attack, speed, defense, 
