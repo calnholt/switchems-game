@@ -19,7 +19,7 @@ export class Hand {
   hasMaxHandSize(): boolean { return this._cards.length === this._maxHandSize };
 
   discardRandomCard(): Buff {
-    return this._cards.splice(ArrayUtil.getRandomIndex(this._cards.length))[0];
+    return this._cards.splice(ArrayUtil.getRandomIndex(this._cards.length), 1)[0];
   }
 
   getCardByKey(key: CardCompositeKey): Buff {

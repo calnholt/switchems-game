@@ -48,6 +48,7 @@ function revealPhase(gs: GameState, rc: UpdateGameStateService) {
     selectedAction = CPUActionSelectUtil.getAction(GameStateUtil.getPlayerState(gs, 'O'));
     gs.selectedActionService.setOpponentAction(selectedAction);
   }
+  console.log(`CPU ACTION - ${selectedAction.action.getSelectableActionType()}`, selectedAction);
   new RevealGamePhaseCommand(rc, { opponentAction: selectedAction, key: 'phase', player: 'P', display: true }).enqueue();
 }
 function applyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
@@ -95,8 +96,10 @@ function executeRevealPhase(gs: GameState, rc: UpdateGameStateService) {
   function reveal(player: PlayerType) {
     const { selectedAction, playerCardManager } = GameStateUtil.getPlayerState(gs, player);
       // move buffs and discards
-      playerCardManager.cleanup(selectedAction.appliedBuffs);
-      playerCardManager.cleanup(selectedAction.appliedDiscards);
+      if (player !== 'P' && gs.cpu) {
+        playerCardManager.cleanup(selectedAction.appliedBuffs);
+        playerCardManager.cleanup(selectedAction.appliedDiscards);
+      }
   }
 
   reveal(playerWithInitiative);
@@ -197,10 +200,12 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     }
     new RecoilCheckCommand(rc, { key, player, ...monsterNames }).enqueue();
   }
-  const action = GameStateUtil.getMonsterActionByPlayer(gs, fasterPlayer);
+  const action = GameStateUtil.getPlayerState(gs, fasterPlayer).selectedAction.action;
   // add faster event to queue
   const monsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
-  new FasterCommand(rc, { key: action.key(), player: fasterPlayer, ...monsterNames, display: true }).enqueue();
+  if (gs.o.selectedAction.action.getSelectableActionType() !== 'SWITCH' && gs.p.selectedAction.action.getSelectableActionType() !== "SWITCH") {
+    new FasterCommand(rc, { key: action.key(), player: fasterPlayer, ...monsterNames, display: true }).enqueue();
+  }
 
   performMonsterAction(gs, fasterPlayer);
   performMonsterAction(gs, slowerPlayer);

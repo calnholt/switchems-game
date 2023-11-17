@@ -45,14 +45,14 @@ function getOppositePlayer(playerType: PlayerType): PlayerType {
 
 function isFaster(gs: GameState, playerType: PlayerType) {
   const { p, o } = getPlayerStates(gs, playerType);
-  const selectedAction = (p.selectedAction.action as ISelectableAction);
+  const selectedAction = p.selectedAction.action;
   const type = selectedAction.getSelectableActionType();
   if (type === 'SWITCH' || type === 'STANDARD') {
     return false;
   }
-  const oSelectedAction = (o.selectedAction.action as ISelectableAction);
+  const oSelectedAction = o.selectedAction.action;
   const oType = oSelectedAction.getSelectableActionType();
-  if (type === 'MONSTER' && oType === 'STANDARD') {
+  if (type === 'MONSTER' && ['SWITCH', 'STANDARD'].includes(oType)) {
     return true;
   }
   const action = getMonsterAction(p);
@@ -80,7 +80,7 @@ function getMonsterByPlayer(gs: GameState, playerType: PlayerType) {
   return playerState.activeMonster;
 }
 function getMonsterAction(ps: PlayerState) {
-  return (ps.activeMonster.actions.find(a => a.key() === (ps.selectedAction.action as ISelectableAction).key()) as MonsterAction);
+  return (ps.activeMonster.actions.find(a => a.key() === ps.selectedAction.action.key()) as MonsterAction);
 }
 function getStatBoardByPlayer(gs: GameState, playerType: PlayerType) {
   return getPlayerState(gs, playerType).statBoard;

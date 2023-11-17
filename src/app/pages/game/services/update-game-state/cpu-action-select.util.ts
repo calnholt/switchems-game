@@ -19,13 +19,17 @@ function getAction(cpuState: PlayerState): SelectedAction {
   const potentialActionKeys: CardCompositeKey[] = [];
   // standard actions
   const standardActions = ['Rest', 'Prepare'];
-  standardActions.forEach(sa => potentialActionKeys.push(sa));
+  if (Math.random() > 0.75) {
+    standardActions.forEach(sa => potentialActionKeys.push(sa));
+  }
   // switch to options
-  inactiveMonsters.forEach(m => {
-    if (m.currentHp !== 0) {
-      potentialActionKeys.push(m.key());
-    }
-  });
+  if (playerCardManager.hand.cardsInHand() >= 2) {
+    inactiveMonsters.forEach(m => {
+      if (m.currentHp !== 0) {
+        potentialActionKeys.push(m.key());
+      }
+    });
+  }
   // monster action options
   activeMonster.actions.forEach(a => {
     if (a.discards <= playerCardManager.hand.cardsInHand()) {
@@ -51,19 +55,18 @@ function getAction(cpuState: PlayerState): SelectedAction {
 function getMonsterAction(cpuState: PlayerState, key: CardCompositeKey) {
   const { activeMonster, playerCardManager, statBoard } = cpuState;
   const action = activeMonster.actions.find(a => a.key() === key) as MonsterAction;
-  const buffs = getRandomCardsFromHand(ArrayUtil.getRandomIndex(action.buffs), playerCardManager);
   const discards = getRandomCardsFromHand(action.discards, playerCardManager);
+  let buffs: Buff[] = [];
+  const cardsInHandAfterDiscard = playerCardManager.hand.cardsInHand();
+  if (cardsInHandAfterDiscard > 0) {
+    const slotsAbleToUse = cardsInHandAfterDiscard >= action.buffs ? action.buffs : cardsInHandAfterDiscard;
+    buffs = getRandomCardsFromHand(slotsAbleToUse, playerCardManager);
+  }
   let statBoardSection = undefined;
-  if (statBoard.hasPips() && Math.random() > 0.65) {
-    const rand = Math.random();
-    let section: StatBoardSectionType = 'DEFENSE';
-    if (rand < 1/3) {
-      section = 'ATTACK';
-    }
-    if (rand < 2/3) {
-      section = 'SPEED';
-    }
-    statBoardSection = statBoard.getSectionFromType(section);
+  let sectionsWithPips = statBoard.getSectionsWithPips();
+  if (!action.isStatus && statBoard.hasPips() && Math.random() > 0.65) {
+    const rand = sectionsWithPips[ArrayUtil.getRandomIndex(sectionsWithPips.length)]; 
+    statBoardSection = statBoard.getSectionFromType(rand);
   }
   return new SelectedAction(action, buffs, discards, statBoardSection);
 }
@@ -77,8 +80,13 @@ function getSwitchAction(cpuState: PlayerState, key: CardCompositeKey) {
 
 function getRandomCardsFromHand(num: number, playerCardManager: PlayerCardManager): Buff[] {
   const cards: Buff[] = [];
+  const cardsInHand = playerCardManager.hand.cardsInHand();
   for (let i = 0; i < num; i++) {
-    cards.push(playerCardManager.hand.discardRandomCard());
+    const card = playerCardManager.hand.discardRandomCard();
+    if (!card) {
+      debugger;
+    }
+    cards.push(card);
   }
   return cards;
 }

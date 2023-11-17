@@ -57,7 +57,7 @@ export class RevealGamePhaseCommand extends EventCommand<RevealGamePhaseCommandD
     }
     let discards = '';
     if (appliedDiscards.length) {
-      discards = `, discarding: ${appliedBuffs.map(b => b.name)}`
+      discards = `, discarding: ${appliedDiscards.map(b => b.name).join(", ")}`
     }
     return `${name}${pips}${buffs}${discards}`;
   }

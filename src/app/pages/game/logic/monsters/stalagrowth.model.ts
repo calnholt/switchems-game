@@ -16,10 +16,10 @@ export class Stalagrowth extends MonsterLogic {
     }).pushFront();
   }
   override action1(): void {
-    throw new Error("Method not implemented.");
+    // throw new Error("Method not implemented.");
   }
   override action2(): void {
-    throw new Error("Method not implemented.");
+    // throw new Error("Method not implemented.");
   }
   override action3(): void {
     new ApplyFlinchCommand(this.rc, {
@@ -66,7 +66,7 @@ export class Stalagrowth extends MonsterLogic {
     }).pushFront();
   }
   override buff4(): void {
-    throw new Error("Method not implemented.");
+    // throw new Error("Method not implemented.");
   }
 
   

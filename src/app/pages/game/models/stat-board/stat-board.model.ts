@@ -23,6 +23,14 @@ export class StatBoard {
     return this.attack.current > 0 || this.defense.current > 0 || this.speed.current > 0;
   }
 
+  getSectionsWithPips(): StatBoardSectionType[] {
+    const types: StatBoardSectionType[] = [];
+    if (this.attack.current > 0) types.push('ATTACK');
+    if (this.speed.current > 0) types.push('SPEED');
+    if (this.defense.current > 0) types.push('DEFENSE');
+    return types;
+  }
+
 };
 
 export class StatBoardSection {

@@ -221,8 +221,10 @@ function knockoutRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameSt
     switchIn(gs, { ...data, key: monsterToSwitchTo.key() }, rc);
     new SwitchInCommand(rc, { ...data, player: data.player, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
   }
+  // TODO: fix
   // execute prompt
   else {
-
+    const monsterToSwitchTo = availableMonsters[0];
+    new SwitchInCommand(rc, { ...data, player: data.player, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
   }
 }
