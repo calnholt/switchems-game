@@ -19,6 +19,10 @@ export class StatBoard {
     this.getSectionFromType(type).gain(amount);
   }
 
+  hasPips(): boolean {
+    return this.attack.current > 0 || this.defense.current > 0 || this.speed.current > 0;
+  }
+
 };
 
 export class StatBoardSection {

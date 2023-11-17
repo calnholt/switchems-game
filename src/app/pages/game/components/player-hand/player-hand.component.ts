@@ -34,6 +34,7 @@ export class PlayerHandComponent {
 
   ngOnInit() {
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
+      if (selectedAction.action.getSelectableActionType() === 'NONE') return;
       const { appliedBuffs, appliedDiscards } = selectedAction;
       const appliedKeys = appliedBuffs.map(b => b.key()).concat(appliedDiscards.map(b => b.key()));
       if (this.lastSelectedAction !== selectedAction.action.key()) {

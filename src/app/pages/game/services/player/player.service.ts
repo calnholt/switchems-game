@@ -3,6 +3,7 @@ import { Player } from '../../models/player/player.model';
 import { MonsterDataService } from '~/app/shared/services/monster-data.service';
 import { ArrayUtil } from '~/app/shared/utils/array.util';
 import { Monster } from '../../models/monster/monster.model';
+import { Vulturock } from '../../logic/monsters/vulturock.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,8 @@ export class PlayerService {
   constructor(
     private monsterService: MonsterDataService,
   ) {
-    this._player = new Player(this.getSpecificStart('Vulturock', 'Chargroar', 'Stalagrowth'));
-    this._opponent = new Player(this.getRandomStart());
-    this._player.playerCardManager.drawCard();
+    this._player = new Player(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'));
+    this._opponent = new Player(this.getSpecificStart('Stalagrowth', 'Vulturock', 'Chargroar'));
     this._player.playerCardManager.drawCard();
     this._player.playerCardManager.drawCard();
     this._opponent.playerCardManager.drawCard();

@@ -12,7 +12,7 @@ import { StandardAction } from '../../models/standard-action/standard-action.mod
 export class SelectedActionService {
 
   private _selectedAction$: BehaviorSubject<SelectedAction> = new BehaviorSubject(new SelectedAction());
-  private _oSelectedAction = new SelectedAction(new StandardAction('PREPARE', []));
+  private _oSelectedAction = new SelectedAction();
 
   public get selectedAction$() { return this._selectedAction$; } 
   public get selectedAction() { return this._selectedAction$.value; }
@@ -56,7 +56,10 @@ export class SelectedActionService {
   public handleStatBoardSection(statBoardSection: StatBoardSection) {
     this.selectedAction.handleStatBoardSection(statBoardSection);
     this.updateAction();
+  }
 
+  public setOpponentAction(action: SelectedAction) {
+    this._oSelectedAction = action;
   }
 
   private updateAction() {
