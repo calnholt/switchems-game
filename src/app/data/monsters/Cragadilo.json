@@ -77,7 +77,6 @@
       "lastUpdated": "Sat, 21 Nov 2020 21:09:45 GMT"
     }
   ],
-  "name": "Fortified",
   "name": "Cragadilo",
   "text": "When this monster <b>switches in</b>, this monster gains <div>+X[DEF] [PQ],</div> where X is equal to this monster's current [HP] minus two. This monster is <b>exposed</b> when it has no <div>[DEF] [PQ].</div>~SWITCH~",
   "hp": 5,
