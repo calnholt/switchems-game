@@ -45,7 +45,7 @@ export const GamePhaseUtil = {
 function revealPhase(gs: GameState, rc: UpdateGameStateService) {
   let selectedAction = GameStateUtil.getPlayerState(gs, 'O').selectedAction;
   if (gs.cpu) {
-    selectedAction = CPUActionSelectUtil.getAction(GameStateUtil.getPlayerState(gs, 'O'));
+    selectedAction = CPUActionSelectUtil.getRandomAction(GameStateUtil.getPlayerState(gs, 'O'));
     gs.selectedActionService.setOpponentAction(selectedAction);
   }
   console.log(`CPU ACTION - ${selectedAction.action.getSelectableActionType()}`, selectedAction);

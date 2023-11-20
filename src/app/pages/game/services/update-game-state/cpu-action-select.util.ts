@@ -9,10 +9,10 @@ import { MonsterAction } from "../../models/monster/monster-action.model";
 import { ArrayUtil } from "~/app/shared/utils/array.util";
 
 export const CPUActionSelectUtil = {
-  getAction,
+  getRandomAction,
 }
 
-function getAction(cpuState: PlayerState): SelectedAction {
+function getRandomAction(cpuState: PlayerState): SelectedAction {
   const { activeMonster, inactiveMonsters, statBoard, playerCardManager } = cpuState;
   const potentialActionKeys: CardCompositeKey[] = [];
   // standard actions
