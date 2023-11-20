@@ -17,6 +17,7 @@ import { CurrentPhaseService } from '../../../services/current-phase/current-pha
 export class MonsterActionComponent {
   @Input({ required: true }) action!: MonsterAction;
   @Input() cardsInHand = 0;
+  @Input() disable = false;
 
   terms: Term[] = [];
 
@@ -55,7 +56,7 @@ export class MonsterActionComponent {
   }
 
   selectAction() {
-    if (this.enabled && !this.action.isDisabled) {
+    if (this.enabled && !this.action.isDisabled && !this.disable) {
       this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_ACTION, data: this.action })
     }
   }

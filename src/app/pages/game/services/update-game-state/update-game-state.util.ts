@@ -10,7 +10,7 @@ import { CommandData } from "../../logic/commands/event-command.model";
 import { FlinchedCommand } from "../../logic/commands/ongoing-turn-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { ApplyBuffBelongsCommand, BuffCommandData } from "../../logic/commands/buff-command.model";
-import { GainSwitchDefenseCommand, SwitchCommandData, SwitchInCommand, SwitchOutCommand, SwitchOutPromptCommand } from "../../logic/commands/switch-commands.model";
+import { GainSwitchDefenseCommand, KnockedOutSwitchInPromptCommand, SwitchCommandData, SwitchInCommand, SwitchOutCommand, SwitchOutPromptCommand } from "../../logic/commands/switch-commands.model";
 import { UpdateGameStateService } from "./update-game-state.service";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
@@ -84,13 +84,13 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
   const { activeMonster: opposingMonster, selectedAction: opposingSelectedAction } = GameStateUtil.getPlayerState(gs, opponentPlayer);
   const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
   const commands = [];
+  const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, player);
   if (damage > 0) {
     opposingMonster.takeDamage(DamageCalcUtil.calculateDamage(gs, player));
     const message = `${monsterNames.monsterName} used ${attack.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
     commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message }))
+    gs.battleAniService.update(data.player === 'P', attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
   }
-  const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, player);
-  gs.battleAniService.update(data.player === 'P', attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
   if (damage > 0 && opposingMonster.currentHp > 0 && GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH') && opposingSelectedAction.action.getSelectableActionType() === 'MONSTER') {
     commands.push(new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, display: true }));
   }
@@ -184,7 +184,7 @@ function resistant(gs: GameState, data: BasicCommandData, rc: UpdateGameStateSer
 function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
   let switchingToMonster = GameStateUtil.getSwitchingToMonster(gs, data.player);
   const commands = [];
-  if (data.type === 'HEAL') {
+  if (data.type === 'HEAL' && !switchingToMonster.isAtFullHP()) {
     commands.push(new HealCommand(rc, { ...data, amount: 2, origin: 'Switch Out', display: true}));
   }
   commands.push(new SwitchInCommand(rc, { ...data, player: data.player, monsterName: switchingToMonster.name, display: true }));
@@ -200,7 +200,7 @@ function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSer
     ...data,
     ...monsterNames,
     doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs) },
-  }).pushFront();
+  }).pushFrontDecision();
 }
 
 function recoilCheck(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
@@ -214,7 +214,7 @@ function recoilCheck(gs: GameState, data: BasicCommandData, rc: UpdateGameStateS
 function switchRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
   const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
   if (activeMonster.modifiers.hasStatusEffect()) {
-    new SwitchOutPromptCommand(rc, { ...data }).enqueueDecision();
+    new SwitchOutPromptCommand(rc, { ...data }).pushFront();
   }
   else {
     new SwitchOutCommand(rc, { ...data, type: 'HEAL', }).pushFront();
@@ -235,10 +235,8 @@ function knockoutRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameSt
     switchIn(gs, { ...data, key: monsterToSwitchTo.key() }, rc);
     new SwitchInCommand(rc, { ...data, player: data.player, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
   }
-  // TODO: fix
-  // execute prompt
   else {
-    const monsterToSwitchTo = availableMonsters[0];
-    new SwitchInCommand(rc, { ...data, player: data.player, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
+    const options = inactiveMonsters.map(m => { return { name: m.name, key: m.key() }});
+    new KnockedOutSwitchInPromptCommand(rc, { ...data, options }).pushFront();
   }
 }

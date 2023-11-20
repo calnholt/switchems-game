@@ -16,7 +16,7 @@
         </div>
         <div class="monster-container">
           <div>
-            <sw-monster [monster]="oActiveMonster" [isActiveMonster]="true" [isOpponent]="true" />
+            <sw-monster [monster]="oActiveMonster" [isActiveMonster]="true" [isOpponent]="true" [cardsInMyOpponentsHand]="cardsInMyOpponentsHand" />
           </div>
           <div>
             <sw-modifiers [modifiers]="oModifiers" />
@@ -26,8 +26,17 @@
       <sw-stat-board [statBoard]="oStatBoard" [disable]="true" />
     </div>
     <div class="actions-container">
-      <div class="d-flex justify-content-center" [style.marginBottom]="'8px'">
-        <sw-submit-action-button />
+      <div class="d-flex justify-content-evenly" [style.marginBottom]="'8px'">
+        <div>
+          <sw-submit-action-button />
+        </div>
+        <div>
+          <sw-pushable-button (click)="viewOpponentActions = !viewOpponentActions">
+            <div class="button-default" [style.width]="'190px'">
+              {{ viewOpponentActions ? 'View your actions' : 'View opponent actions' }}
+            </div>
+          </sw-pushable-button>
+        </div>
       </div>
       <div class="action-container">
         <div class="inactive-monster-container">
@@ -36,7 +45,7 @@
           </ng-container>
         </div>
         <div>
-          <sw-monster-action-grid [actions]="activeMonster.actions" [cardsInHand]="cardsInMyHand" />
+          <sw-monster-action-grid [actions]="viewOpponentActions ? oActiveMonster.actions : activeMonster.actions" [cardsInHand]="cardsInMyHand" [disable]="viewOpponentActions" />
           <sw-player-hand />
         </div>
       </div>
@@ -45,3 +54,4 @@
 </div>
 <sw-dialog />
 <sw-switch-out-dialog />
+<sw-koswitch-out-dialog />

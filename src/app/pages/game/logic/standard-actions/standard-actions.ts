@@ -31,7 +31,7 @@ function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameSta
 }
 function prepare(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
   const values = { key, player };
-  const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 2}, receiver);
+  const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 1}, receiver);
   const randomPipsGained = CommandUtil.gainRandomStatPip(gs, { ...values, amount: 3}, receiver);
   const monster = GameStateUtil.getPlayerState(gs, player).activeMonster;
   let message = `${monster.name} prepared, ${randomPipsGained.message}`;

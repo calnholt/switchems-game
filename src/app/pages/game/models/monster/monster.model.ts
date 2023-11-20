@@ -161,4 +161,6 @@ export class Monster implements IHaveTooltip, ISelectableAction {
     this._currentHp = current < 0 ? 0 : current;
   }
 
+  isAtFullHP(): boolean { return this._currentHp === this._hp; }
+
 }

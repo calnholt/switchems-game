@@ -29,6 +29,7 @@ export const ImageUtil = {
     arrow: getSymbolsPath('arrow'),
     pierce: getSymbolsPath('pierce'),
     lock: getSymbolsPath('lock'),
+    hand: getSymbolsPath('hand-of-cards'),
   },
   monsters: {
     Chargroar: getMonstersPath('chargroar'),

@@ -20,6 +20,24 @@
       }
     }
 
+    .hand-of-cards {
+      display: flex;
+      align-items: center;
+      width: min-content;
+      background: black;
+      border-radius: 6px;
+      padding: 0 8px;
+      div:first-child {
+        color: white;
+        font-size: 25px;
+        margin-right: 3px;
+      }
+      img {
+        height: 25px;
+        filter: invert(1);
+      }
+    }
+
     &.inactive:hover {
       filter: brightness(100%);
     }

@@ -1,7 +1,7 @@
 <div id="monster-action-grid">
   <ng-container *ngFor="let action of actions">
     <div class="action">
-      <sw-monster-action [action]="action" [cardsInHand]="cardsInHand" />
+      <sw-monster-action [action]="action" [cardsInHand]="cardsInHand" [disable]="disable" />
     </div>
   </ng-container>
   <div class="standard-action-container">

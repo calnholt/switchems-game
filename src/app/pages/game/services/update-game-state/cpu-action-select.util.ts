@@ -32,7 +32,7 @@ function getAction(cpuState: PlayerState): SelectedAction {
   }
   // monster action options
   activeMonster.actions.forEach(a => {
-    if (a.discards <= playerCardManager.hand.cardsInHand()) {
+    if (a.discards <= playerCardManager.hand.cardsInHand() && !a.isDisabled && !a.isLocked) {
       potentialActionKeys.push(a.key());
     }
   });

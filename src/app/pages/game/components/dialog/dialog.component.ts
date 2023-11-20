@@ -30,7 +30,7 @@ export class DialogComponent {
   ngOnInit() {
     this.ecqs.event$.subscribe((command) => {
       if (!command) return;
-      this.show = true;
+      this.show = !command.type.includes('PROMPT');
       setTimeout(() =>{
         this.message = command.getDisplayMessage();
       }, 300);

@@ -51,7 +51,7 @@ export class SubmitActionButtonComponent {
   }
 
   submit() {
-    if (this.enabled) {
+    if (this.enabled && this.isCostFulfilled) {
       this.gamePhaseService.testActionPhase();
     }
   }

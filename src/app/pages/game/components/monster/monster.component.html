@@ -41,7 +41,7 @@
     <div class="monster-container {{backgroundClass}}" [ngClass]="{
         'inactive' : !isActiveMonster, 
         'selected' : selected, 
-        'unselectable': (cardsInHand < 2 && !isActiveMonster) || !enabled
+        'unselectable': (cardsInHand < 2 && !isActiveMonster) || !enabled || monster.currentHp === 0
       }">
       <div
         [@wobble]="attacking" 
@@ -62,8 +62,20 @@
         <img [ngClass]="{'selected' : numDiscards > 1}" [src]="discardIcon" />
       </div>
       <sw-monster-hp [hp]="monster.hp" [currentHp]="monster.currentHp" [initiative]="monster.initiative" />
-      <sw-monster-element-breakdown [style.width]="'100%'" [weaknesses]="monster.weaknesses"
-        [resistances]="monster.resistances" [switchDefense]="monster.switchDefense" />
+      <div class="d-flex">
+        <div [style.marginRight]="'5px'">
+          <sw-monster-element-breakdown [style.width]="'100%'" [weaknesses]="monster.weaknesses"
+            [resistances]="monster.resistances" [switchDefense]="monster.switchDefense" />
+        </div>
+        <div *ngIf="isActiveMonster && isOpponent" class="hand-of-cards">
+          <div>
+            {{cardsInMyOpponentsHand}}
+          </div>
+          <div>
+            <img [src]="handIcon" />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </ng-template>

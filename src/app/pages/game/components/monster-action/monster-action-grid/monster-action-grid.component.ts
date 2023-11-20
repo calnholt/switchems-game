@@ -11,6 +11,7 @@ import { ImageUtil } from '~/app/shared/utils/image.util';
 export class MonsterActionGridComponent {
   @Input() actions!: MonsterAction[];
   @Input() cardsInHand = 0;
+  @Input() disable = false;
 
   restStandardAction = new StandardAction('Rest', [
     ImageUtil.icons.draw, 

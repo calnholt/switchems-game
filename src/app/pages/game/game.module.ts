@@ -19,6 +19,7 @@ import { SubmitActionButtonComponent } from './components/submit-action-button/s
 import { DialogComponent } from './components/dialog/dialog.component';
 import { SwitchOutDialogComponent } from './components/dialog/switch-out-dialog/switch-out-dialog.component';
 import { ModifiersComponent } from './components/modifiers/modifiers.component';
+import { KOSwitchOutDialogComponent } from './components/dialog/ko-switch-out-dialog/koswitch-out-dialog/koswitch-out-dialog.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { ModifiersComponent } from './components/modifiers/modifiers.component';
     DialogComponent,
     SwitchOutDialogComponent,
     ModifiersComponent,
+    KOSwitchOutDialogComponent,
   ],
   exports: [
     MonsterActionComponent,

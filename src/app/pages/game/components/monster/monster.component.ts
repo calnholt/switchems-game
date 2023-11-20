@@ -29,11 +29,13 @@ export class MonsterComponent implements OnInit, OnChanges {
   @Input() isActiveMonster: boolean = false;
   @Input() isOpponent: boolean = false;
   @Input() cardsInHand = 0;
+  @Input() cardsInMyOpponentsHand = 0;
   
   monsterIcon!: Path;
   superEffectiveIcon!: Path;
   switchDefenseIcon!: Path;
   discardIcon = ImageUtil.icons.discard;
+  handIcon = ImageUtil.icons.hand;
   readonly ImageUtil = ImageUtil;
   backgroundClass!: Css;
   selected = false;

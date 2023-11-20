@@ -34,6 +34,8 @@ export class GameComponent implements OnChanges {
   cardsInMyHand = 0;
   cardsInMyOpponentsHand = 0;
 
+  viewOpponentActions = false;
+
   restStandardAction = new StandardAction('Rest', [
     ImageUtil.icons.draw,
     ImageUtil.icons.draw,

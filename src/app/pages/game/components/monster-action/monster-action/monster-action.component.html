@@ -1,10 +1,10 @@
-<sw-pushable-button [isActive]="!(action.isDisabled || action.isLocked) && cardsInHand >= action.discards && enabled" >
+<sw-pushable-button [isActive]="!(action.isDisabled || action.isLocked) && cardsInHand >= action.discards && enabled && !disable" >
   <div id="monster-action"
     class="{{action.element.toString().toLowerCase()}}-action"
     (click)="selectAction()" 
     [ngClass]="{
       'selected' : isSelected, 
-      'unselectable': action.isDisabled || action.isLocked || cardsInHand < action.discards,
+      'unselectable': action.isDisabled || action.isLocked || cardsInHand < action.discards || disable,
       }" 
       cardInfoTooltip [object]="action" tooltipType="ACTION">
       <div [ngClass]="{'locked' : action.isDisabled}">
