@@ -7,8 +7,6 @@ import { Buff } from "../../models/monster/buff.model";
 import { Monster } from "../../models/monster/monster.model";
 import { MonsterAction } from "../../models/monster/monster-action.model";
 import { ArrayUtil } from "~/app/shared/utils/array.util";
-import { StatBoardSectionType } from "../../models/stat-board/stat-board.model";
-
 
 export const CPUActionSelectUtil = {
   getAction,
@@ -80,12 +78,8 @@ function getSwitchAction(cpuState: PlayerState, key: CardCompositeKey) {
 
 function getRandomCardsFromHand(num: number, playerCardManager: PlayerCardManager): Buff[] {
   const cards: Buff[] = [];
-  const cardsInHand = playerCardManager.hand.cardsInHand();
   for (let i = 0; i < num; i++) {
     const card = playerCardManager.hand.discardRandomCard();
-    if (!card) {
-      debugger;
-    }
     cards.push(card);
   }
   return cards;

@@ -51,6 +51,7 @@ export class Modifier<T> {
   summable() {
     return [
       'DEFENSE',
+      'SWITCH_IN_DEFENSE',
       'RECOIL',
       'ATTACK',
       'SPEED',
@@ -61,6 +62,7 @@ export class Modifier<T> {
 
 export type MonsterModifierType =
   | "DEFENSE"
+  | "SWITCH_IN_DEFENSE"
   | "DRAIN"
   | "WOUND"
   | "STUN"

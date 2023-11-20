@@ -4,7 +4,7 @@ import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/m
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, KnockedOutByAttackCommand, MonsterActionCommand, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
-import { HealCommand, HealCommandData, StatModificationData } from "../../logic/commands/stat-modification-command.model";
+import { HealCommand, HealCommandData, StatModificationCommand, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
 import { CommandData } from "../../logic/commands/event-command.model";
 import { FlinchedCommand } from "../../logic/commands/ongoing-turn-commands.model";
@@ -90,6 +90,10 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
     const message = `${monsterNames.monsterName} used ${attack.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
     commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message }))
     gs.battleAniService.update(data.player === 'P', attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
+  }
+  else {
+    const message = `${monsterNames.opponentMonsterName} took no damage!`;
+    commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message }));
   }
   if (damage > 0 && opposingMonster.currentHp > 0 && GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH') && opposingSelectedAction.action.getSelectableActionType() === 'MONSTER') {
     commands.push(new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, display: true }));
@@ -193,9 +197,15 @@ function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSe
 
 function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
   const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
+  const { activeMonster, player } = GameStateUtil.getPlayerState(gs, data.player);
+  const { selectedAction: opponentAction } = GameStateUtil.getOpponentPlayerState(gs, data.player);
   gs.battleAniService.update(data.player === 'P', 'SWITCHING_OUT');
   // timeout syncs the animation...clunky
-  setTimeout(() => GameStateUtil.getPlayerState(gs, data.player).player.switch(data.key), 250);
+  setTimeout(() => player.switch(data.key), 250);
+  // gain switch in defense if opponent selected a monster action
+  if (opponentAction.action.getSelectableActionType() === 'MONSTER') {
+    new StatModificationCommand(rc, { ...data, statType: 'SWITCH_IN_DEFENSE', amount: activeMonster.getSwitchDefenseValue(), display: false }).pushFront();
+  }
   new MonsterActionCommand(rc, { 
     ...data,
     ...monsterNames,

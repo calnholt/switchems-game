@@ -2,7 +2,7 @@ import { MonsterAction } from "../../models/monster/monster-action.model";
 import { Monster } from "../../models/monster/monster.model";
 import { GameState, PlayerState } from "../../services/game-state/game-state.service";
 import { GameStateUtil } from "../../services/game-state/game-state.util";
-import { Modifiers, MonsterModifierType } from "../modifiers/modifier.model";
+import { Modifier, Modifiers, MonsterModifierType } from "../modifiers/modifier.model";
 import { PlayerType } from "../player-type.mode";
 
 export const DamageCalcUtil = {
@@ -36,10 +36,11 @@ function getDefense(monster: Monster): number {
 }
 
 function getSwitchDefense(o: PlayerState, action: MonsterAction): number {
-  if (o.selectedAction.action.getSelectableActionType() !== 'SWITCH') {
+  const modifiers = o.activeMonster.modifiers.getByType('SWITCH_IN_DEFENSE');
+  if (!modifiers || !modifiers.length) {
     return 0;
   }
-  return o.activeMonster.getResistances().includes(action.element) ? o.activeMonster.getSwitchDefenseValue() : 0;
+  return o.activeMonster.getResistances().includes(action.element) ? modifiers[0].value : 0;
 }
 
 function getPierce(modifiers: Modifiers<MonsterModifierType>): number {

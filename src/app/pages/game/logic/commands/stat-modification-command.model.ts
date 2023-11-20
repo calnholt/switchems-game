@@ -8,7 +8,7 @@ export type STAT_MODIFICATION_COMMANDS =
   | 'APPLY_FLINCH'
 
 export interface StatModificationData extends CommandData {
-  statType: 'ATTACK' | 'DEFENSE' | 'SPEED' | 'PIERCE' | 'RECOIL';
+  statType: 'ATTACK' | 'DEFENSE' | 'SPEED' | 'PIERCE' | 'RECOIL' | 'SWITCH_IN_DEFENSE';
   amount: number;
   isStatusEffect?: boolean;
 }
