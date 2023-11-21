@@ -150,13 +150,17 @@ export class EventCommandQueueService {
     const triggers = this._triggers.get(command.type);
     if (triggers) {
       triggers.forEach(trigger => {
-        if (trigger.data.monsterActionTrigger) {
-          if (command.data.key === trigger.data.key && trigger.data.player === command.data.player) {
-            console.log('enqueue trigger', trigger)
-            this.pushFront(trigger);
-          }
+        const isMonsterActionTrigger = trigger.data.monsterActionTrigger;
+        const isKeyMatch = command.data.key === trigger.data.key;
+        const isPlayerMatch = trigger.data.player === command.data.player;
+        const isConditionMet = !trigger.data.triggerCondition || trigger.data.triggerCondition?.(command);
+        // if monster action trigger, need key to match
+        if (isMonsterActionTrigger && isKeyMatch && isPlayerMatch && isConditionMet) {
+          console.log('enqueue trigger', trigger)
+          this.pushFront(trigger);
         }
-        else if (trigger.data.player === command.data.player) {
+        // otherwise this is a basic trigger match
+        else if (!isMonsterActionTrigger && isPlayerMatch && isConditionMet) {
           console.log('enqueue trigger', trigger)
           this.pushFront(trigger);
         }

@@ -1,8 +1,9 @@
 import { GameStateUtil } from "../../services/game-state/game-state.util";
 import { CommandUtil } from "../../services/update-game-state/command.util";
+import { UpdateGameStateUtil } from "../../services/update-game-state/update-game-state.util";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { ApplyFlinchCommand, HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
-import { GainStatPipCommand } from "../commands/stat-pip-commands.model";
+import { CrushCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { MonsterLogic } from "./monster-logic.model";
 
 export class Stalagrowth extends MonsterLogic {
@@ -66,7 +67,21 @@ export class Stalagrowth extends MonsterLogic {
     }).pushFront();
   }
   override buff4(): void {
-    // throw new Error("Method not implemented.");
+    UpdateGameStateUtil.crushPrompt(this.gs, {  
+      ...this.data,
+      total: 2,
+      origin: 'Life Siphon',
+      display: true,
+    }, this.rc);
+    new HealCommand(this.rc, {
+      ...this.data,
+      triggerCondition: (command: CrushCommand) => { return command.data.selections.reduce((acc, value) => acc + value.amount, 0) >= 2 },
+      amount: 1,
+      origin: 'Life Siphon',
+      display: true,
+      destroyOnTrigger: true,
+      removeEotTrigger: true,
+    }).executeAsTrigger('CRUSH');
   }
 
   

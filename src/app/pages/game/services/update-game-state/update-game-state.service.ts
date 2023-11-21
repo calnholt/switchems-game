@@ -40,8 +40,8 @@ export class UpdateGameStateService {
       case 'BUFF':
         data.doBuff();
         break;
-      // TODO: requires decision
-      case 'CRUSH_STAT_PIP':
+      case 'CRUSH':
+        UpdateGameStateUtil.crush(gs, data, this);
         break;
       case 'DEAL_ATTACK_DAMAGE':
         UpdateGameStateUtil.dealAttackDamage(gs, data, this);

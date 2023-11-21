@@ -20,6 +20,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { SwitchOutDialogComponent } from './components/dialog/switch-out-dialog/switch-out-dialog.component';
 import { ModifiersComponent } from './components/modifiers/modifiers.component';
 import { KOSwitchOutDialogComponent } from './components/dialog/ko-switch-out-dialog/koswitch-out-dialog/koswitch-out-dialog.component';
+import { CrushDialogComponent } from './components/dialog/crush-dialog/crush-dialog.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { KOSwitchOutDialogComponent } from './components/dialog/ko-switch-out-di
     SwitchOutDialogComponent,
     ModifiersComponent,
     KOSwitchOutDialogComponent,
+    CrushDialogComponent,
   ],
   exports: [
     MonsterActionComponent,

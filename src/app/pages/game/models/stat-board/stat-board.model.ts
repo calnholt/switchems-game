@@ -12,15 +12,23 @@ export class StatBoard {
   }
 
   use(type: StatBoardSectionType) {
-    this.getSectionFromType(type).remove();
+    this.getSectionFromType(type).clear();
   }
 
   gain(amount: number, type: StatBoardSectionType) {
     this.getSectionFromType(type).gain(amount);
   }
 
+  remove(amount: number, type: StatBoardSectionType) {
+    this.getSectionFromType(type).remove(amount);
+  }
+
   hasPips(): boolean {
     return this.attack.current > 0 || this.defense.current > 0 || this.speed.current > 0;
+  }
+
+  totalPips() {
+    return this.attack.current + this.defense.current + this.speed.current;
   }
 
   getSectionsWithPips(): StatBoardSectionType[] {
@@ -47,8 +55,17 @@ export class StatBoardSection {
   public get max() { return this._max }
   public get current() { return this._current }
 
-  remove() {
+  clear() {
     this._current = 0;
+  }
+
+  remove(amount: number) {
+    if (this._current - amount <= 0) {
+      this._current = 0;
+    }
+    else {
+      this._current = this._current - amount;
+    }
   }
 
   gain(amount: number) {

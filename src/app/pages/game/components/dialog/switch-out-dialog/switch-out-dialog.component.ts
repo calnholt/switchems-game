@@ -15,9 +15,7 @@ import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animati
 })
 export class SwitchOutDialogComponent {
 
-  message: string = '';
   show: boolean = false;
-  allowNext = true;
   command!: SwitchOutPromptCommand;
 
   constructor(

@@ -16,9 +16,7 @@ import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interfac
 })
 export class KOSwitchOutDialogComponent {
 
-  message: string = '';
   show: boolean = false;
-  allowNext = true;
   command!: KnockedOutSwitchInPromptCommand;
 
   constructor(

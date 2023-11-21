@@ -3,7 +3,7 @@ import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, KnockedOutByAttackCommand, MonsterActionCommand, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
-import { GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
+import { CrushCommandData, CrushPromptCommand, CrushPromptCommandData, GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { HealCommand, HealCommandData, StatModificationCommand, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
 import { CommandData } from "../../logic/commands/event-command.model";
@@ -41,6 +41,8 @@ export const UpdateGameStateUtil = {
   recoilCheck,
   switchRoutine,
   knockoutRoutine,
+  crush,
+  crushPrompt,
 }
 
 function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }
@@ -72,7 +74,7 @@ function applyStatPips(gs: GameState, data: StatPipCommandData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.modifiers.add(getMonsterModifier('pip', data.statType, data.amount))
   const statBoard = GameStateUtil.getStatBoardByPlayer(gs, data.player);
-  statBoard.getSectionFromType(data.statType).remove();
+  statBoard.getSectionFromType(data.statType).clear();
 }
 
 function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameStateService) {
@@ -249,4 +251,16 @@ function knockoutRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameSt
     const options = inactiveMonsters.map(m => { return { name: m.name, key: m.key() }});
     new KnockedOutSwitchInPromptCommand(rc, { ...data, options }).pushFront();
   }
+}
+
+function crushPrompt(gs: GameState, data: CrushPromptCommandData, rc: UpdateGameStateService) {
+  const { statBoard } = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(data.player));
+  if (statBoard.hasPips()) {
+    new CrushPromptCommand(rc, data).pushFront();
+  }
+}
+
+function crush(gs: GameState, data: CrushCommandData, rc: UpdateGameStateService) {
+  const { statBoard } = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(data.player));
+  data.selections.forEach(s => statBoard.remove(s.amount, s.statType));
 }
