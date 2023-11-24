@@ -6,6 +6,7 @@ import { EventCommandQueueService } from '../event-command-queue/event-command-q
 import { GamePhaseUtil } from './game-phase.util';
 import { CommandUtil } from './command.util';
 import { KnockedOutCommand } from '../../logic/commands/monster-action-commands.model';
+import { GameStateUtil } from '../game-state/game-state.util';
 
 @Injectable({
   providedIn: 'root'
@@ -88,7 +89,10 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.modifyStat(gs, data);
         break;
       case 'MONSTER_ACTION':
-        data.doMonsterAction();
+        const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
+        if (!activeMonster.modifiers.contains('FLINCHED')) {
+          data.doMonsterAction();
+        }
         break;
       case 'PREVENT_FLINCH':
         UpdateGameStateUtil.preventFlinch(gs, data);

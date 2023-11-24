@@ -87,6 +87,9 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
   const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
   const commands = [];
   const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, player);
+  if (attackingMonster.modifiers.contains("FLINCHED")) {
+    return;
+  }
   if (damage > 0) {
     opposingMonster.takeDamage(DamageCalcUtil.calculateDamage(gs, player));
     const message = `${monsterNames.monsterName} used ${attack.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
@@ -98,7 +101,7 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
     commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message }));
   }
   if (damage > 0 && opposingMonster.currentHp > 0 && GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH') && opposingSelectedAction.action.getSelectableActionType() === 'MONSTER') {
-    commands.push(new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, display: true }));
+    commands.push(new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, display: true, ...monsterNames }));
   }
   if (opposingMonster.currentHp === 0) {
     commands.push(new KnockedOutByAttackCommand(rc, { key: opposingMonster.key(), player: opponentPlayer, ...monsterNames, display: true }));
@@ -151,7 +154,7 @@ function preventRecoil(gs: GameState, data: StatModificationData) {
   monster.modifiers.add(getMonsterModifier(data.key, 'PREVENT_RECOIL', data.amount));
 }
 function flinched(gs: GameState, data: StatModificationData) {
-  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  const monster = GameStateUtil.getMonsterByPlayer(gs, GameStateUtil.getOppositePlayer(data.player));
   monster.modifiers.add(getMonsterModifier(data.key, 'FLINCHED', data.amount));
 }
 function speedReversed(gs: GameState, data: StatModificationData) {

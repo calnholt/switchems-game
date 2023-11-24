@@ -90,10 +90,8 @@ export class Monster implements IHaveTooltip, ISelectableAction {
   }
 
   eotCleanup(key: CardCompositeKey) {
-    this.setDisabledActions(key);
     this.modifiers.eotClear();
     this._actions.forEach(a => {
-      a.setDisabled(a.key() === key);
       a.modifiers.eotClear();
     });
   }

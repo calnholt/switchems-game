@@ -43,6 +43,6 @@ export class FlinchedCommand extends EventCommand<OngoingTurnCommandData> {
     super(receiver, 'FLINCHED', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} flinched.`;
+    return `${this.data.opponentMonsterName} flinched!`;
   }
 }

@@ -94,10 +94,11 @@ function executeRevealPhase(gs: GameState, rc: UpdateGameStateService) {
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
 
   function reveal(player: PlayerType) {
-    const { selectedAction, playerCardManager } = GameStateUtil.getPlayerState(gs, player);
+    const { selectedAction, playerCardManager, activeMonster } = GameStateUtil.getPlayerState(gs, player);
       // move buffs and discards
       playerCardManager.cleanup(selectedAction.appliedBuffs);
       playerCardManager.cleanup(selectedAction.appliedDiscards);
+      activeMonster.setDisabledActions(selectedAction.action.key());
   }
 
   reveal(playerWithInitiative);
