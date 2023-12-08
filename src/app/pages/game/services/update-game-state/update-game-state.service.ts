@@ -89,10 +89,7 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.modifyStat(gs, data);
         break;
       case 'MONSTER_ACTION':
-        const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
-        if (!activeMonster.modifiers.contains('FLINCHED')) {
-          data.doMonsterAction();
-        }
+        UpdateGameStateUtil.doMonsterAction(gs, data, this);
         break;
       case 'PREVENT_FLINCH':
         UpdateGameStateUtil.preventFlinch(gs, data);

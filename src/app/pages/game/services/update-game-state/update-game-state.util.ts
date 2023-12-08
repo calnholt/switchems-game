@@ -2,11 +2,11 @@ import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, KnockedOutByAttackCommand, MonsterActionCommand, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
+import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, KnockedOutByAttackCommand, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { CrushCommandData, CrushPromptCommand, CrushPromptCommandData, GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { HealCommand, HealCommandData, StatModificationCommand, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
-import { CommandData } from "../../logic/commands/event-command.model";
+import { CommandData, EventCommand } from "../../logic/commands/event-command.model";
 import { FlinchedCommand } from "../../logic/commands/ongoing-turn-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { ApplyBuffBelongsCommand, BuffCommandData } from "../../logic/commands/buff-command.model";
@@ -275,7 +275,22 @@ function knockoutRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameSt
 
 function crushPrompt(gs: GameState, data: CrushPromptCommandData, rc: UpdateGameStateService) {
   const { statBoard } = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(data.player));
-  if (statBoard.hasPips()) {
+  if (data.player === 'O' && gs.cpu) {
+    const total = statBoard.totalPips() >= data.total ? data.total : statBoard.totalPips();
+    const options = ArrayUtil.randomizeOrder(
+      [...Array(statBoard.attack).keys()].map(v => 'ATTACK')
+        .concat([...Array(statBoard.attack).keys()].map(v => 'DEFENSE'))
+        .concat([...Array(statBoard.attack).keys()].map(v => 'SPEED'))
+    );
+    const decisions = [ ...Array(total).keys() ].map(o => options.pop());
+    const selections: { amount: number, statType: StatBoardSectionType }[] = [
+      { amount: decisions.filter(d => d === 'ATTACK').length, statType: 'ATTACK' },
+      { amount: decisions.filter(d => d === 'DEFENSE').length, statType: 'DEFENSE' },
+      { amount: decisions.filter(d => d === 'SPEED').length, statType: 'SPEED' },
+    ];
+    crush(gs, { ...data, selections }, rc);
+  }
+  else if (statBoard.hasPips()) {
     new CrushPromptCommand(rc, data).pushFront();
   }
 }
