@@ -16,8 +16,11 @@ import { DescriptiveMessageCommand } from "../../logic/commands/message-command.
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
 import { CommandUtil } from "./command.util";
+import { ArrayUtil } from "~/app/shared/utils/array.util";
+import { StatBoardSectionType } from "../../models/stat-board/stat-board.model";
 
 export const UpdateGameStateUtil = {
+  doMonsterAction,
   applyBuff,
   applyFlinch,
   applyStatusEffect,
@@ -43,6 +46,20 @@ export const UpdateGameStateUtil = {
   knockoutRoutine,
   crush,
   crushPrompt,
+}
+
+function skipActionAndDamage(gs: GameState, data: CommandData): boolean {
+  const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
+  const isKOd = activeMonster.currentHp === 0;
+  const isFlinched = activeMonster.modifiers.contains('FLINCHED');
+  return isKOd || isFlinched;
+}
+
+function doMonsterAction(gs: GameState, data: MonsterActionCommandData, rc: UpdateGameStateService) {
+  if (skipActionAndDamage(gs, data,)) {
+    return;
+  }
+  data.doMonsterAction();
 }
 
 function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }
@@ -78,6 +95,9 @@ function applyStatPips(gs: GameState, data: StatPipCommandData) {
 }
 
 function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameStateService) {
+  if (skipActionAndDamage(gs, data,)) {
+    return;
+  }
   const { player, key } = data;
   const monsterNames = GameStateUtil.getMonsterNames(gs, player);
   const attack = GameStateUtil.getMonsterActionByPlayer(gs, player);
@@ -87,11 +107,8 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
   const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
   const commands = [];
   const attackingMonster = GameStateUtil.getMonsterByPlayer(gs, player);
-  if (attackingMonster.modifiers.contains("FLINCHED")) {
-    return;
-  }
   if (damage > 0) {
-    opposingMonster.takeDamage(DamageCalcUtil.calculateDamage(gs, player));
+    opposingMonster.takeDamage(damage);
     const message = `${monsterNames.monsterName} used ${attack.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
     commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message }))
     gs.battleAniService.update(data.player === 'P', attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
