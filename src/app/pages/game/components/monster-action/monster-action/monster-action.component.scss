@@ -15,13 +15,20 @@
   filter: brightness(85%);
   transition: filter 0.3s ease;
 
-  .locked {
-    background-image: url('../../../../../../assets/images/symbols/lock.png');
+  .disabled, .locked {
     background-size: 130px;
     background-position: center;
     height: inherit;
     background-repeat: no-repeat;
     background-position-y: 65px;
+  }
+
+  .disabled {
+    background-image: url('../../../../../../assets/images/symbols/lock.png');
+  }
+
+  .locked {
+    background-image: url('../../../../../../assets/images/symbols/single-use.png');
   }
 
   &.selected {
