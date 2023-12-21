@@ -18,6 +18,7 @@ export interface GameState {
   playerService: PlayerService;
   selectedActionService: SelectedActionService;
   cpu: boolean;
+  getFreshGameState: () => GameState;
 }
 
 export interface PlayerState {
@@ -84,6 +85,7 @@ export class GameStateService {
       playerService: this.playerService,
       selectedActionService: this.selectedActionService,
       cpu: true,
+      getFreshGameState: this.getGameState,
     }
   }
 
