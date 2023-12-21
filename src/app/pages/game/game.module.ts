@@ -22,6 +22,7 @@ import { ModifiersComponent } from './components/modifiers/modifiers.component';
 import { KOSwitchOutDialogComponent } from './components/dialog/ko-switch-out-dialog/koswitch-out-dialog/koswitch-out-dialog.component';
 import { CrushDialogComponent } from './components/dialog/crush-dialog/crush-dialog.component';
 import { StatusEffectsComponent } from './components/status-effects/status-effects.component';
+import { GameOverComponent } from './components/game-over/game-over.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { StatusEffectsComponent } from './components/status-effects/status-effec
     KOSwitchOutDialogComponent,
     CrushDialogComponent,
     StatusEffectsComponent,
+    GameOverComponent,
   ],
   exports: [
     MonsterActionComponent,

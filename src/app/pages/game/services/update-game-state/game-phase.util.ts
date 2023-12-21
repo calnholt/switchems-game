@@ -1,6 +1,6 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyBuffCommand, BuffCommand } from "../../logic/commands/buff-command.model";
-import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, StartGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
+import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, GameOverPhaseCommandData, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, StartGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
 import { DealAttackDamageCommand, FasterCommand, MonsterActionCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
@@ -32,6 +32,7 @@ export const GamePhaseUtil = {
   executeMonsterActionsPhase,
   executeStandardActionsPhase,
   executeEndPhase,
+  executeGameOver,
 
   isApplyPipsPhaseApplicable,
   isApplyBuffsPhaseApplicable,
@@ -244,6 +245,10 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
   playerCleanup(gs, playerWithInitiative);
   playerCleanup(gs, playerWithoutInitiative);
 
+}
+
+function executeGameOver(gs: GameState, data: GameOverPhaseCommandData) {
+  gs.gameOverService.winner$.next(data.winner);
 }
 
 function isApplyPipsPhaseApplicable(gs: GameState) {

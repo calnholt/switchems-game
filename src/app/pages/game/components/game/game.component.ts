@@ -7,8 +7,9 @@ import { StandardAction } from '../../models/standard-action/standard-action.mod
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { ARENAS, ArenaType } from '~/app/shared/types/dataTypes';
 import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
-import { Modifier, Modifiers, MonsterModifierType } from '../../logic/modifiers/modifier.model';
+import { Modifier, MonsterModifierType } from '../../logic/modifiers/modifier.model';
 import { Subscription } from 'rxjs';
+import { GameOverService, WinnerType } from '../../services/game-over/game-over.service';
 
 @Component({
   selector: 'sw-game',
@@ -36,6 +37,8 @@ export class GameComponent implements OnChanges {
 
   viewOpponentActions = false;
 
+  winner: WinnerType = null;
+
   restStandardAction = new StandardAction('Rest', [
     ImageUtil.icons.draw,
     ImageUtil.icons.draw,
@@ -51,6 +54,7 @@ export class GameComponent implements OnChanges {
   constructor(
     private playerService: PlayerService,
     private battleAniService: BattleAnimationService,
+    private gameOverService: GameOverService,
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -107,6 +111,9 @@ export class GameComponent implements OnChanges {
     this.playerService.oPlayerCardManager.hand$.subscribe((hand) => {
       this.cardsInMyOpponentsHand = hand.cardsInHand();
     });
+    this.gameOverService.winner$.subscribe((value) => {
+      this.winner = value;
+    })
   }
 
 

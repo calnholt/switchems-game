@@ -1,60 +1,64 @@
 <div id="arena" [class]="arena">
   <div id="game">
-    <div class="opponent-container">
-
-    </div>
-    <div class="d-flex">
-      <sw-stat-board [statBoard]="statBoard" />
-      <div class="monsters-container">
-        <div class="monster-container">
-          <div class="modifier-container">
-            <sw-modifiers [modifiers]="modifiers" />
-            <sw-status-effects [modifiers]="modifiers" />
-          </div>
-          <div>
-            <sw-monster [monster]="activeMonster" [isActiveMonster]="true" />
-          </div>
-        </div>
-        <div class="monster-container">
-          <div>
-            <sw-monster [monster]="oActiveMonster" [isActiveMonster]="true" [isOpponent]="true" [cardsInMyOpponentsHand]="cardsInMyOpponentsHand" />
-          </div>
-          <div class="modifier-container">
-            <sw-modifiers [modifiers]="oModifiers" />
-            <sw-status-effects [modifiers]="oModifiers" />
-          </div>
-        </div>
-      </div>
-      <sw-stat-board [statBoard]="oStatBoard" [disable]="true" />
-    </div>
-    <div class="actions-container">
-      <div class="d-flex justify-content-evenly" [style.marginBottom]="'8px'">
-        <div>
-          <sw-submit-action-button />
-        </div>
-        <div>
-          <sw-pushable-button (click)="viewOpponentActions = !viewOpponentActions">
-            <div class="button-default" [style.width]="'190px'">
-              {{ viewOpponentActions ? 'View your actions' : 'View opponent actions' }}
+    <div *ngIf="!winner">
+      <div class="opponent-container"></div>
+      <div class="d-flex">
+        <sw-stat-board [statBoard]="statBoard" />
+        <div class="monsters-container">
+          <div class="monster-container">
+            <div class="modifier-container">
+              <sw-modifiers [modifiers]="modifiers" />
+              <sw-status-effects [modifiers]="modifiers" />
             </div>
-          </sw-pushable-button>
+            <div>
+              <sw-monster [monster]="activeMonster" [isActiveMonster]="true" />
+            </div>
+          </div>
+          <div class="monster-container">
+            <div>
+              <sw-monster [monster]="oActiveMonster" [isActiveMonster]="true" [isOpponent]="true"
+                [cardsInMyOpponentsHand]="cardsInMyOpponentsHand" />
+            </div>
+            <div class="modifier-container">
+              <sw-modifiers [modifiers]="oModifiers" />
+              <sw-status-effects [modifiers]="oModifiers" />
+            </div>
+          </div>
         </div>
+        <sw-stat-board [statBoard]="oStatBoard" [disable]="true" />
       </div>
-      <div class="action-container">
-        <div class="inactive-monster-container">
-          <ng-container *ngFor="let monster of inactiveMonsters">
-            <sw-monster [monster]="monster" [isActiveMonster]="false" [cardsInHand]="cardsInMyHand" />
-          </ng-container>
+      <div class="actions-container">
+        <div class="d-flex justify-content-evenly" [style.marginBottom]="'8px'">
+          <div>
+            <sw-submit-action-button />
+          </div>
+          <div>
+            <sw-pushable-button (click)="viewOpponentActions = !viewOpponentActions">
+              <div class="button-default" [style.width]="'190px'">
+                {{ viewOpponentActions ? 'View your actions' : 'View opponent actions' }}
+              </div>
+            </sw-pushable-button>
+          </div>
         </div>
-        <div>
-          <sw-monster-action-grid [actions]="viewOpponentActions ? oActiveMonster.actions : activeMonster.actions" [cardsInHand]="cardsInMyHand" [disable]="viewOpponentActions" />
-          <sw-player-hand />
+        <div class="action-container">
+          <div class="inactive-monster-container">
+            <ng-container *ngFor="let monster of inactiveMonsters">
+              <sw-monster [monster]="monster" [isActiveMonster]="false" [cardsInHand]="cardsInMyHand" />
+            </ng-container>
+          </div>
+          <div>
+            <sw-monster-action-grid [actions]="viewOpponentActions ? oActiveMonster.actions : activeMonster.actions"
+              [cardsInHand]="cardsInMyHand" [disable]="viewOpponentActions" />
+            <sw-player-hand />
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<sw-dialog />
+<sw-dialog [hide]="!!winner" />
 <sw-switch-out-dialog />
 <sw-koswitch-out-dialog />
 <sw-crush-dialog />
+
+<sw-game-over [winner]="winner" />

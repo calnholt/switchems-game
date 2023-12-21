@@ -16,7 +16,7 @@ function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameSta
   const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 2}, receiver);
   const hpHealed = CommandUtil.heal(gs, { ...values, amount: 1}, receiver);
   const monster = GameStateUtil.getPlayerState(gs, player).activeMonster;
-  let message = `${monster.name} rested, `;
+  let message = `${player === 'P' ? 'You' : 'The opponent'} rested, `;
   if (numberOfCardsDrawn > 0) {
     message += ` drawing ${numberOfCardsDrawn} card${numberOfCardsDrawn > 1 ? 's' : ''}`
   }
@@ -31,7 +31,7 @@ function prepare(key: CardCompositeKey, player: PlayerType, receiver: UpdateGame
   const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 1}, receiver);
   const randomPipsGained = CommandUtil.gainRandomStatPip(gs, { ...values, amount: 3}, receiver);
   const monster = GameStateUtil.getPlayerState(gs, player).activeMonster;
-  let message = `${monster.name} prepared, ${randomPipsGained.message}`;
+  let message = `${player === 'P' ? 'You' : 'The opponent'} prepared, ${randomPipsGained.message}`;
   if (numberOfCardsDrawn) {
     message += ` and drew one card`
   }

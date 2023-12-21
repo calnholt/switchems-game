@@ -164,6 +164,9 @@ export class UpdateGameStateService {
       case 'END_PHASE':
         GamePhaseUtil.executeEndPhase(gs, this);
         break;
+      case 'GAME_OVER':
+        GamePhaseUtil.executeGameOver(gs, data);
+        break;
 
     }
   }

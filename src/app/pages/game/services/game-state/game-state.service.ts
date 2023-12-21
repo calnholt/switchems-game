@@ -9,6 +9,7 @@ import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
 import { BattleAnimationService } from '../battle-animation/battle-animation.service';
 import { Player } from '../../models/player/player.model';
 import { MonsterAction } from '../../models/monster/monster-action.model';
+import { GameOverService } from '../game-over/game-over.service';
 
 export interface GameState {
   p: PlayerState;
@@ -17,6 +18,7 @@ export interface GameState {
   battleAniService: BattleAnimationService;
   playerService: PlayerService;
   selectedActionService: SelectedActionService;
+  gameOverService: GameOverService;
   cpu: boolean;
   getFreshGameState: () => GameState;
 }
@@ -41,6 +43,7 @@ export class GameStateService {
     private selectedActionService: SelectedActionService,
     private seedableRngService: SeedableRngService,
     private battleAniService: BattleAnimationService,
+    private gameOverService: GameOverService,
   ) { }
 
   public getGameState(): GameState {
@@ -84,6 +87,7 @@ export class GameStateService {
       battleAniService: this.battleAniService,
       playerService: this.playerService,
       selectedActionService: this.selectedActionService,
+      gameOverService: this.gameOverService,
       cpu: true,
       getFreshGameState: this.getGameState,
     }

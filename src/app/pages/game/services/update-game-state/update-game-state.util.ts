@@ -18,6 +18,7 @@ import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
 import { CommandUtil } from "./command.util";
 import { ArrayUtil } from "~/app/shared/utils/array.util";
 import { StatBoardSectionType } from "../../models/stat-board/stat-board.model";
+import { GameOverPhaseCommand } from "../../logic/commands/game-phase-commands.model";
 
 export const UpdateGameStateUtil = {
   doMonsterAction,
@@ -284,6 +285,13 @@ function switchRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStat
 }
 
 function knockoutRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
+  if (isGameOver(gs, data.player)) {
+    new GameOverPhaseCommand(rc, {
+      ...data,
+      winner: GameStateUtil.getOppositePlayer(data.player),
+    }).pushFront();
+    return;
+  }
   const { inactiveMonsters } = GameStateUtil.getPlayerState(gs, data.player);
   const availableMonsters = inactiveMonsters.filter(m => m.currentHp !== 0);
    // switch to only other option without prompt
@@ -338,4 +346,10 @@ function drain(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService
   if (opposingMonster.currentHp === 0) {
     knockoutRoutine(gs, data, rc);
   }
+}
+
+function isGameOver(gs: GameState, player: PlayerType) {
+  const playerState = GameStateUtil.getPlayerState(gs, player);
+  const monsters = [playerState.activeMonster].concat(playerState.inactiveMonsters);
+  return monsters.reduce((accumulator, value) => accumulator + value.currentHp, 0) === 0;
 }

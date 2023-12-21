@@ -40,5 +40,12 @@ export class PlayerCardManager {
     this.hand$.next(this.hand);
   }
 
+  public reset() {
+    this.hand.reset();
+    this._hand$.next(this.hand);
+    this.discardPile.reset();
+    this.deck.reset();
+  }
+
 }
 

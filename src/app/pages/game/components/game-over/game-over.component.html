@@ -1,0 +1,11 @@
+<div id="game-over">
+  <div>
+    {{winner === 'P' ? 'You won!' : 'You lost!'}}
+  </div>
+  <sw-pushable-button>
+    <div class="acknowledge-button" (click)="playAgain()">Play Again</div>
+  </sw-pushable-button>
+  <sw-pushable-button>
+    <div class="acknowledge-button" (click)="returnToTitleScreen()">Return to title screen</div>
+  </sw-pushable-button>
+</div>

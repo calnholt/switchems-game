@@ -5,6 +5,7 @@ import { EventCommand, CommandData, EventCommandType } from '../../logic/command
 import { BehaviorSubject } from 'rxjs';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
 import { PlayerType } from '../../logic/player-type.mode';
+import { GameOverService } from '../game-over/game-over.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,23 @@ export class EventCommandQueueService {
 
   constructor(
     private currentPhaseService: CurrentPhaseService,
-  ) { }
+    private gameOverService: GameOverService,
+  ) { 
+    this.gameOverService.winner$.subscribe((value) => {
+      if (value) {
+        this.cleanup();
+      }
+    })
+  }
+
+  cleanup() {
+    this._queue.empty();
+    this._triggers = new Map<EventCommandType, EventCommand<CommandData>[]>();
+    this._event$.next(undefined);
+    this._isProcessing = false;
+    this._isAwaitingDecision = false;
+    this._isAwaitingAcknowledgement = false;
+  }
 
   public enqueue(event: EventCommand<CommandData>, force: boolean = false) {
     this._queue.enqueue(event);

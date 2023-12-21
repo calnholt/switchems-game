@@ -3,7 +3,7 @@ import { Player } from '../../models/player/player.model';
 import { MonsterDataService } from '~/app/shared/services/monster-data.service';
 import { ArrayUtil } from '~/app/shared/utils/array.util';
 import { Monster } from '../../models/monster/monster.model';
-import { Vulturock } from '../../logic/monsters/vulturock.model';
+import { CurrentPhaseService } from '../current-phase/current-phase.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +15,15 @@ export class PlayerService {
 
   constructor(
     private monsterService: MonsterDataService,
+    private currentPhaseService: CurrentPhaseService,
   ) {
     this._player = new Player(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'));
     this._opponent = new Player(this.getSpecificStart('Stalagrowth', 'Vulturock', 'Chargroar'));
-    this._player.playerCardManager.drawCard();
-    this._player.playerCardManager.drawCard();
-    this._opponent.playerCardManager.drawCard();
-    this._opponent.playerCardManager.drawCard();
+    this.currentPhaseService.currentPhase$.subscribe(value => {
+      if (value === 'START_OF_GAME') {
+        this.startGame();
+      }
+    });
   }
 
   public get player() { return this._player; }
@@ -35,6 +37,11 @@ export class PlayerService {
   public get oActiveMonster() { return this._opponent.activeMonster; }
   public get oInactiveMonsters() { return this._opponent.inactiveMonsters; }
   public get oStatBoard() { return this._opponent.statBoard; }
+
+  startGame() {
+    this._player.reset(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'))
+    this._opponent.reset(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'))
+  }
 
   getRandomStart(): Monster[] {
     const threeRandomMonsters = ArrayUtil.getRandomUniqueEntriesFromArray(

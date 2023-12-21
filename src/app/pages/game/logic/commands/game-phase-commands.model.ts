@@ -1,6 +1,7 @@
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { CommandData, EventCommand } from "./event-command.model";
 import { SelectedAction } from "../../services/selected-action/selected-action.model";
+import { PlayerType } from "../player-type.mode";
 
 export type GamePhaseCommandType = 
   | 'START_OF_GAME'
@@ -13,6 +14,7 @@ export type GamePhaseCommandType =
   | 'MONSTER_ACTIONS_PHASE'
   | 'STANDARD_ACTIONS_PHASE'
   | 'END_PHASE'
+  | 'GAME_OVER'
 
 export interface GamePhaseCommandData extends CommandData {
   
@@ -108,5 +110,18 @@ export class EndGamePhaseCommand extends EventCommand<GamePhaseCommandData> {
   }
   override getDisplayMessage(): string {
     return `end phase`;
+  }
+}
+
+export interface GameOverPhaseCommandData extends CommandData {
+  winner: PlayerType;
+}
+
+export class GameOverPhaseCommand extends EventCommand<GameOverPhaseCommandData> {
+  constructor(receiver: UpdateGameStateService, data: GameOverPhaseCommandData) {
+    super(receiver, 'GAME_OVER', data);
+  }
+  override getDisplayMessage(): string {
+    return ``;
   }
 }

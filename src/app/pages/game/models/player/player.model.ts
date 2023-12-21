@@ -43,5 +43,14 @@ export class Player {
   public cleanup() {
     
   }
+
+  public reset(monsters: Monster[]) {
+    this.activeMonster$.next(monsters.find(m => m.isActive) as Monster);
+    this.inactiveMonsters$.next(monsters.filter(m => !m.isActive));
+    this.playerCardManager.reset();
+    this.statBoard.reset();
+    this.playerCardManager.drawCard();
+    this.playerCardManager.drawCard();
+  }
   
 }

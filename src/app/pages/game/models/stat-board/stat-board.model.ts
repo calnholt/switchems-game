@@ -39,6 +39,12 @@ export class StatBoard {
     return types;
   }
 
+  reset() {
+    this.attack.clear();
+    this.defense.clear();
+    this.speed.clear();
+  }
+
 };
 
 export class StatBoardSection {

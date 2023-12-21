@@ -28,4 +28,8 @@ export class DiscardPile {
 
   removeMultiple(keys: CardCompositeKey[]) {return keys.map(this.remove); }
 
+  reset() {
+    this._cards = [];
+  }
+
 }

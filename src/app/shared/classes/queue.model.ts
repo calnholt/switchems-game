@@ -27,4 +27,8 @@ export class Dequeue<T> {
   size(): number {
     return this.items.length;
   }
+
+  empty(): void {
+    this.items = [];
+  }
 }

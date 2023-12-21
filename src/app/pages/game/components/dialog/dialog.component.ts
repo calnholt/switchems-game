@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EventCommandQueueService } from '../../services/event-command-queue/event-command-queue.service';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
+import { GameOverService, WinnerType } from '../../services/game-over/game-over.service';
 
 @Component({
   selector: 'sw-dialog',
@@ -14,6 +15,7 @@ import { BattleAnimationService } from '../../services/battle-animation/battle-a
   ]
 })
 export class DialogComponent {
+  @Input() hide: boolean = false;
 
   message: string = '';
   show: boolean = true;
@@ -22,7 +24,7 @@ export class DialogComponent {
   constructor(
     private ecqs: EventCommandQueueService,
     private currentPhaseService: CurrentPhaseService,
-    private battleAniService: BattleAnimationService
+    private battleAniService: BattleAnimationService,
   ) {
 
   }
@@ -36,7 +38,7 @@ export class DialogComponent {
       }, 300);
     });
     this.currentPhaseService.currentPhase$.subscribe((value) => {
-      if (value === 'SELECTION_PHASE') {
+      if (['SELECTION_PHASE', 'GAME_OVER'].includes(value)) {
         this.show = false;
         this.message = '';
       }

@@ -9,11 +9,15 @@ export class CurrentPhaseService {
   private _currentPhase = new BehaviorSubject<GamePhaseCommandType>('START_OF_GAME');
 
   // Observable that other services/components can subscribe to
-  currentPhase$ = this._currentPhase.asObservable();
+  readonly currentPhase$ = this._currentPhase.asObservable();
 
   public get currentPhase() { return this._currentPhase.value; }
 
   constructor() {}
+
+  public startGame() {
+    this._currentPhase.next('START_OF_GAME');
+  }
 
   // Method to transition to the next phase
   goToNextPhase() {

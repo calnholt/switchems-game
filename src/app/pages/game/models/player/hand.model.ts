@@ -30,4 +30,8 @@ export class Hand {
     this._cards = this._cards.filter(c => !keys.includes(c.key()));
   }
 
+  reset() {
+    this._cards = [];
+  }
+
 }

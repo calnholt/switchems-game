@@ -3,9 +3,11 @@ import { Buff } from "../monster/buff.model";
 
 export class Deck {
   private _cards: Buff[];
+  private _startingCards: Buff[];
 
   constructor(cards: Buff[]) {
     this._cards = cards;
+    this._startingCards = cards;
     this.shuffle();
   }
 
@@ -24,5 +26,9 @@ export class Deck {
    * @returns top card of of deck
    */
   draw(): Buff { return (this._cards.shift() as Buff); }
+
+  reset() {
+    this._cards = this._startingCards;
+  }
 
 }

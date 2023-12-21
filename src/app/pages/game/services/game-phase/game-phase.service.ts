@@ -18,8 +18,11 @@ export class GamePhaseService {
     private ugss: UpdateGameStateService,
     private currentPhaseService: CurrentPhaseService,
   ) {
-    // this.startGame();
     this.currentPhaseService.currentPhase$.subscribe((value) => {
+      if (value === 'GAME_OVER') {
+        this.loaded = false;
+        return;
+      }
       this.gameLoop(value);
     });
   }
@@ -29,7 +32,6 @@ export class GamePhaseService {
     if (gs.p.selectedAction.isCostFulfilled() && gs.o.selectedAction.isCostFulfilled()) {
       this.currentPhaseService.goToNextPhase();
     }
-    // gs.o.selectedAction.action = new StandardAction('PREPARE', []);
   }
 
   public startGame() {

@@ -17,21 +17,24 @@
 
     .hp-chunk:first-child {
       border-radius: 10px 0px 0px 10px;
+      border-left: 3px solid black;
     }
 
     .hp-chunk:last-child {
       border-radius: 0px 10px 10px 0px;
+      border-right: 3px solid black;
     }
 
     .hp-chunk:not(:last-child) {
-      border-right: 2px solid white;
+      border-right: 2px solid black;
     }
 
     .hp-chunk {
       height: 15px;
       width: 100%;
       background-color: red;
-
+      border-top: 3px solid black;
+      border-bottom: 3px solid black;
       &.damaged {
         background-color: black;
       }
