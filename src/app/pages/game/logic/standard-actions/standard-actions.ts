@@ -1,9 +1,6 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { PlayerType } from "../player-type.mode";
-import { HealCommand } from "../commands/stat-modification-command.model";
-import { DrawCommand } from "../commands/hand-commands.model";
-import { GainRandomStatPipCommand } from "../commands/stat-pip-commands.model";
 import { GameState } from "../../services/game-state/game-state.service";
 import { GameStateUtil } from "../../services/game-state/game-state.util";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
@@ -24,7 +21,7 @@ function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameSta
     message += ` drawing ${numberOfCardsDrawn} card${numberOfCardsDrawn > 1 ? 's' : ''}`
   }
   if (hpHealed > 0) {
-    message += ` ${hpHealed > 0 ? 'and ' : ''}healed 1 HP`;
+    message += ` ${hpHealed > 0 ? 'and ' : ''}healing 1 HP`;
   }
   message += '.';
   new DescriptiveMessageCommand(receiver, { ...values, message: message }).enqueue();
