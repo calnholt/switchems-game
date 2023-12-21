@@ -1,0 +1,16 @@
+<div id="status-effects" *ngIf="displayStatuses.length">
+  <div class="icon-container">
+    <img [src]="statusIcon" />
+  </div>
+  <div *ngIf="displayStatuses.length" class="mods-container">
+    <div class="mod" *ngFor="let status of displayStatuses, index as i"  [ngClass]="{'middle' : displayStatuses.length !== 1 && (i < displayStatuses.length - 1)}">
+      <span  
+        [@fadeInOnEnter]
+        [@fadeOutOnLeave] 
+        class="text"
+      >
+          {{status}}
+      </span>
+    </div>
+  </div>
+</div>

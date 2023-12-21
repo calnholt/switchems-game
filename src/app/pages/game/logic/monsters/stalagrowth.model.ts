@@ -2,6 +2,7 @@ import { GameStateUtil } from "../../services/game-state/game-state.util";
 import { CommandUtil } from "../../services/update-game-state/command.util";
 import { UpdateGameStateUtil } from "../../services/update-game-state/update-game-state.util";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
+import { ApplyDrainStatus, DrainCommand, RemoveStatusEffectsCommand } from "../commands/monster-action-commands.model";
 import { ApplyFlinchCommand, HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
 import { CrushCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { MonsterLogic } from "./monster-logic.model";
@@ -17,10 +18,51 @@ export class Stalagrowth extends MonsterLogic {
     }).pushFront();
   }
   override action1(): void {
-    // throw new Error("Method not implemented.");
+    new ApplyDrainStatus(this.rc, {
+      ...this.data,
+      origin: 'Gravelcrust Grip',
+      display: true,
+    }).pushFront();
+    new StatModificationCommand(this.rc, {
+      ...this.data,
+      amount: 3,
+      statType: 'RECOIL',
+      origin: 'Gravelcrust Grip',
+      display: true,
+    }).pushFront();
+    if (this.gs.p.statBoard.defense.current === 0) {
+      new GainStatPipCommand(this.rc,{
+        ...this.data,
+        amount: 3,
+        statType: 'DEFENSE',
+        origin: 'Gravelcrust Grip',
+        display: true,
+      }).pushFront();
+    }
   }
   override action2(): void {
-    // throw new Error("Method not implemented.");
+    const { activeMonster, selectedAction } = GameStateUtil.getOpponentPlayerState(this.gs, this.data.player);
+    const numOfStatuses = activeMonster.modifiers.modifiers.filter(m => m.status()).length;
+    if (numOfStatuses > 0) {
+      new RemoveStatusEffectsCommand(this.rc, {
+        ...this.data,
+        player: GameStateUtil.getOppositePlayer(this.data.player),
+      }).pushFront();
+      new StatModificationCommand(this.rc, {
+        ...this.data,
+        amount: 3 * numOfStatuses,
+        statType: 'ATTACK',
+        origin: 'Vine Whips',
+        display: true,
+      }).pushFront();
+    }
+    if (selectedAction.action.getSelectableActionType() === 'SWITCH') {
+      new ApplyDrainStatus(this.rc, {
+        ...this.data,
+        origin: 'Vine Whips',
+        display: true,
+      }).pushFront();
+    }
   }
   override action3(): void {
     new ApplyFlinchCommand(this.rc, {

@@ -2,7 +2,7 @@ import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, KnockedOutByAttackCommand, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
+import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, DrainCommand, KnockedOutByAttackCommand, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, RemoveStatusEffectsCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { CrushCommandData, CrushPromptCommand, CrushPromptCommandData, GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { HealCommand, HealCommandData, StatModificationCommand, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
@@ -23,7 +23,7 @@ export const UpdateGameStateUtil = {
   doMonsterAction,
   applyBuff,
   applyFlinch,
-  applyStatusEffect,
+  applyStatusDrain,
   applyStatPips,
   dealAttackDamage,
   dealDamage,
@@ -36,6 +36,7 @@ export const UpdateGameStateUtil = {
   speedReversed,
   flinched,
   removeStatusEffect,
+  removeStatusEffects,
   weak,
   gainSwitchDefense,
   resistant,
@@ -46,6 +47,7 @@ export const UpdateGameStateUtil = {
   knockoutRoutine,
   crush,
   crushPrompt,
+  drain,
 }
 
 function skipActionAndDamage(gs: GameState, data: CommandData): boolean {
@@ -58,6 +60,10 @@ function skipActionAndDamage(gs: GameState, data: CommandData): boolean {
 function doMonsterAction(gs: GameState, data: MonsterActionCommandData, rc: UpdateGameStateService) {
   if (skipActionAndDamage(gs, data,)) {
     return;
+  }
+  const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
+  if (action?.isStatus) {
+    new RecoilCheckCommand(rc, { ...data }).pushFront();
   }
   data.doMonsterAction();
 }
@@ -83,10 +89,23 @@ function applyFlinch(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.modifiers.add(getMonsterModifier(monster.key(), 'FLINCH'));
 }
-function applyStatusEffect(gs: GameState, data: ApplyStatusEffectCommandData) {
+
+function applyStatusDrain(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier(monster.key(), data.statusName, 0, true))
+  const opposingMonster = GameStateUtil.getOpponentPlayerState(gs, data.player).activeMonster;
+  opposingMonster.modifiers.add(getMonsterModifier(opposingMonster.key(), 'DRAIN', 0, true));
+  new DrainCommand(rc, {
+    ...data,
+    display: true,
+    triggerCondition: (command: EventCommand<CommandData>) => {
+      const freshGs = gs.getFreshGameState();
+      const monster = GameStateUtil.getMonsterByPlayer(freshGs, command.data.player);
+      const opposingMonster = GameStateUtil.getOpponentPlayerState(freshGs, command.data.player).activeMonster;
+      return monster.currentHp < opposingMonster.currentHp;
+    },
+  }).executeAsTrigger('END_PHASE');
 }
+
 function applyStatPips(gs: GameState, data: StatPipCommandData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.modifiers.add(getMonsterModifier('pip', data.statType, data.amount))
@@ -184,6 +203,12 @@ function removeStatusEffect(gs: GameState, data: ApplyStatusEffectCommandData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.modifiers.remove(data.statusName);
 }
+
+function removeStatusEffects(gs: GameState, data: BasicCommandData) {
+  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
+  monster.modifiers.removeStatusEffects();
+}
+
 function weak(data: CommandData, rc: UpdateGameStateService) {
   // when a monster is weak, push random pip event for super effective
   return new GainRandomStatPipCommand(rc, { ...data, amount: 1 });
@@ -208,17 +233,21 @@ function resistant(gs: GameState, data: BasicCommandData, rc: UpdateGameStateSer
 // clean up triggers
 // add new triggers
 function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
-  let switchingToMonster = GameStateUtil.getSwitchingToMonster(gs, data.player);
+  const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
+  const switchingToMonster = GameStateUtil.getSwitchingToMonster(gs, data.player);
   const commands = [];
   if (data.type === 'HEAL' && !switchingToMonster.isAtFullHP()) {
     commands.push(new HealCommand(rc, { ...data, amount: 2, origin: 'Switch Out', display: true}));
   }
+  else if (data.type === 'REMOVE_STATUS') {
+    commands.push(new RemoveStatusEffectsCommand(rc, { ...data, display: true}));
+  }
+  activeMonster.actions.forEach(a => a.setLocked(false));
   commands.push(new SwitchInCommand(rc, { ...data, player: data.player, monsterName: switchingToMonster.name, display: true }));
   commands.reverse().forEach(cmd => cmd.pushFront());
 }
 
 function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
-  const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
   const { activeMonster, player } = GameStateUtil.getPlayerState(gs, data.player);
   const { selectedAction: opponentAction } = GameStateUtil.getOpponentPlayerState(gs, data.player);
   gs.battleAniService.update(data.player === 'P', 'SWITCHING_OUT');
@@ -228,10 +257,11 @@ function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSer
   if (opponentAction.action.getSelectableActionType() === 'MONSTER') {
     new StatModificationCommand(rc, { ...data, statType: 'SWITCH_IN_DEFENSE', amount: activeMonster.getSwitchDefenseValue(), display: false }).pushFront();
   }
+  const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
   new MonsterActionCommand(rc, { 
     ...data,
     ...monsterNames,
-    doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs) },
+    doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs.getFreshGameState()) },
   }).pushFrontDecision();
 }
 
@@ -298,4 +328,14 @@ function crushPrompt(gs: GameState, data: CrushPromptCommandData, rc: UpdateGame
 function crush(gs: GameState, data: CrushCommandData, rc: UpdateGameStateService) {
   const { statBoard } = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(data.player));
   data.selections.forEach(s => statBoard.remove(s.amount, s.statType));
+}
+
+function drain(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
+  const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
+  const { activeMonster: opposingMonster } = GameStateUtil.getOpponentPlayerState(gs, data.player);
+  activeMonster.heal(1);
+  opposingMonster.takeDamage(1);
+  if (opposingMonster.currentHp === 0) {
+    knockoutRoutine(gs, data, rc);
+  }
 }

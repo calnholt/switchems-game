@@ -13,7 +13,10 @@ export type MONSTER_ACTION_COMMANDS =
   | 'TAKE_RECOIL_DAMAGE'
   | 'RECOIL_CHECK'
   | 'APPLY_STATUS_EFFECT'
+  | 'APPLY_DRAIN_STATUS'
+  | 'DRAIN'
   | 'REMOVE_STATUS_EFFECT'
+  | 'REMOVE_STATUS_EFFECTS'
   | 'DISABLE_ACTION_PROMPT'
 
 
@@ -120,7 +123,22 @@ export class KnockedOutByAttackCommand extends EventCommand<BasicCommandData> {
 export interface ApplyStatusEffectCommandData extends BasicCommandData {
   statusName: 'DRAIN' | 'FATIGUE' | 'WOUND' | 'STUN';
 }
-
+export class ApplyDrainStatus extends EventCommand<BasicCommandData> {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+    super(receiver, 'APPLY_DRAIN_STATUS', data);
+  }
+  override getDisplayMessage(): string {
+    return `${this.data.opponentMonsterName} became drained!`;
+  }
+}
+export class DrainCommand extends EventCommand<BasicCommandData> {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+    super(receiver, 'DRAIN', data);
+  }
+  override getDisplayMessage(): string {
+    return `1HP was drained from ${this.data.opponentMonsterName}!`;
+  }
+}
 export class ApplyStatusCommand extends EventCommand<ApplyStatusEffectCommandData> {
   constructor(receiver: UpdateGameStateService, data: ApplyStatusEffectCommandData) {
     super(receiver, 'APPLY_STATUS_EFFECT', data);
@@ -135,6 +153,14 @@ export class RemoveStatusCommand extends EventCommand<ApplyStatusEffectCommandDa
   }
   override getDisplayMessage(): string {
     return `${this.data.statusName} was removed from ${this.data.monsterName}.`;
+  }
+}
+export class RemoveStatusEffectsCommand extends EventCommand<BasicCommandData> {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+    super(receiver, 'REMOVE_STATUS_EFFECTS', data);
+  }
+  override getDisplayMessage(): string {
+    return `${this.data.monsterName} removed its status effects.`;
   }
 }
 export class DisableActionPromptCommand extends EventCommand<BasicCommandData> {

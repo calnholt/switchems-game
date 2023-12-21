@@ -30,6 +30,7 @@ export const ImageUtil = {
     pierce: getSymbolsPath('pierce'),
     lock: getSymbolsPath('lock'),
     hand: getSymbolsPath('hand-of-cards'),
+    statusEffect: getSymbolsPath('wound'),
   },
   monsters: {
     Chargroar: getMonstersPath('chargroar'),

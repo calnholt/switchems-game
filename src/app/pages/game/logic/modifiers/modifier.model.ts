@@ -5,6 +5,7 @@ export class Modifiers<T> {
   private _modifiers: Modifier<T>[] = [];
   
   public readonly modifiers$ = new Subject<Modifier<T>[]>();
+  public get modifiers(): Modifier<T>[] { return this._modifiers; }
 
   getByType(type: T): Modifier<T>[] {
     return this._modifiers.filter(m => m.type === type);
@@ -31,7 +32,12 @@ export class Modifiers<T> {
     this.modifiers$.next(this._modifiers);
   }
 
-  hasStatusEffect(): boolean { return !!this._modifiers.find(m => m.statusEffect); }
+  hasStatusEffect(): boolean { return !!this._modifiers.find(m => m.status()); }
+
+  removeStatusEffects(): void {
+    this._modifiers = this._modifiers.filter(m => !m.status());
+    this.modifiers$.next(this._modifiers);
+  }
 
 }
 
@@ -56,6 +62,14 @@ export class Modifier<T> {
       'ATTACK',
       'SPEED',
       'PIERCE',
+    ].includes(this.type as string);
+  }
+  status() {
+    return [
+      'DRAIN',
+      'WOUND',
+      'STUN',
+      'FATIGUE',
     ].includes(this.type as string);
   }
 };

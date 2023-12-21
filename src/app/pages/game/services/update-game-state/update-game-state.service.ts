@@ -6,7 +6,6 @@ import { EventCommandQueueService } from '../event-command-queue/event-command-q
 import { GamePhaseUtil } from './game-phase.util';
 import { CommandUtil } from './command.util';
 import { KnockedOutCommand } from '../../logic/commands/monster-action-commands.model';
-import { GameStateUtil } from '../game-state/game-state.util';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +31,8 @@ export class UpdateGameStateService {
       case 'APPLY_FLINCH': 
         UpdateGameStateUtil.applyFlinch(gs, data);
         break;
-      case 'APPLY_STATUS_EFFECT':
-        UpdateGameStateUtil.applyStatusEffect(gs, data);
+      case 'APPLY_DRAIN_STATUS':
+        UpdateGameStateUtil.applyStatusDrain(gs, data, this);
         break;
       case 'APPLY_STAT_PIPS':
         UpdateGameStateUtil.applyStatPips(gs, data);
@@ -55,6 +54,9 @@ export class UpdateGameStateService {
         break;
       // TODO: requires decision
       case 'DISCARD_PIPS':
+        break;
+      case 'DRAIN':
+        UpdateGameStateUtil.drain(gs, data, this);
         break;
       case 'DRAW':
       case 'DRAW_FROM_ICON':
@@ -104,6 +106,9 @@ export class UpdateGameStateService {
         break;
       case 'REMOVE_STATUS_EFFECT':
         UpdateGameStateUtil.removeStatusEffect(gs, data);
+        break;
+      case 'REMOVE_STATUS_EFFECTS':
+        UpdateGameStateUtil.removeStatusEffects(gs, data);
         break;
       case 'RESISTANT':
         UpdateGameStateUtil.resistant(gs, data, this);

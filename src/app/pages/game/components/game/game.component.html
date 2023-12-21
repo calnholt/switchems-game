@@ -7,8 +7,9 @@
       <sw-stat-board [statBoard]="statBoard" />
       <div class="monsters-container">
         <div class="monster-container">
-          <div>
+          <div class="modifier-container">
             <sw-modifiers [modifiers]="modifiers" />
+            <sw-status-effects [modifiers]="modifiers" />
           </div>
           <div>
             <sw-monster [monster]="activeMonster" [isActiveMonster]="true" />
@@ -18,8 +19,9 @@
           <div>
             <sw-monster [monster]="oActiveMonster" [isActiveMonster]="true" [isOpponent]="true" [cardsInMyOpponentsHand]="cardsInMyOpponentsHand" />
           </div>
-          <div>
+          <div class="modifier-container">
             <sw-modifiers [modifiers]="oModifiers" />
+            <sw-status-effects [modifiers]="oModifiers" />
           </div>
         </div>
       </div>
