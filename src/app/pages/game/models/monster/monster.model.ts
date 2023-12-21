@@ -46,6 +46,7 @@ export class Monster implements IHaveTooltip, ISelectableAction {
     this._initiative = initiative;
     this._actions = actions;
     this._buffs = buffs;
+    // this._currentHp = 1;
     this._currentHp = hp;
 
     this._effectivenessArray = this.getEffectivenessArray();
