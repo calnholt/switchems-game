@@ -30,6 +30,12 @@
   // height: 924px;
   padding-bottom: 10px;
 
+  .modifier-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
   
   .monsters-container {
     display: flex;
