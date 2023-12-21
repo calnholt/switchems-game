@@ -1,9 +1,8 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyBuffCommand, BuffCommand } from "../../logic/commands/buff-command.model";
-import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, RevealGamePhaseCommandData, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, StartGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
+import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, StartGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
-import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
-import { DealAttackDamageCommand, FasterCommand, MonsterActionCommand, RecoilCheckCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
+import { DealAttackDamageCommand, FasterCommand, MonsterActionCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
 import { SwitchRoutineCommand } from "../../logic/commands/switch-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
@@ -11,7 +10,6 @@ import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
 import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { SelectedAction } from "../selected-action/selected-action.model";
-import { CommandUtil } from "./command.util";
 import { UpdateGameStateService } from "./update-game-state.service";
 import { CPUActionSelectUtil } from "./cpu-action-select.util";
 
@@ -95,10 +93,14 @@ function executeRevealPhase(gs: GameState, rc: UpdateGameStateService) {
 
   function reveal(player: PlayerType) {
     const { selectedAction, playerCardManager, activeMonster } = GameStateUtil.getPlayerState(gs, player);
+    const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
       // move buffs and discards
       playerCardManager.cleanup(selectedAction.appliedBuffs);
       playerCardManager.cleanup(selectedAction.appliedDiscards);
       activeMonster.setDisabledActions(selectedAction.action.key());
+      if (action?.isSingleUse) {
+        action.setLocked(true);
+      }
   }
 
   reveal(playerWithInitiative);
