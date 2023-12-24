@@ -19,6 +19,7 @@ export class Vulturock extends MonsterLogic {
 
     new HealCommand(this.rc, {
       ...this.data,
+      key: 'VULTUROCK_A3',
       amount: 6,
       origin: "Scavenge",
       display: true,

@@ -30,6 +30,7 @@ export const ICON_PATH: Path = `./assets/images`;
 export const BACKGROUNDS_PATH = ICON_PATH + `/backgrounds/`;
 export const SYMBOLS_PATH: Path = ICON_PATH + `/symbols/`;
 export const MONSTERS_PATH: Path = ICON_PATH + `/monsters/`;
+export const AVATARS_PATH: Path = ICON_PATH + `/avatars/`;
 export const ELEMENT_PATH_COLOR: Path = ICON_PATH + `/elements/color/`;
 export const ELEMENT_PATH_GRAY: Path = ICON_PATH + `/elements/gray/`;
 export const HP_PATH: Path = SYMBOLS_PATH + `/hp/`;

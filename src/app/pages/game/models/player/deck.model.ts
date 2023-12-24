@@ -27,8 +27,9 @@ export class Deck {
    */
   draw(): Buff { return (this._cards.shift() as Buff); }
 
-  reset() {
-    this._cards = this._startingCards;
+  reset(cards: Buff[]) {
+    this._cards = cards;
+    this.shuffle();
   }
 
 }

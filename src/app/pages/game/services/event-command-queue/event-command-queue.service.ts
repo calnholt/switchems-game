@@ -28,7 +28,7 @@ export class EventCommandQueueService {
     private gameOverService: GameOverService,
   ) { 
     this.gameOverService.winner$.subscribe((value) => {
-      if (value) {
+      if (!value) {
         this.cleanup();
       }
     })
@@ -90,7 +90,7 @@ export class EventCommandQueueService {
   // some events require the player to make inputs, which effectively pauses the queue
 
   public processQueue() {
-    if (this._isProcessing) {
+    if (this._isProcessing && !this._queue.isEmpty()) {
       return;
     }
     this._isProcessing = true;
@@ -199,8 +199,9 @@ export class EventCommandQueueService {
     console.log('triggers before switch', this._triggers);
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
-      this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[])
-        .filter(cmd => !cmd.data.monsterActionTrigger && cmd.data.player === playerType));
+      const filteredTriggers = (this._triggers.get(key) as EventCommand<CommandData>[])
+      .filter(cmd => cmd.data.monsterActionTrigger && cmd.data.player !== playerType);
+      this._triggers.set(key, filteredTriggers);
     });
     console.log('triggers after switch', this._triggers);
   }

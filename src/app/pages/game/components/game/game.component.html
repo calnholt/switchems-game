@@ -1,4 +1,5 @@
 <div id="arena" [class]="arena">
+  <sw-game-over [winner]="winner" />
   <div id="game">
     <div *ngIf="!winner">
       <div class="opponent-container"></div>
@@ -60,5 +61,3 @@
 <sw-switch-out-dialog />
 <sw-koswitch-out-dialog />
 <sw-crush-dialog />
-
-<sw-game-over [winner]="winner" />

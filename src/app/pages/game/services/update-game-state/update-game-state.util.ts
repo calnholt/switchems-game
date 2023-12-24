@@ -2,7 +2,7 @@ import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, DrainCommand, KnockedOutByAttackCommand, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, RemoveStatusEffectsCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
+import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, DrainCommand, KnockedOutByAttackCommand, KnockedOutCommand, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, RemoveStatusEffectsCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { CrushCommandData, CrushPromptCommand, CrushPromptCommandData, GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { HealCommand, HealCommandData, StatModificationCommand, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
@@ -52,10 +52,11 @@ export const UpdateGameStateUtil = {
 }
 
 function skipActionAndDamage(gs: GameState, data: CommandData): boolean {
-  const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
+  const { activeMonster, monsterAction } = GameStateUtil.getPlayerState(gs.getFreshGameState(), data.player);
   const isKOd = activeMonster.currentHp === 0;
+  const wasKOdThisTurn = !!(monsterAction && monsterAction.monsterName !== activeMonster.name);
   const isFlinched = activeMonster.modifiers.contains('FLINCHED');
-  return isKOd || isFlinched;
+  return isKOd || isFlinched || wasKOdThisTurn;
 }
 
 function doMonsterAction(gs: GameState, data: MonsterActionCommandData, rc: UpdateGameStateService) {
@@ -141,13 +142,16 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
     commands.push(new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, display: true, ...monsterNames }));
   }
   if (opposingMonster.currentHp === 0) {
-    commands.push(new KnockedOutByAttackCommand(rc, { key: opposingMonster.key(), player: opponentPlayer, ...monsterNames, display: true }));
+    commands.push(new KnockedOutByAttackCommand(rc, { key: action.key(), player, ...monsterNames }));
+    commands.push(new KnockedOutCommand(rc, { key: action.key(), player, ...monsterNames, display: true }));
   }
   if (damage > 0 && GameStateUtil.isWeak(gs, data.player) && !action.isStatus) {
-    new WeakCommand(rc, { key, player: GameStateUtil.getOppositePlayer(player) }).enqueue();
-    const pip = CommandUtil.gainRandomStatPip(gs, { key, player, amount: 1 }, rc);
-    const msg = `The attack was super effective! ${monsterNames.monsterName} gained 1 ${pip.attack ? 'attack' : ''}${pip.speed ? 'speed' : ''}${pip.defense ? 'defense' : ''} pip.`
-    commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message: msg }));
+    commands.push(new WeakCommand(rc, { key, player: GameStateUtil.getOppositePlayer(player) }));
+    commands.push(new GainRandomStatPipCommand(rc, {
+      ...data,
+      amount: 1,
+      superEffective: true,
+    }));
   }
   commands.push(new RecoilCheckCommand(rc, { key, player, ...monsterNames }));
   commands.reverse().forEach(cmd => cmd.pushFront());
@@ -285,29 +289,29 @@ function switchRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStat
 }
 
 function knockoutRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
-  if (isGameOver(gs, data.player)) {
+  const kodPlayer = GameStateUtil.getOppositePlayer(data.player);
+  if (isGameOver(gs, kodPlayer)) {
     new GameOverPhaseCommand(rc, {
       ...data,
-      winner: GameStateUtil.getOppositePlayer(data.player),
+      winner: data.player,
     }).pushFront();
     return;
   }
-  const { inactiveMonsters } = GameStateUtil.getPlayerState(gs, data.player);
+  const { inactiveMonsters } = GameStateUtil.getPlayerState(gs, kodPlayer);
   const availableMonsters = inactiveMonsters.filter(m => m.currentHp !== 0);
    // switch to only other option without prompt
   if (availableMonsters.length === 1) {
     const monsterToSwitchTo = availableMonsters[0];
-    new SwitchInCommand(rc, { ...data, player: data.player, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
+    new SwitchInCommand(rc, { ...data, player: kodPlayer, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
   }
   // cpu chooses randomly
-  else if (data.player === 'O' && gs.cpu) {
+  else if (kodPlayer === 'O' && gs.cpu) {
     const monsterToSwitchTo = availableMonsters[gs.rng.randomIntOption(2)];
-    switchIn(gs, { ...data, key: monsterToSwitchTo.key() }, rc);
-    new SwitchInCommand(rc, { ...data, player: data.player, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
+    new SwitchInCommand(rc, { ...data, player: kodPlayer, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
   }
   else {
     const options = inactiveMonsters.map(m => { return { name: m.name, key: m.key() }});
-    new KnockedOutSwitchInPromptCommand(rc, { ...data, options }).pushFront();
+    new KnockedOutSwitchInPromptCommand(rc, { ...data, player: kodPlayer, options }).pushFront();
   }
 }
 
@@ -318,7 +322,8 @@ function crushPrompt(gs: GameState, data: CrushPromptCommandData, rc: UpdateGame
     const options = ArrayUtil.randomizeOrder(
       [...Array(statBoard.attack).keys()].map(v => 'ATTACK')
         .concat([...Array(statBoard.attack).keys()].map(v => 'DEFENSE'))
-        .concat([...Array(statBoard.attack).keys()].map(v => 'SPEED'))
+        .concat([...Array(statBoard.attack).keys()].map(v => 'SPEED')),
+      gs.rng.randomFloat,
     );
     const decisions = [ ...Array(total).keys() ].map(o => options.pop());
     const selections: { amount: number, statType: StatBoardSectionType }[] = [
@@ -344,7 +349,10 @@ function drain(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService
   activeMonster.heal(1);
   opposingMonster.takeDamage(1);
   if (opposingMonster.currentHp === 0) {
-    knockoutRoutine(gs, data, rc);
+    // TODO: check if this is the correct player
+    new KnockedOutCommand(rc, {
+      ...data
+    }).pushFront();
   }
 }
 

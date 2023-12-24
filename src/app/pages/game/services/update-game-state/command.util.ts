@@ -1,4 +1,5 @@
 import { DrawCommand, HandCommandData } from "../../logic/commands/hand-commands.model";
+import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 import { HealCommand, HealCommandData } from "../../logic/commands/stat-modification-command.model";
 import { GainRandomStatPipCommandData, GainStatPipCommand } from "../../logic/commands/stat-pip-commands.model";
 import { GameState } from "../game-state/game-state.service";
@@ -40,9 +41,15 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
       wasRandom: true 
     }).pushFront();
   }
-  return { 
-    attack, speed, defense, 
-    message: `gaining ${attack > 0 ? ` ${attack} attack` : ''}${speed > 0 ? ` ${speed} speed` : ''}${defense > 0 ? ` ${defense} defense`  : ''} pips`};
+  let message = `${data?.monsterName ?? ''} gained ${attack > 0 ? ` ${attack} attack` : ''}${speed > 0 ? ` ${speed} speed` : ''}${defense > 0 ? ` ${defense} defense`  : ''} pips`;
+  if (data.display) {
+    if(data.superEffective) {
+      message = `The attack was super effective! ${message}`
+    }
+    new DescriptiveMessageCommand(rc, { ...data, message }).pushFront();
+  }
+  return { attack, speed, defense, message }
+
 }
 
 function draw(gs: GameState, data: HandCommandData, rc: UpdateGameStateService) {

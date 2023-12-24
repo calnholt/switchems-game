@@ -9,7 +9,7 @@ export type WinnerType = PlayerType | null;
 })
 export class GameOverService {
 
-  private _winner = new BehaviorSubject<WinnerType>('P');
+  private _winner = new BehaviorSubject<WinnerType>(null);
   public get winner$() { return this._winner; }
   public get winner() { return this._winner.value; }
 

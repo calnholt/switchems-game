@@ -1,4 +1,4 @@
-import { BACKGROUNDS_PATH } from './../types/dataTypes';
+import { AVATARS_PATH, BACKGROUNDS_PATH } from './../types/dataTypes';
 import { ELEMENT_PATH_COLOR, ElemType, MONSTERS_PATH, Path, SYMBOLS_PATH } from "../types/dataTypes";
 
 export const ImageUtil = {
@@ -42,12 +42,17 @@ export const ImageUtil = {
     Vulturock: getMonstersPath('vulturock'),
     Willard: getMonstersPath('whailstrom'),
     Zappguin: getMonstersPath('zappguin'),
+  },
+  avatars: {
+    win: getAvatarsPath('win-avatar'),
+    lose: getAvatarsPath('lose-avatar'),
   }
 }
 
 function getElementsPath(name: ElemType): Path { return `${ELEMENT_PATH_COLOR}${name.toLowerCase()}.png` };
 function getSymbolsPath(name: string): Path { return `${SYMBOLS_PATH}${name.toLowerCase()}.png` };
 function getMonstersPath(name: string): Path { return `${MONSTERS_PATH}${name.toLowerCase()}.png` };
+function getAvatarsPath(name: string): Path { return `${AVATARS_PATH}${name.toLowerCase()}.png` };
 function getBuffBackgroundPath(elements: ElemType[]): Path {
   const elemJoin = elements.map(e => e.toString().toLowerCase()).join("");
   return `${BACKGROUNDS_PATH}${elemJoin}.png`

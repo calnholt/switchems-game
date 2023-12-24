@@ -3,7 +3,6 @@ import { EventCommandQueueService } from '../../services/event-command-queue/eve
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
-import { GameOverService, WinnerType } from '../../services/game-over/game-over.service';
 
 @Component({
   selector: 'sw-dialog',
@@ -38,14 +37,14 @@ export class DialogComponent {
       }, 300);
     });
     this.currentPhaseService.currentPhase$.subscribe((value) => {
-      if (['SELECTION_PHASE', 'GAME_OVER'].includes(value)) {
+      if (['SELECTION_PHASE'].includes(value)) {
         this.show = false;
         this.message = '';
       }
     });
     this.battleAniService.battleAniState$.subscribe((state) => {
       this.allowNext = !state.isAnimating();
-    })
+    });
   }
 
   next() {

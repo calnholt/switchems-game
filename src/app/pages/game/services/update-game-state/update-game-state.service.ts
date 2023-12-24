@@ -85,7 +85,6 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.knockoutRoutine(gs, data, this);
         break;
       case 'KNOCKED_OUT_BY_ATTACK':
-        new KnockedOutCommand(this, { ...data, display: false }).enqueue();
         break;
       case 'MODIFY_STAT':
         UpdateGameStateUtil.modifyStat(gs, data);

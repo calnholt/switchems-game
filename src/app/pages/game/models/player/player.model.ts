@@ -47,7 +47,7 @@ export class Player {
   public reset(monsters: Monster[]) {
     this.activeMonster$.next(monsters.find(m => m.isActive) as Monster);
     this.inactiveMonsters$.next(monsters.filter(m => !m.isActive));
-    this.playerCardManager.reset();
+    this.playerCardManager.reset(monsters[0].buffs.concat(monsters[1].buffs).concat(monsters[2].buffs));
     this.statBoard.reset();
     this.playerCardManager.drawCard();
     this.playerCardManager.drawCard();

@@ -108,7 +108,7 @@ export class KnockedOutCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'KNOCKED_OUT', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} was KO'd!`;
+    return `${this.data.opponentMonsterName} was KO'd!`;
   }
 }
 export class KnockedOutByAttackCommand extends EventCommand<BasicCommandData> {

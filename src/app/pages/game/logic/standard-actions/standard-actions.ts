@@ -2,7 +2,6 @@ import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interfac
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { PlayerType } from "../player-type.mode";
 import { GameState } from "../../services/game-state/game-state.service";
-import { GameStateUtil } from "../../services/game-state/game-state.util";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { CommandUtil } from "../../services/update-game-state/command.util";
 
@@ -15,7 +14,6 @@ function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameSta
   const values = { key, player };
   const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 2}, receiver);
   const hpHealed = CommandUtil.heal(gs, { ...values, amount: 1}, receiver);
-  const monster = GameStateUtil.getPlayerState(gs, player).activeMonster;
   let message = `${player === 'P' ? 'You' : 'The opponent'} rested, `;
   if (numberOfCardsDrawn > 0) {
     message += ` drawing ${numberOfCardsDrawn} card${numberOfCardsDrawn > 1 ? 's' : ''}`
@@ -30,7 +28,6 @@ function prepare(key: CardCompositeKey, player: PlayerType, receiver: UpdateGame
   const values = { key, player };
   const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 1}, receiver);
   const randomPipsGained = CommandUtil.gainRandomStatPip(gs, { ...values, amount: 3}, receiver);
-  const monster = GameStateUtil.getPlayerState(gs, player).activeMonster;
   let message = `${player === 'P' ? 'You' : 'The opponent'} prepared, ${randomPipsGained.message}`;
   if (numberOfCardsDrawn) {
     message += ` and drew one card`
