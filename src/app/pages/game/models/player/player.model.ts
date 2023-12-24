@@ -3,6 +3,7 @@ import { Monster } from "../monster/monster.model";
 import { StatBoard } from "../stat-board/stat-board.model";
 import { PlayerCardManager } from "./player-card-manager.model";
 import { BehaviorSubject } from "rxjs";
+import { SeedableRngService } from "../../services/seedable-rng/seedable-rng.service";
 
 export class Player {
   private _activeMonster: BehaviorSubject<Monster>;
@@ -10,13 +11,14 @@ export class Player {
   private _statBoard = new BehaviorSubject(new StatBoard());
   private _playerCardManager: BehaviorSubject<PlayerCardManager>;
 
-  constructor(monsters: Monster[]) {
+  constructor(monsters: Monster[], rng: SeedableRngService) {
     this._activeMonster = new BehaviorSubject(monsters.find(m => m.isActive) as Monster);
     this._inactiveMonsters = new BehaviorSubject(monsters.filter(m => !m.isActive));
     this._playerCardManager = new BehaviorSubject(new PlayerCardManager(
       this.activeMonster.buffs
         .concat(this.inactiveMonsters[0].buffs)
-        .concat(this.inactiveMonsters[1].buffs)
+        .concat(this.inactiveMonsters[1].buffs),
+        rng
     ));
   }
 

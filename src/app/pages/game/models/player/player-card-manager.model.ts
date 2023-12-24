@@ -3,15 +3,15 @@ import { Buff } from "../monster/buff.model";
 import { Deck } from "./deck.model";
 import { DiscardPile } from "./discard-pile.model";
 import { Hand } from "./hand.model";
-import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
+import { SeedableRngService } from "../../services/seedable-rng/seedable-rng.service";
 
 export class PlayerCardManager {
   private _hand$: BehaviorSubject<Hand>;
   private _deck: Deck;
   private _discardPile: DiscardPile;
 
-  constructor(cards: Buff[]) {
-    this._hand$ = new BehaviorSubject<Hand>(new Hand());
+  constructor(cards: Buff[], rng: SeedableRngService) {
+    this._hand$ = new BehaviorSubject<Hand>(new Hand(rng));
     this._deck = new Deck(cards);
     this._discardPile = new DiscardPile();
   }

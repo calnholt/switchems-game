@@ -1,3 +1,4 @@
+import { SeedableRngService } from "~/app/pages/game/services/seedable-rng/seedable-rng.service";
 
 
 export const ArrayUtil = {
@@ -7,14 +8,14 @@ export const ArrayUtil = {
   getRandomUniqueEntriesFromArray
 };
 
-function getRandomItemFromArray<T>(arr: T[]): T | undefined {
+function getRandomItemFromArray<T>(arr: T[], rng: SeedableRngService): T | undefined {
   if (arr.length === 0) {
     return undefined;
   }
-  return arr[getRandomIndex(arr.length)];
+  return arr[getRandomIndex(arr.length, rng)];
 }
 
-function getRandomIndex(length: number) { return Math.floor(Math.random() * length); }
+function getRandomIndex(length: number, rng: SeedableRngService) { return Math.floor(rng.randomFloat() * length); }
 
 function randomizeOrder<T>(array: T[]) {
   let arrayCopy = [...array];
@@ -25,14 +26,14 @@ function randomizeOrder<T>(array: T[]) {
   return arrayCopy;
 }
 
-function getRandomUniqueEntriesFromArray<T>(array: T[], entries: number): T[] {
+function getRandomUniqueEntriesFromArray<T>(array: T[], entries: number, rng: SeedableRngService): T[] {
   if (entries <= 0 || entries > array.length) {
     return [];
   }
   const result: T[] = [];
   const indices: number[] = array.map((a: T, i: number) => i);
   for (let i = 0; i < entries; i++) {
-    const randomIndex = getRandomIndex(indices.length);
+    const randomIndex = getRandomIndex(indices.length, rng);
     const index = indices[randomIndex];
     result.push(array[index]);
     indices.splice(randomIndex, 1);

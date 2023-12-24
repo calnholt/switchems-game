@@ -4,6 +4,7 @@ import { MonsterDataService } from '~/app/shared/services/monster-data.service';
 import { ArrayUtil } from '~/app/shared/utils/array.util';
 import { Monster } from '../../models/monster/monster.model';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
+import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,10 @@ export class PlayerService {
   constructor(
     private monsterService: MonsterDataService,
     private currentPhaseService: CurrentPhaseService,
+    private rng: SeedableRngService,
   ) {
-    this._player = new Player(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'));
-    this._opponent = new Player(this.getSpecificStart('Stalagrowth', 'Vulturock', 'Chargroar'));
+    this._player = new Player(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'), this.rng);
+    this._opponent = new Player(this.getSpecificStart('Stalagrowth', 'Vulturock', 'Chargroar'), this.rng);
     this.currentPhaseService.currentPhase$.subscribe(value => {
       if (value === 'START_OF_GAME') {
         this.startGame();
@@ -45,7 +47,7 @@ export class PlayerService {
 
   getRandomStart(): Monster[] {
     const threeRandomMonsters = ArrayUtil.getRandomUniqueEntriesFromArray(
-      this.monsterService.getAllMonsters(), 3
+      this.monsterService.getAllMonsters(), 3, this.rng,
     );
     threeRandomMonsters[0].setIsActive(true);
     threeRandomMonsters[1].setIsActive(false);
@@ -55,7 +57,7 @@ export class PlayerService {
 
   getSpecificStart(...names: string[]): Monster[] {
     const monsters = this.monsterService.getAllMonsters().filter(m => names.includes(m.name));
-    const rand: Monster = ArrayUtil.getRandomItemFromArray(monsters) as Monster
+    const rand: Monster = ArrayUtil.getRandomItemFromArray(monsters, this.rng) as Monster
     rand.setIsActive(true);
     return monsters;
   }

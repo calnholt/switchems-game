@@ -7,17 +7,18 @@ import { Buff } from "../../models/monster/buff.model";
 import { Monster } from "../../models/monster/monster.model";
 import { MonsterAction } from "../../models/monster/monster-action.model";
 import { ArrayUtil } from "~/app/shared/utils/array.util";
+import { SeedableRngService } from "../seedable-rng/seedable-rng.service";
 
 export const CPUActionSelectUtil = {
   getRandomAction,
 }
 
-function getRandomAction(cpuState: PlayerState): SelectedAction {
+function getRandomAction(cpuState: PlayerState, rng: SeedableRngService): SelectedAction {
   const { activeMonster, inactiveMonsters, statBoard, playerCardManager } = cpuState;
   const potentialActionKeys: CardCompositeKey[] = [];
   // standard actions
   const standardActions = ['Rest', 'Prepare'];
-  if (Math.random() > 0.75) {
+  if (rng.randomFloat() > 0.75) {
     standardActions.forEach(sa => potentialActionKeys.push(sa));
   }
   // switch to options
@@ -34,10 +35,10 @@ function getRandomAction(cpuState: PlayerState): SelectedAction {
       potentialActionKeys.push(a.key());
     }
   });
-  const chosenActionKey = potentialActionKeys[Math.floor(Math.random() * potentialActionKeys.length)];
+  const chosenActionKey = potentialActionKeys[Math.floor(rng.randomFloat() * potentialActionKeys.length)];
   // is monster action
   if (chosenActionKey.includes("_A")) {
-    return getMonsterAction(cpuState, chosenActionKey);
+    return getMonsterAction(cpuState, chosenActionKey, rng);
   }
 
   // is standard action
@@ -50,7 +51,7 @@ function getRandomAction(cpuState: PlayerState): SelectedAction {
 
 }
 
-function getMonsterAction(cpuState: PlayerState, key: CardCompositeKey) {
+function getMonsterAction(cpuState: PlayerState, key: CardCompositeKey, rng: SeedableRngService) {
   const { activeMonster, playerCardManager, statBoard } = cpuState;
   const action = activeMonster.actions.find(a => a.key() === key) as MonsterAction;
   const discards = getRandomCardsFromHand(action.discards, playerCardManager);
@@ -62,8 +63,8 @@ function getMonsterAction(cpuState: PlayerState, key: CardCompositeKey) {
   }
   let statBoardSection = undefined;
   let sectionsWithPips = statBoard.getSectionsWithPips();
-  if (!action.isStatus && statBoard.hasPips() && Math.random() > 0.65) {
-    const rand = sectionsWithPips[ArrayUtil.getRandomIndex(sectionsWithPips.length)]; 
+  if (!action.isStatus && statBoard.hasPips() && rng.randomFloat() > 0.65) {
+    const rand = sectionsWithPips[ArrayUtil.getRandomIndex(sectionsWithPips.length, rng)]; 
     statBoardSection = statBoard.getSectionFromType(rand);
   }
   return new SelectedAction(action, buffs, discards, statBoardSection);

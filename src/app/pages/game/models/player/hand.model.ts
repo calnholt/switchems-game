@@ -1,12 +1,18 @@
 import { ArrayUtil } from "~/app/shared/utils/array.util";
 import { Buff } from "../monster/buff.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
+import { SeedableRngService } from "../../services/seedable-rng/seedable-rng.service";
 
 const MAX_HAND_SIZE = 5;
 
 export class Hand {
   private _cards: Buff[] = [];
   private _maxHandSize: number = MAX_HAND_SIZE;
+  private _rng: SeedableRngService;
+
+  constructor(rng: SeedableRngService) {
+    this._rng = rng;
+  }
 
   public get cards() { return this._cards; }
 
@@ -19,7 +25,7 @@ export class Hand {
   hasMaxHandSize(): boolean { return this._cards.length === this._maxHandSize };
 
   discardRandomCard(): Buff {
-    return this._cards.splice(ArrayUtil.getRandomIndex(this._cards.length), 1)[0];
+    return this._cards.splice(ArrayUtil.getRandomIndex(this._cards.length, this._rng), 1)[0];
   }
 
   getCardByKey(key: CardCompositeKey): Buff {
