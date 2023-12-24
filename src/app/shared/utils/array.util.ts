@@ -17,10 +17,10 @@ function getRandomItemFromArray<T>(arr: T[], rng: SeedableRngService): T | undef
 
 function getRandomIndex(length: number, rng: SeedableRngService) { return Math.floor(rng.randomFloat() * length); }
 
-function randomizeOrder<T>(array: T[]) {
+function randomizeOrder<T>(array: T[], rng: SeedableRngService) {
   let arrayCopy = [...array];
   for (let i = arrayCopy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(rng.randomFloat() * (i + 1));
     [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
   }
   return arrayCopy;
