@@ -323,6 +323,7 @@ function crushPrompt(gs: GameState, data: CrushPromptCommandData, rc: UpdateGame
       [...Array(statBoard.attack).keys()].map(v => 'ATTACK')
         .concat([...Array(statBoard.attack).keys()].map(v => 'DEFENSE'))
         .concat([...Array(statBoard.attack).keys()].map(v => 'SPEED')),
+      gs.rng,
     );
     const decisions = [ ...Array(total).keys() ].map(o => options.pop());
     const selections: { amount: number, statType: StatBoardSectionType }[] = [

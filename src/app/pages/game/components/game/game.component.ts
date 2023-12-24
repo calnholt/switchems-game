@@ -10,6 +10,7 @@ import { BattleAnimationService } from '../../services/battle-animation/battle-a
 import { Modifier, MonsterModifierType } from '../../logic/modifiers/modifier.model';
 import { Subscription } from 'rxjs';
 import { GameOverService, WinnerType } from '../../services/game-over/game-over.service';
+import { SeedableRngService } from '../../services/seedable-rng/seedable-rng.service';
 
 @Component({
   selector: 'sw-game',
@@ -55,6 +56,7 @@ export class GameComponent implements OnChanges {
     private playerService: PlayerService,
     private battleAniService: BattleAnimationService,
     private gameOverService: GameOverService,
+    private rng: SeedableRngService,
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -118,7 +120,7 @@ export class GameComponent implements OnChanges {
 
 
   getRandomArena(): ArenaType {
-    return ARENAS[Math.floor(Math.random() * ARENAS.length)];
+    return ARENAS[Math.floor(this.rng.randomFloat() * ARENAS.length)];
   }
 
 }

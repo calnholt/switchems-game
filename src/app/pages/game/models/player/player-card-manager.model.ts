@@ -12,7 +12,7 @@ export class PlayerCardManager {
 
   constructor(cards: Buff[], rng: SeedableRngService) {
     this._hand$ = new BehaviorSubject<Hand>(new Hand(rng));
-    this._deck = new Deck(cards);
+    this._deck = new Deck(cards, rng);
     this._discardPile = new DiscardPile();
   }
 
