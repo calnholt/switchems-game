@@ -130,8 +130,8 @@ function getFirstPlayer(gs: GameState, playerType: PlayerType): PlayerType {
   const oType = o.selectedAction.action.getSelectableActionType();
   const key = p.selectedAction.action.key();
   const oKey = o.selectedAction.action.key();
-  const speed = (monster.actions.find(a => a.key() === key) as MonsterAction)?.speed;
-  const oSpeed = (oMonster.actions.find(a => a.key() === oKey) as MonsterAction)?.speed;
+  const speed = (monster.actions.find(a => a.key() === key) as MonsterAction)?.speed + (p.activeMonster.modifiers?.sumByType('SPEED') ?? 0);
+  const oSpeed = (oMonster.actions.find(a => a.key() === oKey) as MonsterAction)?.speed + (o.activeMonster.modifiers?.sumByType('SPEED') ?? 0);
   if (type !== oType) {
     if (type === 'SWITCH') return 'P';
     if (oType === 'SWITCH') return 'O';
