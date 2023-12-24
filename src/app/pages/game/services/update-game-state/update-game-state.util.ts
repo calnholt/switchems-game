@@ -15,10 +15,10 @@ import { UpdateGameStateService } from "./update-game-state.service";
 import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
-import { CommandUtil } from "./command.util";
 import { ArrayUtil } from "~/app/shared/utils/array.util";
 import { StatBoardSectionType } from "../../models/stat-board/stat-board.model";
 import { GameOverPhaseCommand } from "../../logic/commands/game-phase-commands.model";
+import { MonsterAction } from "../../models/monster/monster-action.model";
 
 export const UpdateGameStateUtil = {
   doMonsterAction,
@@ -52,9 +52,9 @@ export const UpdateGameStateUtil = {
 }
 
 function skipActionAndDamage(gs: GameState, data: CommandData): boolean {
-  const { activeMonster, monsterAction } = GameStateUtil.getPlayerState(gs.getFreshGameState(), data.player);
+  const { activeMonster, selectedAction } = GameStateUtil.getPlayerState(gs.getFreshGameState(), data.player);
   const isKOd = activeMonster.currentHp === 0;
-  const wasKOdThisTurn = !!(monsterAction && monsterAction.monsterName !== activeMonster.name);
+  const wasKOdThisTurn = ((selectedAction.action as MonsterAction)?.monsterName !== activeMonster.name);
   const isFlinched = activeMonster.modifiers.contains('FLINCHED');
   return isKOd || isFlinched || wasKOdThisTurn;
 }
