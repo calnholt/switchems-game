@@ -1,4 +1,5 @@
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
+import { PlayerType } from "../player-type.mode";
 import { CommandData, EventCommand } from "./event-command.model";
 
 export type MONSTER_ACTION_COMMANDS =
@@ -103,12 +104,17 @@ export class TakeRecoilDamageCommand extends EventCommand<DealDamageCommandData>
   }
 }
 
-export class KnockedOutCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+export interface KnockedOutCommandData extends BasicCommandData {
+  kodMonster: string;
+  kodPlayer: PlayerType;
+}
+
+export class KnockedOutCommand extends EventCommand<KnockedOutCommandData> {
+  constructor(receiver: UpdateGameStateService, data: KnockedOutCommandData) {
     super(receiver, 'KNOCKED_OUT', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.opponentMonsterName} was KO'd!`;
+    return `${this.data.kodMonster} was KO'd!`;
   }
 }
 export class KnockedOutByAttackCommand extends EventCommand<BasicCommandData> {

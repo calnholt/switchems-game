@@ -2,7 +2,7 @@ import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, DrainCommand, KnockedOutByAttackCommand, KnockedOutCommand, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, RemoveStatusEffectsCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
+import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, DrainCommand, KnockedOutByAttackCommand, KnockedOutCommand, KnockedOutCommandData, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, RemoveStatusEffectsCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { CrushCommandData, CrushPromptCommand, CrushPromptCommandData, GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { HealCommand, HealCommandData, StatModificationCommand, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
@@ -54,7 +54,7 @@ export const UpdateGameStateUtil = {
 function skipActionAndDamage(gs: GameState, data: CommandData): boolean {
   const { activeMonster, selectedAction } = GameStateUtil.getPlayerState(gs.getFreshGameState(), data.player);
   const isKOd = activeMonster.currentHp === 0;
-  const wasKOdThisTurn = ((selectedAction.action as MonsterAction)?.monsterName !== activeMonster.name);
+  const wasKOdThisTurn = !!(selectedAction.action?.key() && ((selectedAction.action as MonsterAction)?.monsterName !== activeMonster.name));
   const isFlinched = activeMonster.modifiers.contains('FLINCHED');
   return isKOd || isFlinched || wasKOdThisTurn;
 }
@@ -143,7 +143,7 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
   }
   if (opposingMonster.currentHp === 0) {
     commands.push(new KnockedOutByAttackCommand(rc, { key: action.key(), player, ...monsterNames }));
-    commands.push(new KnockedOutCommand(rc, { key: action.key(), player, ...monsterNames, display: true }));
+    commands.push(new KnockedOutCommand(rc, { key: action.key(), player, ...monsterNames, kodMonster: opposingMonster.name, kodPlayer: opponentPlayer, display: true }));
   }
   if (damage > 0 && GameStateUtil.isWeak(gs, data.player) && !action.isStatus) {
     commands.push(new WeakCommand(rc, { key, player: GameStateUtil.getOppositePlayer(player) }));
@@ -163,7 +163,14 @@ function dealDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameSt
   gs.battleAniService.update(data.player === 'P', 'TAKING_DAMAGE');
   if (monster.currentHp === 0) {
     const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
-    new KnockedOutByAttackCommand(rc, { key: monster.key(), player: data.player, ...monsterNames, display: true }).enqueue();
+    new KnockedOutCommand(rc, { 
+      key: monster.key(), 
+      player: data.player, 
+      kodMonster: monster.name,
+      kodPlayer: data.player,
+      ...monsterNames, 
+      display: true,
+    }).pushFront();
   }
 }
 
@@ -288,8 +295,8 @@ function switchRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStat
   }
 }
 
-function knockoutRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
-  const kodPlayer = GameStateUtil.getOppositePlayer(data.player);
+function knockoutRoutine(gs: GameState, data: KnockedOutCommandData, rc: UpdateGameStateService) {
+  const kodPlayer = data.kodPlayer;
   if (isGameOver(gs, kodPlayer)) {
     new GameOverPhaseCommand(rc, {
       ...data,
@@ -351,7 +358,9 @@ function drain(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService
   if (opposingMonster.currentHp === 0) {
     // TODO: check if this is the correct player
     new KnockedOutCommand(rc, {
-      ...data
+      ...data,
+      kodMonster: opposingMonster.name,
+      kodPlayer: 'O',
     }).pushFront();
   }
 }
