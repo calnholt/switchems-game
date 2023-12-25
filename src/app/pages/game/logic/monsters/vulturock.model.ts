@@ -8,7 +8,7 @@ import { MonsterLogic } from "./monster-logic.model";
 
 export class Vulturock extends MonsterLogic {
 
-  override addTriggers(): void {
+  override switchIn(): void {
     new GainStatPipCommand(this.rc, {
       ...this.data,
       amount: 2,
@@ -16,7 +16,8 @@ export class Vulturock extends MonsterLogic {
       origin: 'switching in',
       display: true,
     }).pushFront();
-
+  }
+  override addTriggers(): void {
     new HealCommand(this.rc, {
       ...this.data,
       key: 'VULTUROCK_A3',

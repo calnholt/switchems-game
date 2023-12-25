@@ -8,7 +8,7 @@ import { CrushCommand, GainStatPipCommand } from "../commands/stat-pip-commands.
 import { MonsterLogic } from "./monster-logic.model";
 
 export class Stalagrowth extends MonsterLogic {
-  override addTriggers(): void {
+  override switchIn(): void {
     new GainStatPipCommand(this.rc,{
       ...this.data,
       amount: 1,
@@ -17,6 +17,7 @@ export class Stalagrowth extends MonsterLogic {
       display: true,
     }).pushFront();
   }
+  override addTriggers(): void { }
   override action1(): void {
     new ApplyDrainStatus(this.rc, {
       ...this.data,

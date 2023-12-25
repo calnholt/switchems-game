@@ -8,6 +8,10 @@ import { MonsterLogic } from "./monster-logic.model";
 
 export class Chargroar extends MonsterLogic {
 
+  override switchIn(): void {
+    // TODO:
+  }
+
   override addTriggers(): void {
     // TODO:
     // switch in
