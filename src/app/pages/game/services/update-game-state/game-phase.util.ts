@@ -81,7 +81,7 @@ function executeStartGamePhase(gs: GameState, rc: UpdateGameStateService) {
   function startPhaseByPlayer(player: PlayerType) {
     const { activeMonster } = GameStateUtil.getPlayerState(gs, player);
     const key = activeMonster.key();
-    new MonsterActionCommand(rc, { key, player, doMonsterAction: () => CardByKeyUtil.executeCardByKey(key, player, rc, gs) }).enqueue();
+    CardByKeyUtil.executeCardByKey(key, player, rc, gs.getFreshGameState());
   }
 
   startPhaseByPlayer(playerWithInitiative);

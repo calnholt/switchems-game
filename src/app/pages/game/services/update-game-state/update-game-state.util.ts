@@ -264,17 +264,14 @@ function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSer
   const { selectedAction: opponentAction } = GameStateUtil.getOpponentPlayerState(gs, data.player);
   gs.battleAniService.update(data.player === 'P', 'SWITCHING_OUT');
   // timeout syncs the animation...clunky
-  setTimeout(() => player.switch(data.key), 250);
+  setTimeout(() => {
+    player.switch(data.key);
+    CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs.getFreshGameState());
+  }, 250);
   // gain switch in defense if opponent selected a monster action
   if (opponentAction.action.getSelectableActionType() === 'MONSTER') {
     new StatModificationCommand(rc, { ...data, statType: 'SWITCH_IN_DEFENSE', amount: activeMonster.getSwitchDefenseValue(), display: false }).pushFront();
   }
-  const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
-  new MonsterActionCommand(rc, { 
-    ...data,
-    ...monsterNames,
-    doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs.getFreshGameState()) },
-  }).pushFrontDecision();
 }
 
 function recoilCheck(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
@@ -287,7 +284,10 @@ function recoilCheck(gs: GameState, data: BasicCommandData, rc: UpdateGameStateS
 
 function switchRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
   const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
-  if (activeMonster.modifiers.hasStatusEffect()) {
+  if (data.player === 'O' && gs.cpu) {
+    new SwitchOutCommand(rc, { ...data, type: activeMonster.modifiers.hasStatusEffect() ? 'REMOVE_STATUS' : 'HEAL', }).pushFront();
+  }
+  else if (activeMonster.modifiers.hasStatusEffect()) {
     new SwitchOutPromptCommand(rc, { ...data }).pushFront();
   }
   else {
