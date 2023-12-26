@@ -11,7 +11,9 @@ export class Chargroar extends MonsterLogic {
 
   override switchIn(): void {
     const { activeMonster } = GameStateUtil.getOpponentPlayerState(this.gs, this.data.player);
-    const options = activeMonster.actions.map(a => { return { key: a.key(), name: a.name }});
+    const options = activeMonster.actions
+        .filter(a => !a.isDisabled && !a.isLocked)
+        .map(a => { return { key: a.key(), name: a.name }});
     if (this.gs.cpu && this.player === 'O') {
       new DisableActionCommand(this.rc, {
         ...this.data,
