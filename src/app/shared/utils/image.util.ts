@@ -46,6 +46,7 @@ export const ImageUtil = {
   avatars: {
     win: getAvatarsPath('win-avatar'),
     lose: getAvatarsPath('lose-avatar'),
+    profHolt: getAvatarsPath('prof-holt-avatar'),
   }
 }
 
