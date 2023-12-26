@@ -15,11 +15,13 @@ export class Chargroar extends MonsterLogic {
         .filter(a => !a.isDisabled && !a.isLocked)
         .map(a => { return { key: a.key(), name: a.name }});
     if (this.gs.cpu && this.player === 'O') {
+      const index = ArrayUtil.getRandomIndex(options.length, this.gs.rng);
+      const selection = options[ArrayUtil.getRandomIndex(options.length, this.gs.rng)];
       new DisableActionCommand(this.rc, {
         ...this.data,
         destroyOnTrigger: true,
         display: true,
-        selection: options[ArrayUtil.getRandomIndex(options.length, this.gs.rng)],
+        selection,
       }).pushFront();
     }
     else {
