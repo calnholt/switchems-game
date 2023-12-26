@@ -5,6 +5,7 @@ import { ArrayUtil } from '~/app/shared/utils/array.util';
 import { Monster } from '../../models/monster/monster.model';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
 import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
+import { SelectedActionService } from '../selected-action/selected-action.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class PlayerService {
     private monsterService: MonsterDataService,
     private currentPhaseService: CurrentPhaseService,
     private rng: SeedableRngService,
+    private selectedActionService: SelectedActionService,
   ) {
     this._player = new Player(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'), this.rng);
     this._opponent = new Player(this.getSpecificStart('Stalagrowth', 'Vulturock', 'Chargroar'), this.rng);
@@ -41,8 +43,9 @@ export class PlayerService {
   public get oStatBoard() { return this._opponent.statBoard; }
 
   startGame() {
-    this._player.reset(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'))
-    this._opponent.reset(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'))
+    this._player.reset(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'));
+    this.selectedActionService.clear();
+    this._opponent.reset(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'));
   }
 
   getRandomStart(): Monster[] {

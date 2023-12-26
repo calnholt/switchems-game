@@ -20,10 +20,10 @@ export class Chargroar extends MonsterLogic {
         destroyOnTrigger: true,
         display: true,
         selection: options[ArrayUtil.getRandomIndex(options.length, this.gs.rng)],
-      }).enqueue();
+      }).pushFront();
     }
     else {
-      new DisableActionPromptCommand(this.rc, { ...this.data, destroyOnTrigger: true, options, display: true }).enqueue();
+      new DisableActionPromptCommand(this.rc, { ...this.data, destroyOnTrigger: true, options, display: true }).pushFront();
     }
   }
 

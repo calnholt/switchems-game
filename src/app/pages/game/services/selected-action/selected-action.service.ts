@@ -75,4 +75,8 @@ export class SelectedActionService {
     ); 
   }
 
+  public clear() {
+    this._selectedAction$.next(new SelectedAction());
+  } 
+
 }
