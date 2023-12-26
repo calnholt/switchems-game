@@ -30,6 +30,7 @@ export class MonsterComponent implements OnInit, OnChanges {
   @Input() isOpponent: boolean = false;
   @Input() cardsInHand = 0;
   @Input() cardsInMyOpponentsHand = 0;
+  @Input() disable: boolean = false;
   
   monsterIcon!: Path;
   superEffectiveIcon!: Path;
@@ -94,7 +95,7 @@ export class MonsterComponent implements OnInit, OnChanges {
   }
 
   onSelect() {
-    if (!this.isActiveMonster && this.enabled) {
+    if (!this.isActiveMonster && this.enabled && !this.disable) {
       this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_ACTION, data: this.monster })
     }
   }

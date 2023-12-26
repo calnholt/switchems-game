@@ -94,7 +94,6 @@ function applyFlinch(gs: GameState, data: StatModificationData) {
 }
 
 function applyStatusDrain(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
-  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   const opposingMonster = GameStateUtil.getOpponentPlayerState(gs, data.player).activeMonster;
   opposingMonster.modifiers.add(getMonsterModifier(opposingMonster.key(), 'DRAIN', 0, true));
   new DrainCommand(rc, {
@@ -102,8 +101,8 @@ function applyStatusDrain(gs: GameState, data: BasicCommandData, rc: UpdateGameS
     display: true,
     triggerCondition: (command: EventCommand<CommandData>) => {
       const freshGs = gs.getFreshGameState();
-      const monster = GameStateUtil.getMonsterByPlayer(freshGs, command.data.player);
-      const opposingMonster = GameStateUtil.getOpponentPlayerState(freshGs, command.data.player).activeMonster;
+      const monster = GameStateUtil.getMonsterByPlayer(freshGs, data.player);
+      const opposingMonster = GameStateUtil.getOpponentPlayerState(freshGs, data.player).activeMonster;
       return monster.currentHp < opposingMonster.currentHp;
     },
   }).executeAsTrigger('END_PHASE');

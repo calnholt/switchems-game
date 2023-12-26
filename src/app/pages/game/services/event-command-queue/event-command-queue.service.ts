@@ -171,8 +171,14 @@ export class EventCommandQueueService {
         const isKeyMatch = command.data.key === trigger.data.key;
         const isPlayerMatch = trigger.data.player === command.data.player;
         const isConditionMet = !trigger.data.triggerCondition || trigger.data.triggerCondition?.(command);
+        const isEndPhase = command.type === 'END_PHASE';
         // if monster action trigger, need key to match
         if (isMonsterActionTrigger && isKeyMatch && isPlayerMatch && isConditionMet) {
+          console.log('enqueue trigger', trigger)
+          this.pushFront(trigger);
+        }
+        // end phase trigger
+        else if (isConditionMet && isEndPhase) {
           console.log('enqueue trigger', trigger)
           this.pushFront(trigger);
         }

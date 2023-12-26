@@ -38,16 +38,15 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
       player: data.player, 
       statType: type, 
       monsterName: activeMonster.name, 
-      wasRandom: true 
+      wasRandom: true,
+      display: false,
     }).pushFront();
   }
-  let message = `${data?.monsterName ?? ''} gained ${attack > 0 ? ` ${attack} attack` : ''}${speed > 0 ? ` ${speed} speed` : ''}${defense > 0 ? ` ${defense} defense`  : ''} pips`;
-  if (data.display) {
-    if(data.superEffective) {
-      message = `The attack was super effective! ${message}`
-    }
-    new DescriptiveMessageCommand(rc, { ...data, message }).pushFront();
+  let message = `${data?.monsterName ?? ''} randomly gained ${attack > 0 ? ` ${attack} attack` : ''}${speed > 0 ? ` ${speed} speed` : ''}${defense > 0 ? ` ${defense} defense`  : ''} pips`;
+  if(data.superEffective) {
+    message = `The attack was super effective! ${message}`
   }
+  new DescriptiveMessageCommand(rc, { ...data, message }).pushFront();
   return { attack, speed, defense, message }
 
 }

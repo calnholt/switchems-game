@@ -25,7 +25,7 @@
 </ng-container>
 
 <ng-container *ngIf="!isActiveMonster">
-  <sw-pushable-button [isActive]="cardsInHand >= 2 && enabled">
+  <sw-pushable-button [isActive]="cardsInHand >= 2 && enabled && !disable">
     <ng-container *ngTemplateOutlet="monsterTemplate"></ng-container>
   </sw-pushable-button>
 </ng-container>
@@ -41,7 +41,7 @@
     <div class="monster-container {{backgroundClass}}" [ngClass]="{
         'inactive' : !isActiveMonster, 
         'selected' : selected, 
-        'unselectable': (cardsInHand < 2 && !isActiveMonster) || !enabled || monster.currentHp === 0
+        'unselectable': (cardsInHand < 2 && !isActiveMonster) || !enabled || monster.currentHp === 0 || disable
       }">
       <div
         [@wobble]="attacking" 
