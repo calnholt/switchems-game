@@ -17,7 +17,7 @@ export class DialogComponent {
   @Input() hide: boolean = false;
 
   message: string = '';
-  show: boolean = true;
+  show: boolean = false;
   allowNext = true;
 
   constructor(

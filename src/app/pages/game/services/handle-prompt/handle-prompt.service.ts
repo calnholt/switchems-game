@@ -8,6 +8,7 @@ import { CrushCommand } from '../../logic/commands/stat-pip-commands.model';
 import { GameStateUtil } from '../game-state/game-state.util';
 import { MonsterAction } from '../../models/monster/monster-action.model';
 import { Monster } from '../../models/monster/monster.model';
+import { DisableActionCommand } from '../../logic/commands/monster-action-commands.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,16 +24,18 @@ export class HandlePromptService {
     const gs = this.gameStateService.getGameState();
 
     switch(type) {
-      case 'SWITCH_OUT_PROMPT':
-        new SwitchOutCommand(this.uggs, { ...data, }).pushFrontDecision();
+      case 'CRUSH_PROMPT':
+        new CrushCommand(this.uggs, data).pushFrontDecision();
+        break;
+      case 'DISABLE_ACTION_PROMPT':
+        new DisableActionCommand(this.uggs, data).pushFrontDecision();
         break;
       case 'KNOCKED_OUT_SWITCH_IN_PROMPT':
         const monsterName = (GameStateUtil.getPlayerState(gs, data.player).inactiveMonsters.find(m => m.key() === data.key) as Monster).name;
         new SwitchInCommand(this.uggs, { ...data, monsterName }).pushFrontDecision();
-        // UpdateGameStateUtil.switchIn(gs, { ...data }, this.uggs);
         break;
-      case 'CRUSH_PROMPT':
-        new CrushCommand(this.uggs, data).pushFrontDecision();
+      case 'SWITCH_OUT_PROMPT':
+        new SwitchOutCommand(this.uggs, { ...data, }).pushFrontDecision();
         break;
     }
   }

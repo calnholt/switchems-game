@@ -15,7 +15,7 @@ export class Stalagrowth extends MonsterLogic {
       statType: 'DEFENSE',
       origin: 'switching in',
       display: true,
-    }).pushFront();
+    }).enqueue();
   }
   override addTriggers(): void { }
   override action1(): void {

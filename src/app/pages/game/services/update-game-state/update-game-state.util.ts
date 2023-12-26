@@ -2,7 +2,7 @@ import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, DrainCommand, KnockedOutByAttackCommand, KnockedOutCommand, KnockedOutCommandData, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, RemoveStatusEffectsCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
+import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, DisableActionCommandData, DrainCommand, KnockedOutByAttackCommand, KnockedOutCommand, KnockedOutCommandData, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, RemoveStatusEffectsCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { CrushCommandData, CrushPromptCommand, CrushPromptCommandData, GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { HealCommand, HealCommandData, StatModificationCommand, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
@@ -49,6 +49,7 @@ export const UpdateGameStateUtil = {
   crush,
   crushPrompt,
   drain,
+  disableMonsterAction,
 }
 
 function skipActionAndDamage(gs: GameState, data: CommandData): boolean {
@@ -363,6 +364,13 @@ function drain(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService
       kodPlayer: 'O',
     }).pushFront();
   }
+}
+
+function disableMonsterAction(gs: GameState, data: DisableActionCommandData, rc: UpdateGameStateService) {
+  if (data.selection.key === 'NONE') return;
+
+  const { activeMonster } = GameStateUtil.getOpponentPlayerState(gs, data.player);
+  activeMonster.actions.find(a => a.key() === data.selection.key)?.setDisabled(true);
 }
 
 function isGameOver(gs: GameState, player: PlayerType) {

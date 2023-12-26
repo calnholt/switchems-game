@@ -23,6 +23,7 @@ import { KOSwitchOutDialogComponent } from './components/dialog/ko-switch-out-di
 import { CrushDialogComponent } from './components/dialog/crush-dialog/crush-dialog.component';
 import { StatusEffectsComponent } from './components/status-effects/status-effects.component';
 import { GameOverComponent } from './components/game-over/game-over.component';
+import { DisableMonsterActionDialogComponent } from './components/dialog/disable-monster-action-dialog/disable-monster-action-dialog.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { GameOverComponent } from './components/game-over/game-over.component';
     CrushDialogComponent,
     StatusEffectsComponent,
     GameOverComponent,
+    DisableMonsterActionDialogComponent,
   ],
   exports: [
     MonsterActionComponent,

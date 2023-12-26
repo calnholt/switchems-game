@@ -5,7 +5,6 @@ import { UpdateGameStateUtil } from './update-game-state.util';
 import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
 import { GamePhaseUtil } from './game-phase.util';
 import { CommandUtil } from './command.util';
-import { KnockedOutCommand } from '../../logic/commands/monster-action-commands.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,8 +45,8 @@ export class UpdateGameStateService {
       case 'DEAL_ATTACK_DAMAGE':
         UpdateGameStateUtil.dealAttackDamage(gs, data, this);
         break;
-      // TODO: requires decision
-      case 'DISABLE_ACTION_PROMPT':
+      case 'DISABLE_ACTION':
+        UpdateGameStateUtil.disableMonsterAction(gs, data, this);
         break;
       // TODO: requires decision
       case 'DISCARD':

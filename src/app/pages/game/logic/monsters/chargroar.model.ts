@@ -1,7 +1,8 @@
+import { ArrayUtil } from "~/app/shared/utils/array.util";
 import { GameStateUtil } from "../../services/game-state/game-state.util";
 import { CommandUtil } from "../../services/update-game-state/command.util";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
-import { DisableActionPromptCommand } from "../commands/monster-action-commands.model";
+import { DisableActionCommand, DisableActionPromptCommand } from "../commands/monster-action-commands.model";
 import { StatModificationCommand } from "../commands/stat-modification-command.model";
 import { GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { MonsterLogic } from "./monster-logic.model";
@@ -9,14 +10,22 @@ import { MonsterLogic } from "./monster-logic.model";
 export class Chargroar extends MonsterLogic {
 
   override switchIn(): void {
-    // TODO:
+    const { activeMonster } = GameStateUtil.getOpponentPlayerState(this.gs, this.data.player);
+    const options = activeMonster.actions.map(a => { return { key: a.key(), name: a.name }});
+    if (this.gs.cpu && this.player === 'O') {
+      new DisableActionCommand(this.rc, {
+        ...this.data,
+        destroyOnTrigger: true,
+        display: true,
+        selection: options[ArrayUtil.getRandomIndex(options.length, this.gs.rng)],
+      }).enqueue();
+    }
+    else {
+      new DisableActionPromptCommand(this.rc, { ...this.data, destroyOnTrigger: true, options, display: true }).enqueue();
+    }
   }
 
   override addTriggers(): void {
-    // TODO:
-    // switch in
-    new DisableActionPromptCommand(this.rc, { ...this.data, destroyOnTrigger: true }).executeAsTrigger('SWITCH_IN');
-  
     // action triggers
     new GainStatPipCommand(this.rc, {
       ...this.data,

@@ -1,3 +1,4 @@
+import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { PlayerType } from "../player-type.mode";
 import { CommandData, EventCommand } from "./event-command.model";
@@ -19,6 +20,7 @@ export type MONSTER_ACTION_COMMANDS =
   | 'REMOVE_STATUS_EFFECT'
   | 'REMOVE_STATUS_EFFECTS'
   | 'DISABLE_ACTION_PROMPT'
+  | 'DISABLE_ACTION'
 
 
 export interface BasicCommandData extends CommandData {
@@ -169,11 +171,36 @@ export class RemoveStatusEffectsCommand extends EventCommand<BasicCommandData> {
     return `${this.data.monsterName} removed its status effects.`;
   }
 }
-export class DisableActionPromptCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+
+export interface DisableActionPromptCommandData extends BasicCommandData {
+  options: { key: CardCompositeKey, name: string }[];
+  selection?: { key: CardCompositeKey, name: string };
+}
+
+export class DisableActionPromptCommand extends EventCommand<DisableActionPromptCommandData> {
+  constructor(receiver: UpdateGameStateService, data: DisableActionPromptCommandData) {
     super(receiver, 'DISABLE_ACTION_PROMPT', { ...data });
   }
   override getDisplayMessage(): string {
-    return '';
+    return `Select a monster of your opponent to disable:`;
+  }
+  public override requiresDecision(): boolean {
+    return true;
+  }
+}
+
+export interface DisableActionCommandData extends BasicCommandData {
+  selection: { key: CardCompositeKey, name: string };
+}
+
+export class DisableActionCommand extends EventCommand<DisableActionCommandData> {
+  constructor(receiver: UpdateGameStateService, data: DisableActionCommandData) {
+    super(receiver, 'DISABLE_ACTION', { ...data });
+  }
+  override getDisplayMessage(): string {
+    if (this.data.selection.key === 'NONE') {
+      return `${this.data.monsterName} opted not to disable a monster action.`;
+    }
+    return `${this.data.monsterName} disabled ${this.data.opponentMonsterName}'s action ${this.data.selection.name}.`;
   }
 }
