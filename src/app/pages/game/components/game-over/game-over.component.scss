@@ -1,0 +1,37 @@
+@import '../../../../../assets/styles/constants.scss';
+
+#game-over {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-family: $text-font;
+
+  .game-over-container {
+    margin-top: 100px;
+    width: 550px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #00000094;
+    border-radius: 4px;
+    padding: 10px;
+
+    .winner-text {
+      font-size: 50px;
+      color: white;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+
+      .acknowledge-button {
+        width: 200px;
+        padding: 10px;
+      }
+
+    }
+
+  }
+}

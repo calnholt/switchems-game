@@ -1,13 +1,18 @@
 <ng-container *ngIf="winner">
-  <div id="game-over">
-    <div>
-      {{winner === 'P' ? 'You won!' : 'You lost!'}}
+  <div id="game-over" [@slideInLeftOnEnter]>
+    <div class="game-over-container">
+      <img [src]="winner === 'P' ? winAvatar : loseAvatar" />
+      <div class="winner-text">
+        {{winner === 'P' ? 'You won!' : 'You lost!'}}
+      </div>
+      <div class="buttons-container">
+        <sw-pushable-button>
+          <div class="acknowledge-button" (click)="playAgain()">Play Again</div>
+        </sw-pushable-button>
+        <sw-pushable-button>
+          <div class="acknowledge-button" (click)="returnToTitleScreen()">Return to title screen</div>
+        </sw-pushable-button>
+      </div>
     </div>
-    <sw-pushable-button>
-      <div class="acknowledge-button" (click)="playAgain()">Play Again</div>
-    </sw-pushable-button>
-    <sw-pushable-button>
-      <div class="acknowledge-button" (click)="returnToTitleScreen()">Return to title screen</div>
-    </sw-pushable-button>
   </div>
 </ng-container>

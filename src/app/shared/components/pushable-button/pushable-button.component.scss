@@ -36,9 +36,10 @@
 .front {
   display: block;
   position: relative;
-  // padding: 12px 42px;
-  border-radius: 12px;
+  // padding: 10px;
+  border-radius: 4px;
   // color: white;
+  background-color: $default-button-color;
   will-change: transform;
   transform: translateY(-4px);
   transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
