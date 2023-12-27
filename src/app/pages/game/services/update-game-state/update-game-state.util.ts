@@ -177,7 +177,9 @@ function dealDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameSt
 function draw(gs: GameState, data: HandCommandData) {
   const pcm = GameStateUtil.getPlayerCardManagerByPlayer(gs, data.player);
   for (let i = 0; i < (data?.amount as number) ?? 1; i++) {
-    pcm.drawCard();
+    if (!pcm.hand.hasMaxHandSize()) {
+      pcm.drawCard();
+    }
   }
 }
 
