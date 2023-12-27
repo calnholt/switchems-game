@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { GameModule } from './pages/game/game.module';
 import { HttpClientModule } from '@angular/common/http';
+import { TitleScreenModule } from './pages/title-screen/title-screen.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
     }),
     GameModule,
     HttpClientModule,
+    TitleScreenModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

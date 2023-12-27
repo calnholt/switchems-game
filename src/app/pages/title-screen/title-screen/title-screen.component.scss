@@ -1,0 +1,30 @@
+@import '../../../../assets/styles/constants.scss';
+
+#title-screen {
+  height: 100vh;
+  .title-screen-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('../../../../assets/images/backgrounds/arena/sky.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    img {
+      margin-top: 30px;
+    }
+    .buttons-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .button {
+        margin: 20px 0px;
+        .button-face {
+          font-size: 30px;
+          font-family: $text-font;
+          width: 300px;
+        }
+      }
+    }
+  }
+}
