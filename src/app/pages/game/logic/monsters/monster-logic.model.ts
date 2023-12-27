@@ -33,28 +33,28 @@ export abstract class MonsterLogic {
       this.switchIn();
       this.addTriggers();
     }
-    if (this.cardKey.includes('A0')) {
+    if (this.cardKey.includes('A1')) {
       this.action1();
     }
-    if (this.cardKey.includes('A1')) {
+    if (this.cardKey.includes('A2')) {
       this.action2();
     }
-    if (this.cardKey.includes('A2')) {
+    if (this.cardKey.includes('A3')) {
       this.action3();
     }
-    if (this.cardKey.includes('A3')) {
+    if (this.cardKey.includes('A4')) {
       this.action4();
     }
-    if (this.cardKey.includes('B0')) {
+    if (this.cardKey.includes('B1')) {
       this.buff1();
     }
-    if (this.cardKey.includes('B1')) {
+    if (this.cardKey.includes('B2')) {
       this.buff2();
     }
-    if (this.cardKey.includes('B2')) {
+    if (this.cardKey.includes('B3')) {
       this.buff3();
     }
-    if (this.cardKey.includes('B3')) {
+    if (this.cardKey.includes('B4')) {
       this.buff4();
     }
   }

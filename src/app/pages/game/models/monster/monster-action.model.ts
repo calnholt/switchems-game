@@ -18,8 +18,6 @@ export class MonsterAction implements ISelectableAction, IHaveTooltip {
   private _isLocked: boolean = false;
   private _isUsed: boolean = false;
   private _isDisabled: boolean = false;
-  private _originalBuffSlots: number;
-  private _originalDiscardSlots: number;
   private _currentBuffSlots: number;
   private _currentDiscardSlots: number;
   private _draw: number;
@@ -48,8 +46,6 @@ export class MonsterAction implements ISelectableAction, IHaveTooltip {
     this._element = element;
     this._index = index;
     this._isStatus = isStatus;
-    this._originalBuffSlots = buff;
-    this._originalDiscardSlots = discard;
     this._currentBuffSlots = buff;
     this._currentDiscardSlots = discard;
     this._draw = draw;
@@ -110,7 +106,7 @@ export class MonsterAction implements ISelectableAction, IHaveTooltip {
   getDisplayName = (): string => { return this._name; } 
   getSelectableActionType = (): SelectedActionType => { return 'MONSTER'; } 
   canApplyStat = (): boolean => { return !this._isStatus; } 
-  key = (): CardCompositeKey => { return `${this.monsterName.replaceAll(' ', '').toUpperCase()}_A${this.index}`; } 
+  key = (): CardCompositeKey => { return `${this.monsterName.replaceAll(' ', '').toUpperCase()}_A${this.index + 1}`; } 
   // end
 
 }

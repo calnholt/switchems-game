@@ -22,7 +22,7 @@ export class Buff implements IHaveTooltip, ICompositeKey {
     this.index = index;
   }
   
-  key(): CardCompositeKey { return `${this.monsterName.replaceAll(' ', '').toUpperCase()}_B${this.index}`; }
+  key(): CardCompositeKey { return `${this.monsterName.replaceAll(' ', '').toUpperCase()}_B${this.index + 1}`; }
   hasTooltip(): boolean { return !!this._terms.length; }
 
   get buffSlots(): number { return this.isSuper ? 2 : 1; }
