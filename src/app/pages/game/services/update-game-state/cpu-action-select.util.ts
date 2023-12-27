@@ -17,9 +17,13 @@ function getRandomAction(cpuState: PlayerState, rng: SeedableRngService): Select
   const { activeMonster, inactiveMonsters, statBoard, playerCardManager } = cpuState;
   const potentialActionKeys: CardCompositeKey[] = [];
   // standard actions
-  const standardActions = ['Rest', 'Prepare'];
   if (rng.randomFloat() > 0.75) {
-    standardActions.forEach(sa => potentialActionKeys.push(sa));
+    if (playerCardManager.hand.cardsInHand() <= 3 || activeMonster.currentHp <= 2) {
+      potentialActionKeys.push('Prepare');
+    }
+    if (playerCardManager.hand.cardsInHand() <= 2 || activeMonster.currentHp <= 2) {
+      potentialActionKeys.push('Rest');
+    }
   }
   // switch to options
   if (playerCardManager.hand.cardsInHand() >= 2) {
@@ -42,7 +46,7 @@ function getRandomAction(cpuState: PlayerState, rng: SeedableRngService): Select
   }
 
   // is standard action
-  if (standardActions.includes(chosenActionKey)) {
+  if (['Rest', 'Prepare'].includes(chosenActionKey)) {
     return new SelectedAction(new StandardAction(chosenActionKey, []));
   }
 
