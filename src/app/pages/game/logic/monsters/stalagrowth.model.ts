@@ -72,16 +72,11 @@ export class Stalagrowth extends MonsterLogic {
     }).pushFront();
   }
   override action4(): void {
-    const { message } = CommandUtil.gainRandomStatPip(this.gs, {
+    CommandUtil.gainRandomStatPip(this.gs, {
       ...this.data,
       amount: 2,
       origin: 'Skewer'
     }, this.rc);
-    new DescriptiveMessageCommand(this.rc, {
-      ...this.data,
-      message: `${this.monsterNames.monsterName} used Skewer, ${message}.`,
-      display: true 
-    }).pushFront();
   }
   override buff1(): void {
     new HealCommand(this.rc, {
