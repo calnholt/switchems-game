@@ -3,7 +3,7 @@
 #modifiers {
   width: 215px;
   .mods-container {
-    background-color: black;
+    background-color: #000000c2;
     border-radius: 4px;
     padding: 1px 5px;
     .mod {
@@ -11,6 +11,24 @@
       align-items: center;
       padding: 5px 0px;
       justify-content: flex-end;
+      &.stats {
+        font-family: $header-font;
+        color: white;
+        line-height: 70%;
+        font-size: 40px;
+        justify-content: space-evenly;
+        &.has-mods {
+          border-bottom: 1px solid white;
+        }
+        .stat {
+          display: flex;
+          align-items: center;
+        }
+        img {
+          height: 28px;
+          filter: (invert(100%));
+        }
+      }
       &.opponent {
         justify-content: unset;
       }

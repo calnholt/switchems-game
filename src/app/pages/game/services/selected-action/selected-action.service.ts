@@ -4,7 +4,6 @@ import { ISelectableAction } from '~/app/shared/interfaces/ISelectableAction.int
 import { Buff } from '../../models/monster/buff.model';
 import { SelectedAction } from './selected-action.model';
 import { StatBoardSection } from '../../models/stat-board/stat-board.model';
-import { StandardAction } from '../../models/standard-action/standard-action.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +11,13 @@ import { StandardAction } from '../../models/standard-action/standard-action.mod
 export class SelectedActionService {
 
   private _selectedAction$: BehaviorSubject<SelectedAction> = new BehaviorSubject(new SelectedAction());
-  private _oSelectedAction = new SelectedAction();
+  private _oSelectedAction$: BehaviorSubject<SelectedAction> = new BehaviorSubject(new SelectedAction());
 
   public get selectedAction$() { return this._selectedAction$; } 
   public get selectedAction() { return this._selectedAction$.value; }
   public get action() { return this._selectedAction$.value.action; }
-  public get oSelectedAction() { return this._oSelectedAction; }
+  public get oSelectedAction$() { return this._oSelectedAction$; }
+  public get oSelectedAction() { return this._oSelectedAction$.value; }
 
   public selectAction(newAction: ISelectableAction) {
     this._selectedAction$.next(new SelectedAction(newAction));
@@ -59,7 +59,7 @@ export class SelectedActionService {
   }
 
   public setOpponentAction(action: SelectedAction) {
-    this._oSelectedAction = action;
+    this._oSelectedAction$.next(action);
   }
 
   private updateAction() {

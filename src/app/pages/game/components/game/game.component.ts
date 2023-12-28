@@ -13,7 +13,11 @@ import { GameOverService, WinnerType } from '../../services/game-over/game-over.
 import { SeedableRngService } from '../../services/seedable-rng/seedable-rng.service';
 import { TutorialService } from '../../services/tutorial/tutorial.service';
 import { TutorialSection } from '../../models/tutorial/tutorial.model';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { SelectedActionService } from '../../services/selected-action/selected-action.service';
+import { SelectedAction } from '../../services/selected-action/selected-action.model';
+import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
+import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
 
 @Component({
   selector: 'sw-game',
@@ -29,12 +33,14 @@ export class GameComponent implements OnChanges {
   arena!: ArenaType;
   modifiers: Modifier<MonsterModifierType>[] = [];
   modifiersSub!: Subscription;
+  selectedAction!: SelectedAction | null;
   
   oInactiveMonsters: Monster[] = [];
   oActiveMonster!: Monster;
   oStatBoard!: StatBoard;
   oModifiers: Modifier<MonsterModifierType>[] = []
   oModifiersSub!: Subscription;
+  oSelectedAction!: SelectedAction | null;
 
   cardsInMyHand = 0;
   cardsInMyOpponentsHand = 0;
@@ -42,7 +48,10 @@ export class GameComponent implements OnChanges {
   viewOpponentActions = false;
   winner: WinnerType = null;
 
+  isTutorial = false;
   tutorialSection!: TutorialSection;
+
+  currentPhase!: GamePhaseCommandType;
 
   restStandardAction = new StandardAction('Rest', [
     ImageUtil.icons.draw,
@@ -62,6 +71,8 @@ export class GameComponent implements OnChanges {
     private gameOverService: GameOverService,
     private rng: SeedableRngService,
     private tutorialService: TutorialService,
+    private currentPhaseService: CurrentPhaseService,
+    private selectedActionService: SelectedActionService,
     private router: Router
   ) { }
 
@@ -122,8 +133,17 @@ export class GameComponent implements OnChanges {
     this.gameOverService.winner$.subscribe((value) => {
       this.winner = value;
     });
-
-    if (this.router.url === '/tutorial') {
+    this.currentPhaseService.currentPhase$.subscribe((phase) => {
+      this.currentPhase = phase;
+    });
+    this.selectedActionService.selectedAction$.subscribe((action) => {
+      this.selectedAction = action;
+    });
+    this.selectedActionService.oSelectedAction$.subscribe((action) => {
+      this.oSelectedAction = action;
+    });
+    this.isTutorial = this.router.url === '/tutorial';
+    if (this.isTutorial) {
       this.tutorialService.startTutorial();
       this.tutorialService.currentSection$.subscribe((value) => {
         this.tutorialSection = value;

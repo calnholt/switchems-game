@@ -7,7 +7,7 @@
         <div class="monsters-container">
           <div class="monster-container">
             <div class="modifier-container">
-              <sw-modifiers [modifiers]="modifiers" />
+              <sw-modifiers [modifiers]="modifiers" [selectedAction]="selectedAction" />
               <sw-status-effects [modifiers]="modifiers" />
             </div>
             <div>
@@ -20,7 +20,7 @@
                 [cardsInMyOpponentsHand]="cardsInMyOpponentsHand" />
             </div>
             <div class="modifier-container">
-              <sw-modifiers [modifiers]="oModifiers" />
+              <sw-modifiers [modifiers]="oModifiers" [selectedAction]="oSelectedAction" />
               <sw-status-effects [modifiers]="oModifiers" />
             </div>
           </div>
@@ -61,4 +61,4 @@
 <sw-koswitch-out-dialog />
 <sw-crush-dialog />
 <sw-disable-monster-action-dialog />
-<sw-tutorial [section]="tutorialSection" />
+<sw-tutorial *ngIf="isTutorial" [section]="tutorialSection" />
