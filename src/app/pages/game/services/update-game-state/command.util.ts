@@ -46,7 +46,9 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
   if(data.superEffective) {
     message = `The attack was super effective! ${message}`
   }
-  new DescriptiveMessageCommand(rc, { ...data, message }).pushFront();
+  if (data.display) {
+    new DescriptiveMessageCommand(rc, { ...data, message }).pushFront();
+  }
   return { attack, speed, defense, message }
 
 }
