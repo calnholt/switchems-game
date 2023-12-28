@@ -148,3 +148,16 @@ button {
   padding: 10px;
   border-radius: 4px;
 }
+
+@keyframes shrinkExpand {
+  0%, 100% {
+    transform: scale(1); // Normal size
+  }
+  50% {
+    transform: scale(0.8); // Shrink to 80% of its size
+  }
+}
+
+.tutorial-highlight {
+  animation: shrinkExpand 2s ease-in-out infinite;
+}

@@ -1,0 +1,28 @@
+@import '../../../../../assets/styles/constants.scss';
+
+#tutorial {
+  background-color: black;
+  width: 1000px;
+  border-radius: 14px;
+  position: absolute;
+  left: 50%;
+  bottom: 100px;
+  transform: translateX(-50%);
+  z-index: 10000;
+  cursor: pointer;
+  .tutorial-container {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    img {
+      height: 100px;
+    }
+    .text {
+      font-family: $text-font;
+      color: white;
+      font-size: 20px;
+      margin: 10px;
+      white-space: break-spaces;
+    }
+  }
+}

@@ -8,7 +8,11 @@ export const AppRoutingModule: Routes = [
     component: TitleScreenComponent
   },
   {
-    path: 'game',
+    path: 'quick-start',
+    component: GameComponent
+  },
+  {
+    path: 'tutorial',
     component: GameComponent
   },
 ];

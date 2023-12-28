@@ -12,7 +12,12 @@ export class TitleScreenComponent {
 
   quickStart() {
     // Navigate to '/your-route'
-    this.router.navigate(['/game']);
+    this.router.navigate(['/quick-start']);
+  }
+
+  tutorial() {
+    // Navigate to '/your-route'
+    this.router.navigate(['/tutorial']);
   }
 
 }

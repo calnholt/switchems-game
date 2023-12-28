@@ -24,6 +24,7 @@ import { CrushDialogComponent } from './components/dialog/crush-dialog/crush-dia
 import { StatusEffectsComponent } from './components/status-effects/status-effects.component';
 import { GameOverComponent } from './components/game-over/game-over.component';
 import { DisableMonsterActionDialogComponent } from './components/dialog/disable-monster-action-dialog/disable-monster-action-dialog.component';
+import { TutorialComponent } from './components/tutorial/tutorial.component';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { DisableMonsterActionDialogComponent } from './components/dialog/disable
     StatusEffectsComponent,
     GameOverComponent,
     DisableMonsterActionDialogComponent,
+    TutorialComponent,
   ],
   exports: [
     MonsterActionComponent,

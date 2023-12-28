@@ -1,0 +1,60 @@
+Hey there! My name's Professor Holt, a giga-chad Catholic and the world's leading expert on all things Switchems. I'll teach you everything you'll need to know to play.
+
+Going forward, I will highlight relevant information by making them "pulse" on your screen, so please take notice!
+
+The first player to knockout (KO) their opponent's three monsters wins. A monster is knocked out when their health points (HP) are reduced to zero.
+
+Throughout a game of Switchems, you and your opponent will choose one action secretly on your turn. Once both players have selected actions, they are resolved in a specific order (which will be explained later). Then a new turn starts!
+
+The world of Switchems has a seemingly unlimited number of monsters - and as such, they're all capable of very unique things!
+
+Each monster has their own starting HP. It's important to try to keep your monsters alive for as long as possible!
+
+Each monster has their own initiative value. I'll explain this in more detail later.
+
+Each monster has its own weaknesses and resistances based on the monster's element(s).
+
+When you hover your mouse over a monster, a tooltip appears that shows its switch in ability, and its passive ability. Some monsters only have one of these, but some have both.
+
+Each monster is associated with four different monster actions. Let's go over the different components of a monster action.
+
+Most monster actions are attacks, which have a name, attack value, speed value, buff card slots, discard slots, draw card slots, and action text. For example, this action's name is Lightning Fang, with an attack value of 4, speed of 6, 3 discard slots, and ability text that reads "If this attack is faster, this attack gains +3atk".
+
+The attack value represents how much damage it will deal to the opponent's active monster.
+
+The speed value represents how fast the action is - the higher the value, the faster it is. If both players select a monster action, the faster action resolves first. If the speeds are tied, the monster with the higher initiative value resolves first (I told you I'd explain it later!).
+
+Discard slots are a required cost to play an action - so in order to play Lightning Fang, you must discard three cards from your hand. If you do not have three cards in your hand, you cannot use the Lightning Fang action. 
+
+Unlike discard slots, buffs slots are optional. When you select an action with buff slots, you may optionally apply that many cards from your hand to gain their benefits. Buffs are applied before actions and are resolved in initiative order (the monster with the higher initiative resolves their buffs first).
+
+When an action has draw card slots, you draw that many cards.
+
+When a monster action is selected, it becomes disabled for the following turn. You can't just spam your best moves!
+
+It's important to note that if your opponent selects a faster action and KO's your active monster, your monster does not perform its monster action. Speed is very important!
+
+When an attack is super effective against a monster (meaning the attack is one of the elements that the monster is weak to), the player gains a stat pip of a random value.
+
+Throughout the game, you will gain stat pips, located here. There are three types - attack, speed, and defense. When you're selecting a monster action, you may also apply all of your pips from a single type.
+
+For example, if you have three speed pips, you may apply all of them to your selected monster attack, giving it +3 speed. Pips can only be applied to attacks and pips persist even as your active monster changes.
+
+You can choose to switch to one of your other monsters as long as they aren't KO'd (this is called a switch action). Switch actions have two discard slots.
+
+When a switch action occurs, you're given a choice to heal your active monster 2HP or remove all of its status effects. Then the monster you selected switches in, resolving its switch in effect, if any.
+
+The turn a monster switches in, it gains switch in defense. Switch in defense gives the monster bonus defense against attacks with elements that it resists. 
+
+Properly leveraging switch actions can neutralize your opponent's offense and better position yourself to acquire a big advantage!
+
+Additionally, you have access to the standard actions Rest and Prepare. These actions can be used by all monsters and are not prevented if your active monster ins KO'd.
+
+The way a turn is structured after both players select their actions is as follows:
+1) Apply pips (initiative order)
+2) Apply buffs (initiative order)
+3) Switch actions (initiative order)
+4) Monster actions (speed order)
+5) Standard actions (initiative order)
+
+After resolving these steps, both players will draw a card from their deck and a new turn begins.

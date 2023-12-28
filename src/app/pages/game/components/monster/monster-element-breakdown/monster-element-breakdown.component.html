@@ -1,5 +1,5 @@
 <div id="monster-element-breakdown">
-  <div class="element-info-container">
+  <div class="element-info-container" [ngClass]="{'tutorial-highlight' : isWeaknessHighlighted}">
     <div class="type">
       <img [src]="superEffectiveIcon">
     </div>
@@ -9,7 +9,7 @@
       </ng-container>
     </div>
   </div>
-  <div class="element-info-container">
+  <div class="element-info-container" [ngClass]="{'tutorial-highlight' : isResistanceHighlighted}">
     <div class="elements resistances">
       <ng-container *ngFor="let element of resistances">
         <img class="element-icon" [src]="ImageUtil.getElementsPath(element)">

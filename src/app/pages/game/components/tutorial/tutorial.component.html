@@ -1,0 +1,17 @@
+<div id="tutorial" *ngIf="section.index > -1" (click)="next()">
+  <div class="tutorial-container">
+    <div class="prof-holt">
+      <img [src]="profHolt" />
+    </div>
+    <div class="text">{{section.text}}
+      <div *ngIf="audioPlayer?.nativeElement?.paused">
+        <br>
+        (Click to proceed)
+      </div>
+    </div>
+  </div>
+  <audio #audio>
+    <source [src]="audioSrc" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+</div>

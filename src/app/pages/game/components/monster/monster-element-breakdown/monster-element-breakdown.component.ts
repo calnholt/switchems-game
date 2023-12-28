@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ElemType, Path } from '~/app/shared/types/dataTypes';
 import { ImageUtil } from '~/app/shared/utils/image.util';
+import { TutorialService } from '../../../services/tutorial/tutorial.service';
 
 @Component({
   selector: 'sw-monster-element-breakdown',
@@ -15,6 +16,16 @@ export class MonsterElementBreakdownComponent {
   readonly ImageUtil = ImageUtil;
   superEffectiveIcon!: Path;
   switchDefenseIcon!: Path;
+
+  isWeaknessHighlighted = false;
+  isResistanceHighlighted = false;
+
+  constructor(private tutorialService: TutorialService) {
+    this.tutorialService.currentSection$.subscribe((value) => {
+      this.isWeaknessHighlighted = !!value.types?.includes('WEAKNESSES');
+      this.isResistanceHighlighted = !!value.types?.includes('RESISTANCES');
+    })
+  }
 
   ngOnInit(): void {
     this.superEffectiveIcon = ImageUtil.icons.superEffective;

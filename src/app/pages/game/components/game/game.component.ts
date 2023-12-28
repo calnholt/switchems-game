@@ -11,6 +11,9 @@ import { Modifier, MonsterModifierType } from '../../logic/modifiers/modifier.mo
 import { Subscription } from 'rxjs';
 import { GameOverService, WinnerType } from '../../services/game-over/game-over.service';
 import { SeedableRngService } from '../../services/seedable-rng/seedable-rng.service';
+import { TutorialService } from '../../services/tutorial/tutorial.service';
+import { TutorialSection } from '../../models/tutorial/tutorial.model';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'sw-game',
@@ -37,8 +40,9 @@ export class GameComponent implements OnChanges {
   cardsInMyOpponentsHand = 0;
 
   viewOpponentActions = false;
-
   winner: WinnerType = null;
+
+  tutorialSection!: TutorialSection;
 
   restStandardAction = new StandardAction('Rest', [
     ImageUtil.icons.draw,
@@ -57,6 +61,8 @@ export class GameComponent implements OnChanges {
     private battleAniService: BattleAnimationService,
     private gameOverService: GameOverService,
     private rng: SeedableRngService,
+    private tutorialService: TutorialService,
+    private router: Router
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -115,7 +121,15 @@ export class GameComponent implements OnChanges {
     });
     this.gameOverService.winner$.subscribe((value) => {
       this.winner = value;
-    })
+    });
+
+    if (this.router.url === '/tutorial') {
+      this.tutorialService.startTutorial();
+      this.tutorialService.currentSection$.subscribe((value) => {
+        this.tutorialSection = value;
+      });
+    }
+
   }
 
 
