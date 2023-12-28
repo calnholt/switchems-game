@@ -1,6 +1,16 @@
 <div id="term-tooltip">
-  <div class="title">{{title}}</div>
-  <div class="description" 
+  <div class="title-container" [ngClass]="{'monster-name' : !description}">
+    <div class="title">
+      {{title}}
+    </div>
+    <div *ngIf="!description">
+      <ng-container *ngFor="let path of elements">
+        <img [src]="path" />
+      </ng-container>
+    </div>
+  </div>
+  <div *ngIf="description"
+    class="description"
     [innerHTML]="description | convertEmbeddedText: 
       {termCss: 'embedded-term-text', imageCss: 'embedded-icon inverse', excludeTerms: true}">
   </div>

@@ -4,7 +4,7 @@
   background-color: #000000f0;;
   border-radius: 4px;
   padding: 3px 6px;
-  .title {
+  .title-container {
     font-family: $header-font;
     font-size: 25px;
     line-height: 75%;
@@ -12,6 +12,17 @@
     border-bottom: 1px white solid;
     padding-bottom: 4px;
     text-align: center;
+    &.monster-name {
+      border-bottom: unset;
+      margin-bottom: unset;
+      display: flex;
+      justify-content: center;
+      img {
+        filter: unset !important;
+        height: 15px;
+        padding-left: 5px;
+      }
+    }
   }
   .description {
     font-family: $text-font;

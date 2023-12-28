@@ -1,4 +1,4 @@
-import { ELEMENTS, ElemType } from "src/app/shared/types/dataTypes";
+import { ELEMENTS, ElemType, Path } from "src/app/shared/types/dataTypes";
 import { StatUtil } from "src/app/shared/utils/stat.util";
 import { IHaveTooltip } from "~/app/shared/interfaces/IHaveTooltip.interface";
 import { MonsterAction } from "./monster-action.model";
@@ -6,6 +6,7 @@ import { Buff } from "./buff.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ISelectableAction, SelectedActionType } from "~/app/shared/interfaces/ISelectableAction.interface";
 import { Modifiers, MonsterModifierType } from "../../logic/modifiers/modifier.model";
+import { ImageUtil } from "~/app/shared/utils/image.util";
 
 export class Monster implements IHaveTooltip, ISelectableAction {
   private _name: string;
@@ -161,5 +162,10 @@ export class Monster implements IHaveTooltip, ISelectableAction {
   }
 
   isAtFullHP(): boolean { return this._currentHp === this._hp; }
+
+  getElementIcons(): Path[] {
+    // @ts-ignore
+    return this.elements.map(e => ImageUtil.elements?.[e.toLowerCase()]);
+  }
 
 }
