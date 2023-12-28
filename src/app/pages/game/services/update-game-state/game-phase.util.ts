@@ -12,6 +12,7 @@ import { GameStateUtil } from "../game-state/game-state.util";
 import { SelectedAction } from "../selected-action/selected-action.model";
 import { UpdateGameStateService } from "./update-game-state.service";
 import { CPUActionSelectUtil } from "./cpu-action-select.util";
+import { StandardActionCommand } from "../../logic/commands/standard-action-command.model";
 
 export const GamePhaseUtil = {
   revealPhase,
@@ -215,8 +216,11 @@ function executeStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) 
     const playerState = GameStateUtil.getPlayerState(gs, player);
     if (playerState.selectedAction.action.getSelectableActionType() !== 'STANDARD') return;
     // TODO: convert to event
-    CardByKeyUtil.executeStandardAction(playerState.selectedAction.action.key(), player, rc, gs);
-    gs.battleAniService.update(player === 'P', 'USING_SPECIAL');
+    new StandardActionCommand(rc, {
+      key: 'SA',
+      player,
+      doStandardAction: () => CardByKeyUtil.executeStandardAction(playerState.selectedAction.action.key(), player, rc, gs),
+    }).enqueue();
   }
 
   performStandardAction(gs, playerWithInitiative);

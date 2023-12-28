@@ -10,6 +10,7 @@ import { PlayerType } from "../player-type.mode";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { GamePhaseCommandType } from "./game-phase-commands.model";
 import { MessageCommandType } from "./message-command.model";
+import { STANDARD_ACTION_COMMAND_TYPES } from "./standard-action-command.model";
 
 export abstract class EventCommand<T extends CommandData> {
   readonly receiver: UpdateGameStateService;
@@ -73,6 +74,7 @@ export type EventCommandType =
   | ONGOING_TURN_COMMAND_TYPES
   | GamePhaseCommandType
   | MessageCommandType
+  | STANDARD_ACTION_COMMAND_TYPES
 
 export interface CommandData {
   monsterName?: string;

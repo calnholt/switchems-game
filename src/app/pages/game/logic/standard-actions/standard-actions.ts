@@ -22,16 +22,16 @@ function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameSta
     message += ` ${hpHealed > 0 ? 'and ' : ''}healing 1 HP`;
   }
   message += '.';
-  new DescriptiveMessageCommand(receiver, { ...values, message: message }).enqueue();
+  new DescriptiveMessageCommand(receiver, { ...values, message }).pushFront();
 }
 function prepare(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
   const values = { key, player };
   const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 1}, receiver);
-  const randomPipsGained = CommandUtil.gainRandomStatPip(gs, { ...values, amount: 3}, receiver);
-  let message = `${player === 'P' ? 'You' : 'The opponent'} prepared, ${randomPipsGained.message}`;
+  const randomPipsGained = CommandUtil.gainRandomStatPip(gs, { ...values, amount: 3, display: false}, receiver);
+  let message = `${player === 'P' ? 'You' : 'The opponent'} prepared,${randomPipsGained.message}`;
   if (numberOfCardsDrawn) {
     message += ` and drew one card`
   }
   message += '.';
-  new DescriptiveMessageCommand(receiver, { ...values, message: message }).enqueue();
+  new DescriptiveMessageCommand(receiver, { ...values, message }).pushFront();
 }

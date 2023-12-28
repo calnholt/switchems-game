@@ -19,9 +19,11 @@ import { ArrayUtil } from "~/app/shared/utils/array.util";
 import { StatBoardSectionType } from "../../models/stat-board/stat-board.model";
 import { GameOverPhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { MonsterAction } from "../../models/monster/monster-action.model";
+import { StandardActionCommandData } from "../../logic/commands/standard-action-command.model";
 
 export const UpdateGameStateUtil = {
   doMonsterAction,
+  doStandardAction,
   applyBuff,
   applyFlinch,
   applyStatusDrain,
@@ -69,6 +71,11 @@ function doMonsterAction(gs: GameState, data: MonsterActionCommandData, rc: Upda
     new RecoilCheckCommand(rc, { ...data }).pushFront();
   }
   data.doMonsterAction();
+}
+
+function doStandardAction(gs: GameState, data: StandardActionCommandData, rc: UpdateGameStateService) {
+  gs.battleAniService.update(data.player === 'P', 'USING_SPECIAL');
+  data.doStandardAction();
 }
 
 function getOpposite(playerType: PlayerType) { return playerType === 'P' ? 'O' : 'P' }

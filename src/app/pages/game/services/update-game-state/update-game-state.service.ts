@@ -116,6 +116,9 @@ export class UpdateGameStateService {
       case 'SPEED_REVERSED':
         UpdateGameStateUtil.speedReversed(gs, data);
         break;
+      case 'STANDARD_ACTION':
+        UpdateGameStateUtil.doStandardAction(gs, data, this);
+        break;
       case 'SWITCH_ROUTINE':
         UpdateGameStateUtil.switchRoutine(gs, data, this);
         break;
