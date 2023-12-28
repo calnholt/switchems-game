@@ -72,7 +72,7 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.gainSwitchDefense(gs, data);
         break;
       case 'GAIN_RANDOM_STAT_PIP':
-        CommandUtil.gainRandomStatPip(gs, data, this);
+        CommandUtil.gainRandomStatPip(gs, { ...data, display: true}, this);
         break;
       case 'GAIN_STAT_PIP':
         UpdateGameStateUtil.gainStatPip(gs, data);
