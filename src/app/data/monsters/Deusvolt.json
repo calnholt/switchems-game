@@ -36,7 +36,7 @@
     },
     {
       "name": "Gnaw",
-      "text": "If this attack is <b>faster</b>, heal <div>1[HP].</div>~FASTER~",
+      "text": "If this attack is <b>faster</b>, heal <div>2[HP].</div>~FASTER~",
       "element": "Leaf",
       "statusFlg": false,
       "attack": 3,

@@ -8,7 +8,7 @@ export class Deusvolt extends MonsterLogic {
     new HealCommand(this.rc, {
       ...this.data,
       key: 'DEUSVOLT_A0',
-      amount: 1,
+      amount: 2,
       origin: 'Gnaw',
       monsterActionTrigger: true,
     }).executeAsTrigger('FASTER');
