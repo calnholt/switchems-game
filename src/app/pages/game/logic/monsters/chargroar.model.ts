@@ -32,7 +32,7 @@ export class Chargroar extends MonsterLogic {
     // action triggers
     new GainStatPipCommand(this.rc, {
       ...this.data,
-      key: 'CHARGROAR_A1',
+      key: 'CHARGROAR_A2',
       amount: 2,
       statType: "SPEED",
       monsterActionTrigger: true,
@@ -42,7 +42,7 @@ export class Chargroar extends MonsterLogic {
 
     new StatModificationCommand(this.rc, {
       ...this.data,
-      key: 'CHARGROAR_A0',
+      key: 'CHARGROAR_A1',
       amount: 3,
       statType: "ATTACK",
       origin: 'Lightning Fang',

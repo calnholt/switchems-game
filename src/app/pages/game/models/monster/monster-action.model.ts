@@ -49,7 +49,7 @@ export class MonsterAction implements ISelectableAction, IHaveTooltip {
     this._currentBuffSlots = buff;
     this._currentDiscardSlots = discard;
     this._draw = draw;
-    this._isSingleUse = text.includes('~SINGLE~');
+    this._isSingleUse = text?.includes('~SINGLE~');
   }
 
   get name(): string { return this._name; }

@@ -1,0 +1,81 @@
+{
+  "elements": [
+    "Electric",
+    "Leaf"
+  ],
+  "actions": [
+    {
+      "name": "Shock",
+      "text": "",
+      "element": "Electric",
+      "statusFlg": false,
+      "attack": 2,
+      "speed": 5,
+      "buff": 2,
+      "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
+    },
+    {
+      "name": "Charge Up",
+      "text": "{\"stat\": \"ATK\", \"num\": 2}",
+      "element": "Electric",
+      "statusFlg": true,
+      "speed": 8,
+      "draw": 1,
+      "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
+    },
+    {
+      "name": "Leaf Burst",
+      "text": "",
+      "element": "Leaf",
+      "statusFlg": false,
+      "attack": 5,
+      "speed": 3,
+      "discard": 2,
+      "buff": 2,
+      "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
+    },
+    {
+      "name": "Gnaw",
+      "text": "If this attack is <b>faster</b>, heal <div>1[HP].</div>~FASTER~",
+      "element": "Leaf",
+      "statusFlg": false,
+      "attack": 3,
+      "speed": 4,
+      "discard": 1,
+      "buff": 1,
+      "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
+    }
+  ],
+  "buffs": [
+    {
+      "buffName": "Bless",
+      "buffText": "This attack gains +1[ATK] this turn.",
+      "auraDuration": null,
+      "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
+    },
+    {
+      "buffName": "Bless",
+      "buffText": "This attack gains +1[ATK] this turn.",
+      "auraDuration": null,
+      "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
+    },
+    {
+      "buffName": "Shield of Faith",
+      "buffText": "This monster gains +1[DEF] this turn.",
+      "auraDuration": null,
+      "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
+    },
+    {
+      "buffName": "Shield of Faith",
+      "buffText": "This monster gains +1[DEF] this turn.",
+      "auraDuration": null,
+      "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
+    }
+  ],
+  "hp": 8,
+  "name": "Deusvolt",
+  "initiative": 30,
+  "switchIn": "When this monster <b>switches in</b>, {\"stat\": \"SPD\", \"num\": 2}.",
+  "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT",
+  "imgFlg": true
+}

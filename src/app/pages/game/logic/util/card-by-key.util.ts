@@ -6,6 +6,7 @@ import { StandardActions } from "../standard-actions/standard-actions";
 import { Chargroar } from "../monsters/chargroar.model";
 import { Vulturock } from "../monsters/vulturock.model";
 import { Stalagrowth } from "../monsters/stalagrowth.model";
+import { Deusvolt } from "../monsters/deusvolt.model";
 
 export const CardByKeyUtil = {
   executeCardByKey,
@@ -18,9 +19,11 @@ function executeCardByKey(key: CardCompositeKey, player: PlayerType, receiver: U
   const cardKey = key.substring(key.indexOf("_") + 1, key.length);
 
   switch (monsterKey) {
-    // chargroar
     case CHARGROAR:
       new Chargroar(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      break;
+    case 'DEUSVOLT':
+      new Deusvolt(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case VULTUROCK:
       new Vulturock(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);

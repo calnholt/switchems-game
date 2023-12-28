@@ -21,7 +21,7 @@ export class PlayerService {
     private rng: SeedableRngService,
     private selectedActionService: SelectedActionService,
   ) {
-    this._player = new Player(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'), this.rng);
+    this._player = new Player(this.getSpecificStart('Deusvolt', 'Vulturock', 'Stalagrowth'), this.rng);
     this._opponent = new Player(this.getSpecificStart('Stalagrowth', 'Vulturock', 'Chargroar'), this.rng);
     this.currentPhaseService.currentPhase$.subscribe(value => {
       if (value === 'START_OF_GAME') {
@@ -43,7 +43,7 @@ export class PlayerService {
   public get oStatBoard() { return this._opponent.statBoard; }
 
   startGame() {
-    this._player.reset(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'));
+    this._player.reset(this.getSpecificStart('Deusvolt', 'Vulturock', 'Stalagrowth'));
     this.selectedActionService.clear();
     this._opponent.reset(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'));
   }

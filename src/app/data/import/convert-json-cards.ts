@@ -7,6 +7,7 @@ import { default as Galeaffy } from '../monsters/Galeaffy.json';
 import { default as Drownigator } from '../monsters/Drownigator.json';
 import { default as Vulturock } from '../monsters/Vulturock.json';
 import { default as Whailstrom } from '../monsters/Whailstrom.json';
+import { default as Deusvolt } from '../monsters/Deusvolt.json';
 import { MonsterAction } from '~/app/pages/game/models/monster/monster-action.model';
 import { Buff } from '~/app/pages/game/models/monster/buff.model';
 import { Monster } from '~/app/pages/game/models/monster/monster.model';
@@ -25,6 +26,7 @@ export const convertJsonToObjs = (selectedMonster?: any): Array<Monster> => {
     Vulturock,
     Whailstrom,
     Zappguin,
+    Deusvolt,
   ]);
 };
 
