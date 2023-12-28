@@ -9,6 +9,10 @@
   bottom: 100px;
   transform: translateX(-50%);
   z-index: 10000;
+  &.top {
+    bottom: unset;
+    top: 100px;
+  }
   cursor: pointer;
   .tutorial-container {
     display: flex;
@@ -23,6 +27,11 @@
       font-size: 20px;
       margin: 10px;
       white-space: break-spaces;
+      img {
+        display: inline-block;
+        height: 27px;
+        filter: invert(1);
+      }
     }
   }
 }

@@ -9,6 +9,7 @@ import { EventManagerService } from '../../services/event-manager/event-manager.
 import { GameUISelectionEventType } from '../../services/game-ui-selection/game-ui-selection-event.model';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
+import { TutorialService } from '../../services/tutorial/tutorial.service';
 
 @Component({
   selector: 'sw-buff',
@@ -36,11 +37,16 @@ export class BuffComponent extends IHover implements OnInit {
   displayApplyToBuffButton = false;
   displayApplyToDiscardButton = false;
 
+  isBuffHighlighted = false;
+  isBuffMonsterHighlighted = false;
+  isBuffTextHighlighted = false;
+
   constructor(
     private monsterService: MonsterDataService,
     private eventManagerService: EventManagerService,
     private selectedActionService: SelectedActionService,
     private currentPhaseService: CurrentPhaseService,
+    private tutorialService: TutorialService,
   ) {
     super();
   }
@@ -61,6 +67,11 @@ export class BuffComponent extends IHover implements OnInit {
     });
     this.currentPhaseService.currentPhase$.subscribe((phase) => {
       this.enabled = phase === 'SELECTION_PHASE';
+    });
+    this.tutorialService.currentSection$.subscribe((value) => {
+      this.isBuffHighlighted = !!value.types?.includes('BUFF');
+      this.isBuffMonsterHighlighted = !!value.types?.includes('BUFF_MONSTER');
+      this.isBuffTextHighlighted = !!value.types?.includes('BUFF_TEXT');
     });
   }
 

@@ -6,9 +6,9 @@
         [ngClass]="{ 'applied' : 
           (type.type === 'BUFF' && type.index < buffSlotsUsed) || 
           (type.type === 'DISCARD' && type.index < discardSlotsUsed)}">
-          <img *ngIf="type.type === 'BUFF'" src={{buffImg}} />
-          <img *ngIf="type.type === 'DRAW'" src={{drawImg}} />
-          <img *ngIf="type.type === 'DISCARD'" src={{discardImg}} />
+          <img *ngIf="type.type === 'BUFF'" src={{buffImg}} [ngClass]="{'tutorial-highlight' : isBuffIconHighlighted}" />
+          <img *ngIf="type.type === 'DRAW'" src={{drawImg}} [ngClass]="{'tutorial-highlight' : isDrawIconHighlighted}" />
+          <img *ngIf="type.type === 'DISCARD'" src={{discardImg}} [ngClass]="{'tutorial-highlight' : isDiscardIconHighlighted}" />
         </span>
       </ng-container>
   </div>

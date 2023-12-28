@@ -75,7 +75,7 @@ export const TERM_CODES = termCodes.sort((a, b) => a.name.localeCompare(b.name))
 const IMAGE_KEYS = [`[ATK]`, `[+]`, `[B]`, `[-]`, `[DEF]`, `[TA]`,
     `[SPD]`, `[F]`, `[W]`, `[L]`, `[R]`, `[E]`, `[S]`, `[ST]`, `[REAC]`, `[HP]`, '[CUBE]', '[NQ]', '[PQ]', '[ARROW]',
     '[SPECIAL]', '[STATUS]', '[COUNTER]', '[MQ]', '[ACORN]', '[HONEY]', '[WISH]', '[TORMENT]', '[FLIP]', '[DISABLE]', '[SINGLE]', '[HOLLOW]',
-    '[SR]', '[SL]', '[RESIST]', '[WEAK]', '[STR]', '[FRAIL]', '[GOOP]', `[Q]`
+    '[SR]', '[SL]', '[RESIST]', '[WEAK]', '[STR]', '[FRAIL]', '[GOOP]', `[Q]`, `[SUPER-EFFECTIVE]`
 ] as const;
 export type ImageCode = typeof IMAGE_KEYS[number];
 export const IMAGE_CODES = [
@@ -101,12 +101,13 @@ export const IMAGE_CODES = [
     new Image(`[STATUS]`, SYMBOLS_PATH + `wound.png`),
     new Image(`[FLIP]`, SYMBOLS_PATH + `flip.png`),
     new Image(`[Q]`, SYMBOLS_PATH + `question.png`),
-    new Image(`[DISABLE]`, SYMBOLS_PATH + `unlocked.png`),
+    new Image(`[DISABLE]`, SYMBOLS_PATH + `lock.png`),
     new Image(`[SINGLE]`, SYMBOLS_PATH + `single-use.png`),
     new Image(`[SR]`, SYMBOLS_PATH + `switch-right.png`),
     new Image(`[SL]`, SYMBOLS_PATH + `switch-left.png`),
     new Image(`[RESIST]`, SYMBOLS_PATH + `switch-defense-right.png`),
     new Image(`[WEAK]`, SYMBOLS_PATH + `effective.png`),
+    new Image(`[SUPER-EFFECTIVE]`, SYMBOLS_PATH + `super-effective.png`),
     new Image(`[GOOP]`, SYMBOLS_PATH + `goop.png`),
     new Image(`[HOLLOW]`, SYMBOLS_PATH + `hollow.png`),
     new Image(`[ARROW]`, SYMBOLS_PATH + `sideswipe.png`),

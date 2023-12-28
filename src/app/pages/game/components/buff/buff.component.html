@@ -1,6 +1,6 @@
 <div id="buff" 
-  [ngClass]="backgroundClass" 
-  class="sw-card-hover"
+  [ngClass]="{'tutorial-highlight' : isBuffHighlighted}" 
+  class="sw-card-hover {{backgroundClass}}"
   cardInfoTooltip 
   [object]="buff" 
   tooltipType="BUFF" 
@@ -34,8 +34,10 @@
         <div>{{buff.auraDuration}}</div>
         <img [src]="teamAuraPath" />
       </div>
-      <div class="text" [innerHTML]=" buff.text | convertEmbeddedText : { excludeTerms: true }"></div>
+      <div class="text" 
+        [innerHTML]=" buff.text | convertEmbeddedText : { excludeTerms: true }"
+        [ngClass]="{'tutorial-highlight' : isBuffTextHighlighted}"></div>
     </div>
-    <img class="monster-img" [src]="monsterPath" />
+    <img class="monster-img" [src]="monsterPath" [ngClass]="{'tutorial-highlight' : isBuffMonsterHighlighted}"  />
   </div>
 </div>

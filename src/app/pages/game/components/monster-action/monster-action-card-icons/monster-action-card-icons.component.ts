@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
 import { SelectedActionService } from '../../../services/selected-action/selected-action.service';
 import { MonsterAction } from '../../../models/monster/monster-action.model';
+import { TutorialService } from '../../../services/tutorial/tutorial.service';
 
 type CardType = 'BUFF' | 'DRAW' | 'DISCARD';
 
@@ -21,8 +22,13 @@ export class MonsterActionCardIconsComponent {
   discardImg = ImageUtil.icons.discard;
   drawImg = ImageUtil.icons.draw;
 
+  isBuffIconHighlighted = false;
+  isDiscardIconHighlighted = false;
+  isDrawIconHighlighted = false;
+
   constructor(
-    private playerCardManagerService: SelectedActionService
+    private playerCardManagerService: SelectedActionService,
+    private tutorialService: TutorialService,
   ) {
   }
 
@@ -47,6 +53,11 @@ export class MonsterActionCardIconsComponent {
       this.getCardTypeArray(this.action.getNumOfDiscardSlots(), 'DISCARD'),
       this.getCardTypeArray(this.action.draw, 'DRAW'),
     );
+    this.tutorialService.currentSection$.subscribe((value) => {
+      this.isBuffIconHighlighted = !!value.types?.includes('MONSTER_ACTION_BUFF');
+      this.isDiscardIconHighlighted = !!value.types?.includes('MONSTER_ACTION_DISCARD');
+      this.isDrawIconHighlighted = !!value.types?.includes('MONSTER_ACTION_DRAW');
+    });
   }
 
   getCardTypeArray(amount: number, type: CardType) {

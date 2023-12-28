@@ -151,13 +151,19 @@ button {
 
 @keyframes shrinkExpand {
   0%, 100% {
-    transform: scale(1); // Normal size
+    transform: scale(1.15);
   }
   50% {
-    transform: scale(0.8); // Shrink to 80% of its size
+    transform: scale(0.8);
   }
 }
 
 .tutorial-highlight {
   animation: shrinkExpand 2s ease-in-out infinite;
+}
+
+.tutorial-invert {
+  display: inline-block;
+  height: 26px;
+  filter: invert(1);
 }

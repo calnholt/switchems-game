@@ -3,6 +3,7 @@ export interface TutorialSection {
   isEnd?: boolean;
   types?: TutorialSectionType[];
   description: string;
+  isTop?: boolean;
 };
 
 export type TutorialSectionType = 

@@ -1,9 +1,9 @@
-<div id="tutorial" (click)="next()">
+<div id="tutorial" [ngClass]="{'top' : section.isTop}" (click)="next()">
   <div class="tutorial-container">
     <div class="prof-holt">
       <img [src]="profHolt" />
     </div>
-    <div class="text">{{section.text}}
+    <div class="text" [innerHTML]="section.text | convertEmbeddedText : { excludeTerms: true, imageCss: 'tutorial-invert', termCss: 'embedded-term-text' }">
       <div *ngIf="audioPlayer?.nativeElement?.paused">
         <br>
         (Click to proceed)
