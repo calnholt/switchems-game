@@ -5,6 +5,7 @@
     [ngClass]="{
       'selected' : isSelected, 
       'unselectable': action.isDisabled || action.isLocked || cardsInHand < action.discards || disable,
+      'tutorial-highlight' : isMonsterActionHighlighted,
       }" 
       cardInfoTooltip [object]="action" tooltipType="ACTION">
       <div [ngClass]="{'disabled' : action.isDisabled, 'locked' : action.isLocked}">
@@ -13,7 +14,7 @@
     </div>
     <div class="stat-container">
       <div class="stat-section">
-        <div *ngIf="action.attack">
+        <div *ngIf="action.attack" [ngClass]="{'tutorial-highlight' : isAttackIconHighlighted}">
           <span>{{action.attack}}
             <img [src]="attackImg">
           </span>
@@ -21,10 +22,10 @@
         <div *ngIf="action.isStatus">
           <img [src]="statusImg" />
         </div>
-        <div>
+        <div [ngClass]="{'tutorial-highlight' : isElementIconHighlighted}">
           <img [src]="elementImg">
         </div>
-        <div *ngIf="action.speed">
+        <div *ngIf="action.speed" [ngClass]="{'tutorial-highlight' : isSpeedIconHighlighted}">
           <span>{{action.speed}}
             <img [src]="speedImg">
           </span>
@@ -37,7 +38,11 @@
       </div>
     </div>
     <div class="sw-card-text-container">
-      <div [innerHTML]="action.text | convertEmbeddedText : { excludeTerms: true }" class="text"></div>
+      <div 
+        [innerHTML]="action.text | convertEmbeddedText : { excludeTerms: true }" 
+        class="text"
+        [ngClass]="{'tutorial-highlight' : isTextHighlighted}"  
+      ></div>
     </div>
   </div>
   </div>

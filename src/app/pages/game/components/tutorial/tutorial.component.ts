@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } fro
 import { TutorialSection } from '../../models/tutorial/tutorial.model';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { TutorialService } from '../../services/tutorial/tutorial.service';
+import { TutorialSections } from '../../models/tutorial/tutorial.util';
 
 @Component({
   selector: 'sw-tutorial',
@@ -22,7 +23,7 @@ export class TutorialComponent implements OnChanges {
   }
 
   ngOnInit() {
-    this.setAudioSource(this.section.index);
+    this.setAudioSource();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -30,14 +31,14 @@ export class TutorialComponent implements OnChanges {
       return;
     }
     if (changes['section']) {
-      this.setAudioSource(this.section.index);
+      this.setAudioSource();
       this.audioPlayer.nativeElement.src = this.audioSrc;
       this.play();
     }
   }
 
-  setAudioSource(index: number) {
-    this.audioSrc = `../../../../../assets/audio/tutorial/tutorial-${index}.wav`;
+  setAudioSource() {
+    this.audioSrc = `../../../../../assets/audio/tutorial/tutorial-${this.section.description}.wav`;
   }
 
   ngAfterViewInit() {
@@ -52,6 +53,10 @@ export class TutorialComponent implements OnChanges {
 
   play() {
     this.audioPlayer.nativeElement.play();
+  }
+
+  private getIndex(): number {
+    return TutorialSections.findIndex(t => t.text === this.section.text) + 1;
   }
 
 }

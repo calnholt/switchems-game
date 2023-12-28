@@ -1,8 +1,8 @@
 export interface TutorialSection {
   text: string;
-  index: number;
   isEnd?: boolean;
   types?: TutorialSectionType[];
+  description: string;
 };
 
 export type TutorialSectionType = 
@@ -10,6 +10,7 @@ export type TutorialSectionType =
   | 'INITIATIVE'
   | 'WEAKNESSES'
   | 'RESISTANCES'
+  | 'MONSTER'
   | 'MONSTER_ACTION'
   | 'MONSTER_ACTION_ATTACK'
   | 'MONSTER_ACTION_SPEED'
@@ -22,6 +23,8 @@ export type TutorialSectionType =
   | 'OPPONENT_HAND'
   | 'SWITCH_ACTIONS'
   | 'STANDARD_ACTIONS'
-  | 'HAND'
+  | 'BUFF'
   | 'BUFF_TEXT'
   | 'BUFF_MONSTER'
+  | 'BENCHED_MONSTER'
+  | 'OPPONENT_HAND'

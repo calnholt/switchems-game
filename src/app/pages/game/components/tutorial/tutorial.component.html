@@ -1,4 +1,4 @@
-<div id="tutorial" *ngIf="section.index > -1" (click)="next()">
+<div id="tutorial" *ngIf="section.text.length > 0" (click)="next()">
   <div class="tutorial-container">
     <div class="prof-holt">
       <img [src]="profHolt" />

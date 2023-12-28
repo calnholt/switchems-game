@@ -9,6 +9,7 @@ import { flashAnimation, rubberBandAnimation, slideInLeftAnimation, slideInLeftO
 import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
 import { AnimationEvent } from '@angular/animations';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
+import { TutorialService } from '../../services/tutorial/tutorial.service';
 
 @Component({
   selector: 'sw-monster',
@@ -49,11 +50,16 @@ export class MonsterComponent implements OnInit, OnChanges {
   switchingIn = true;
   switchingOut = false;
 
+  isMonsterHighlighted = false;
+  isOpponentHandHighlighted = false;
+  isBenchedMonsterHighlighted = false;
+
   constructor(
     private eventManagerService: EventManagerService,
     private selectedActionService: SelectedActionService,
     private battleAnimationService: BattleAnimationService,
     private currentPhaseService: CurrentPhaseService,
+    private tutorialService: TutorialService,
   ) {
     
   }
@@ -92,6 +98,11 @@ export class MonsterComponent implements OnInit, OnChanges {
     this.currentPhaseService.currentPhase$.subscribe((phase) => {
       this.enabled = phase === 'SELECTION_PHASE';
     });
+    this.tutorialService.currentSection$.subscribe((value) => {
+      this.isMonsterHighlighted = !!value.types?.includes('MONSTER');
+      this.isOpponentHandHighlighted = !!value.types?.includes('OPPONENT_HAND');
+      this.isBenchedMonsterHighlighted = !!value.types?.includes('BENCHED_MONSTER') && !this.isActiveMonster;
+    })
   }
 
   onSelect() {

@@ -41,7 +41,8 @@
     <div class="monster-container {{backgroundClass}}" [ngClass]="{
         'inactive' : !isActiveMonster, 
         'selected' : selected, 
-        'unselectable': (cardsInHand < 2 && !isActiveMonster) || !enabled || monster.currentHp === 0 || disable
+        'unselectable': (cardsInHand < 2 && !isActiveMonster) || !enabled || monster.currentHp === 0 || disable,
+        'tutorial-highlight' : isBenchedMonsterHighlighted
       }">
       <div
         [@wobble]="attacking" 
@@ -50,12 +51,16 @@
         (@flash.done)="aniDone($event)"
         [@rubberBand]="usingSpecial" 
         (@rubberBand.done)="aniDone($event)">
-        <img [src]="monsterIcon" 
-          cardInfoTooltip 
-          class="{{isOpponent ? 'reverse' : ''}}" 
-          [object]="monster"
-          tooltipType="MONSTER"
-        />
+        <div [ngClass]="{'tutorial-highlight' : isMonsterHighlighted}">
+          <img [src]="monsterIcon" 
+            cardInfoTooltip 
+            [ngClass]="{
+              'reverse' : isOpponent,
+            }"
+            [object]="monster"
+            tooltipType="MONSTER"
+          />
+        </div>
       </div>
       <div *ngIf="!isActiveMonster" class="discard-container">
         <img [ngClass]="{'selected' : numDiscards > 0}" [src]="discardIcon" />
@@ -67,7 +72,9 @@
           <sw-monster-element-breakdown [style.width]="'100%'" [weaknesses]="monster.weaknesses"
             [resistances]="monster.resistances" [switchDefense]="monster.switchDefense" />
         </div>
-        <div *ngIf="isActiveMonster && isOpponent" class="hand-of-cards">
+        <div *ngIf="isActiveMonster && isOpponent" 
+          class="hand-of-cards"
+          [ngClass]="{'tutorial-highlight' : isOpponentHandHighlighted}">
           <div>
             {{cardsInMyOpponentsHand}}
           </div>

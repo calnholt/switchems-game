@@ -1,12 +1,20 @@
-<sw-pushable-button>
-  <div id="standard-action" [ngClass]="{ 'selected' : selected }" (click)="select()">
-    <div class="sw-card-title">
-      {{standardAction.name}}
+<div [ngClass]="{ 
+  'tutorial-highlight' : isStandardActionHighlighted,
+}" >
+  <sw-pushable-button>
+    <div id="standard-action" 
+      [ngClass]="{ 
+        'selected' : selected,
+      }" 
+      (click)="select()">
+      <div class="sw-card-title">
+        {{standardAction.name}}
+      </div>
+      <div class="sw-card-text-container">
+        <ng-container *ngFor="let path of standardAction.paths">
+          <img [src]="path" />
+        </ng-container>
+      </div>
     </div>
-    <div class="sw-card-text-container">
-      <ng-container *ngFor="let path of standardAction.paths">
-        <img [src]="path" />
-      </ng-container>
-    </div>
-  </div>
-</sw-pushable-button>
+  </sw-pushable-button>
+</div>

@@ -8,7 +8,7 @@ import { TutorialSections } from '../../models/tutorial/tutorial.util';
 })
 export class TutorialService {
 
-  private _currentSection: BehaviorSubject<TutorialSection> = new BehaviorSubject<TutorialSection>({ index: -1, text: '', types: [] });
+  private _currentSection: BehaviorSubject<TutorialSection> = new BehaviorSubject<TutorialSection>({ text: '', types: [], description: '' });
 
   public get currentSection$() { return this._currentSection; }
   public get currentSection() { return this._currentSection.value; }
@@ -24,8 +24,8 @@ export class TutorialService {
 
     }
     else {
-      const index = this.getCurrentIndex();
-      this._currentSection.next(TutorialSections[this.getCurrentIndex()]);
+      const index = this.getCurrentIndex() + 1;
+      this._currentSection.next(TutorialSections[index]);
     }
   }
 
@@ -34,7 +34,7 @@ export class TutorialService {
   }
 
   private getCurrentIndex(): number {
-    return this._currentSection.value.index;
+    return TutorialSections.findIndex(t => t.text === this._currentSection.value.text);
   }
 
 }

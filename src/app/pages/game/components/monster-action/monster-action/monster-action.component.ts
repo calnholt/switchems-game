@@ -8,6 +8,7 @@ import { EventManagerService } from '../../../services/event-manager/event-manag
 import { GameUISelectionEventType } from '../../../services/game-ui-selection/game-ui-selection-event.model';
 import { SelectedActionService } from '../../../services/selected-action/selected-action.service';
 import { CurrentPhaseService } from '../../../services/current-phase/current-phase.service';
+import { TutorialService } from '../../../services/tutorial/tutorial.service';
 
 @Component({
   selector: 'sw-monster-action',
@@ -30,10 +31,20 @@ export class MonsterActionComponent {
   isSelected = false;
   enabled = true;
 
+  isMonsterActionHighlighted = false;
+  isAttackIconHighlighted = false;
+  isSpeedIconHighlighted = false;
+  isElementIconHighlighted = false;
+  isBuffIconHighlighted = false;
+  isDiscardIconHighlighted = false;
+  isDrawIconHighlighted = false;
+  isTextHighlighted = false;
+
   constructor(
     private eventManagerService: EventManagerService,
     private selectedActionService: SelectedActionService,
     private currentPhaseService: CurrentPhaseService,
+    private tutorialService: TutorialService,
   ) {
 
   }
@@ -53,6 +64,16 @@ export class MonsterActionComponent {
       this.enabled = phase === 'SELECTION_PHASE';
       this.isSelected = phase === 'SELECTION_PHASE';
     });
+    this.tutorialService.currentSection$.subscribe((value) => {
+      this.isMonsterActionHighlighted = !!value.types?.includes('MONSTER_ACTION');
+      this.isAttackIconHighlighted = !!value.types?.includes('MONSTER_ACTION_ATTACK');
+      this.isSpeedIconHighlighted = !!value.types?.includes('MONSTER_ACTION_SPEED');
+      this.isElementIconHighlighted = !!value.types?.includes('MONSTER_ACTION_ELEMENT');
+      this.isBuffIconHighlighted = !!value.types?.includes('MONSTER_ACTION_BUFF');
+      this.isDiscardIconHighlighted = !!value.types?.includes('MONSTER_ACTION_DISCARD');
+      this.isDrawIconHighlighted = !!value.types?.includes('MONSTER_ACTION_DRAW');
+      this.isTextHighlighted = !!value.types?.includes('MONSTER_ACTION_TEXT');
+    })
   }
 
   selectAction() {

@@ -14,7 +14,7 @@ Each monster has their own initiative value. I'll explain this in more detail la
 
 Each monster has its own weaknesses and resistances based on the monster's element(s).
 
-When you hover your mouse over a monster, a tooltip appears that shows its switch in ability, and its passive ability. Some monsters only have one of these, but some have both.
+When you hover your mouse over a monster, a tooltip appears that shows its switch in ability and its passive ability. Some monsters only have one of these, but some have both. Try it now!
 
 Each monster is associated with four different monster actions. Let's go over the different components of a monster action.
 
@@ -22,17 +22,21 @@ Most monster actions are attacks, which have a name, attack value, speed value, 
 
 The attack value represents how much damage it will deal to the opponent's active monster.
 
-The speed value represents how fast the action is - the higher the value, the faster it is. If both players select a monster action, the faster action resolves first. If the speeds are tied, the monster with the higher initiative value resolves first (I told you I'd explain it later!).
+The speed value represents how fast the action is - the higher the value, the faster it is. If both players select a monster action, the faster action resolves first. If the speeds are tied, the monster with the higher initiative value resolves first.
+
+It's important to note that if your opponent selects a faster action and KO's your active monster, your monster does not perform its monster action. Speed is very important!
 
 Discard slots are a required cost to play an action - so in order to play Lightning Fang, you must discard three cards from your hand. If you do not have three cards in your hand, you cannot use the Lightning Fang action. 
 
 Unlike discard slots, buffs slots are optional. When you select an action with buff slots, you may optionally apply that many cards from your hand to gain their benefits. Buffs are applied before actions and are resolved in initiative order (the monster with the higher initiative resolves their buffs first).
 
-When an action has draw card slots, you draw that many cards.
+Players have a deck of 12 buff cards. Each monster on a player's team contributes four cards to form their deck. You can apply buff cards from any monster to any of your monsters.
+
+After you have clicked on a monster action, when you hover over a card in your hand, the buff and discard icons will appear on the left and right of the card. Clicking these will apply the card as a buff or a discard.
+
+When an action has draw card slots, you draw that many cards, even if the monster was KO'd this turn.
 
 When a monster action is selected, it becomes disabled for the following turn. You can't just spam your best moves!
-
-It's important to note that if your opponent selects a faster action and KO's your active monster, your monster does not perform its monster action. Speed is very important!
 
 When an attack is super effective against a monster (meaning the attack is one of the elements that the monster is weak to), the player gains a stat pip of a random value.
 
@@ -48,7 +52,7 @@ The turn a monster switches in, it gains switch in defense. Switch in defense gi
 
 Properly leveraging switch actions can neutralize your opponent's offense and better position yourself to acquire a big advantage!
 
-Additionally, you have access to the standard actions Rest and Prepare. These actions can be used by all monsters and are not prevented if your active monster ins KO'd.
+Additionally, you have access to the standard actions Rest and Prepare. These actions can be used by all monsters and are not prevented if your active monster is KO'd.
 
 The way a turn is structured after both players select their actions is as follows:
 1) Apply pips (initiative order)

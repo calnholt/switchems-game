@@ -3,6 +3,7 @@ import { StandardAction } from '../../models/standard-action/standard-action.mod
 import { EventManagerService } from '../../services/event-manager/event-manager.service';
 import { GameUISelectionEventType } from '../../services/game-ui-selection/game-ui-selection-event.model';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
+import { TutorialService } from '../../services/tutorial/tutorial.service';
 
 @Component({
   selector: 'sw-standard-action',
@@ -13,10 +14,12 @@ export class StandardActionComponent {
   @Input() standardAction!: StandardAction;
 
   selected = false;
+  isStandardActionHighlighted = false;
 
   constructor(
     private eventManagerService: EventManagerService,
     private selectedActionService: SelectedActionService,
+    private tutorialService: TutorialService,
   ) {
 
   }
@@ -31,6 +34,9 @@ export class StandardActionComponent {
         this.selected = false;
       }
     });
+    this.tutorialService.currentSection$.subscribe((value) => {
+      this.isStandardActionHighlighted = !!value.types?.includes('STANDARD_ACTIONS');
+    })
   }
 
   select() {

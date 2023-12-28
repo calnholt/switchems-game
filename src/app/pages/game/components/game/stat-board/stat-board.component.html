@@ -1,4 +1,4 @@
-<div id="stat-board">
+<div id="stat-board" [ngClass]="{'tutorial-highlight' : isStatBoardHighlighted}">
   <div>
     <sw-stat-board-section [statBoardSection]="statBoard.attack" [disable]="disable" />
   </div>
