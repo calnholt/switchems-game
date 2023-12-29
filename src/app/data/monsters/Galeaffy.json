@@ -5,7 +5,7 @@
   "actions": [
     {
       "name": "Foreboding Winds",
-      "text": "[Q]. <br><br>If this attack deals two or more damage to the enemy monster, <div>[+] [+] then [-] [-].</div>",
+      "text": "<div>{\"stat\": \"?\", \"num\": 1}</div> <br><br>If this attack deals two or more damage to the enemy monster, <div>[+] [+] then [-] [-].</div>",
       "element": "Leaf",
       "statusFlg": false,
       "attack": 3,

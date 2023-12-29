@@ -5,7 +5,7 @@
   "actions": [
     {
       "name": "Inferno",
-      "text": "If the enemy monster has a [STATUS], this attack gains one [B] slot and [Q].<br><br>If all [B] slots are used <u>and</u> all applied buffs <b>belong</b> to this monster, this attack gains +2[ATK] for each buff slot used. ~STATUS~ ~BELONGS~",
+      "text": "If the enemy monster has a [STATUS], this attack gains one [B] slot and <div>{\"stat\": \"?\", \"num\": 1}.</div><br><br>If all [B] slots are used <u>and</u> all applied buffs <b>belong</b> to this monster, this attack gains +2[ATK] for each buff slot used. ~STATUS~ ~BELONGS~",
       "element": "Fire",
       "statusFlg": false,
       "attack": 2,
@@ -28,7 +28,7 @@
     },
     {
       "name": "No Pain, No Gain",
-      "text": "[Q] [Q]. <br><br><b>Recoil 1</b>,  {\"stat\": \"ATK\", \"num\": 1}.~RECOIL~",
+      "text": "<div>{\"stat\": \"?\", \"num\": 2}</div> <br><br><b>Recoil 1</b>,  {\"stat\": \"ATK\", \"num\": 1}.~RECOIL~",
       "element": "Rock",
       "statusFlg": false,
       "attack": 1,
@@ -40,7 +40,7 @@
     },
     {
       "name": "Scorch",
-      "text": "[Q].<br><br>If the enemy monster has a [STATUS], this attack gains [Q].~STATUS~",
+      "text": "<div>{\"stat\": \"?\", \"num\": 1}</div><br><br>If the enemy monster has a [STATUS], this attack gains <div>{\"stat\": \"?\", \"num\": 1}.</div>~STATUS~",
       "element": "Fire",
       "statusFlg": false,
       "attack": 3,
@@ -60,7 +60,7 @@
     },
     {
       "buffName": "Inner Strength",
-      "buffText": "[Q] [Q]",
+      "buffText": "<div>{\"stat\": \"?\", \"num\": 2}</div>",
       "lastUpdated": "Sat, 04 Sep 2021 12:22:21 GMT"
     },
     {

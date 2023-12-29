@@ -17,7 +17,7 @@
     },
     {
       "name": "Ice Blast",
-      "text": "If this attack is <b>faster</b>, [Q] [Q]. ~FASTER~",
+      "text": "If this attack is <b>faster</b>, <div>{\"stat\": \"?\", \"num\": 2}.</div> ~FASTER~",
       "element": "Water",
       "statusFlg": false,
       "attack": 2,
@@ -59,7 +59,7 @@
     },
     {
       "buffName": "Resuscitate",
-      "buffText": "If the enemy monster is <b>weak</b> to this attack's element, [Q] [Q] [Q]. If not, [Q] instead. ~EFFECTIVE~",
+      "buffText": "If the enemy monster is <b>weak</b> to this attack's element, <div>{\"stat\": \"?\", \"num\": 3}.</div> If not, <div>{\"stat\": \"?\", \"num\": 1}</div> instead. ~EFFECTIVE~",
       "auraDuration": 0,
       "lastUpdated": "Tue, 24 Jan 2023 14:16:01 GMT"
     },

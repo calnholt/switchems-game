@@ -17,7 +17,7 @@
     },
     {
       "name": "Expunge",
-      "text": "<b>Single use. </b><br><br>If the enemy monster has a [STATUS], this attack gains <div>[Q] [Q].</div>~SINGLE~~STATUS~",
+      "text": "<b>Single use. </b><br><br>If the enemy monster has a [STATUS], this attack gains <div>{\"stat\": \"?\", \"num\": 2}.</div>~SINGLE~~STATUS~",
       "element": "Death",
       "statusFlg": false,
       "attack": 4,
@@ -29,7 +29,7 @@
     },
     {
       "name": "Swamped",
-      "text": "[Q]. <br><br>{\"stat\": \"SPD\", \"num\": 2}",
+      "text": "{\"stat\": \"?\", \"num\": 1}. <br><br>{\"stat\": \"SPD\", \"num\": 2}",
       "element": "Death",
       "statusFlg": false,
       "attack": 3,

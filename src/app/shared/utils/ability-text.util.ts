@@ -72,7 +72,7 @@ function convertInnerTextJson(innerHtml: string) {
         for (let i = 0; i < obj.num; i++) {
           cubeStr += '<div class="stat-pip"></div>';
         }
-        html += `<div>+</div>[${['ATK', 'HOLLOW'].includes(obj.stat) ? 'ATK' : obj.stat}]${cubeStr}</div>`;
+        html += `<div>+</div><div>${obj.stat === '?' ? '?' : `[${obj.stat}]`}</div>${cubeStr}</div>`;
       }
       innerHtml = innerHtml.replace(jsonInText, html);
     } catch (error) {

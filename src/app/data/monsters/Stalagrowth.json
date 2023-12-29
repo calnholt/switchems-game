@@ -41,7 +41,7 @@
     },
     {
       "name": "Skewer",
-      "text": "[Q] [Q]",
+      "text": "<div>{\"stat\": \"?\", \"num\": 2}</div>",
       "element": "Rock",
       "statusFlg": false,
       "attack": 2,

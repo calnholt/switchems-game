@@ -39,7 +39,7 @@
     },
     {
       "name": "Lickety Split",
-      "text": "[Q] [Q]",
+      "text": "<div>{\"stat\": \"?\", \"num\": 2}</div>",
       "element": "Water",
       "statusFlg": false,
       "attack": 3,

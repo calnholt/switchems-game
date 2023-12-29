@@ -6,7 +6,7 @@
   "actions": [
     {
       "name": "Kraterkazee",
-      "text": "[Q], <b>Recoil 2</b>.~RECOIL~",
+      "text": "<div>{\"stat\": \"?\", \"num\": 1},</div> <b>Recoil 2</b>.~RECOIL~",
       "element": "Death",
       "statusFlg": false,
       "attack": 4,

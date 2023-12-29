@@ -53,18 +53,6 @@ export class GameComponent implements OnChanges {
 
   currentPhase!: GamePhaseCommandType;
 
-  restStandardAction = new StandardAction('Rest', [
-    ImageUtil.icons.draw,
-    ImageUtil.icons.draw,
-    ImageUtil.icons.hp
-  ]);
-  prepareStandardAction = new StandardAction('Prepare', [
-    ImageUtil.icons.draw,
-    ImageUtil.icons.randomCube,
-    ImageUtil.icons.randomCube,
-    ImageUtil.icons.randomCube,
-  ]);
-
   constructor(
     private playerService: PlayerService,
     private battleAniService: BattleAnimationService,

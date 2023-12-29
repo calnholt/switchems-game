@@ -11,9 +11,7 @@
         {{standardAction.name}}
       </div>
       <div class="sw-card-text-container">
-        <ng-container *ngFor="let path of standardAction.paths">
-          <img [src]="path" />
-        </ng-container>
+        <div class="text" [innerHTML]=" standardAction.text | convertEmbeddedText : { excludeTerms: true, imageCss: 'embedded-icon-standard-action', termCss: 'embedded-term-text' }"></div>
       </div>
     </div>
   </sw-pushable-button>

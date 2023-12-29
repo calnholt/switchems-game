@@ -47,7 +47,7 @@ function getRandomAction(cpuState: PlayerState, rng: SeedableRngService): Select
 
   // is standard action
   if (['Rest', 'Prepare'].includes(chosenActionKey)) {
-    return new SelectedAction(new StandardAction(chosenActionKey, []));
+    return new SelectedAction(new StandardAction(chosenActionKey, ''));
   }
 
   // is switch action

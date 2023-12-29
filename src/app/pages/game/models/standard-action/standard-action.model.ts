@@ -1,21 +1,21 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ISelectableAction, SelectedActionType } from "~/app/shared/interfaces/ISelectableAction.interface";
-import { Path } from "~/app/shared/types/dataTypes";
+import { ImageCode, Path } from "~/app/shared/types/dataTypes";
 
 const STANDARD_ACTION_DESCRIPTION = `This action resolves after monster actions, regardless if your active monster was KO'd this turn.`;
 
 export class StandardAction implements ISelectableAction {
   private _name: string;
-  private _paths: Path[];
+  private _text: string;
   private _description: string = STANDARD_ACTION_DESCRIPTION;
 
-  constructor(name: string, paths: Path[]) {
+  constructor(name: string, text: string) {
     this._name = name;
-    this._paths = paths;
+    this._text = text;
   }
 
   public get name() { return this._name; }
-  public get paths() { return this._paths; }
+  public get text() { return this._text; }
   public get description() { return this._description; }
 
   // ISelectableAction

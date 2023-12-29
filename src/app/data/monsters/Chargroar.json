@@ -44,7 +44,7 @@
     },
     {
       "name": "Blazing Roar",
-      "text": "[Q]. <br><br><b>Pierce X</b>, where X is the number of buff slots used.~PIERCE~",
+      "text": "{\"stat\": \"?\", \"num\": 1}. <br><br><b>Pierce X</b>, where X is the number of buff slots used.~PIERCE~",
       "element": "Fire",
       "statusFlg": false,
       "attack": 3,
