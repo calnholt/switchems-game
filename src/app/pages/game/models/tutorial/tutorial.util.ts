@@ -10,7 +10,7 @@ export const TutorialSections: TutorialSection[] = [
     description: 'pulse',
   },
   {
-    text: `The first player to knockout (KO) their opponent's three monsters wins. A monster is knocked out when their health points (HP) are reduced to zero.`,
+    text: `The first player to knockout (KO) their opponent's three monsters wins. A monster is knocked out when their health points [HP] (HP) are reduced to zero.`,
     types: ['HP'],
     description: 'knockout',
   },
@@ -23,7 +23,7 @@ export const TutorialSections: TutorialSection[] = [
     description: 'monster-fluff',
   },
   {
-    text: `Each monster has their own starting HP. It's important to try to keep your monsters alive for as long as possible!`,
+    text: `Each monster has their own starting HP [HP]. It's important to try to keep your monsters alive for as long as possible!`,
     types: ['HP'],
     description: 'hp',
   },
@@ -135,7 +135,7 @@ export const TutorialSections: TutorialSection[] = [
     description: 'switch-action',
   },
   {
-    text: `When a switch action occurs, you are given a choice to heal your active monster 2HP or remove all of that monster's status effects. Then the monster you selected switches in, its switch in ability is resolved, if it has one.`,
+    text: `When a switch action occurs, you are given a choice to heal your active monster 2HP or remove all of that monster's status effects [STATUS]. Then the monster you selected switches in, its switch in ability is resolved, if it has one.`,
     types: [], 
     description: 'switch-out-decision',
   },

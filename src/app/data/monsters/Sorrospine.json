@@ -7,7 +7,7 @@
       "name": "Wallow",
       "text": "This monster gains +2[DEF] this turn.",
       "element": "Water",
-      "statusFlg": true,
+      "statusFlg": false,
       "attack": 1,
       "speed": 7,
       "buff": 1,
