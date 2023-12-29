@@ -9,6 +9,7 @@ import { default as Vulturock } from '../monsters/Vulturock.json';
 import { default as Whailstrom } from '../monsters/Whailstrom.json';
 import { default as Deusvolt } from '../monsters/Deusvolt.json';
 import { default as Volcanoggin } from '../monsters/Volcanoggin.json';
+import { default as Sorrospine } from '../monsters/Sorrospine.json';
 import { MonsterAction } from '~/app/pages/game/models/monster/monster-action.model';
 import { Buff } from '~/app/pages/game/models/monster/buff.model';
 import { Monster } from '~/app/pages/game/models/monster/monster.model';
@@ -30,6 +31,7 @@ export const convertJsonToObjs = (selectedMonster?: any): Array<Monster> => {
     // simple monsters - might require extra handling later?
     Deusvolt,
     Volcanoggin,
+    Sorrospine,
   ]);
 };
 

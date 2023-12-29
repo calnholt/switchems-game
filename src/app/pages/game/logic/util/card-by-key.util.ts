@@ -8,6 +8,7 @@ import { Vulturock } from "../monsters/vulturock.model";
 import { Stalagrowth } from "../monsters/stalagrowth.model";
 import { Deusvolt } from "../monsters/deusvolt.model";
 import { Volcanoggin } from "../monsters/volcanoggin.model";
+import { Sorrospine } from "../monsters/Sorrospine.model";
 
 export const CardByKeyUtil = {
   executeCardByKey,
@@ -28,6 +29,9 @@ function executeCardByKey(key: CardCompositeKey, player: PlayerType, receiver: U
       break;
     case VULTUROCK:
       new Vulturock(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      break;
+    case SORROSPINE:
+      new Sorrospine(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case STALAGROWTH:
       new Stalagrowth(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
@@ -51,6 +55,7 @@ const DROWNIGATOR = 'DROWNIGATOR';
 const FLEXFERNO = 'FLEXFERNO';
 const GALEAFFY = 'GALEAFFY';
 const PHANTOMATON = 'PHANTOMATON';
+const SORROSPINE = 'SORROSPINE';
 const STALAGROWTH = 'STALAGROWTH';
 const VOLCANOGGIN = 'VOLCANOGGIN';
 const VULTUROCK = 'VULTUROCK';

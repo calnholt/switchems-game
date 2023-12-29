@@ -4,8 +4,8 @@
   ],
   "actions": [
     {
-      "abilityName": "Wallow",
-      "abilityText": "This monster gains +2[DEF] this turn.",
+      "name": "Wallow",
+      "text": "This monster gains +2[DEF] this turn.",
       "element": "Water",
       "statusFlg": true,
       "attack": 1,
@@ -14,16 +14,16 @@
       "discard": 1
     },
     {
-      "abilityName": "Nap",
-      "abilityText": "Heal 1[HP]",
+      "name": "Nap",
+      "text": "Heal 1[HP]",
       "element": "Leaf",
       "statusFlg": true,
       "speed": 3,
       "draw": 1
     },
     {
-      "abilityName": "Poke",
-      "abilityText": "",
+      "name": "Poke",
+      "text": "",
       "element": "Leaf",
       "statusFlg": false,
       "attack": 3,
@@ -32,8 +32,8 @@
       "buff": 1
     },
     {
-      "abilityName": "Super Poke",
-      "abilityText": "If this attack is <b>faster</b>, heal 2[HP].~FASTER~",
+      "name": "Super Poke",
+      "text": "If this attack is <b>faster</b>, heal 2[HP].~FASTER~",
       "element": "Leaf",
       "statusFlg": false,
       "buff": 2,
