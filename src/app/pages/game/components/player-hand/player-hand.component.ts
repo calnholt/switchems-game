@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { Buff } from '../../models/monster/buff.model';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
@@ -11,6 +11,8 @@ import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interfac
   styleUrls: ['./player-hand.component.scss']
 })
 export class PlayerHandComponent {
+  @Input() hide: boolean = false;
+
   buffs: Buff[] = [];
   hand!: Buff[];
   appliedAsDiscard: Buff[] = [];
@@ -25,12 +27,6 @@ export class PlayerHandComponent {
     private playerService: PlayerService  
   ) {
   }
-
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (changes['buffs']) {
-  //     this.ngOnInit();
-  //   }
-  // }
 
   ngOnInit() {
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {

@@ -1,5 +1,17 @@
 @import '../../../../../assets/styles/constants.scss';
 
+#inactive-container {
+  display: flex;
+  align-items: center;
+  .view-button-container {
+    margin-right: 10px;
+    font-family: $text-font;
+    .view-text {
+      padding: 3px;
+    }
+  }
+}
+
 #monster {
 
   .monster-container {

@@ -1,6 +1,5 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ISelectableAction, SelectedActionType } from "~/app/shared/interfaces/ISelectableAction.interface";
-import { ImageCode, Path } from "~/app/shared/types/dataTypes";
 
 const STANDARD_ACTION_DESCRIPTION = `This action resolves after monster actions, regardless if your active monster was KO'd this turn.`;
 

@@ -25,10 +25,17 @@
 </ng-container>
 
 <ng-container *ngIf="!isActiveMonster">
-  <div [ngClass]="{'tutorial-highlight' : isBenchedMonsterHighlighted}">
-    <sw-pushable-button [isActive]="cardsInHand >= 2 && enabled && !disable">
-      <ng-container *ngTemplateOutlet="monsterTemplate"></ng-container>
-    </sw-pushable-button>
+  <div id="inactive-container">
+    <div class="view-button-container">
+      <sw-pushable-button>
+        <div class="view-text" (click)="view()">View</div>
+      </sw-pushable-button>
+    </div>
+    <div [ngClass]="{'tutorial-highlight' : isBenchedMonsterHighlighted}">
+      <sw-pushable-button [isActive]="cardsInHand >= 2 && enabled && !disable">
+        <ng-container *ngTemplateOutlet="monsterTemplate"></ng-container>
+      </sw-pushable-button>
+    </div>
   </div>
 </ng-container>
 

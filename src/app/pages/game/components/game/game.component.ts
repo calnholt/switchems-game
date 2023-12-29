@@ -18,13 +18,15 @@ import { SelectedActionService } from '../../services/selected-action/selected-a
 import { SelectedAction } from '../../services/selected-action/selected-action.model';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
+import { MonsterAction } from '../../models/monster/monster-action.model';
+import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 
 @Component({
   selector: 'sw-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
-export class GameComponent implements OnChanges {
+export class GameComponent {
 
   playerCardManager!: PlayerCardManager;
   statBoard!: StatBoard;
@@ -46,6 +48,8 @@ export class GameComponent implements OnChanges {
   cardsInMyOpponentsHand = 0;
 
   viewOpponentActions = false;
+  viewActiveMonsterActions = true;
+  monsterActionsBeingViewed: MonsterAction[] = [];
   winner: WinnerType = null;
 
   isTutorial = false;
@@ -64,12 +68,6 @@ export class GameComponent implements OnChanges {
     private router: Router
   ) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['activeMonster']) {
-      console.log('');
-    }
-  }
-
   ngOnInit() {
     this.playerService.player.activeMonster$.subscribe((value) => {
       if (this.modifiersSub) {
@@ -80,7 +78,7 @@ export class GameComponent implements OnChanges {
       this.modifiersSub = this.activeMonster.modifiers.modifiers$.subscribe((modifiers) => {
         this.modifiers = modifiers;
       });
-
+      this.monsterActionsBeingViewed = this.activeMonster.actions;
     });
     this.playerService.player.inactiveMonsters$.subscribe((value) => {
       this.inactiveMonsters = value;
@@ -137,9 +135,31 @@ export class GameComponent implements OnChanges {
         this.tutorialSection = value;
       });
     }
-
   }
 
+  viewOpponentsActiveMonsterActions() {
+    this.monsterActionsBeingViewed = this.oActiveMonster.actions;
+    this.viewOpponentActions = true;
+    this.viewActiveMonsterActions = false;
+  }
+
+  viewMyActiveMonsterActions() {
+    this.monsterActionsBeingViewed = this.activeMonster.actions;
+    this.viewOpponentActions = false;
+    this.viewActiveMonsterActions = true;
+  }
+
+  viewMonsterActions(key: CardCompositeKey) {
+    if (this.viewOpponentActions) {
+      //@ts-ignore
+      this.monsterActionsBeingViewed = [this.oActiveMonster].concat(this.oInactiveMonsters).find(m => m.key() === key)?.actions;
+    }
+    else {
+      //@ts-ignore
+      this.monsterActionsBeingViewed = [this.activeMonster].concat(this.inactiveMonsters).find(m => m.key() === key)?.actions;
+      this.viewActiveMonsterActions = this.activeMonster.key() === key;
+    }
+  }
 
   getRandomArena(): ArenaType {
     return ARENAS[Math.floor(this.rng.randomFloat() * ARENAS.length)];

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Monster } from '../../models/monster/monster.model';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
 import { Css, Path } from 'src/app/shared/types/dataTypes';
@@ -10,6 +10,7 @@ import { BattleAnimationService } from '../../services/battle-animation/battle-a
 import { AnimationEvent } from '@angular/animations';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { TutorialService } from '../../services/tutorial/tutorial.service';
+import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 
 @Component({
   selector: 'sw-monster',
@@ -32,6 +33,7 @@ export class MonsterComponent implements OnInit, OnChanges {
   @Input() cardsInHand = 0;
   @Input() cardsInMyOpponentsHand = 0;
   @Input() disable: boolean = false;
+  @Output() onView: EventEmitter<CardCompositeKey> = new EventEmitter();
   
   monsterIcon!: Path;
   superEffectiveIcon!: Path;
@@ -134,6 +136,10 @@ export class MonsterComponent implements OnInit, OnChanges {
 
   aniDone(event: AnimationEvent) {
     this.battleAnimationService.done(!this.isOpponent);
+  }
+
+  view() {
+    this.onView.emit(this.monster.key());
   }
 
 }

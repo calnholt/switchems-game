@@ -1,5 +1,5 @@
-<sw-pushable-button [isActive]="isCostFulfilled && enabled">
+<sw-pushable-button [isActive]="(isCostFulfilled && enabled) || viewingOtherMonstersActions">
   <div id="submit-action-button" class="button-default" [ngClass]="{'active' : isCostFulfilled}" (click)="submit()">
-    <span>{{ label }}</span>
+    <span>{{ viewingOtherMonstersActions ? 'View your monster actions' : label }}</span>
   </div>
 </sw-pushable-button>

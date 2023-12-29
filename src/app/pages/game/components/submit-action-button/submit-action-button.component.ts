@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SelectedActionService } from '../../services/selected-action/selected-action.service';
 import { StatBoardSectionType } from '../../models/stat-board/stat-board.model';
 import { GamePhaseService } from '../../services/game-phase/game-phase.service';
@@ -12,6 +12,8 @@ const LABEL = 'Select an action';
   styleUrls: ['./submit-action-button.component.scss']
 })
 export class SubmitActionButtonComponent {
+  @Input() viewingOtherMonstersActions = false;
+  @Output() onSelect: EventEmitter<boolean> = new EventEmitter();
 
   isCostFulfilled = false;
   displayName: string | null = null;
@@ -56,6 +58,9 @@ export class SubmitActionButtonComponent {
   submit() {
     if (this.enabled && this.isCostFulfilled) {
       this.gamePhaseService.testActionPhase();
+    }
+    if (this.viewingOtherMonstersActions) {
+      this.onSelect.emit(true);
     }
   }
 
