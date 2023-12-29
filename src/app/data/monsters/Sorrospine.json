@@ -1,0 +1,67 @@
+{
+  "elements": [
+    "Leaf"
+  ],
+  "actions": [
+    {
+      "abilityName": "Wallow",
+      "abilityText": "This monster gains +2[DEF] this turn.",
+      "element": "Water",
+      "statusFlg": true,
+      "attack": 1,
+      "speed": 7,
+      "buff": 1,
+      "discard": 1
+    },
+    {
+      "abilityName": "Nap",
+      "abilityText": "Heal 1[HP]",
+      "element": "Leaf",
+      "statusFlg": true,
+      "speed": 3,
+      "draw": 1
+    },
+    {
+      "abilityName": "Poke",
+      "abilityText": "",
+      "element": "Leaf",
+      "statusFlg": false,
+      "attack": 3,
+      "speed": 3,
+      "discard": 1,
+      "buff": 1
+    },
+    {
+      "abilityName": "Super Poke",
+      "abilityText": "If this attack is <b>faster</b>, heal 2[HP].~FASTER~",
+      "element": "Leaf",
+      "statusFlg": false,
+      "buff": 2,
+      "discard": 2,
+      "speed": 5,
+      "attack": 4
+    }
+  ],
+  "buffs": [
+    {
+      "buffName": "Rest",
+      "buffText": "<b>Super</b>.<br><br>This monster heals <div>2[HP]</div> this turn. ~SUPER~"
+    },
+    {
+      "buffName": "Surprise",
+      "buffText": "This attack gains +1[SPD]."
+    },
+    {
+      "buffName": "Pout",
+      "buffText": "This monster gains +1[DEF] this turn."
+    },
+    {
+      "buffName": "Stumble",
+      "buffText": "<div>{\"stat\": \"?\", \"num\": 2}.</div>"
+    }
+  ],
+  "hp": 7,
+  "name": "Sorrospine",
+  "initiative": 40,
+  "passive": "At the end of the turn, <div>{\"stat\": \"?\", \"num\": 1}.</div>"
+}
