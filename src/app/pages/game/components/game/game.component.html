@@ -7,7 +7,7 @@
         <div class="monsters-container">
           <div class="monster-container">
             <div class="modifier-container">
-              <sw-modifiers [modifiers]="modifiers" [selectedAction]="selectedAction" />
+              <sw-modifiers [modifiers]="modifiers" [selectedAction]="selectedAction" [hide]="hideModifiers" />
               <sw-status-effects [modifiers]="modifiers" />
             </div>
             <div>
@@ -20,7 +20,7 @@
                 [cardsInMyOpponentsHand]="cardsInMyOpponentsHand" />
             </div>
             <div class="modifier-container">
-              <sw-modifiers [modifiers]="oModifiers" [selectedAction]="oSelectedAction" />
+              <sw-modifiers [modifiers]="oModifiers" [selectedAction]="oSelectedAction" [hide]="hideModifiers" />
               <sw-status-effects [modifiers]="oModifiers" />
             </div>
           </div>

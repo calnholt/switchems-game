@@ -18,6 +18,7 @@ import { MonsterAction } from '../../models/monster/monster-action.model';
 export class ModifiersComponent implements OnChanges {
   @Input() modifiers!: Modifier<MonsterModifierType>[];
   @Input() selectedAction!: SelectedAction | null;
+  @Input() hide = false;
 
   displayModifiers: string[] = [];
 

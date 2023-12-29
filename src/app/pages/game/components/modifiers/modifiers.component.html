@@ -1,5 +1,5 @@
 <div id="modifiers">
-  <div *ngIf="displayModifiers.length || attack || defense || speed" class="mods-container">
+  <div class="mods-container" *ngIf="!hide">
     <div *ngIf="selectedAction" class="mod stats" [ngClass]="{'has-mods' : this.displayModifiers.length > 0}">
       <div *ngIf="attack"class="stat">
         {{attack}}

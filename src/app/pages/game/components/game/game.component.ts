@@ -53,6 +53,7 @@ export class GameComponent {
   winner: WinnerType = null;
 
   isTutorial = false;
+  hideModifiers = false;
   tutorialSection!: TutorialSection;
 
   currentPhase!: GamePhaseCommandType;
@@ -121,6 +122,7 @@ export class GameComponent {
     });
     this.currentPhaseService.currentPhase$.subscribe((phase) => {
       this.currentPhase = phase;
+      this.hideModifiers = ['START_PHASE', 'GAME_OVER', 'SELECTION_PHASE', 'START_OF_GAME'].includes(phase);
     });
     this.selectedActionService.selectedAction$.subscribe((action) => {
       this.selectedAction = action;
