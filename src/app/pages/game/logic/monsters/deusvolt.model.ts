@@ -43,6 +43,7 @@ export class Deusvolt extends MonsterLogic {
       amount: 1, 
       statType: 'ATTACK', 
       origin: 'Bless',
+      display: true,
     }).pushFront();
   }
   override buff2(): void {
@@ -51,6 +52,7 @@ export class Deusvolt extends MonsterLogic {
       amount: 1, 
       statType: 'ATTACK', 
       origin: 'Bless',
+      display: true,
     }).pushFront();
   }
   override buff3(): void {
@@ -59,6 +61,7 @@ export class Deusvolt extends MonsterLogic {
       amount: 1, 
       statType: 'DEFENSE', 
       origin: 'Shield of Faith',
+      display: true,
     }).pushFront();
   }
   override buff4(): void {
@@ -67,6 +70,7 @@ export class Deusvolt extends MonsterLogic {
       amount: 1, 
       statType: 'DEFENSE', 
       origin: 'Shield of Faith',
+      display: true,
     }).pushFront();
   }
 
