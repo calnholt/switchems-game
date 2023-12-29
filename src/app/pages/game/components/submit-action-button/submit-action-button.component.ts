@@ -30,7 +30,10 @@ export class SubmitActionButtonComponent {
 
   ngOnInit() {
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
-      if (selectedAction.action.getSelectableActionType() === 'NONE') return;
+      if (selectedAction.action.getSelectableActionType() === 'NONE') {
+        this.isCostFulfilled = false;
+        return;
+      }
       this.displayName = selectedAction.action.getDisplayName();
       this.isCostFulfilled = selectedAction.isCostFulfilled();
       this.label = this.getDisplayText();
