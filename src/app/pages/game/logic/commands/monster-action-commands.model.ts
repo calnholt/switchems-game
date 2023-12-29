@@ -16,6 +16,8 @@ export type MONSTER_ACTION_COMMANDS =
   | 'RECOIL_CHECK'
   | 'APPLY_STATUS_EFFECT'
   | 'APPLY_DRAIN_STATUS'
+  | 'APPLY_CURSE_STATUS'
+  | 'CURSE'
   | 'DRAIN'
   | 'REMOVE_STATUS_EFFECT'
   | 'REMOVE_STATUS_EFFECTS'
@@ -137,6 +139,22 @@ export class ApplyDrainStatus extends EventCommand<BasicCommandData> {
   }
   override getDisplayMessage(): string {
     return `${this.data.opponentMonsterName} became drained!`;
+  }
+}
+export class ApplyCurseStatus extends EventCommand<BasicCommandData> {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+    super(receiver, 'APPLY_CURSE_STATUS', data);
+  }
+  override getDisplayMessage(): string {
+    return `${this.data.opponentMonsterName} became cursed!`;
+  }
+}
+export class CurseCommand extends EventCommand<BasicCommandData> {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+    super(receiver, 'CURSE', data);
+  }
+  override getDisplayMessage(): string {
+    return `${this.data.opponentMonsterName} took 1 damage from curse!`;
   }
 }
 export class DrainCommand extends EventCommand<BasicCommandData> {

@@ -30,6 +30,9 @@ export class UpdateGameStateService {
       case 'APPLY_FLINCH': 
         UpdateGameStateUtil.applyFlinch(gs, data);
         break;
+      case 'APPLY_CURSE_STATUS':
+        UpdateGameStateUtil.applyStatusCurse(gs, data, this);
+        break;
       case 'APPLY_DRAIN_STATUS':
         UpdateGameStateUtil.applyStatusDrain(gs, data, this);
         break;
@@ -41,6 +44,9 @@ export class UpdateGameStateService {
         break;
       case 'CRUSH':
         UpdateGameStateUtil.crush(gs, data, this);
+        break;
+      case 'CURSE':
+        UpdateGameStateUtil.dealDamage(gs, { ...data, origin: 'curse', damageToDeal: 1 }, this);
         break;
       case 'DEAL_ATTACK_DAMAGE':
         UpdateGameStateUtil.dealAttackDamage(gs, data, this);

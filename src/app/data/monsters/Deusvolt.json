@@ -49,25 +49,25 @@
   "buffs": [
     {
       "buffName": "Bless",
-      "buffText": "This attack gains +1[ATK] this turn.",
+      "buffText": "This attack gains +1[ATK].",
       "auraDuration": null,
       "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
     },
     {
       "buffName": "Bless",
-      "buffText": "This attack gains +1[ATK] this turn.",
+      "buffText": "This attack gains +1[ATK].",
       "auraDuration": null,
       "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
     },
     {
       "buffName": "Shield of Faith",
-      "buffText": "This monster gains +1[DEF] this turn.",
+      "buffText": "This monster gains +1[DEF].",
       "auraDuration": null,
       "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
     },
     {
       "buffName": "Shield of Faith",
-      "buffText": "This monster gains +1[DEF] this turn.",
+      "buffText": "This monster gains +1[DEF].",
       "auraDuration": null,
       "lastUpdated": "Thu, 28 Dec 2023 13:12:40 GMT"
     }

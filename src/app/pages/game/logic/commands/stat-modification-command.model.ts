@@ -24,6 +24,7 @@ export class StatModificationCommand extends EventCommand<StatModificationData> 
 
 export interface HealCommandData extends CommandData {
   amount: number;
+  skip?: boolean;
 }
 
 export class HealCommand extends EventCommand<HealCommandData> {

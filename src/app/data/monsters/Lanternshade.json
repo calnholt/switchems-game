@@ -1,0 +1,72 @@
+{
+  "elements": [
+    "Death"
+  ],
+  "actions": [
+    {
+      "name": "Flicker",
+      "text": "If the enemy monster has a <b>status condition</b> [STATUS], <div>{\"stat\": \"?\", \"num\": 1}</div>.~STATUS~",
+      "element": "Death",
+      "statusFlg": false,
+      "attack": 1,
+      "buff": 1,
+      "draw": 1,
+      "speed": 4
+    },
+    {
+      "name": "Ignite",
+      "text": "If the enemy monster has a <b>status condition</b> [STATUS], this attack gains <div>+1[ATK]</div>.~STATUS~",
+      "element": "Fire",
+      "statusFlg": false,
+      "attack": 2,
+      "speed": 4,
+      "discard": 1,
+      "buff": 2
+    },
+    {
+      "name": "Expose Weakness",
+      "text": "If the enemy monster has a <b>status condition</b> [STATUS], this attack gains <div>+1[ATK]</div>.~STATUS~",
+      "element": "Death",
+      "statusFlg": false,
+      "buff": 1,
+      "discard": 2,
+      "attack": 3,
+      "speed": 7
+    },
+    {
+      "name": "Spreading Curse",
+      "text": "<div>{\"stat\": \"DEF\", \"num\": 1}.</div><br><br>If the enemy monster switched in this turn, apply <b>curse</b> [STATUS].~STATUS~~CURSE~",
+      "element": "Death",
+      "statusFlg": false,
+      "discard": 1,
+      "attack": 2,
+      "speed": 2
+    }
+  ],
+  "buffs": [
+    {
+      "buffName": "Infusion",
+      "buffText": "If this is paired with another buff, apply <div><b>curse</b> [STATUS]</div>.~CURSE~~STATUS~",
+      "auraDuration": null
+    },
+    {
+      "buffName": "Shade",
+      "buffText": "This monster heals 1[HP].",
+      "auraDuration": null
+    },
+    {
+      "buffName": "Chase",
+      "buffText": "This attack gains +2[SPD].",
+      "auraDuration": null
+    },
+    {
+      "buffName": "Fuel Up",
+      "buffText": "{\"stat\": \"ATK\", \"num\": 1}",
+      "auraDuration": null
+    }
+  ],
+  "hp": 10,
+  "name": "Lanternshade",
+  "initiative": 65,
+  "switchIn": "When this monster <b>switches in</b>, apply <b>curse</b> [STATUS].~CURSE~ ~STATUS~"
+}

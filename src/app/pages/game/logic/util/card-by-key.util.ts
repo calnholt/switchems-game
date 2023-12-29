@@ -9,6 +9,7 @@ import { Stalagrowth } from "../monsters/stalagrowth.model";
 import { Deusvolt } from "../monsters/deusvolt.model";
 import { Volcanoggin } from "../monsters/volcanoggin.model";
 import { Sorrospine } from "../monsters/Sorrospine.model";
+import { Lanternshade } from "../monsters/lanternshade.model";
 
 export const CardByKeyUtil = {
   executeCardByKey,
@@ -27,8 +28,8 @@ function executeCardByKey(key: CardCompositeKey, player: PlayerType, receiver: U
     case DEUSVOLT:
       new Deusvolt(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
-    case VULTUROCK:
-      new Vulturock(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+    case LANTERNSHADE:
+      new Lanternshade(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case SORROSPINE:
       new Sorrospine(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
@@ -39,8 +40,11 @@ function executeCardByKey(key: CardCompositeKey, player: PlayerType, receiver: U
     case VOLCANOGGIN:
       new Volcanoggin(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
+    case VULTUROCK:
+      new Vulturock(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      break;
   }
-  switch(key) {
+  switch (key) {
     case 'SA_REST':
       StandardActions.rest(key, player, receiver, gs);
       break;
@@ -54,6 +58,7 @@ const DEUSVOLT = 'DEUSVOLT';
 const DROWNIGATOR = 'DROWNIGATOR';
 const FLEXFERNO = 'FLEXFERNO';
 const GALEAFFY = 'GALEAFFY';
+const LANTERNSHADE = 'LANTERNSHADE';
 const PHANTOMATON = 'PHANTOMATON';
 const SORROSPINE = 'SORROSPINE';
 const STALAGROWTH = 'STALAGROWTH';
@@ -66,7 +71,7 @@ function getActionKey(name: string, i: number) { return `${CHARGROAR}_A${i}`; }
 function getBuffKey(name: string, i: number) { return `${CHARGROAR}_B${i}`; }
 
 function executeStandardAction(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
-  switch(key) {
+  switch (key) {
     case 'SA_REST':
       StandardActions.rest(key, player, receiver, gs);
       break;

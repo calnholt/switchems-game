@@ -45,7 +45,7 @@
   "buffs": [
     {
       "buffName": "Rest",
-      "buffText": "<b>Super</b>.<br><br>This monster heals <div>2[HP]</div> this turn. ~SUPER~"
+      "buffText": "<b>Super</b>.<br><br>This monster heals <div>2[HP].</div>. ~SUPER~"
     },
     {
       "buffName": "Surprise",
@@ -53,7 +53,7 @@
     },
     {
       "buffName": "Pout",
-      "buffText": "This monster gains +1[DEF] this turn."
+      "buffText": "This monster gains +1[DEF]."
     },
     {
       "buffName": "Stumble",

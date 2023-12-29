@@ -13,7 +13,7 @@ export const StandardActions = {
 function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
   const values = { key, player };
   const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 2}, receiver);
-  const hpHealed = CommandUtil.heal(gs, { ...values, amount: 1}, receiver);
+  const hpHealed = CommandUtil.heal(gs, { ...values, amount: 1, skip: true}, receiver);
   let message = `${player === 'P' ? 'You' : 'The opponent'} rested, `;
   if (numberOfCardsDrawn > 0) {
     message += ` drawing ${numberOfCardsDrawn} card${numberOfCardsDrawn > 1 ? 's' : ''}`

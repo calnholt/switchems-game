@@ -45,10 +45,11 @@ export type TermCodeValue = string;
 // best method I could think of with the least redundancy while maintaining strong typing
 export const TERM_KEYS = [`~WOUND~`, `~FLINCH~`, `~DRAIN~`, `~FATIGUE~`,
     `~STATUS~`, `~SINGLE~`, `~STUN~`, `~RECOIL~`, `~SWITCH~`, `~SUPER~`, `~FASTER~`, `~SLOWER~`,
-    `~GOOP~`, `~EXHAUST~`, '~PIERCE~', `~RESIST~`, `~EFFECTIVE~`, `~BELONGS~`, `~SPAM~`, `~AURA~`, `~STRENGTHEN~`, `~FRAIL~`, '~CAPTURE~', '~CRUSH~'] as const;
+    `~GOOP~`, `~EXHAUST~`, '~PIERCE~', `~RESIST~`, `~EFFECTIVE~`, `~BELONGS~`, `~SPAM~`, `~AURA~`, `~STRENGTHEN~`, `~FRAIL~`, '~CAPTURE~', '~CRUSH~', `~CURSE~`] as const;
 export type TermCode = typeof TERM_KEYS[number];
 const termCodes = [
     new Term('Belongs', `~BELONGS~`, `A buff card <u>belongs</u> to a monster if the monster name on the bottom of the buff card matches.`),
+    new Term('Curse', '~CURSE~', 'At the end of the turn, there is a 33% chance this monster will lose 1[HP].'),
     new Term('Drain', `~DRAIN~`, `At the end of the turn, if your active monster has less HP than a monster with the drain status, that monster suffers <span>1[ATK]</span> and your active monster heals <span>1[HP].</span>`),
     new Term('Weak', `~EFFECTIVE~`, `Monsters are <u>weak</u> to elements in the [WEAK] section of their monster card.`),
     new Term('Exhaust', `~EXHAUST~`, `Cards with <u>exhaust</u> are removed from the game after they are resolved. Put a blank into your discard.`),
@@ -61,13 +62,13 @@ const termCodes = [
     new Term('Single Use', `~SINGLE~`, `<u>Single use</u> actions remain disabled until switched out, as denoted by [SINGLE].`),
     new Term('Slower', `~SLOWER~`, `This action is <u>slower</u> if your opponent selects a switch action, or if both players select a monster action and yours resolves second.`),
     new Term('Spammable', `~SPAM~`, `<u>Spammable</u> actions do not become disabled.`),
-    new Term('Status Condition', `~STATUS~`, `<u>Status conditions</u> [STATUS] – drain, fatigue, stun, wound.`),
+    new Term('Status Condition', `~STATUS~`, `<u>Status conditions</u> [STATUS] are negative conditions that are applied to a monster. These can be removed by performing a switch action.`),
     new Term('Stun', `~STUN~`, `Monsters with <u>stun</u> [STATUS] perform their switch actions after monster actions.`),
     new Term('Super', `~SUPER~`, `<u>Supers</u> require and use two [B] slots.`),
     new Term('Switches In', `~SWITCH~`, `<u>Switch in</u> abilities also trigger at the start of the game and following a monster KO.`),
     new Term('Team Aura', '~AURA~', '<u>Team aura</u> [TA] – At the end of your turn, put a time counter on this. If the number of time counters equals its duration, discard this. You can only have one active <u>team aura</u> at any time.'),
     new Term('Wound', `~WOUND~`, `Monsters with <u>wound</u> [STATUS] perform one less [Q] on all of their attacks.`),
-    new Term('Crush', '~CRUSH~', '<u>Crush X</u> - Remove X [PQ] of the same type of your choice from your opponent.')
+    new Term('Crush', '~CRUSH~', '<u>Crush X</u> - Remove X [PQ] of the same type of your choice from your opponent.'),
 ];
 export const TERM_CODES = termCodes.sort((a, b) => a.name.localeCompare(b.name));
 

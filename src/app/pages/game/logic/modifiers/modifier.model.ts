@@ -70,6 +70,7 @@ export class Modifier<T> {
       'WOUND',
       'STUN',
       'FATIGUE',
+      'CURSE',
     ].includes(this.type as string);
   }
 };
@@ -78,6 +79,7 @@ export type MonsterModifierType =
   | "DEFENSE"
   | "SWITCH_IN_DEFENSE"
   | "DRAIN"
+  | "CURSE"
   | "WOUND"
   | "STUN"
   | "FATIGUE"

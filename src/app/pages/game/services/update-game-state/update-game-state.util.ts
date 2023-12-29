@@ -2,7 +2,7 @@ import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { ApplyStatusEffectCommandData, BasicCommandData, DealDamageCommandData, DisableActionCommandData, DrainCommand, KnockedOutByAttackCommand, KnockedOutCommand, KnockedOutCommandData, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, RemoveStatusEffectsCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
+import { ApplyStatusEffectCommandData, BasicCommandData, CurseCommand, DealDamageCommandData, DisableActionCommandData, DrainCommand, KnockedOutByAttackCommand, KnockedOutCommand, KnockedOutCommandData, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, RemoveStatusEffectsCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { CrushCommandData, CrushPromptCommand, CrushPromptCommandData, GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { HealCommand, HealCommandData, StatModificationCommand, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
@@ -26,6 +26,7 @@ export const UpdateGameStateUtil = {
   doStandardAction,
   applyBuff,
   applyFlinch,
+  applyStatusCurse,
   applyStatusDrain,
   applyStatPips,
   dealAttackDamage,
@@ -98,6 +99,20 @@ function applyBuff(gs: GameState, data: BuffCommandData, rc: UpdateGameStateServ
 function applyFlinch(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.modifiers.add(getMonsterModifier(monster.key(), 'FLINCH'));
+}
+
+function applyStatusCurse(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
+  const opposingMonster = GameStateUtil.getOpponentPlayerState(gs, data.player).activeMonster;
+  opposingMonster.modifiers.add(getMonsterModifier(opposingMonster.key(), 'CURSE', 0, true));
+  new CurseCommand(rc, {
+    ...data,
+    player: GameStateUtil.getOppositePlayer(data.player),
+    display: true,
+    triggerCondition: (command: EventCommand<CommandData>) => {
+      const rngCurse = gs.rng.randomFloat();
+      return rngCurse <= 0.33;
+    },
+  }).executeAsTrigger('END_PHASE');
 }
 
 function applyStatusDrain(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
@@ -205,7 +220,7 @@ function heal(gs: GameState, data: HealCommandData, rc: UpdateGameStateService) 
   else if (hpDelta != 0) {
     amountHealed = hpDelta;
   }
-  if (amountHealed > 0) {
+  if (amountHealed > 0 && !data.skip) {
     new DescriptiveMessageCommand(rc, {
       ...data,
       message: `${data.monsterName} healed ${amountHealed} HP ${data.origin ? ` from ${data.origin}` : ''}.`,

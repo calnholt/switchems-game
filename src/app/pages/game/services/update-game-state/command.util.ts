@@ -67,18 +67,18 @@ function draw(gs: GameState, data: HandCommandData, rc: UpdateGameStateService) 
     cardsToDraw = 0;
   }
   if (cardsToDraw > 0) {
-    new DrawCommand(rc, { ...data, amount: cardsToDraw}).enqueue();
+    new DrawCommand(rc, { ...data, amount: cardsToDraw, display: false, }).pushFront();
   }
   return cardsToDraw;
 }
 
-function heal(gs: GameState, data: HandCommandData, rc: UpdateGameStateService) {
+function heal(gs: GameState, data: HealCommandData, rc: UpdateGameStateService) {
   const monster = GameStateUtil.getPlayerState(gs, data.player).activeMonster;
   const hpDiff = monster.hp - monster.currentHp;
   if (hpDiff > data.amount) {
-    new HealCommand(rc, data).enqueue();
+    new HealCommand(rc, data).pushFront();
     return data.amount;
   }
-  new HealCommand(rc, { ...data, amount: hpDiff}).pushFront();
+  new HealCommand(rc, { ...data, amount: hpDiff, display: false}).pushFront();
   return hpDiff;
 }

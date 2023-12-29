@@ -7,7 +7,7 @@ export class Deusvolt extends MonsterLogic {
   override addTriggers(): void {
     new HealCommand(this.rc, {
       ...this.data,
-      key: 'DEUSVOLT_A0',
+      key: 'DEUSVOLT_A4',
       amount: 2,
       origin: 'Gnaw',
       monsterActionTrigger: true,

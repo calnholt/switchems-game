@@ -53,7 +53,7 @@
     },
     {
       "buffName": "Harden",
-      "buffText": "This monster gains +1[DEF] this turn."
+      "buffText": "This monster gains +1[DEF]."
     },
     {
       "buffName": "Endurance",
