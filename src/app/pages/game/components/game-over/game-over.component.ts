@@ -3,6 +3,7 @@ import { GameOverService, WinnerType } from '../../services/game-over/game-over.
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { slideInLeftAnimation, slideInLeftOnEnterAnimation } from 'angular-animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sw-game-over',
@@ -18,15 +19,18 @@ export class GameOverComponent {
   winAvatar = ImageUtil.avatars.win;
   loseAvatar = ImageUtil.avatars.lose;
 
+  isTutorial = false;
+
   constructor(
     private gameOverService: GameOverService,
     private currentPhaseService: CurrentPhaseService,
+    private router: Router,
   ) {
-
+    this.isTutorial = this.router.url === '/tutorial';
   }
 
   returnToTitleScreen() {
-
+    this.router.navigate(['/']);
   }
 
   playAgain() {

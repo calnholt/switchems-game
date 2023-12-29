@@ -338,7 +338,7 @@ function knockoutRoutine(gs: GameState, data: KnockedOutCommandData, rc: UpdateG
   if (isGameOver(gs, kodPlayer)) {
     new GameOverPhaseCommand(rc, {
       ...data,
-      winner: data.player,
+      winner: GameStateUtil.getOppositePlayer(kodPlayer),
     }).pushFront();
     return;
   }

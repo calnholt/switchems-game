@@ -6,7 +6,7 @@
         {{winner === 'P' ? 'You won!' : 'You lost!'}}
       </div>
       <div class="buttons-container">
-        <sw-pushable-button>
+        <sw-pushable-button *ngIf="!isTutorial">
           <div class="acknowledge-button" (click)="playAgain()">Play Again</div>
         </sw-pushable-button>
         <sw-pushable-button>
