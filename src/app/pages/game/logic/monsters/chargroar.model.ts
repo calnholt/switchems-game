@@ -28,7 +28,7 @@ export class Chargroar extends MonsterLogic {
         ...this.data, 
         destroyOnTrigger: true, 
         options, 
-        origin: 'Chargroar switched in.',
+        origin: 'Chargroar switched in',
         display: true,
       }).pushFront();
     }
