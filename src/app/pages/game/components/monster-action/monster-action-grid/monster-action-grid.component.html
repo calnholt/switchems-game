@@ -1,15 +1,20 @@
 <div id="monster-action-grid">
-  <ng-container *ngFor="let action of actions">
-    <div class="action">
-      <sw-monster-action [action]="action" [cardsInHand]="cardsInHand" [disable]="disable" />
-    </div>
-  </ng-container>
-  <div class="standard-action-container">
-    <div>
-      <sw-standard-action [standardAction]="restStandardAction" />
-    </div>
-    <div>
-      <sw-standard-action [standardAction]="prepareStandardAction" />
+  <div class="section-text">
+    MONSTER ACTIONS
+  </div>
+  <div class="monster-action-grid">
+    <ng-container *ngFor="let action of actions">
+      <div class="action">
+        <sw-monster-action [action]="action" [cardsInHand]="cardsInHand" [disable]="disable" />
+      </div>
+    </ng-container>
+    <div class="standard-action-container">
+      <div>
+        <sw-standard-action [standardAction]="restStandardAction" />
+      </div>
+      <div>
+        <sw-standard-action [standardAction]="prepareStandardAction" />
+      </div>
     </div>
   </div>
 </div>

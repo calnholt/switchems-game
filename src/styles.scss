@@ -93,12 +93,13 @@ body {
   .card-separator {
     display: flex;
     font-family: $header-font;
-    font-size: 30px;
+    font-size: 25px;
     line-height: 70%;
     color: black;
     .section {
       margin-right: 5px;
       writing-mode: tb;
+      text-shadow: $text-shadow-border;
     }
   }
 }
