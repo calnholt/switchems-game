@@ -1,3 +1,4 @@
+import { GameState } from "../../services/game-state/game-state.service";
 import { TutorialSection } from "./tutorial.model";
 
 export const TutorialSections: TutorialSection[] = [
@@ -186,4 +187,77 @@ export const TutorialSections: TutorialSection[] = [
     types: [], 
     description: 'covered-basics',
   },
-]
+  {
+    text: `For our first action, let's select the Leaf Burst monster action. After you have clicked it, hover over each of the buff cards in your hand and apply them as discards. You do this by clicking the discard [-] icon on the right side. Then press the submit button.`,
+    types: [], 
+    description: 'action-1',
+    isTop: true,
+    isGuidedTutorial: true,
+    startGuidedTutorial: true,
+  },
+  {
+    text: `Good job! Next, let's select the Rest standard action. We are low on cards in our hand, so this will help draw us more and give us more flexibility on future turns.`,
+    types: [], 
+    description: 'action-2',
+    isTop: true,
+    isGuidedTutorial: true,
+  },
+  {
+    text: `Awesome! Now that we have more cards, let's use the Shock monster action. Apply at least one buff [B] card to it from your hand and also apply your speed pips. Remember, you can only apply buffs and pips after you have clicked a monster action.`,
+    types: [], 
+    description: 'action-3',
+    isTop: true,
+    isGuidedTutorial: true,
+  },
+  {
+    text: `Well done! The last action we have yet to perform is a switch action. Select either Volcanoggin or Lanternshade and discard two cards from your hand.`,
+    types: [], 
+    description: 'action-4',
+    isTop: true,
+    isGuidedTutorial: true,
+  },
+  {
+    text: `At this point, I have shown you all you will need to know to play Switchems. Thank you for taking the time to learn how to play. Let's see if you can put all of your knowledge to the test and win your first game. Good luck!`,
+    types: [], 
+    description: 'end',
+    isTop: true,
+  },
+  {
+    text: '',
+    types: [], 
+    description: 'finish',
+    isEnd: true,
+  },
+];
+
+export const GuidedTutorialCheckUtil = {
+  checkTurn,
+};
+
+function checkTurn(gs: GameState, turnNumber: number) {
+  switch(turnNumber) {
+    case 1:
+      return checkTurn1(gs);
+    case 2:
+      return checkTurn2(gs);
+    case 3:
+      return checkTurn3(gs);
+    case 4:
+      return checkTurn4(gs);
+  };
+  return false;
+}
+
+function checkTurn1(gs: GameState): boolean {
+  return gs.p.selectedAction.action.key() === 'DEUSVOLT_A3';
+};
+function checkTurn2(gs: GameState): boolean {
+  return gs.p.selectedAction.action.key() === 'SA_REST';
+};
+function checkTurn3(gs: GameState): boolean {
+  const { selectedAction } = gs.p;
+  return selectedAction.action.key() === 'DEUSVOLT_A1' && selectedAction.appliedBuffs.length > 0 && selectedAction.statBoardSection?.type === 'SPEED';
+};
+function checkTurn4(gs: GameState): boolean {
+  return ['VOLCANOGGIN', 'LANTERNSHADE'].includes(gs.p.selectedAction.action.key());
+};

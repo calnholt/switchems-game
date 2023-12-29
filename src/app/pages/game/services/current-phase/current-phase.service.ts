@@ -6,12 +6,14 @@ import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.m
   providedIn: 'root'
 })
 export class CurrentPhaseService {
-  private _currentPhase = new BehaviorSubject<GamePhaseCommandType>('START_OF_GAME');
+  private _currentPhase = new BehaviorSubject<GamePhaseCommandType>('TUTORIAL');
+  private _currentTurn = 1;
 
   // Observable that other services/components can subscribe to
   readonly currentPhase$ = this._currentPhase.asObservable();
 
   public get currentPhase() { return this._currentPhase.value; }
+  public get currentTurn() { return this._currentTurn; }
 
   constructor() {}
 
@@ -23,6 +25,9 @@ export class CurrentPhaseService {
   goToNextPhase() {
     const nextPhase = this.calculateNextPhase();
     console.log('going to next phase', nextPhase);
+    if (nextPhase === 'END_PHASE') {
+      this._currentTurn ++;
+    }
     this._currentPhase.next(nextPhase);
   }
 

@@ -12,8 +12,8 @@ export class SeedableRngService {
 
   private seed: number;
   constructor() {
-    // this.seed = Math.floor(Math.random() * 1000000);
-    this.seed = 603132;
+    this.seed = Math.floor(Math.random() * 1000000);
+    // this.seed = 286945;
     console.log("SEED: " + this.seed);
   }
 

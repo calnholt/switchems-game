@@ -4,6 +4,7 @@ import { SelectedAction } from "../../services/selected-action/selected-action.m
 import { PlayerType } from "../player-type.mode";
 
 export type GamePhaseCommandType = 
+  | 'TUTORIAL'
   | 'START_OF_GAME'
   | 'START_PHASE'
   | 'SELECTION_PHASE'

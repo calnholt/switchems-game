@@ -21,14 +21,14 @@ export const convertJsonToObjs = (selectedMonster?: any): Array<Monster> => {
   }
   return convertFromJSON([
     Chargroar,
-    Drownigator,
-    Flexferno,
-    Galeaffy,
+    // Drownigator,
+    // Flexferno,
+    // Galeaffy,
     Stalagrowth,
-    Phantomaton,
+    // Phantomaton,
     Vulturock,
-    Whailstrom,
-    Zappguin,
+    // Whailstrom,
+    // Zappguin,
     // simple monsters - might require extra handling later?
     Deusvolt,
     Volcanoggin,

@@ -1,4 +1,4 @@
-<div id="tutorial" [ngClass]="{'top' : section.isTop}" (click)="next()">
+<div id="tutorial" [ngClass]="{'top' : section.isTop, 'hidden': hide}" (click)="next()">
   <div class="tutorial-container">
     <div class="prof-holt">
       <img [src]="profHolt" />

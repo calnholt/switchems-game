@@ -70,6 +70,13 @@ export class GameComponent {
   ) { }
 
   ngOnInit() {
+    this.isTutorial = this.router.url === '/tutorial';
+    if (this.isTutorial) {
+      this.playerService.startTutorial();
+    }
+    else {
+      this.playerService.startGame();
+    }
     this.playerService.player.activeMonster$.subscribe((value) => {
       if (this.modifiersSub) {
         this.modifiersSub.unsubscribe();
@@ -122,12 +129,13 @@ export class GameComponent {
     });
     this.currentPhaseService.currentPhase$.subscribe((phase) => {
       this.currentPhase = phase;
-      this.hideModifiers = [
-        'START_PHASE', 
-        'GAME_OVER', 
-        'SELECTION_PHASE', 
-        'START_OF_GAME',
-        'END_PHASE',
+      this.hideModifiers = ![
+        'REVEAL_PHASE', 
+        'APPLY_BUFFS_PHASE', 
+        'APPLY_PIPS_PHASE', 
+        'MONSTER_ACTIONS_PHASE',
+        'SWITCH_ACTIONS_PHASE',
+        'STANDARD_ACTIONS_PHASE',
       ].includes(phase);
     });
     this.selectedActionService.selectedAction$.subscribe((action) => {
@@ -136,11 +144,17 @@ export class GameComponent {
     this.selectedActionService.oSelectedAction$.subscribe((action) => {
       this.oSelectedAction = action;
     });
-    this.isTutorial = this.router.url === '/tutorial';
     if (this.isTutorial) {
       this.tutorialService.startTutorial();
       this.tutorialService.currentSection$.subscribe((value) => {
         this.tutorialSection = value;
+        if (value.isEnd) {
+          this.isTutorial = false;
+          return;
+        }
+        if (value.startGuidedTutorial) {
+          this.currentPhaseService.startGame();
+        }
       });
     }
   }

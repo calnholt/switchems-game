@@ -4,6 +4,8 @@ export interface TutorialSection {
   types?: TutorialSectionType[];
   description: string;
   isTop?: boolean;
+  isGuidedTutorial?: boolean;
+  startGuidedTutorial?: boolean;
 };
 
 export type TutorialSectionType = 

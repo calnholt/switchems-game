@@ -6,6 +6,7 @@ import { Monster } from '../../models/monster/monster.model';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
 import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
 import { SelectedActionService } from '../selected-action/selected-action.service';
+import { TutorialService } from '../tutorial/tutorial.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +21,10 @@ export class PlayerService {
     private currentPhaseService: CurrentPhaseService,
     private rng: SeedableRngService,
     private selectedActionService: SelectedActionService,
+    private tutorialService: TutorialService,
   ) {
-    this._player = new Player(this.getSpecificStart('Deusvolt', 'Vulturock', 'Stalagrowth'), this.rng);
-    this._opponent = new Player(this.getSpecificStart('Stalagrowth', 'Vulturock', 'Chargroar'), this.rng);
-    this.currentPhaseService.currentPhase$.subscribe(value => {
-      if (value === 'START_OF_GAME') {
-        this.startGame();
-      }
-    });
+    this._player = new Player(this.getSpecificStartRandom('Deusvolt', 'Vulturock', 'Stalagrowth'), this.rng);
+    this._opponent = new Player(this.getSpecificStartRandom('Lanternshade', 'Vulturock', 'Chargroar'), this.rng);
   }
 
   public get player() { return this._player; }
@@ -43,9 +40,16 @@ export class PlayerService {
   public get oStatBoard() { return this._opponent.statBoard; }
 
   startGame() {
-    this._player.reset(this.getSpecificStart('Deusvolt', 'Vulturock', 'Stalagrowth'));
+    this._player.reset(this.getRandomStart());
     this.selectedActionService.clear();
-    this._opponent.reset(this.getSpecificStart('Chargroar', 'Vulturock', 'Stalagrowth'));
+    this._opponent.reset(this.getRandomStart());
+    this.currentPhaseService.startGame();
+  }
+
+  startTutorial() {
+    this._player.reset(this.getSpecificStart('Deusvolt', 'Volcanoggin', 'Lanternshade'));
+    this.selectedActionService.clear();
+    this._opponent.reset(this.getSpecificStart('Sorrospine', 'Vulturock', 'Chargroar'));
   }
 
   getRandomStart(): Monster[] {
@@ -59,6 +63,12 @@ export class PlayerService {
   }
 
   getSpecificStart(...names: string[]): Monster[] {
+    const monsters = this.monsterService.getAllMonsters().filter(m => names.includes(m.name));
+    monsters.find(m => m.name === names[0])?.setIsActive(true);
+    return monsters;
+  }
+
+  getSpecificStartRandom(...names: string[]): Monster[] {
     const monsters = this.monsterService.getAllMonsters().filter(m => names.includes(m.name));
     const rand: Monster = ArrayUtil.getRandomItemFromArray(monsters, this.rng) as Monster
     rand.setIsActive(true);

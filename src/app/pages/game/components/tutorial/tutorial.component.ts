@@ -3,6 +3,7 @@ import { TutorialSection } from '../../models/tutorial/tutorial.model';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { TutorialService } from '../../services/tutorial/tutorial.service';
 import { TutorialSections } from '../../models/tutorial/tutorial.util';
+import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 
 @Component({
   selector: 'sw-tutorial',
@@ -15,15 +16,35 @@ export class TutorialComponent implements OnChanges {
 
   profHolt = ImageUtil.avatars.profHolt;
   audioSrc = '';
+  hide = false;
 
   constructor(
     private tutorialService: TutorialService,
+    private currentPhaseService: CurrentPhaseService,
   ) {
 
   }
 
   ngOnInit() {
     this.setAudioSource();
+    this.currentPhaseService.currentPhase$.subscribe((value) => {
+      if (this.section.isGuidedTutorial) {
+        if ([
+          'REVEAL_PHASE', 
+          'APPLY_BUFFS_PHASE', 
+          'APPLY_PIPS_PHASE', 
+          'MONSTER_ACTIONS_PHASE',
+          'SWITCH_ACTIONS_PHASE',
+          'STANDARD_ACTIONS_PHASE',
+        ].includes(value)) {
+          this.hide = true;
+        }
+        if (value === 'SELECTION_PHASE' && this.currentPhaseService.currentTurn > 1) {
+          this.tutorialService.next();
+          this.hide = false;
+        }
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -31,8 +52,6 @@ export class TutorialComponent implements OnChanges {
       return;
     }
     if (changes['section']) {
-      this.setAudioSource();
-      this.audioPlayer.nativeElement.src = this.audioSrc;
       this.play();
     }
   }
@@ -46,12 +65,14 @@ export class TutorialComponent implements OnChanges {
   }
 
   next() {
-    // if (this.audioPlayer.nativeElement.paused) {
+    if (!this.section.isGuidedTutorial) {
       this.tutorialService.next();
-    // }
+    }
   }
 
   play() {
+    this.setAudioSource();
+    this.audioPlayer.nativeElement.src = this.audioSrc;
     this.audioPlayer.nativeElement.play();
   }
 

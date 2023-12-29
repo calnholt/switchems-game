@@ -57,7 +57,7 @@ export class SubmitActionButtonComponent {
 
   submit() {
     if (this.enabled && this.isCostFulfilled) {
-      this.gamePhaseService.testActionPhase();
+      this.gamePhaseService.submitAction();
     }
     if (this.viewingOtherMonstersActions) {
       this.onSelect.emit(true);

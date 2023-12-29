@@ -12,16 +12,19 @@ export class TutorialService {
 
   public get currentSection$() { return this._currentSection; }
   public get currentSection() { return this._currentSection.value; }
+  public get isTutorialActive(): boolean { return !!this.currentSection.description && !!this.currentSection.isGuidedTutorial; }
+  public get isGuidedTutorialActive(): boolean { return !!this.currentSection.isGuidedTutorial; }
 
   constructor() { }
 
   startTutorial() {
+    // this._currentSection.next(TutorialSections[TutorialSections.length-6]);
     this._currentSection.next(TutorialSections[0]);
   };
 
   next() {
     if (this._currentSection.value?.isEnd) {
-
+      this._currentSection.next({ text: '', types: [], description: '' });
     }
     else {
       const index = this.getCurrentIndex() + 1;

@@ -13,6 +13,9 @@
     bottom: unset;
     top: 100px;
   }
+  &.hidden {
+    display: none;
+  }
   cursor: pointer;
   .tutorial-container {
     display: flex;

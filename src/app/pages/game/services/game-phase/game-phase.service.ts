@@ -5,6 +5,8 @@ import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.m
 import { GamePhaseUtil } from '../update-game-state/game-phase.util';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
 import { Chargroar } from '../../logic/monsters/chargroar.model';
+import { TutorialService } from '../tutorial/tutorial.service';
+import { GuidedTutorialCheckUtil } from '../../models/tutorial/tutorial.util';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,7 @@ export class GamePhaseService {
     private gameStateService: GameStateService,
     private ugss: UpdateGameStateService,
     private currentPhaseService: CurrentPhaseService,
+    private tutorialService: TutorialService,
   ) {
     this.currentPhaseService.currentPhase$.subscribe((value) => {
       if (value === 'GAME_OVER') {
@@ -27,9 +30,14 @@ export class GamePhaseService {
     });
   }
 
-  public testActionPhase() {
+  public submitAction() {
     const gs: GameState = this.gameStateService.getGameState();
-    if (gs.p.selectedAction.isCostFulfilled() && gs.o.selectedAction.isCostFulfilled()) {
+    if (this.tutorialService.isGuidedTutorialActive) {
+      if (GuidedTutorialCheckUtil.checkTurn(gs, this.currentPhaseService.currentTurn) && gs.p.selectedAction.isCostFulfilled()) {
+        this.currentPhaseService.goToNextPhase();
+      }
+    }
+    else if (gs.p.selectedAction.isCostFulfilled() && gs.o.selectedAction.isCostFulfilled()) {
       this.currentPhaseService.goToNextPhase();
     }
   }
