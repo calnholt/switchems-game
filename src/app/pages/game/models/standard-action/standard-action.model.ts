@@ -23,7 +23,7 @@ export class StandardAction implements ISelectableAction {
   getNumOfDiscardSlots = (): number => { return 0; };
   getDisplayName = (): string => { return this._name; } 
   getSelectableActionType = (): SelectedActionType => { return 'STANDARD'; } 
-  canApplyStat = (): boolean => { return false; } 
+  canApplyPips = (): boolean => { return false; } 
   key = (): CardCompositeKey => { return `SA_${this.name.replaceAll(' ', '').toUpperCase()}`; }
   // end
 

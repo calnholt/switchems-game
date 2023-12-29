@@ -4,7 +4,7 @@ import { StatBoardSection } from "../../models/stat-board/stat-board.model";
 
 const EMPTY_ACTION: ISelectableAction = { 
   key: () => '', 
-  canApplyStat: () => false, 
+  canApplyPips: () => false, 
   getDisplayName: () => '',
   getNumOfBuffSlots: () => 0,
   getNumOfDiscardSlots: () => 0,
@@ -69,7 +69,7 @@ export class SelectedAction {
     if (this.statBoardSection?.type === statBoardSection.type) {
       this.statBoardSection = undefined;
     }
-    else if (statBoardSection.current > 0 && this.action.canApplyStat()) {
+    else if (statBoardSection.current > 0 && this.action.canApplyPips()) {
       this.statBoardSection = statBoardSection;
     }
   }
