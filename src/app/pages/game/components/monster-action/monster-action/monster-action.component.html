@@ -17,7 +17,7 @@
                 <img [src]="attackImg">
               </span>
             </div>
-            <div *ngIf="action.isStatus">
+            <div *ngIf="action.isStatus" [ngClass]="{'tutorial-highlight' : isStatusIconHighlighted}">
               <img [src]="statusImg" />
             </div>
             <div [ngClass]="{'tutorial-highlight' : isElementIconHighlighted}">

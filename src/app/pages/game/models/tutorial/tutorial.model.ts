@@ -14,6 +14,7 @@ export type TutorialSectionType =
   | 'MONSTER'
   | 'MONSTER_ACTION'
   | 'MONSTER_ACTION_ATTACK'
+  | 'MONSTER_ACTION_STATUS'
   | 'MONSTER_ACTION_SPEED'
   | 'MONSTER_ACTION_DISCARD'
   | 'MONSTER_ACTION_DRAW'
@@ -29,3 +30,4 @@ export type TutorialSectionType =
   | 'BUFF_MONSTER'
   | 'BENCHED_MONSTER'
   | 'OPPONENT_HAND'
+  | 'DEUSVOLT_A3'

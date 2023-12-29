@@ -9,6 +9,7 @@ import { GameUISelectionEventType } from '../../../services/game-ui-selection/ga
 import { SelectedActionService } from '../../../services/selected-action/selected-action.service';
 import { CurrentPhaseService } from '../../../services/current-phase/current-phase.service';
 import { TutorialService } from '../../../services/tutorial/tutorial.service';
+import { TutorialSectionType } from '../../../models/tutorial/tutorial.model';
 
 @Component({
   selector: 'sw-monster-action',
@@ -33,6 +34,7 @@ export class MonsterActionComponent {
 
   isMonsterActionHighlighted = false;
   isAttackIconHighlighted = false;
+  isStatusIconHighlighted = false;
   isSpeedIconHighlighted = false;
   isElementIconHighlighted = false;
   isBuffIconHighlighted = false;
@@ -65,8 +67,9 @@ export class MonsterActionComponent {
       this.isSelected = phase === 'SELECTION_PHASE';
     });
     this.tutorialService.currentSection$.subscribe((value) => {
-      this.isMonsterActionHighlighted = !!value.types?.includes('MONSTER_ACTION');
+      this.isMonsterActionHighlighted = !!value.types?.includes('MONSTER_ACTION') || !!value.types?.includes(this.action.key() as TutorialSectionType);
       this.isAttackIconHighlighted = !!value.types?.includes('MONSTER_ACTION_ATTACK');
+      this.isStatusIconHighlighted = !!value.types?.includes('MONSTER_ACTION_STATUS');
       this.isSpeedIconHighlighted = !!value.types?.includes('MONSTER_ACTION_SPEED');
       this.isElementIconHighlighted = !!value.types?.includes('MONSTER_ACTION_ELEMENT');
       this.isBuffIconHighlighted = !!value.types?.includes('MONSTER_ACTION_BUFF');

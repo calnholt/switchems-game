@@ -49,15 +49,27 @@ export const TutorialSections: TutorialSection[] = [
     isTop: true,
   },
   {
-    text: `TODO 1`,
-    types: ['MONSTER_ACTION'], 
-    description: 'todo1',
+    text: `Most monster actions are attacks, which have a name, attack [ATK] value, speed [SPD] value, buff [B] card slots, discard [-] slots, draw [+] card slots, and action text. For example, this action's name is Leaf Burst, with an attack value of 5, speed of 3, 2 buff slots, and 2 discard slots.`,
+    types: ['DEUSVOLT_A3'], 
+    description: 'attack-description',
     isTop: true,
   },
   {
     text: `The attack [ATK] value represents how much damage it will deal to the opponent's active monster.`,
     types: ['MONSTER_ACTION_ATTACK'], 
     description: 'attack',
+    isTop: true,
+  },
+  {
+    text: `An action with a status [SPECIAL] symbol denotes that the action is not an attack, and therefore deals no damage and cannot be buffed.`,
+    types: ['MONSTER_ACTION_STATUS'], 
+    description: 'status',
+    isTop: true,
+  },
+  {
+    text: `This symbol is the action's element, which is important for weaknesses and resistances.`,
+    types: ['MONSTER_ACTION_ELEMENT'], 
+    description: 'element',
     isTop: true,
   },
   {
@@ -73,9 +85,9 @@ export const TutorialSections: TutorialSection[] = [
     isTop: true,
   },
   {
-    text: `TODO`,
-    types: [], 
-    description: 'todo2',
+    text: `Discard [-] slots are a required cost to play an action - so in order to play Leaf Burst, you must discard two cards from your hand. If you do not have two cards in your hand, you cannot use the Leaf Burst action.`,
+    types: ['DEUSVOLT_A3'], 
+    description: 'discard-slots',
     isTop: true,
   },
   {
