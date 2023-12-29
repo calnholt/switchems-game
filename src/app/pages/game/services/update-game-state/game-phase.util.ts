@@ -2,7 +2,7 @@ import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interfac
 import { ApplyBuffCommand, BuffCommand } from "../../logic/commands/buff-command.model";
 import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, GameOverPhaseCommandData, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, StartGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
-import { DealAttackDamageCommand, FasterCommand, MonsterActionCommand } from "../../logic/commands/monster-action-commands.model";
+import { DealAttackDamageCommand, FasterCommand, MonsterActionCommand, SlowerCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
 import { SwitchRoutineCommand } from "../../logic/commands/switch-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
@@ -195,13 +195,15 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
       new DealAttackDamageCommand(rc, { key, player: player, ...monsterNames, damageToDeal: 999 }).enqueue();
     }
   }
-
   
-  const action = GameStateUtil.getPlayerState(gs, fasterPlayer).selectedAction.action;
+  const fasterAction = GameStateUtil.getPlayerState(gs, fasterPlayer).selectedAction.action;
+  const slowerAction = GameStateUtil.getPlayerState(gs, slowerPlayer).selectedAction.action;
   // add faster event to queue
-  const monsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
+  const fasterMonsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
+  const slowerMonsterNames = GameStateUtil.getMonsterNames(gs, slowerPlayer);
   if (gs.o.selectedAction.action.getSelectableActionType() !== 'SWITCH' && gs.p.selectedAction.action.getSelectableActionType() !== "SWITCH") {
-    new FasterCommand(rc, { key: action.key(), player: fasterPlayer, ...monsterNames, display: true }).enqueue();
+    new FasterCommand(rc, { key: fasterAction.key(), player: fasterPlayer, ...fasterMonsterNames, display: true }).enqueue();
+    new SlowerCommand(rc, { key: slowerAction.key(), player: slowerPlayer, ...slowerMonsterNames }).enqueue();
   }
 
   performMonsterAction(gs, fasterPlayer);

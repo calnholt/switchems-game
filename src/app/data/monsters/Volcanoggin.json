@@ -1,0 +1,67 @@
+{
+  "elements": [
+    "Fire",
+    "Rock"
+  ],
+  "actions": [
+    {
+      "name": "Magma Strike",
+      "text": "",
+      "element": "Fire",
+      "statusFlg": false,
+      "attack": 2,
+      "speed": 8,
+      "buff": 1
+    },
+    {
+      "name": "Headbutt",
+      "text": "If this action is <b>slower</b>, this attack gains <div>+2[ATK].</div>~SLOWER~",
+      "element": "Rock",
+      "statusFlg": false,
+      "speed": 4,
+      "attack": 3,
+      "buff": 2,
+      "discard": 1
+    },
+    {
+      "name": "Enrage",
+      "text": "<div>{\"stat\": \"?\", \"num\": 3}</div><br><br>This monster gains <div>+1[DEF]</div> this turn.",
+      "element": "Fire",
+      "statusFlg": true,
+      "speed": 6,
+      "draw": 1
+    },
+    {
+      "name": "Explode",
+      "text": "If this attack is <b>slower</b>, this attack gains <b>recoil 2</b>.~RECOIL~~SLOWER~",
+      "element": "Rock",
+      "statusFlg": false,
+      "discard": 2,
+      "attack": 5,
+      "buff": 1,
+      "speed": 4
+    }
+  ],
+  "buffs": [
+    {
+      "buffName": "Agility",
+      "buffText": "This attack gains +1[SPD]."
+    },
+    {
+      "buffName": "Ramp Up",
+      "buffText": "<div>{\"stat\": \"SPD\", \"num\": 2}</div>"
+    },
+    {
+      "buffName": "Harden",
+      "buffText": "This monster gains +1[DEF] this turn."
+    },
+    {
+      "buffName": "Endurance",
+      "buffText": "<div>{\"stat\": \"DEF\", \"num\": 2}</div>"
+    }
+  ],
+  "hp": 9,
+  "name": "Volcanoggin",
+  "initiative": 25,
+  "switchIn": "When this monster <b>switches in</b>, {\"stat\": \"DEF\", \"num\": 1}.</div>"
+}

@@ -54,7 +54,7 @@ export class SlowerCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'SLOWER', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is faster than ${this.data.opponentMonsterName}.`;
+    return `${this.data.monsterName} is slower than ${this.data.opponentMonsterName}.`;
   }
 }
 

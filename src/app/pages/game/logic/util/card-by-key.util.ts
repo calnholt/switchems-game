@@ -7,6 +7,7 @@ import { Chargroar } from "../monsters/chargroar.model";
 import { Vulturock } from "../monsters/vulturock.model";
 import { Stalagrowth } from "../monsters/stalagrowth.model";
 import { Deusvolt } from "../monsters/deusvolt.model";
+import { Volcanoggin } from "../monsters/volcanoggin.model";
 
 export const CardByKeyUtil = {
   executeCardByKey,
@@ -22,7 +23,7 @@ function executeCardByKey(key: CardCompositeKey, player: PlayerType, receiver: U
     case CHARGROAR:
       new Chargroar(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
-    case 'DEUSVOLT':
+    case DEUSVOLT:
       new Deusvolt(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case VULTUROCK:
@@ -30,6 +31,9 @@ function executeCardByKey(key: CardCompositeKey, player: PlayerType, receiver: U
       break;
     case STALAGROWTH:
       new Stalagrowth(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      break;
+    case VOLCANOGGIN:
+      new Volcanoggin(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
   }
   switch(key) {
@@ -42,14 +46,16 @@ function executeCardByKey(key: CardCompositeKey, player: PlayerType, receiver: U
   }
 }
 const CHARGROAR = 'CHARGROAR';
+const DEUSVOLT = 'DEUSVOLT';
+const DROWNIGATOR = 'DROWNIGATOR';
+const FLEXFERNO = 'FLEXFERNO';
+const GALEAFFY = 'GALEAFFY';
+const PHANTOMATON = 'PHANTOMATON';
+const STALAGROWTH = 'STALAGROWTH';
+const VOLCANOGGIN = 'VOLCANOGGIN';
 const VULTUROCK = 'VULTUROCK';
 const WHAILSTROM = 'WHAILSTROM';
 const ZAPPGUIN = 'ZAPPGUIN';
-const PHANTOMATON = 'PHANTOMATON';
-const STALAGROWTH = 'STALAGROWTH';
-const GALEAFFY = 'GALEAFFY';
-const DROWNIGATOR = 'DROWNIGATOR';
-const FLEXFERNO = 'FLEXFERNO';
 
 function getActionKey(name: string, i: number) { return `${CHARGROAR}_A${i}`; }
 function getBuffKey(name: string, i: number) { return `${CHARGROAR}_B${i}`; }
