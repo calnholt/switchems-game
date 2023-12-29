@@ -182,7 +182,7 @@ export class DisableActionPromptCommand extends EventCommand<DisableActionPrompt
     super(receiver, 'DISABLE_ACTION_PROMPT', { ...data });
   }
   override getDisplayMessage(): string {
-    return `Select an opponent's monster action to disable:`;
+    return `${this.data.origin ? this.data.origin + '. ' : ''}Select an opponent's monster action to disable:`;
   }
   public override requiresDecision(): boolean {
     return true;

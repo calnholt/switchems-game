@@ -24,7 +24,13 @@ export class Chargroar extends MonsterLogic {
       }).pushFront();
     }
     else {
-      new DisableActionPromptCommand(this.rc, { ...this.data, destroyOnTrigger: true, options, display: true }).pushFront();
+      new DisableActionPromptCommand(this.rc, { 
+        ...this.data, 
+        destroyOnTrigger: true, 
+        options, 
+        origin: 'Chargroar switched in.',
+        display: true,
+      }).pushFront();
     }
   }
 
