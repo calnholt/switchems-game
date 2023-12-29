@@ -28,7 +28,7 @@ export interface HealCommandData extends CommandData {
 
 export class HealCommand extends EventCommand<HealCommandData> {
   constructor(receiver: UpdateGameStateService, data: HealCommandData) {
-    super(receiver, 'HEAL', data);
+    super(receiver, 'HEAL', { ...data, display: false });
   }
   override getDisplayMessage(): string {
     return `${this.data.monsterName} healed ${this.data.amount} HP ${this.data.origin ? ` from ${this.data.origin}` : ''}.`;

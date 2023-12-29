@@ -78,7 +78,7 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.gainStatPip(gs, data);
         break;
       case 'HEAL':
-        UpdateGameStateUtil.heal(gs, data);
+        UpdateGameStateUtil.heal(gs, data, this);
         break;
       case 'KNOCKED_OUT':
         UpdateGameStateUtil.knockoutRoutine(gs, data, this);

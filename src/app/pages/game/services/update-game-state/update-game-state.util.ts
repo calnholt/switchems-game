@@ -194,9 +194,23 @@ function gainStatPip(gs: GameState, data: StatPipCommandData) {
   const statBoard = GameStateUtil.getStatBoardByPlayer(gs, data.player);
   statBoard.gain(data.amount, data.statType);
 }
-function heal(gs: GameState, data: HealCommandData) {
+function heal(gs: GameState, data: HealCommandData, rc: UpdateGameStateService) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.heal(data.amount);
+  const hpDelta = monster.hp - monster.currentHp;
+  let amountHealed = 0;
+  if (hpDelta >= data.amount) {
+    amountHealed = data.amount;
+  }
+  else if (hpDelta != 0) {
+    amountHealed = hpDelta;
+  }
+  if (amountHealed > 0) {
+    new DescriptiveMessageCommand(rc, {
+      ...data,
+      message: `${data.monsterName} healed ${amountHealed} HP ${data.origin ? ` from ${data.origin}` : ''}.`,
+    }).pushFront();
+  }
 }
 function modifyStat(gs: GameState, data: StatModificationData) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
