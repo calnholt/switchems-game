@@ -62,6 +62,6 @@
   ],
   "hp": 9,
   "name": "Volcanoggin",
-  "initiative": 25,
+  "initiative": 30,
   "switchIn": "When this monster <b>switches in</b>, {\"stat\": \"DEF\", \"num\": 1}.</div>"
 }

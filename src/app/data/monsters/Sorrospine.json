@@ -62,6 +62,6 @@
   ],
   "hp": 7,
   "name": "Sorrospine",
-  "initiative": 40,
+  "initiative": 25,
   "passive": "At the end of the turn, <div>{\"stat\": \"?\", \"num\": 1}.</div>"
 }
