@@ -28,11 +28,12 @@ export class GainStatPipCommand extends EventCommand<StatPipCommandData> {
 export interface GainRandomStatPipCommandData extends CommandData {
   amount: number,
   superEffective?: boolean;
+  displayRandomPipGain?: boolean;
 }
 
 export class GainRandomStatPipCommand extends EventCommand<GainRandomStatPipCommandData> {
   constructor(receiver: UpdateGameStateService, data: GainRandomStatPipCommandData) {
-    super(receiver, 'GAIN_RANDOM_STAT_PIP', data);
+    super(receiver, 'GAIN_RANDOM_STAT_PIP', { ...data, display: false, });
   }
   override getDisplayMessage(): string {
     return ``;

@@ -1,9 +1,8 @@
 import { GameStateUtil } from "../../services/game-state/game-state.util";
-import { CommandUtil } from "../../services/update-game-state/command.util";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { PreventRecoilCommand } from "../commands/ongoing-turn-commands.model";
 import { HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
-import { GainStatPipCommand } from "../commands/stat-pip-commands.model";
+import { GainRandomStatPipCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { MonsterLogic } from "./monster-logic.model";
 
 export class Vulturock extends MonsterLogic {
@@ -28,12 +27,12 @@ export class Vulturock extends MonsterLogic {
     }).executeAsTrigger('KNOCKED_OUT');
   }
   override action1(): void {
-    CommandUtil.gainRandomStatPip(this.gs, {
+    new GainRandomStatPipCommand(this.rc, {
       ...this.data,
       amount: 1,
+      displayRandomPipGain: true,
       origin: 'Kraterkazee',
-      display: true,
-    }, this.rc);
+    }).pushFront();
     new StatModificationCommand(this.rc, {
       ...this.data,
       amount: 2,

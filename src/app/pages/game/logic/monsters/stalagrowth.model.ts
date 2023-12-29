@@ -4,7 +4,7 @@ import { UpdateGameStateUtil } from "../../services/update-game-state/update-gam
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { ApplyDrainStatus, DrainCommand, RemoveStatusEffectsCommand } from "../commands/monster-action-commands.model";
 import { ApplyFlinchCommand, HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
-import { CrushCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
+import { CrushCommand, GainRandomStatPipCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { MonsterLogic } from "./monster-logic.model";
 
 export class Stalagrowth extends MonsterLogic {
@@ -72,11 +72,12 @@ export class Stalagrowth extends MonsterLogic {
     }).pushFront();
   }
   override action4(): void {
-    CommandUtil.gainRandomStatPip(this.gs, {
+    new GainRandomStatPipCommand(this.rc, {
       ...this.data,
       amount: 2,
-      origin: 'Skewer'
-    }, this.rc);
+      origin: `Skewer`,
+      displayRandomPipGain: true,
+    }).pushFront();
   }
   override buff1(): void {
     new HealCommand(this.rc, {

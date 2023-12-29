@@ -15,7 +15,8 @@ export const CommandUtil = {
 // basically an intermediary action that sets the actual pips gained
 function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc: UpdateGameStateService) {
   const { activeMonster, selectedAction } = GameStateUtil.getPlayerState(gs, data.player);
-  let [speed, attack, defense] = [0,0,0]
+  let [speed, attack, defense] = [0,0,0];
+  const commands = [];
   for (let i = 0;  i < data.amount; i++) {
     const random = gs.rng.randomIntOption(3);
     let type: 'ATTACK' | 'SPEED' | 'DEFENSE' = 'ATTACK';
@@ -31,24 +32,27 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
       type = 'DEFENSE'; 
       defense++;
     }
-    new GainStatPipCommand(rc, { 
-      ...data, 
-      key: selectedAction.action.key(), 
-      amount: 1, 
-      player: data.player, 
-      statType: type, 
-      monsterName: activeMonster.name, 
-      wasRandom: true,
-      display: false,
-    }).pushFront();
+    commands.push(
+      new GainStatPipCommand(rc, { 
+        ...data, 
+        key: selectedAction.action.key(), 
+        amount: 1, 
+        player: data.player, 
+        statType: type, 
+        monsterName: activeMonster.name, 
+        wasRandom: true,
+        display: false,
+      })
+    );
   }
-  let message = `${data?.monsterName ?? ''} randomly gained ${attack > 0 ? ` ${attack} attack` : ''}${speed > 0 ? ` ${speed} speed` : ''}${defense > 0 ? ` ${defense} defense`  : ''} pips`;
+  let message = `${data?.monsterName ?? ''} randomly gained ${attack > 0 ? ` ${attack} attack` : ''}${speed > 0 ? ` ${speed} speed` : ''}${defense > 0 ? ` ${defense} defense`  : ''} pips${data.origin ? ` from ${data.origin}` : ''}`;
   if(data.superEffective) {
     message = `The attack was super effective! ${message}`
   }
-  if (data.display) {
-    new DescriptiveMessageCommand(rc, { ...data, message }).pushFront();
+  if (data.displayRandomPipGain || data.superEffective) {
+    commands.push(new DescriptiveMessageCommand(rc, { ...data, message }));
   }
+  commands.reverse().forEach(cmd => cmd.pushFront());
   return { attack, speed, defense, message }
 
 }

@@ -4,7 +4,7 @@ import { CommandUtil } from "../../services/update-game-state/command.util";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { DisableActionCommand, DisableActionPromptCommand } from "../commands/monster-action-commands.model";
 import { StatModificationCommand } from "../commands/stat-modification-command.model";
-import { GainStatPipCommand } from "../commands/stat-pip-commands.model";
+import { GainRandomStatPipCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { MonsterLogic } from "./monster-logic.model";
 
 export class Chargroar extends MonsterLogic {
@@ -94,12 +94,12 @@ export class Chargroar extends MonsterLogic {
   }
 
   override action4(): void {
-    CommandUtil.gainRandomStatPip(this.gs, {
+    new GainRandomStatPipCommand(this.rc, {
       ...this.data,
       amount: 1,
-      display: true,
+      displayRandomPipGain: true,
       origin: 'Blazing Roar'
-    }, this.rc);
+    }).pushFront();
   }
 
   override buff1(): void {
