@@ -137,18 +137,17 @@ export class GameComponent {
     }
   }
 
+  // functions for toggling which actions are being viewed
   viewOpponentsActiveMonsterActions() {
     this.monsterActionsBeingViewed = this.oActiveMonster.actions;
     this.viewOpponentActions = true;
     this.viewActiveMonsterActions = false;
   }
-
   viewMyActiveMonsterActions() {
     this.monsterActionsBeingViewed = this.activeMonster.actions;
     this.viewOpponentActions = false;
     this.viewActiveMonsterActions = true;
   }
-
   viewMonsterActions(key: CardCompositeKey) {
     if (this.viewOpponentActions) {
       //@ts-ignore
