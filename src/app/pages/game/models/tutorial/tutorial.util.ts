@@ -116,7 +116,7 @@ export const TutorialSections: TutorialSection[] = [
     isTop: true,
   },
   {
-    text: `When an action has draw card slots, you draw that many cards, even if the monster was KO'd this turn.`,
+    text: `When an action has draw card [+] slots, you draw that many cards, even if the monster was KO'd this turn.`,
     types: ['MONSTER_ACTION_DRAW'], 
     description: 'monster-action-draw',
     isTop: true,
