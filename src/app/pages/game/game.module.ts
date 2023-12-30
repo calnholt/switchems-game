@@ -62,6 +62,7 @@ import { SoundControlComponent } from './components/sound-control/sound-control.
     MonsterActionCardIconsComponent,
     BuffComponent,
     GameComponent,
+    SoundControlComponent,
   ],
   imports: [
     CommonModule,
