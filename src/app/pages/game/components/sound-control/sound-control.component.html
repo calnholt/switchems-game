@@ -1,0 +1,12 @@
+<div id="sound-control">
+  <div class="sound-control">
+    <div (click)="pause()">
+      <img *ngIf="paused" [src]="playIcon" />
+      <img *ngIf="!paused" [src]="pauseIcon" />
+    </div>
+    <div (click)="mute()">
+      <img *ngIf="muted" [src]="audioOnIcon" />
+      <img *ngIf="!muted" [src]="audioOffIcon" />
+    </div>
+  </div>
+</div>

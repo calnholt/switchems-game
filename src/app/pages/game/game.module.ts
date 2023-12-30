@@ -25,6 +25,7 @@ import { StatusEffectsComponent } from './components/status-effects/status-effec
 import { GameOverComponent } from './components/game-over/game-over.component';
 import { DisableMonsterActionDialogComponent } from './components/dialog/disable-monster-action-dialog/disable-monster-action-dialog.component';
 import { TutorialComponent } from './components/tutorial/tutorial.component';
+import { SoundControlComponent } from './components/sound-control/sound-control.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { TutorialComponent } from './components/tutorial/tutorial.component';
     GameOverComponent,
     DisableMonsterActionDialogComponent,
     TutorialComponent,
+    SoundControlComponent,
   ],
   exports: [
     MonsterComponent,

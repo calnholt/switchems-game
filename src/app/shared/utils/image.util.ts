@@ -32,6 +32,12 @@ export const ImageUtil = {
     hand: getSymbolsPath('hand-of-cards'),
     statusEffect: getSymbolsPath('wound'),
   },
+  gui: {
+    play: getSymbolsPath('play-button'),
+    pause: getSymbolsPath('pause-button'),
+    audioOn: getSymbolsPath('speaker'),
+    audioOff: getSymbolsPath('speaker-off'),
+  },
   monsters: {
     Chargroar: getMonstersPath('chargroar'),
     Drownigator: getMonstersPath('drownigator'),

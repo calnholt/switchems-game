@@ -1,0 +1,12 @@
+#sound-control {
+  position: absolute;
+  right: 0;
+  .sound-control {
+    background-color: black;
+    display: flex;
+  }
+  img {
+    height: 30px;
+    filter: invert(1)
+  }
+}

@@ -28,11 +28,17 @@ export class SfxService {
     private router: Router,
   ) { 
     this._playSfx.subscribe((value) => {
+      if (this._mute) {
+        return;
+      }
       const audio = new Audio(this.getPath(value));
       if (value.includes('MUSIC')) {
         this.music = audio;
         this.music.loop = true;
-        this.music.play().catch(err => console.error('Error playing sound:', err));
+        console.log(this.music.volume);
+        if (!this._pause) {
+          this.music.play().catch(err => console.error('Error playing sound:', err));
+        }
       }
       else {
         audio.play().catch(err => console.error('Error playing sound:', err));
@@ -61,9 +67,18 @@ export class SfxService {
 
   public toggleMute() {
     this._mute = !this._mute;
+    this.music.volume = this._mute ? 0 : 1;
+    return this._mute;
   }
   public togglePause() {
     this._pause = !this._pause;
+    if (this._pause) {
+      this.music.pause();
+    }
+    else {
+      this.music.play();
+    }
+    return this._pause;
   }
 
   private getPath(sfxType: SfxType): Path {
