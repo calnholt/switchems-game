@@ -10,6 +10,7 @@ export class MonsterHpComponent {
   @Input() hp!: number;
   @Input() currentHp!: number;
   @Input() initiative!: number;
+  @Input() isActive: boolean = false;
 
   isHpHighlighted = false;
   isInitiativeHighlighted = false;

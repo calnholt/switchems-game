@@ -74,7 +74,7 @@
         <img [ngClass]="{'selected' : numDiscards > 0}" [src]="discardIcon" />
         <img [ngClass]="{'selected' : numDiscards > 1}" [src]="discardIcon" />
       </div>
-      <sw-monster-hp [hp]="monster.hp" [currentHp]="monster.currentHp" [initiative]="monster.initiative" />
+      <sw-monster-hp [hp]="monster.hp" [currentHp]="monster.currentHp" [initiative]="monster.initiative" [isActive]="isActiveMonster" />
       <div class="d-flex">
         <div [style.marginRight]="'5px'">
           <sw-monster-element-breakdown [style.width]="'100%'" [weaknesses]="monster.weaknesses"

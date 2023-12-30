@@ -1,3 +1,5 @@
+@import '../../../../../../assets/styles/constants.scss';
+
 #monster-hp {
   display: flex;
   justify-content: center;
@@ -9,12 +11,15 @@
   .hp {
     margin-right: 3px;
     color: black;
+    text-shadow: $text-shadow-border;
   }
-
+  
   .hp-bar {
     width: 150px;
     margin-right: 3px;
-
+    background-color: black;
+    border-radius: 10px;
+    
     .hp-chunk:first-child {
       border-radius: 10px 0px 0px 10px;
       border-left: 3px solid black;
@@ -38,6 +43,9 @@
       &.damaged {
         background-color: black;
       }
+      &.low-hp:not(.damaged) {
+        animation: opacityChange 1s infinite;
+      }
     }
   }
 
@@ -51,4 +59,14 @@
     align-items: center;
     justify-content: center;
   }
+
+  @keyframes opacityChange {
+    0%, 100% {
+      opacity: 100%;
+    }
+    50% {
+      opacity: 25%;
+    }
+  }
+
 }
