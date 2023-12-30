@@ -17,6 +17,7 @@ export class TutorialComponent implements OnChanges {
   profHolt = ImageUtil.avatars.profHolt;
   audioSrc = '';
   hide = false;
+  playedSections = new Set<string>();
 
   constructor(
     private tutorialService: TutorialService,
@@ -52,7 +53,9 @@ export class TutorialComponent implements OnChanges {
       return;
     }
     if (changes['section']) {
-      this.play();
+      if (!this.playedSections.has(this.section.description)) {
+        this.play();
+      }
     }
   }
 
@@ -81,11 +84,13 @@ export class TutorialComponent implements OnChanges {
 
   previousSection() {
     if (!this.section?.isGuidedTutorial && !this.section?.isStart) {
+      this.audioPlayer.nativeElement.pause();
       this.tutorialService.previous();
     }
   }
 
   play() {
+    this.playedSections.add(this.section.description);
     this.setAudioSource();
     this.audioPlayer.nativeElement.src = this.audioSrc;
     this.audioPlayer.nativeElement.play();
