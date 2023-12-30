@@ -10,6 +10,11 @@ export class TitleScreenComponent {
 
   constructor(private router: Router) {}
 
+  fullGame() {
+    // Navigate to '/your-route'
+    this.router.navigate(['/select-monsters']);
+  }
+
   quickStart() {
     // Navigate to '/your-route'
     this.router.navigate(['/quick-start']);

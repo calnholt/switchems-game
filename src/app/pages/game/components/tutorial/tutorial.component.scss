@@ -1,9 +1,15 @@
 @import '../../../../../assets/styles/constants.scss';
 
+@keyframes shrinkExpand {
+  0%, 100% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+}
+
 #tutorial {
-  background-color: black;
-  width: 1000px;
-  border-radius: 14px;
   position: absolute;
   left: 50%;
   bottom: 100px;
@@ -16,24 +22,38 @@
   &.hidden {
     display: none;
   }
-  cursor: pointer;
-  .tutorial-container {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    img {
-      height: 100px;
-    }
-    .text {
-      font-family: $text-font;
-      color: white;
-      font-size: 20px;
-      margin: 10px;
-      white-space: break-spaces;
+  .tutorial {
+    background-color: black;
+    width: 1000px;
+    border-radius: 14px;
+    .tutorial-container {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      .text-button {
+        color: white;
+        font-family: $text-font;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .text-button:hover {
+        text-decoration: underline;
+      }
       img {
-        display: inline-block;
-        height: 27px;
-        filter: invert(1);
+        height: 100px;
+        animation: shrinkExpand 2s ease-in-out infinite;
+      }
+      .text {
+        font-family: $text-font;
+        color: white;
+        font-size: 20px;
+        margin: 10px;
+        white-space: break-spaces;
+        img {
+          display: inline-block;
+          height: 27px;
+          filter: invert(1);
+        }
       }
     }
   }

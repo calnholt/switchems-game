@@ -159,6 +159,7 @@ button {
   }
 }
 
+
 .tutorial-highlight {
   animation: shrinkExpand 2s ease-in-out infinite;
 }
@@ -167,6 +168,9 @@ button {
   display: inline-block;
   height: 26px;
   filter: invert(1);
+  &.w, &.f, &.l, &.e, &.r, &.s {
+    filter: unset;
+  }
 }
 
 .embedded-icon-standard-action {

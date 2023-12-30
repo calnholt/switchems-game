@@ -1,0 +1,19 @@
+<div id="select-monster">
+  <div class="select-monster">
+    <div class="monster-container">
+      <sw-monster [monster]="monster" [isActiveMonster]="true" [cardsInHand]="5" />
+    </div>
+    <div class="actions-buffs">
+      <div>
+        <ng-container *ngFor="let action of monster.actions">
+          <sw-monster-action [action]="action" />
+        </ng-container>
+      </div>
+      <div>
+        <ng-container *ngFor="let buff of monster.buffs">
+          <sw-buff [buff]="buff" />
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

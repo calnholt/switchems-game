@@ -37,7 +37,7 @@ export class TutorialService {
   }
 
   private getCurrentIndex(): number {
-    return TutorialSections.findIndex(t => t.text === this._currentSection.value.text);
+    return TutorialSections.findIndex(t => t.description === this._currentSection.value.description);
   }
 
 }

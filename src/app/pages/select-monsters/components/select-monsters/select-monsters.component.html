@@ -1,0 +1,9 @@
+<div id="select-monsters">
+  <div class="select-monsters">
+    <div class="options-container">
+      <ng-container *ngFor="let monster of monsterOptions">
+        <sw-select-monster [monster]="monster" />
+      </ng-container>
+    </div>
+  </div>
+</div>

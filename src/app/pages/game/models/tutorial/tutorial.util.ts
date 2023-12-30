@@ -68,7 +68,7 @@ export const TutorialSections: TutorialSection[] = [
     isTop: true,
   },
   {
-    text: `This symbol is the action's element, which is important for weaknesses and resistances.`,
+    text: `This symbol is the action's element, of which there are six - fire [F], water [W], leaf [L], rock [R], electric [E], and death [S]. These are important for weaknesses and resistances.`,
     types: ['MONSTER_ACTION_ELEMENT'], 
     description: 'element',
     isTop: true,
@@ -131,6 +131,11 @@ export const TutorialSections: TutorialSection[] = [
     text: `When an attack is super effective against a monster (meaning the attack is one of the elements that the monster is weak to), the player gains a stat pip of a random value.`,
     types: ['MONSTER_ACTION_ELEMENT', 'WEAKNESSES', 'PIP_SECTION'], 
     description: 'super-effective',
+  },
+  {
+    text: `For example, Sorropine, the cactus-looking monster on the right, is weak to fire [F] and death [S]. So fire and death attacks are super effective against Sorropine.`,
+    types: ['WEAKNESSES'], 
+    description: 'super-effective-2',
   },
   {
     text: `Throughout the game, you will gain stat pips. There are three types - attack [ATK], speed [SPD], and defense [DEF]. When you are selecting a monster action, you may also apply all of your pips from a single type. This is done by clicking a pip section when you have selected a monster action.`,

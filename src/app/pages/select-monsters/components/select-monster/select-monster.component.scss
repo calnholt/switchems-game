@@ -1,0 +1,11 @@
+#select-monster {
+  .select-monster {
+    display: grid;
+    grid-template-columns: 400px 1000px;
+
+    .actions-buffs {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

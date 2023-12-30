@@ -1,17 +1,17 @@
-<div id="tutorial" [ngClass]="{'top' : section.isTop, 'hidden': hide}" (click)="next()">
-  <div class="tutorial-container">
-    <div class="prof-holt">
-      <img [src]="profHolt" />
-    </div>
-    <div class="text" [innerHTML]="section.text | convertEmbeddedText : { excludeTerms: true, imageCss: 'tutorial-invert', termCss: 'embedded-term-text' }">
-      <div *ngIf="audioPlayer?.nativeElement?.paused">
-        <br>
-        (Click to proceed)
+<div id="tutorial" [ngClass]="{'top' : section.isTop, 'hidden': hide}">
+  <div class="tutorial">
+    <div class="tutorial-container">
+      <div *ngIf="section.description !== 'intro'" class="text-button" (click)="previousSection()">< Previous</div>
+      <div class="prof-holt">
+        <img [src]="profHolt" />
       </div>
+      <div class="text" [innerHTML]="section.text | convertEmbeddedText : { excludeTerms: true, imageCss: 'tutorial-invert', termCss: 'embedded-term-text' }">
+      </div>
+      <div class="text-button" (click)="nextSection()">Next ></div>
     </div>
+    <audio #audio>
+      <source [src]="audioSrc" type="audio/wav">
+      Your browser does not support the audio element.
+    </audio>
   </div>
-  <audio #audio>
-    <source [src]="audioSrc" type="audio/wav">
-    Your browser does not support the audio element.
-  </audio>
 </div>

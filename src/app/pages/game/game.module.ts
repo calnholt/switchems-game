@@ -55,8 +55,10 @@ import { TutorialComponent } from './components/tutorial/tutorial.component';
     TutorialComponent,
   ],
   exports: [
+    MonsterComponent,
     MonsterActionComponent,
     MonsterActionCardIconsComponent,
+    BuffComponent,
     GameComponent,
   ],
   imports: [

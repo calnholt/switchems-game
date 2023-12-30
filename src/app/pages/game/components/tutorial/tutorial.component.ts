@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { TutorialSection } from '../../models/tutorial/tutorial.model';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { TutorialService } from '../../services/tutorial/tutorial.service';
@@ -64,9 +64,15 @@ export class TutorialComponent implements OnChanges {
     this.play();
   }
 
-  next() {
+  nextSection() {
     if (!this.section.isGuidedTutorial) {
       this.tutorialService.next();
+    }
+  }
+
+  previousSection() {
+    if (!this.section.isGuidedTutorial) {
+      this.tutorialService.previous();
     }
   }
 

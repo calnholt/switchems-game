@@ -1,0 +1,17 @@
+#select-monsters {
+  .select-monsters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('../../../../../assets/images/backgrounds/arena/ruins.png');
+    background-repeat: no-repeat;
+    height: 100%;
+
+    .options-container {
+      height: 90vh;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+
+  }
+}
