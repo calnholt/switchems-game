@@ -23,22 +23,38 @@ export class BattleAnimationService {
   }
 
   public update(isPlayer: boolean, battleAniType: BattleAnimationType) {
-    switch(battleAniType) {
-      case 'SWITCHING_IN':
-        this.sfxService.play('SWITCH');
-        break;
-    }
+    this.doAnimationSfx(battleAniType);
     this.battleAniState.updateByPlayer(isPlayer, battleAniType);
     this.battleAniState$.next(this.battleAniState);
   }
 
   public done(isPlayer: boolean) {
     this.battleAniState.done(isPlayer);
+    if (this.battleAniState.playerState != 'N/A') {
+      this.doAnimationSfx(this.battleAniState.playerState);
+    }
+    if (this.battleAniState.opponentState != 'N/A') {
+      this.doAnimationSfx(this.battleAniState.opponentState);
+    }
     this.battleAniState$.next(this.battleAniState);
   }
 
   public isAnimating() {
     return this.battleAniState.isAnimating();
+  }
+
+  private doAnimationSfx(battleAniType: BattleAnimationType) {
+    switch(battleAniType) {
+      case 'SWITCHING_IN':
+        this.sfxService.play('SWITCH');
+        break;
+      case 'ATTACKING':
+        this.sfxService.play('ATTACK');
+        break;
+      case 'TAKING_DAMAGE':
+        this.sfxService.play('DAMAGE');
+        break;
+    }
   }
 
 }
