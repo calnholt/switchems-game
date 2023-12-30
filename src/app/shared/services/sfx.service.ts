@@ -100,6 +100,10 @@ export class SfxService {
         return UI_PATH + 'damage.wav';
       case 'SPECIAL':
         return UI_PATH + 'special.wav';
+      case 'APPLY_CARD':
+        return UI_PATH + 'apply-card.wav';
+      case 'UNAPPLY_CARD':
+        return UI_PATH + 'unapply-card.wav';
     }
     return '';
   }
@@ -114,5 +118,7 @@ export type SfxType =
   | 'ATTACK'
   | 'DAMAGE'
   | 'SPECIAL'
+  | 'APPLY_CARD'
+  | 'UNAPPLY_CARD'
   | ''
 ;

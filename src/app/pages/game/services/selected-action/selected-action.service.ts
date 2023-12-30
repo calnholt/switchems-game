@@ -4,6 +4,7 @@ import { ISelectableAction } from '~/app/shared/interfaces/ISelectableAction.int
 import { Buff } from '../../models/monster/buff.model';
 import { SelectedAction } from './selected-action.model';
 import { StatBoardSection } from '../../models/stat-board/stat-board.model';
+import { SfxService } from '~/app/shared/services/sfx.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,12 @@ export class SelectedActionService {
   public get oSelectedAction$() { return this._oSelectedAction$; }
   public get oSelectedAction() { return this._oSelectedAction$.value; }
 
+  constructor(
+    private sfx: SfxService,
+  ) {
+
+  }
+
   public selectAction(newAction: ISelectableAction) {
     this._selectedAction$.next(new SelectedAction(newAction));
   };
@@ -26,14 +33,17 @@ export class SelectedActionService {
   public handleBuff(buff: Buff) {
     if (this.selectedAction.isApplied(buff)) {
       if (this.selectedAction.isAppliedAsDiscard(buff)) {
+        this.sfx.play('APPLY_CARD');
         this.selectedAction.swap(buff);
       }
       else {
         this.selectedAction.unApply(buff);
+        this.sfx.play('UNAPPLY_CARD');
       }
     }
     else {
       this.selectedAction.appliedBuffs.push(buff);
+      this.sfx.play('APPLY_CARD');
     }
     this.updateAction();
   }
@@ -42,13 +52,16 @@ export class SelectedActionService {
     if (this.selectedAction.isApplied(buff)) {
       if (this.selectedAction.isAppliedAsBuff(buff)) {
         this.selectedAction.swap(buff);
+        this.sfx.play('APPLY_CARD');
       }
       else {
         this.selectedAction.unApply(buff);
+        this.sfx.play('UNAPPLY_CARD');
       }
     }
     else {
       this.selectedAction.appliedDiscards.push(buff);
+      this.sfx.play('APPLY_CARD');
     }
     this.updateAction();
   }
