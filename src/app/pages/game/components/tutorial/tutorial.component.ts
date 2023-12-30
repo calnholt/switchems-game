@@ -18,6 +18,7 @@ export class TutorialComponent implements OnChanges {
   audioSrc = '';
   hide = false;
   playedSections = new Set<string>();
+  showPrevious = false;
 
   constructor(
     private tutorialService: TutorialService,
@@ -54,6 +55,7 @@ export class TutorialComponent implements OnChanges {
     }
     if (changes['section']) {
       if (!this.playedSections.has(this.section.description)) {
+        this.showPrevious = !this.section.isStart && this.section.description !== 'end' && !this.section.isGuidedTutorial;
         this.play();
       }
     }
