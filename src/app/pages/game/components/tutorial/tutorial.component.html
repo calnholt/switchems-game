@@ -1,7 +1,7 @@
 <div id="tutorial" [ngClass]="{'top' : section.isTop, 'hidden': hide}">
   <div class="tutorial">
     <div class="tutorial-container">
-      <div *ngIf="section.description !== 'intro'" class="text-button" (click)="previousSection()">< Previous</div>
+      <div *ngIf="section.description !== 'intro' && !section.isGuidedTutorial" class="text-button" (click)="previousSection()">< Previous</div>
       <div class="prof-holt">
         <img [src]="profHolt" />
       </div>
