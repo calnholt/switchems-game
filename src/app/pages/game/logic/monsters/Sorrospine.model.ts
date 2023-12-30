@@ -19,6 +19,7 @@ export class Sorrospine extends MonsterLogic {
       amount: 2,
       monsterActionTrigger: true,
       origin: 'Super Poke',
+      key: 'SORROSPINE_A4',
       display: true,
     }).executeAsTrigger('FASTER');
 

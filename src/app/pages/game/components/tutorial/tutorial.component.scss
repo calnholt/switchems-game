@@ -2,10 +2,10 @@
 
 @keyframes shrinkExpand {
   0%, 100% {
-    transform: scale(1.05);
+    transform: scale(1.005);
   }
   50% {
-    transform: scale(0.95);
+    transform: scale(0.9995);
   }
 }
 
@@ -35,13 +35,15 @@
         font-family: $text-font;
         white-space: nowrap;
         cursor: pointer;
+        height: 100px;
+        display: flex;
+        align-items: center;
       }
       .text-button:hover {
         text-decoration: underline;
       }
       img {
         height: 100px;
-        animation: shrinkExpand 2s ease-in-out infinite;
       }
       .text {
         font-family: $text-font;
@@ -49,6 +51,7 @@
         font-size: 20px;
         margin: 10px;
         white-space: break-spaces;
+        animation: shrinkExpand 2s ease-in-out infinite;
         img {
           display: inline-block;
           height: 27px;

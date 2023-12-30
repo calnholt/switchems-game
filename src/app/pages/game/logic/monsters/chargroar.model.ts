@@ -57,7 +57,7 @@ export class Chargroar extends MonsterLogic {
 
     new StatModificationCommand(this.rc, { 
       ...this.data, 
-      key: 'CHARGROAR_A3',
+      key: 'CHARGROAR_A4',
       amount: 1, 
       statType: 'PIERCE', 
       monsterActionTrigger: true,

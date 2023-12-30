@@ -44,7 +44,7 @@
   ],
   "buffs": [
     {
-      "buffName": "Rest",
+      "buffName": "Big Yawn",
       "buffText": "<b>Super</b>.<br><br>This monster heals <div>2[HP].</div>. ~SUPER~"
     },
     {

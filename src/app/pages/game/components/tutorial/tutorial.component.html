@@ -7,7 +7,7 @@
       </div>
       <div class="text" [innerHTML]="section.text | convertEmbeddedText : { excludeTerms: true, imageCss: 'tutorial-invert', termCss: 'embedded-term-text' }">
       </div>
-      <div class="text-button" (click)="nextSection()">Next ></div>
+      <div *ngIf="!section.isGuidedTutorial || section.isEnd" class="text-button" (click)="nextSection()">Next ></div>
     </div>
     <audio #audio>
       <source [src]="audioSrc" type="audio/wav">

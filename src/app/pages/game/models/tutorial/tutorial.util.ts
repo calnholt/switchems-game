@@ -5,6 +5,7 @@ export const TutorialSections: TutorialSection[] = [
   {
     text: `Hey there! My name's Professor Holt, a giga-chad Catholic and the world's leading expert on all things Switchems. I'll teach you everything you'll need to know to play.`,
     description: 'intro',
+    isStart: true,
   },
   {
     text: `Going forward, I will highlight relevant information by making them "pulse" on your screen, so please take notice!`,

@@ -286,8 +286,8 @@ function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSe
   const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
   const switchingToMonster = GameStateUtil.getSwitchingToMonster(gs, data.player);
   const commands = [];
-  if (data.type === 'HEAL' && !switchingToMonster.isAtFullHP()) {
-    commands.push(new HealCommand(rc, { ...data, amount: 2, origin: 'Switch Out', display: true}));
+  if (data.type === 'HEAL' && !activeMonster.isAtFullHP()) {
+    commands.push(new HealCommand(rc, { ...data, amount: 2 }));
   }
   else if (data.type === 'REMOVE_STATUS') {
     commands.push(new RemoveStatusEffectsCommand(rc, { ...data, display: true}));

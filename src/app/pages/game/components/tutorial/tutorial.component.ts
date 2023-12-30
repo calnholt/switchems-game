@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { TutorialSection } from '../../models/tutorial/tutorial.model';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { TutorialService } from '../../services/tutorial/tutorial.service';
@@ -56,6 +56,15 @@ export class TutorialComponent implements OnChanges {
     }
   }
 
+  @HostListener('window:keydown.ArrowLeft', ['$event'])
+  onArrowLeft(event: KeyboardEvent) {
+    this.previousSection();
+  }
+  @HostListener('window:keydown.ArrowRight', ['$event'])
+  onArrowRight(event: KeyboardEvent) {
+    this.nextSection();
+  }
+
   setAudioSource() {
     this.audioSrc = `../../../../../assets/audio/tutorial/tutorial-${this.section.description}.wav`;
   }
@@ -71,7 +80,7 @@ export class TutorialComponent implements OnChanges {
   }
 
   previousSection() {
-    if (!this.section.isGuidedTutorial) {
+    if (!this.section?.isGuidedTutorial && !this.section?.isStart) {
       this.tutorialService.previous();
     }
   }

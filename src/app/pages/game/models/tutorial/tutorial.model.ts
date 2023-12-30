@@ -1,8 +1,9 @@
 export interface TutorialSection {
   text: string;
-  isEnd?: boolean;
-  types?: TutorialSectionType[];
   description: string;
+  types?: TutorialSectionType[];
+  isStart?: boolean;
+  isEnd?: boolean;
   isTop?: boolean;
   isGuidedTutorial?: boolean;
   startGuidedTutorial?: boolean;
