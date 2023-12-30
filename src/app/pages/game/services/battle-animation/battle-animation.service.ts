@@ -54,6 +54,9 @@ export class BattleAnimationService {
       case 'TAKING_DAMAGE':
         this.sfxService.play('DAMAGE');
         break;
+      case 'USING_SPECIAL':
+        this.sfxService.play('SPECIAL');
+        break;
     }
   }
 

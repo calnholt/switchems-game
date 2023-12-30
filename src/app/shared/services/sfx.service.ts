@@ -95,6 +95,8 @@ export class SfxService {
         return MUSIC_PATH + 'battle.wav';
       case 'DAMAGE':
         return UI_PATH + 'damage.wav';
+      case 'SPECIAL':
+        return UI_PATH + 'special.wav';
     }
     return '';
   }
@@ -107,5 +109,6 @@ export type SfxType =
   | 'BATTLE_MUSIC'
   | 'ATTACK'
   | 'DAMAGE'
+  | 'SPECIAL'
   | ''
 ;

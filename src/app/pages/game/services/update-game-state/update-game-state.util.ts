@@ -70,6 +70,7 @@ function doMonsterAction(gs: GameState, data: MonsterActionCommandData, rc: Upda
   const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
   if (action?.isStatus) {
     new RecoilCheckCommand(rc, { ...data }).pushFront();
+    gs.battleAniService.update(data.player === 'P', 'USING_SPECIAL');
   }
   data.doMonsterAction();
 }
