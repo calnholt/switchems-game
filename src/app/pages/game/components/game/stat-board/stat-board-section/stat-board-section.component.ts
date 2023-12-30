@@ -3,6 +3,7 @@ import { bounceInOnEnterAnimation } from 'angular-animations';
 import { StatBoardSection, StatBoardSectionType } from 'src/app/pages/game/models/stat-board/stat-board.model';
 import { Path } from 'src/app/shared/types/dataTypes';
 import { ImageUtil } from 'src/app/shared/utils/image.util';
+import { MonsterAction } from '~/app/pages/game/models/monster/monster-action.model';
 import { CurrentPhaseService } from '~/app/pages/game/services/current-phase/current-phase.service';
 import { EventManagerService } from '~/app/pages/game/services/event-manager/event-manager.service';
 import { GameUISelectionEventType } from '~/app/pages/game/services/game-ui-selection/game-ui-selection-event.model';
@@ -38,11 +39,21 @@ export class StatBoardSectionComponent implements OnInit {
   ngOnInit() {
     this.icon = this.getPathFromType(this.statBoardSection.type);
     if (this.disable) return;
-    this.selectedActionService.selectedAction$.subscribe(({ statBoardSection }) => {
+    this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
+      if (selectedAction.action.getSelectableActionType() != 'MONSTER') {
+        this.disable = true;
+        return;
+      }
+      const action = selectedAction.action as MonsterAction;
+      if (action.isStatus) {
+        this.disable = true;
+        return;
+      }
+      this.disable = false;
       // TODO: update isApplyable by checking if the selected action is an attack action
       // currently this isn't retrievable. consider just getting access to full action
       // from interface function
-      if (statBoardSection?.type === this.statBoardSection.type) {
+      if (selectedAction.statBoardSection?.type === this.statBoardSection.type) {
         this.isApplied = true;
       }
       else {
