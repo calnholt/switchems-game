@@ -7,6 +7,7 @@ import { CurrentPhaseService } from '../current-phase/current-phase.service';
 import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
 import { SelectedActionService } from '../selected-action/selected-action.service';
 import { TutorialService } from '../tutorial/tutorial.service';
+import { GameOverService } from '../game-over/game-over.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +22,15 @@ export class PlayerService {
     private currentPhaseService: CurrentPhaseService,
     private rng: SeedableRngService,
     private selectedActionService: SelectedActionService,
-    private tutorialService: TutorialService,
+    private gameOverService: GameOverService,
   ) {
     this._player = new Player(this.getSpecificStartRandom('Deusvolt', 'Vulturock', 'Stalagrowth'), this.rng);
     this._opponent = new Player(this.getSpecificStartRandom('Lanternshade', 'Vulturock', 'Chargroar'), this.rng);
+    this.gameOverService.winner$.subscribe((value) => {
+      if (!value && this.currentPhaseService.currentTurn >= 1) {
+        this.startGame();
+      }
+    })
   }
 
   public get player() { return this._player; }
@@ -59,6 +65,8 @@ export class PlayerService {
     threeRandomMonsters[0].setIsActive(true);
     threeRandomMonsters[1].setIsActive(false);
     threeRandomMonsters[2].setIsActive(false);
+    // threeRandomMonsters[1].takeDamage(999);
+    // threeRandomMonsters[2].takeDamage(999);
     return threeRandomMonsters;
   }
 

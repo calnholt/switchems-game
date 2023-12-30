@@ -7,7 +7,7 @@ import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.m
 })
 export class CurrentPhaseService {
   private _currentPhase = new BehaviorSubject<GamePhaseCommandType>('TUTORIAL');
-  private _currentTurn = 1;
+  private _currentTurn = 0;
 
   // Observable that other services/components can subscribe to
   readonly currentPhase$ = this._currentPhase.asObservable();
@@ -18,6 +18,7 @@ export class CurrentPhaseService {
   constructor() {}
 
   public startGame() {
+    this._currentTurn = 1;
     this._currentPhase.next('START_OF_GAME');
   }
 
