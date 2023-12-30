@@ -15,7 +15,7 @@
     },
     {
       "name": "Ignite",
-      "text": "If the enemy monster has a <b>status condition</b> [STATUS], this attack gains <div>+1[ATK]</div>.~STATUS~",
+      "text": "This attack gains <div>+1[ATK]</div> for each <div><b>status condition</b> [STATUS]</div> the enemy monster has.~STATUS~",
       "element": "Fire",
       "statusFlg": false,
       "attack": 2,
@@ -25,7 +25,7 @@
     },
     {
       "name": "Expose Weakness",
-      "text": "If the enemy monster has a <b>status condition</b> [STATUS], this attack gains <div>+1[ATK]</div>.~STATUS~",
+      "text": "This attack gains <div>+1[ATK]</div> for each <div><b>status condition</b> [STATUS]</div> the enemy monster has.~STATUS~",
       "element": "Death",
       "statusFlg": false,
       "buff": 1,

@@ -31,7 +31,7 @@ export class Lanternshade extends MonsterLogic {
     if (activeMonster.modifiers.hasStatusEffect()) {
       new StatModificationCommand(this.rc, {
         ...this.data,
-        amount: 1,
+        amount: activeMonster.modifiers.modifiers.filter(m => m.status()).length,
         statType: 'ATTACK',
         origin: 'Ignite',
         display: true,
@@ -43,7 +43,7 @@ export class Lanternshade extends MonsterLogic {
     if (activeMonster.modifiers.hasStatusEffect()) {
       new StatModificationCommand(this.rc, {
         ...this.data,
-        amount: 1,
+        amount: activeMonster.modifiers.modifiers.filter(m => m.status()).length,
         statType: 'ATTACK',
         origin: 'Expose Weakness',
         display: true,
