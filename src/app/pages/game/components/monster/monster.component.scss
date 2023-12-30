@@ -23,7 +23,6 @@
     font-size: 21px;
     line-height: 70%;
 
-    
     img {
       height: 330px;
       cursor: pointer;
@@ -48,6 +47,7 @@
       img {
         height: 25px;
         filter: invert(1);
+        animation: unset;
       }
     }
 
