@@ -27,8 +27,9 @@
     img {
       height: 330px;
       cursor: pointer;
+      animation: idleBreathing 3s ease-in-out infinite, subtleMove 5s ease-in-out infinite;
       &.reverse {
-        transform: scaleX(-1);
+        animation: idleBreathingEnemy 3.5s ease-in-out infinite, subtleMoveEnemy 4.5s ease-in-out infinite;
       }
     }
 
@@ -78,6 +79,7 @@
 
       img {
         height: 128px;
+        animation: unset;
       }
 
       &.selected {
@@ -142,5 +144,39 @@
     }
 
   }
+
+  @keyframes idleBreathing {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+  @keyframes subtleMove {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+  }
+  @keyframes idleBreathingEnemy {
+    0%, 100% {
+      transform: scale(1) scaleX(-1);
+    }
+    50% {
+      transform: scale(1.05) scaleX(-1);
+    }
+  }
+  @keyframes subtleMoveEnemy {
+    0%, 100% {
+      transform: translateX(0) scaleX(-1);
+    }
+    50% {
+      transform: translateX(-5px) scaleX(-1);
+    }
+  }
+  
 
 }
