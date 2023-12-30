@@ -9,7 +9,6 @@ import { MonsterActionTooltipComponent } from '../pages/game/components/monster-
 import { EffectivenessTooltipComponent } from '../pages/game/components/monster-action/effectiveness-tooltip/effectiveness-tooltip.component';
 import { TermTooltipComponent } from '../pages/game/components/monster-action/term-tooltip/term-tooltip.component';
 import { PushableButtonComponent } from './components/pushable-button/pushable-button.component';
-import { SfxComponent } from './components/sfx/sfx.component';
 
 
 @NgModule({
@@ -22,7 +21,6 @@ import { SfxComponent } from './components/sfx/sfx.component';
     EffectivenessTooltipComponent,
     TermTooltipComponent,
     PushableButtonComponent,
-    SfxComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +33,6 @@ import { SfxComponent } from './components/sfx/sfx.component';
     MonsterActionTooltipComponent,
     TermTooltipComponent,
     PushableButtonComponent,
-    SfxComponent,
   ]
 })
 export class SharedModule { }
