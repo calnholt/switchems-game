@@ -3,7 +3,7 @@
     <div class="hp">{{ currentHp }}/{{ hp }}</div>
     <div class="hp-bar d-flex">
       <ng-container *ngFor="let _ of [].constructor(hp); let i = index">
-        <div class="hp-chunk" [ngClass]="{'damaged' : (i + 1) > currentHp, 'low-hp' : currentHp  < 3 && isActive}"></div>
+        <div class="hp-chunk" [ngClass]="{'damaged' : (i + 1) > currentHp, 'low-hp' : currentHp  <= 3 && isActive}"></div>
       </ng-container>
     </div>
   </div>
