@@ -18,8 +18,12 @@
     background: #dcf7dc;
     width: fit-content;
     padding: 8px 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-bottom: 5px;
+
+    &.applied {
+      animation: colorChange 1s infinite;
+    }
 
   }
 
@@ -54,6 +58,15 @@
 
     .circle:not(:last-child) {
       margin-right: 3px;
+    }
+  }
+
+  @keyframes colorChange {
+    0%, 100% {
+      background-color: #dcf7dc;
+    }
+    50% {
+      background-color: #4ae44a;
     }
   }
 

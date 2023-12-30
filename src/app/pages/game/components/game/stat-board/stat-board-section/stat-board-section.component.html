@@ -2,7 +2,7 @@
   <div class="stat-board-section-container">
     <div>
       <sw-pushable-button [isActive]="statBoardSection.current > 0 && !disable && enabled">
-        <div class="stat-board-section-button" (click)="onSelect()">
+        <div class="stat-board-section-button" [ngClass]="{'applied' : isApplied}" (click)="onSelect()">
           <div>
             <img [src]="icon">
           </div>
@@ -16,9 +16,6 @@
           </div>
         </div>
       </sw-pushable-button>
-    </div>
-    <div *ngIf="isApplied" [@slideInLeftOnEnter] [@fadeOutOnLeave] [@fadeInOnEnter]>
-      <img class="arrow" [src]="arrowSrc" />
     </div>
   </div>
 </div>

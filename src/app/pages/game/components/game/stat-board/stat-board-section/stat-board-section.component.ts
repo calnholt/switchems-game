@@ -13,9 +13,6 @@ import { SelectedActionService } from '~/app/pages/game/services/selected-action
   templateUrl: './stat-board-section.component.html',
   styleUrls: ['./stat-board-section.component.scss'],
   animations: [
-    slideInLeftOnEnterAnimation({ duration: 100 }),
-    fadeInOnEnterAnimation({ duration: 100 }),
-    fadeOutOnLeaveAnimation({ duration: 100 }),
     bounceInOnEnterAnimation({ duration: 1000 })
   ]
 })
