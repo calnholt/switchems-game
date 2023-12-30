@@ -23,6 +23,7 @@ export class PlayerService {
     private rng: SeedableRngService,
     private selectedActionService: SelectedActionService,
     private gameOverService: GameOverService,
+    private tutorialService: TutorialService,
   ) {
     this._player = new Player(this.getSpecificStartRandom('Deusvolt', 'Vulturock', 'Stalagrowth'), this.rng);
     this._opponent = new Player(this.getSpecificStartRandom('Lanternshade', 'Vulturock', 'Chargroar'), this.rng);
@@ -49,6 +50,7 @@ export class PlayerService {
     this._player.reset(this.getRandomStart());
     this.selectedActionService.clear();
     this._opponent.reset(this.getRandomStart());
+    this.tutorialService.clear();
     this.currentPhaseService.startGame();
   }
 

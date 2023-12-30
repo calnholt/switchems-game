@@ -22,6 +22,10 @@ export class TutorialService {
     this._currentSection.next(TutorialSections[0]);
   };
 
+  clear() {
+    this._currentSection.next({ text: '', types: [], description: '' });
+  }
+
   next() {
     if (this._currentSection.value?.isEnd) {
       this._currentSection.next({ text: '', types: [], description: '' });
