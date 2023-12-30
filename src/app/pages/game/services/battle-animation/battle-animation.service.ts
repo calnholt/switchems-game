@@ -45,7 +45,7 @@ export class BattleAnimationService {
 
   private doAnimationSfx(battleAniType: BattleAnimationType) {
     switch(battleAniType) {
-      case 'SWITCHING_IN':
+      case 'SWITCHING_OUT':
         this.sfxService.play('SWITCH');
         break;
       case 'ATTACKING':

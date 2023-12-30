@@ -8,6 +8,7 @@ import { SeedableRngService } from '../seedable-rng/seedable-rng.service';
 import { SelectedActionService } from '../selected-action/selected-action.service';
 import { TutorialService } from '../tutorial/tutorial.service';
 import { GameOverService } from '../game-over/game-over.service';
+import { SfxService } from '~/app/shared/services/sfx.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class PlayerService {
     private selectedActionService: SelectedActionService,
     private gameOverService: GameOverService,
     private tutorialService: TutorialService,
+    private sfx: SfxService,
   ) {
     this._player = new Player(this.getSpecificStartRandom('Deusvolt', 'Vulturock', 'Stalagrowth'), this.rng);
     this._opponent = new Player(this.getSpecificStartRandom('Lanternshade', 'Vulturock', 'Chargroar'), this.rng);
@@ -52,12 +54,14 @@ export class PlayerService {
     this._opponent.reset(this.getRandomStart());
     this.tutorialService.clear();
     this.currentPhaseService.startGame();
+    this.sfx.play('BATTLE_MUSIC');
   }
 
   startTutorial() {
     this._player.reset(this.getSpecificStart('Deusvolt', 'Volcanoggin', 'Lanternshade'));
     this.selectedActionService.clear();
     this._opponent.reset(this.getSpecificStart('Sorrospine', 'Vulturock', 'Chargroar'));
+    this.sfx.play('TUTORIAL_MUSIC');
   }
 
   getRandomStart(): Monster[] {

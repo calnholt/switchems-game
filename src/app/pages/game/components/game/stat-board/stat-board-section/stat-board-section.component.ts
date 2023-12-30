@@ -42,17 +42,16 @@ export class StatBoardSectionComponent implements OnInit {
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
       if (selectedAction.action.getSelectableActionType() != 'MONSTER') {
         this.disable = true;
+        this.isApplied = false;
         return;
       }
       const action = selectedAction.action as MonsterAction;
       if (action.isStatus) {
         this.disable = true;
-        return;
       }
-      this.disable = false;
-      // TODO: update isApplyable by checking if the selected action is an attack action
-      // currently this isn't retrievable. consider just getting access to full action
-      // from interface function
+      else {
+        this.disable = false;
+      }
       if (selectedAction.statBoardSection?.type === this.statBoardSection.type) {
         this.isApplied = true;
       }

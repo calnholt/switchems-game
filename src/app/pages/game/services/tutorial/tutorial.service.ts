@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { TutorialSection } from '../../models/tutorial/tutorial.model';
 import { BehaviorSubject } from 'rxjs';
 import { TutorialSections } from '../../models/tutorial/tutorial.util';
+import { SfxService } from '~/app/shared/services/sfx.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,12 @@ export class TutorialService {
 
   public get currentSection$() { return this._currentSection; }
   public get currentSection() { return this._currentSection.value; }
-  public get isTutorialActive(): boolean { return !!this.currentSection.description && !!this.currentSection.isGuidedTutorial; }
+  public get isTutorialActive(): boolean { return !!this.currentSection.description; }
   public get isGuidedTutorialActive(): boolean { return !!this.currentSection.isGuidedTutorial; }
 
-  constructor() { }
+  constructor(
+    private sfx: SfxService,
+  ) { }
 
   startTutorial() {
     // this._currentSection.next(TutorialSections[TutorialSections.length-6]);
@@ -29,6 +32,7 @@ export class TutorialService {
   next() {
     if (this._currentSection.value?.isEnd) {
       this._currentSection.next({ text: '', types: [], description: '' });
+      this.sfx.setVolume(1);
     }
     else {
       const index = this.getCurrentIndex() + 1;
