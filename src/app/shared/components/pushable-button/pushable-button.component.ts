@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
+import { SfxService } from '../../services/sfx.service';
 
 @Component({
   selector: 'sw-pushable-button',
@@ -7,4 +8,18 @@ import { Component, Input } from '@angular/core';
 })
 export class PushableButtonComponent {
   @Input() isActive = true;
+
+  constructor(
+    private sfx: SfxService,
+  ) {
+    
+  }
+
+  @HostListener('click')
+  onClick() {
+    if (this.isActive) {
+      this.sfx.play('CLICK');
+    }
+  }
+
 }
