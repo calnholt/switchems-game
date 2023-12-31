@@ -12,4 +12,9 @@
   <sw-term-tooltip *ngIf="monster.switchIn" title="Switch In" [description]="monster.switchIn" />
   <div *ngIf="monster.switchIn && monster.passive" class="dot">• • •</div>
   <sw-term-tooltip *ngIf="monster.passive" title="Passive" [description]="monster.passive" />
+  <div *ngIf="terms.length" class="dot">• • •</div>
+  <div class="term-container" *ngFor="let term of terms; index as i">
+    <sw-term-tooltip [title]="term.name" [description]="term.value" />
+    <div *ngIf="i < terms.length - 1" class="dot">• • •</div>
+  </div>
 </div>

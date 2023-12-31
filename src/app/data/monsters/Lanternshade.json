@@ -68,5 +68,5 @@
   "hp": 10,
   "name": "Lanternshade",
   "initiative": 65,
-  "switchIn": "When this monster <b>switches in</b>, apply <b>curse</b> [STATUS].~CURSE~ ~STATUS~"
+  "switchIn": "When this monster <b>switches in</b>, apply <b>curse</b> [STATUS].~CURSE~"
 }

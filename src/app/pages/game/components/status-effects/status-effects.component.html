@@ -3,7 +3,12 @@
     <img [src]="statusIcon" />
   </div>
   <div *ngIf="displayStatuses.length" class="mods-container">
-    <div class="mod" *ngFor="let status of displayStatuses, index as i"  [ngClass]="{'middle' : displayStatuses.length !== 1 && (i < displayStatuses.length - 1)}">
+    <div class="mod" 
+      *ngFor="let status of displayStatuses, index as i"  
+      [ngClass]="{'middle' : displayStatuses.length !== 1 && (i < displayStatuses.length - 1)}"
+      cardInfoTooltip
+      tooltipType="STATUS_EFFECT"
+      [object]="getDescription(status)">
       <span  
         [@fadeInOnEnter]
         [@fadeOutOnLeave] 

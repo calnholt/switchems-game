@@ -7,6 +7,8 @@ import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interfac
 import { ISelectableAction, SelectedActionType } from "~/app/shared/interfaces/ISelectableAction.interface";
 import { Modifiers, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { ImageUtil } from "~/app/shared/utils/image.util";
+import { Term } from "~/app/shared/types/data";
+import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
 
 export class Monster implements IHaveTooltip, ISelectableAction {
   private _name: string;
@@ -67,6 +69,10 @@ export class Monster implements IHaveTooltip, ISelectableAction {
   // end
   hasTooltip () {
     return !!(this._switchIn || this._passive);
+  }
+
+  getTerms(): Term[] {
+    return AbilityTextUtil.getTermsFromText(this.switchIn + this.passive);
   }
   
 

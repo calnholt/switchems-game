@@ -23,6 +23,7 @@
       align-items: center;
       padding: 5px 0px;
       justify-content: flex-end;
+      cursor: pointer;
       &.opponent {
         justify-content: unset;
       }

@@ -126,7 +126,7 @@ function applyStatusDrain(gs: GameState, data: BasicCommandData, rc: UpdateGameS
       const freshGs = gs.getFreshGameState();
       const monster = GameStateUtil.getMonsterByPlayer(freshGs, data.player);
       const opposingMonster = GameStateUtil.getOpponentPlayerState(freshGs, data.player).activeMonster;
-      return monster.currentHp < opposingMonster.currentHp;
+      return monster.currentHp <= opposingMonster.currentHp;
     },
   }).executeAsTrigger('END_PHASE');
 }

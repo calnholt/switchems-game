@@ -65,7 +65,7 @@ export class GameUISelectionService {
       return;
     }
     if (this.playerService.playerCardManager.hand.cardsInHand() < newSelectedAction.getNumOfDiscardSlots()) {
-      return
+      return;
     }
     this.selectedActionService.selectAction(newSelectedAction);
   }

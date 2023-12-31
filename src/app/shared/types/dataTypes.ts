@@ -50,7 +50,7 @@ export type TermCode = typeof TERM_KEYS[number];
 const termCodes = [
     new Term('Belongs', `~BELONGS~`, `A buff card <u>belongs</u> to a monster if the monster name on the bottom of the buff card matches.`),
     new Term('Curse', '~CURSE~', 'At the end of the turn, there is a 33% chance this monster will lose 1[HP].'),
-    new Term('Drain', `~DRAIN~`, `At the end of the turn, if your active monster has less HP than a monster with the drain status, that monster suffers <span>1[ATK]</span> and your active monster heals <span>1[HP].</span>`),
+    new Term('Drain', `~DRAIN~`, `At the end of the turn, if a monster with drain has more than or equal to HP than the enemy monster, the monster with drain suffers <span>1[ATK]</span> and the enemy monster heals <span>1[HP].</span>`),
     new Term('Weak', `~EFFECTIVE~`, `Monsters are <u>weak</u> to elements in the [WEAK] section of their monster card.`),
     new Term('Exhaust', `~EXHAUST~`, `Cards with <u>exhaust</u> are removed from the game after they are resolved. Put a blank into your discard.`),
     new Term('Faster', `~FASTER~`, `This action is <u>faster</u> if your opponent selects a standard action, or if both players select a monster action and yours resolves first.`),
@@ -67,7 +67,7 @@ const termCodes = [
     new Term('Super', `~SUPER~`, `<u>Supers</u> require and use two [B] slots.`),
     new Term('Switches In', `~SWITCH~`, `<u>Switch in</u> abilities also trigger at the start of the game and following a monster KO.`),
     new Term('Team Aura', '~AURA~', '<u>Team aura</u> [TA] – At the end of your turn, put a time counter on this. If the number of time counters equals its duration, discard this. You can only have one active <u>team aura</u> at any time.'),
-    new Term('Wound', `~WOUND~`, `Monsters with <u>wound</u> [STATUS] perform one less [Q] on all of their attacks.`),
+    new Term('Wound', `~WOUND~`, `Monsters with <u>wound</u> [STATUS] perform one less <div>{\"stat\": \"?\", \"num\": 1}</div> on all of their attacks.`),
     new Term('Crush', '~CRUSH~', '<u>Crush X</u> - Remove X [PQ] of the same type of your choice from your opponent.'),
 ];
 export const TERM_CODES = termCodes.sort((a, b) => a.name.localeCompare(b.name));

@@ -1,0 +1,11 @@
+<div id="monster-tooltip"
+  #ref
+  *ngIf="show" 
+  class="tooltip-container" 
+  [style.left]="left + 'px'" 
+  [style.top]="top + 'px'" 
+  [@slideInRightOnEnter] 
+  [@fadeOutOnLeave] 
+  (@fadeOutOnLeave.done)="aniDone($event)">
+  <sw-term-tooltip [title]="statusEffect.term.name" [description]="statusEffect.term.value" />
+</div>

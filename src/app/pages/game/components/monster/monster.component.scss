@@ -26,9 +26,9 @@
     img {
       height: 330px;
       cursor: pointer;
-      animation: idle 3s infinite;
+      animation: idle 3s ease-in-out infinite;
       &.reverse {
-        animation: idleEnemy 3.5s infinite;
+        animation: idleEnemy 3.5s ease-in-out infinite;
       }
     }
 

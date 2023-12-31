@@ -5,8 +5,15 @@ import { MonsterTooltipComponent } from 'src/app/pages/game/components/monster/m
 import { BuffTooltipComponent } from '~/app/pages/game/components/buff/buff-tooltip/buff-tooltip.component';
 import { IHaveTooltip } from '../../interfaces/IHaveTooltip.interface';
 import { ITooltip } from '../../interfaces/ITooltip.interface';
+import { TermTooltipComponent } from '~/app/pages/game/components/monster-action/term-tooltip/term-tooltip.component';
+import { StatusEffectTooltipComponent } from '~/app/pages/game/components/monster/status-effect-tooltip/status-effect-tooltip.component';
 
-export type TooltipType = 'ACTION' | 'BUFF' | 'MONSTER';
+export type TooltipType = 
+  | 'ACTION' 
+  | 'BUFF' 
+  | 'MONSTER' 
+  | 'STATUS_EFFECT'
+
 type State = 
   'UNINITIALIZED' |
   'SHOWING' |
@@ -40,6 +47,9 @@ export class CardInfoTooltipDirective {
           break;
         case 'BUFF':
           this.componentRef  = this.viewContainerRef.createComponent(BuffTooltipComponent);
+          break;
+        case 'STATUS_EFFECT':
+          this.componentRef  = this.viewContainerRef.createComponent(StatusEffectTooltipComponent);
           break;
         case 'ACTION':
         default:

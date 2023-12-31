@@ -3,6 +3,7 @@ import { Monster } from '../../../models/monster/monster.model';
 import { fadeOutOnLeaveAnimation, slideInRightOnEnterAnimation } from 'angular-animations';
 import { AnimationEvent } from '@angular/animations';
 import { ITooltip } from '~/app/shared/interfaces/ITooltip.interface';
+import { Term } from '~/app/shared/types/data';
 
 @Component({
   selector: 'sw-monster-tooltip',
@@ -16,8 +17,13 @@ import { ITooltip } from '~/app/shared/interfaces/ITooltip.interface';
 export class MonsterTooltipComponent extends ITooltip implements AfterViewInit {
   @Input() monster!: Monster;
   isActive = false;
+  terms!: Term[];
 
   @ViewChild('ref') ref!: ElementRef<any>;
+
+  ngOnInit() {
+    this.terms = this.monster.getTerms();
+  }
 
   ngAfterViewInit() {
     const offsetHeight = (this.ref.nativeElement as HTMLElement).offsetHeight;
