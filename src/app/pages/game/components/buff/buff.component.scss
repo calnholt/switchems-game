@@ -97,14 +97,17 @@
     top: 28px;
     height: 188px;
     width: 60px;
-    background: linear-gradient(90deg, white, transparent);
+    // background: linear-gradient(90deg, white, transparent);
     z-index: 100;
     opacity: 0.3;
 
     &.applied {
-      background: linear-gradient(90deg, black, transparent);
+      // background: linear-gradient(90deg, black, transparent);
+      img {
+        animation: appliedAnimation 1s ease-in-out infinite;
+      }
       &.discard {
-        background: linear-gradient(270deg, black, transparent);
+        // background: linear-gradient(270deg, black, transparent);
       }
     }
 
@@ -143,4 +146,14 @@
       }
     }
   }
+
+  @keyframes appliedAnimation {
+    0%, 100% {
+      filter: invert(1);
+    }
+    50% {
+      filter: invert(0);
+    }
+  }
+
 }

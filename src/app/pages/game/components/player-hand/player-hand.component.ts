@@ -14,9 +14,9 @@ export class PlayerHandComponent {
   @Input() hide: boolean = false;
 
   buffs: Buff[] = [];
-  hand!: Buff[];
-  appliedAsDiscard: Buff[] = [];
-  appliedAsBuff: Buff[] = [];
+  // hand!: Buff[];
+  // appliedAsDiscard: Buff[] = [];
+  // appliedAsBuff: Buff[] = [];
   lastSelectedAction: CardCompositeKey | undefined = undefined;
 
   buffPath = ImageUtil.icons.buff;
@@ -34,23 +34,23 @@ export class PlayerHandComponent {
       const { appliedBuffs, appliedDiscards } = selectedAction;
       const appliedKeys = appliedBuffs.map(b => b.key()).concat(appliedDiscards.map(b => b.key()));
       if (this.lastSelectedAction !== selectedAction.action.key()) {
-        this.hand = this.hand.concat(this.appliedAsBuff).concat(this.appliedAsDiscard);
-        this.appliedAsBuff = [];
-        this.appliedAsDiscard = [];
+        // this.hand = this.hand.concat(this.appliedAsBuff).concat(this.appliedAsDiscard);
+        // this.appliedAsBuff = [];
+        // this.appliedAsDiscard = [];
         this.lastSelectedAction = selectedAction.action.key();
         return;
       }
       // return cards to hand in order presented when applied
-      this.appliedAsBuff = appliedBuffs;
-      this.appliedAsDiscard = appliedDiscards;
-      this.hand = this.buffs.filter(b => !appliedKeys.includes(b.key()));
+      // this.appliedAsBuff = appliedBuffs;
+      // this.appliedAsDiscard = appliedDiscards;
+      // this.hand = this.buffs.filter(b => !appliedKeys.includes(b.key()));
       this.lastSelectedAction = selectedAction.action.key();
     });
     this.playerService.playerCardManager.hand$.subscribe((hand) => {
       this.buffs = hand.cards;
-      this.hand = this.buffs;
-      this.appliedAsDiscard = [];
-      this.appliedAsBuff = [];
+      // this.hand = this.buffs;
+      // this.appliedAsDiscard = [];
+      // this.appliedAsBuff = [];
     });
   }
 

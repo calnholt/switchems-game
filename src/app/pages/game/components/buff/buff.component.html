@@ -11,8 +11,8 @@
     {{buff.name}}
   </div>
   <div>
-    <ng-container *ngIf="isHovering && enabled">
-      <div *ngIf="displayApplyToBuffButton" 
+    <ng-container *ngIf="(isHovering && enabled) || (isAppliedAsBuff || isAppliedAsDiscard)">
+      <div *ngIf="(displayApplyToBuffButton && isHovering) || (isAppliedAsBuff && !isHovering)" 
         class="apply-as buff"  
         [ngClass]="{'applied' : isAppliedAsBuff}" 
         (click)="applyAsBuff()">
@@ -20,7 +20,7 @@
           <img [src]="buffPath" />
         </div>
       </div>
-      <div *ngIf="displayApplyToDiscardButton" 
+      <div *ngIf="(displayApplyToDiscardButton && isHovering) || (isAppliedAsDiscard && !isHovering)" 
       class="apply-as discard" 
       [ngClass]="{'applied' : isAppliedAsDiscard}" 
       (click)="applyAsDiscard()">
