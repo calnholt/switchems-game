@@ -300,7 +300,7 @@ function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSe
 
 function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
   const { activeMonster, player } = GameStateUtil.getPlayerState(gs, data.player);
-  const { selectedAction: opponentAction } = GameStateUtil.getOpponentPlayerState(gs, data.player);
+  const { selectedAction: opponentAction, activeMonster: opponentActiveMonster } = GameStateUtil.getOpponentPlayerState(gs, data.player);
   gs.battleAniService.update(data.player === 'P', 'SWITCHING_OUT');
   // timeout syncs the animation...clunky
   setTimeout(() => {
@@ -309,7 +309,11 @@ function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSer
   }, 250);
   // gain switch in defense if opponent selected a monster action
   if (opponentAction.action.getSelectableActionType() === 'MONSTER') {
-    new StatModificationCommand(rc, { ...data, statType: 'SWITCH_IN_DEFENSE', amount: activeMonster.getSwitchDefenseValue(), display: false }).pushFront();
+    const switchingToMonster = GameStateUtil.getSwitchingToMonster(gs, data.player);
+    const opponentAttack = GameStateUtil.getMonsterActionByPlayer(gs, GameStateUtil.getOppositePlayer(data.player));
+    if (switchingToMonster.resistances.includes(opponentAttack.element)) {
+      new StatModificationCommand(rc, { ...data, statType: 'SWITCH_IN_DEFENSE', amount: switchingToMonster.getSwitchDefenseValue(), display: false }).pushFront();
+    }
   }
 }
 

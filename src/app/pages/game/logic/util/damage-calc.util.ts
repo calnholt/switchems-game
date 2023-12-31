@@ -40,7 +40,7 @@ function getSwitchDefense(o: PlayerState, action: MonsterAction): number {
   if (!modifiers || !modifiers.length) {
     return 0;
   }
-  return o.activeMonster.getResistances().includes(action.element) ? modifiers[0].value : 0;
+  return modifiers[0].value;
 }
 
 function getPierce(modifiers: Modifiers<MonsterModifierType>): number {
