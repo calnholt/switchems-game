@@ -25,10 +25,10 @@ export class StatusEffectsComponent implements OnChanges {
 
   ngOnInit() {
     this.displayStatuses = this.modifiers.filter(m => m.status()).map(m => StringUtil.getFirstLetterCapitalized(m.type));
-    this.displayStatuses.push('Drain');
-    this.displayStatuses.push('Fatigue');
-    this.displayStatuses.push('Wound');
-    this.displayStatuses.push('Curse');
+    // this.displayStatuses.push('Drain');
+    // this.displayStatuses.push('Fatigue');
+    // this.displayStatuses.push('Wound');
+    // this.displayStatuses.push('Curse');
   }
 
   getDescription(name: string): StatusEffect {
