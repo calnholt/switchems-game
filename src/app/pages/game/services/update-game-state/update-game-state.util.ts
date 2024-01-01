@@ -123,10 +123,7 @@ function applyStatusDrain(gs: GameState, data: BasicCommandData, rc: UpdateGameS
     ...data,
     display: true,
     triggerCondition: (command: EventCommand<CommandData>) => {
-      const freshGs = gs.getFreshGameState();
-      const monster = GameStateUtil.getMonsterByPlayer(freshGs, data.player);
-      const opposingMonster = GameStateUtil.getOpponentPlayerState(freshGs, data.player).activeMonster;
-      return monster.currentHp <= opposingMonster.currentHp;
+      return gs.rng.randomFloat() <= 0.5;
     },
   }).executeAsTrigger('END_PHASE');
 }
