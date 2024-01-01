@@ -27,9 +27,7 @@
 <ng-container *ngIf="!isActiveMonster">
   <div id="inactive-container">
     <div class="view-button-container">
-      <sw-pushable-button>
-        <div class="view-text" (click)="view()">View</div>
-      </sw-pushable-button>
+      <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="false" [player]="isOpponent ? 'O' : 'P'" />
     </div>
     <div [ngClass]="{'tutorial-highlight' : isBenchedMonsterHighlighted}">
       <sw-pushable-button [isActive]="cardsInHand >= 2 && enabled && !disable">
@@ -75,7 +73,10 @@
         <img [ngClass]="{'selected' : numDiscards > 1}" [src]="discardIcon" />
       </div>
       <sw-monster-hp [hp]="monster.hp" [currentHp]="monster.currentHp" [initiative]="monster.initiative" [isActive]="isActiveMonster" />
-      <div class="d-flex">
+      <div class="detail-container">
+        <div *ngIf="isActiveMonster && !isOpponent" class="view-button-container">
+          <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="isActiveMonster" [player]="isOpponent ? 'O' : 'P'" />
+        </div>
         <div [style.marginRight]="'5px'">
           <sw-monster-element-breakdown [style.width]="'100%'" [weaknesses]="monster.weaknesses"
             [resistances]="monster.resistances" [switchDefense]="monster.switchDefense" />
@@ -89,6 +90,9 @@
           <div>
             <img [src]="handIcon" />
           </div>
+        </div>
+        <div *ngIf="isActiveMonster && isOpponent" class="view-button-container">
+          <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="isActiveMonster" [player]="isOpponent ? 'O' : 'P'" />
         </div>
       </div>
     </div>

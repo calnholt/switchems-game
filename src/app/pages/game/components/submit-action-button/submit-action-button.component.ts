@@ -13,7 +13,6 @@ const LABEL = 'Select an action';
 })
 export class SubmitActionButtonComponent {
   @Input() viewingOtherMonstersActions = false;
-  @Output() onSelect: EventEmitter<boolean> = new EventEmitter();
 
   isCostFulfilled = false;
   displayName: string | null = null;
@@ -62,9 +61,6 @@ export class SubmitActionButtonComponent {
   submit() {
     if (this.enabled && this.isCostFulfilled) {
       this.gamePhaseService.submitAction();
-    }
-    if (this.viewingOtherMonstersActions) {
-      this.onSelect.emit(true);
     }
   }
 

@@ -37,6 +37,7 @@ export const ImageUtil = {
     pause: getSymbolsPath('pause-button'),
     audioOn: getSymbolsPath('speaker'),
     audioOff: getSymbolsPath('speaker-off'),
+    magnifyingGlass: getSymbolsPath('magnifying-glass'),
   },
   monsters: {
     Chargroar: getMonstersPath('chargroar'),

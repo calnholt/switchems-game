@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ElemType, Path } from '~/app/shared/types/dataTypes';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { TutorialService } from '../../../services/tutorial/tutorial.service';
+import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 
 @Component({
   selector: 'sw-monster-element-breakdown',

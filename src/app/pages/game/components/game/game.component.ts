@@ -20,6 +20,7 @@ import { CurrentPhaseService } from '../../services/current-phase/current-phase.
 import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
 import { MonsterAction } from '../../models/monster/monster-action.model';
 import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
+import { MonsterViewService } from '../../services/monster-view/monster-view.service';
 
 @Component({
   selector: 'sw-game',
@@ -47,9 +48,9 @@ export class GameComponent {
   cardsInMyHand = 0;
   cardsInMyOpponentsHand = 0;
 
-  viewOpponentActions = false;
-  viewActiveMonsterActions = true;
   monsterActionsBeingViewed: MonsterAction[] = [];
+  isViewingOpponentActions = false;
+  isViewingActiveMonster = false;
   winner: WinnerType = null;
 
   isTutorial = false;
@@ -66,6 +67,7 @@ export class GameComponent {
     private tutorialService: TutorialService,
     private currentPhaseService: CurrentPhaseService,
     private selectedActionService: SelectedActionService,
+    private monsterViewService: MonsterViewService,
     private router: Router
   ) { }
 
@@ -157,29 +159,16 @@ export class GameComponent {
         }
       });
     }
-  }
-
-  // functions for toggling which actions are being viewed
-  viewOpponentsActiveMonsterActions() {
-    this.monsterActionsBeingViewed = this.oActiveMonster.actions;
-    this.viewOpponentActions = true;
-    this.viewActiveMonsterActions = false;
-  }
-  viewMyActiveMonsterActions() {
-    this.monsterActionsBeingViewed = this.activeMonster.actions;
-    this.viewOpponentActions = false;
-    this.viewActiveMonsterActions = true;
-  }
-  viewMonsterActions(key: CardCompositeKey) {
-    if (this.viewOpponentActions) {
-      //@ts-ignore
-      this.monsterActionsBeingViewed = [this.oActiveMonster].concat(this.oInactiveMonsters).find(m => m.key() === key)?.actions;
-    }
-    else {
-      //@ts-ignore
-      this.monsterActionsBeingViewed = [this.activeMonster].concat(this.inactiveMonsters).find(m => m.key() === key)?.actions;
-      this.viewActiveMonsterActions = this.activeMonster.key() === key;
-    }
+    this.monsterViewService.monsterBeingViewed$.subscribe((value) => {
+      this.isViewingOpponentActions = value.player === 'O';
+      this.isViewingActiveMonster = value.player === 'P' && this.activeMonster.key() === value.key;
+      if (value.player === 'P') {
+        this.monsterActionsBeingViewed = (this.inactiveMonsters.concat(this.activeMonster).find(m => m.key() === value.key) as Monster).actions;
+      }
+      else {
+        this.monsterActionsBeingViewed = (this.oInactiveMonsters.concat(this.oActiveMonster).find(m => m.key() === value.key) as Monster).actions;
+      }
+    })
   }
 
   getRandomArena(): ArenaType {

@@ -162,6 +162,9 @@ button {
 
 .tutorial-highlight {
   animation: shrinkExpand 2s ease-in-out infinite;
+  &.inline {
+    display: inline-block;
+  }
 }
 
 .tutorial-invert {

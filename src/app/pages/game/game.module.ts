@@ -27,6 +27,7 @@ import { DisableMonsterActionDialogComponent } from './components/dialog/disable
 import { TutorialComponent } from './components/tutorial/tutorial.component';
 import { SoundControlComponent } from './components/sound-control/sound-control.component';
 import { StatusEffectTooltipComponent } from './components/monster/status-effect-tooltip/status-effect-tooltip.component';
+import { ViewMonsterButtonComponent } from './components/view-monster-button/view-monster-button.component';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import { StatusEffectTooltipComponent } from './components/monster/status-effect
     TutorialComponent,
     SoundControlComponent,
     StatusEffectTooltipComponent,
+    ViewMonsterButtonComponent,
   ],
   exports: [
     MonsterComponent,

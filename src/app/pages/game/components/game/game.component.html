@@ -30,26 +30,19 @@
       <div class="actions-container">
         <div class="d-flex justify-content-evenly" [style.marginBottom]="'8px'">
           <div>
-            <sw-submit-action-button [viewingOtherMonstersActions]="viewOpponentActions || !viewActiveMonsterActions" (onSelect)="viewMyActiveMonsterActions()" />
-          </div>
-          <div>
-            <sw-pushable-button (click)="viewOpponentsActiveMonsterActions()">
-              <div class="button-default" [style.width]="'190px'">
-                {{ 'View opponent actions' }}
-              </div>
-            </sw-pushable-button>
+            <sw-submit-action-button [viewingOtherMonstersActions]="!isViewingActiveMonster" />
           </div>
         </div>
         <div class="action-container">
           <div class="inactive-monster-container">
-            <ng-container *ngFor="let monster of (viewOpponentActions ? oInactiveMonsters : inactiveMonsters)">
-              <sw-monster [monster]="monster" [isActiveMonster]="false" [cardsInHand]="cardsInMyHand" [disable]="viewOpponentActions" (onView)="viewMonsterActions($event)" />
+            <ng-container *ngFor="let monster of (isViewingOpponentActions ? oInactiveMonsters : inactiveMonsters)">
+              <sw-monster [monster]="monster" [isActiveMonster]="false" [cardsInHand]="cardsInMyHand" [disable]="!isViewingActiveMonster" [isOpponent]="isViewingOpponentActions" />
             </ng-container>
           </div>
           <div>
             <sw-monster-action-grid [actions]="monsterActionsBeingViewed"
-              [cardsInHand]="cardsInMyHand" [disable]="viewOpponentActions || !viewActiveMonsterActions" />
-            <sw-player-hand [hide]="viewOpponentActions" />
+              [cardsInHand]="cardsInMyHand" [disable]="!isViewingActiveMonster" />
+            <sw-player-hand [hide]="isViewingOpponentActions" />
           </div>
         </div>
       </div>

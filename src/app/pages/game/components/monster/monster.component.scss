@@ -6,8 +6,9 @@
   .view-button-container {
     margin-right: 10px;
     font-family: $text-font;
-    .view-text {
+    .view-button {
       padding: 3px;
+      height: 40px;
     }
   }
 }
@@ -39,6 +40,8 @@
       background: black;
       border-radius: 6px;
       padding: 0 8px;
+      margin-right: 5px;
+      height: 35px;
       div:first-child {
         color: white;
         font-size: 25px;
@@ -48,6 +51,14 @@
         height: 25px;
         filter: invert(1);
         animation: unset;
+      }
+    }
+
+    .detail-container {
+      display: flex;
+      align-items: center;
+      .view-button-container {
+        margin-right: 5px;
       }
     }
 
