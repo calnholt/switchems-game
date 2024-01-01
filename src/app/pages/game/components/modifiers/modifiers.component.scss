@@ -9,6 +9,7 @@
     background-color: #000000c2;
     border-radius: 4px;
     padding: 1px 5px;
+    margin-bottom: 5px;
     .action-name {
       height: 30px;
       display: flex;
@@ -47,6 +48,29 @@
         color: white;
         line-height: 70%;
         font-size: 20px;
+      }
+    }
+    &.buffs {
+      .title {
+        font-size: 30px;
+        border-bottom: 1px solid white;
+        height: 29px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .buffs-container {
+        margin-left: 22px
+      }
+      .mod {
+        padding: unset;
+        justify-content: flex-start !important;
+      }
+      ul {
+        margin-bottom: unset;
+      }
+      li {
+        line-height: 100% !important;
       }
     }
   }

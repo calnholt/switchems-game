@@ -1,8 +1,10 @@
 <div id="modifiers">
   <div class="mods-container" *ngIf="!hide">
-    <div class="action-name" [style.font-size]="getFontSize(selectedAction?.action?.getDisplayName()?.length)">{{selectedAction?.action?.getDisplayName()}}</div>
-    <div *ngIf="selectedAction?.action?.getSelectableActionType() === 'MONSTER'" class="mod stats" [ngClass]="{'has-mods' : this.displayModifiers.length > 0}">
-      <div *ngIf="attack"class="stat">
+    <div class="action-name" [style.font-size]="getFontSize(selectedAction?.action?.getDisplayName()?.length)">
+      {{selectedAction?.action?.getDisplayName()}}</div>
+    <div *ngIf="selectedAction?.action?.getSelectableActionType() === 'MONSTER'" class="mod stats"
+      [ngClass]="{'has-mods' : this.displayModifiers.length > 0}">
+      <div *ngIf="attack" class="stat">
         {{attack}}
         <img [src]="attackIcon" />
       </div>
@@ -15,14 +17,21 @@
         <img [src]="defenseIcon" />
       </div>
     </div>
-    <div class="mod" *ngFor="let mod of displayModifiers, index as i"  [ngClass]="{'middle' : displayModifiers.length !== 1 && (i < displayModifiers.length - 1)}">
-      <span  
-        [@fadeInOnEnter]
-        [@fadeOutOnLeave] 
-        class="text"
-      >
-          {{mod}}
+    <div class="mod" *ngFor="let mod of displayModifiers, index as i"
+      [ngClass]="{'middle' : displayModifiers.length !== 1 && (i < displayModifiers.length - 1)}">
+      <span [@fadeInOnEnter] [@fadeOutOnLeave] class="text">
+        {{mod}}
       </span>
+    </div>
+  </div>
+  <div class="mods-container buffs" *ngIf="displayBuffs">
+    <div class="title">Applied Buffs</div>
+    <div class="buffs-container">
+      <ul class="mod" *ngFor="let buff of selectedAction?.appliedBuffs">
+        <li class="text">
+          {{buff.name}}
+        </li>
+      </ul>
     </div>
   </div>
 </div>

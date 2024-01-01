@@ -5,6 +5,8 @@ import { StringUtil } from '~/app/shared/utils/string.util';
 import { SelectedAction } from '../../services/selected-action/selected-action.model';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { MonsterAction } from '../../models/monster/monster-action.model';
+import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
+import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
 
 @Component({
   selector: 'sw-modifiers',
@@ -30,16 +32,34 @@ export class ModifiersComponent implements OnChanges {
   speed: number = 0;
   defense: number = 0;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['modifiers']) {
-      this.ngOnInit();
-    }
-    if (changes['selectedAction']) {
-      this.setStatValues();
-    }
+  displayBuffs = false;
+  currentPhase!: GamePhaseCommandType;
+
+  constructor(
+    private currentPhaseService: CurrentPhaseService,
+  ) {
+
   }
 
   ngOnInit() {
+    this.setValues();
+    this.currentPhaseService.currentPhase$.subscribe((value) => {
+      this.currentPhase = value;
+      this.displayBuffs = !!(['REVEAL_PHASE', 'APPLY_PIPS_PHASE', 'APPLY_BUFFS_PHASE'].includes(value) && this.selectedAction?.appliedBuffs.length);
+    })
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['modifiers']) {
+      this.setValues();
+    }
+    if (changes['selectedAction']) {
+      this.setStatValues();
+      this.setDisplayBuffs(this.currentPhase);
+    }
+  }
+
+  setValues() {
     this.displayModifiers = [];
     const groupedMods = new Map<MonsterModifierType, Modifier<MonsterModifierType>[]>();
     this.modifiers
@@ -86,6 +106,10 @@ export class ModifiersComponent implements OnChanges {
     }
   }
 
+  private setDisplayBuffs(phase: GamePhaseCommandType) {
+    this.displayBuffs = !!(['REVEAL_PHASE', 'APPLY_PIPS_PHASE', 'APPLY_BUFFS_PHASE'].includes(phase) && this.selectedAction?.appliedBuffs.length);
+  }
+
   private getSum(mods: Modifier<MonsterModifierType>[]): number {
     return mods.reduce((accumulator, mod) => accumulator + mod.value, 0);
   }
@@ -98,7 +122,7 @@ export class ModifiersComponent implements OnChanges {
     const scalingFactor = 0.15; // Adjust this to control the rate of scaling
     const minFontSize = 1.2; // Minimum font size in em/rem
     const maxFontSize = 2; // Maximum font size in em/rem
-    const threshold = 15;
+    const threshold = 13;
 
     if (textLength < threshold) {
       return `${maxFontSize}rem`;

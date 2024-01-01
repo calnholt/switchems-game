@@ -7,6 +7,8 @@ import { CurrentPhaseService } from '../current-phase/current-phase.service';
 import { Chargroar } from '../../logic/monsters/chargroar.model';
 import { TutorialService } from '../tutorial/tutorial.service';
 import { GuidedTutorialCheckUtil } from '../../models/tutorial/tutorial.util';
+import { GameStateUtil } from '../game-state/game-state.util';
+import { CPUActionSelectUtil } from '../update-game-state/cpu-action-select.util';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +40,9 @@ export class GamePhaseService {
       }
     }
     else if (gs.p.selectedAction.isCostFulfilled() && gs.o.selectedAction.isCostFulfilled()) {
+      if (gs.cpu) {
+        gs.selectedActionService.setOpponentAction(CPUActionSelectUtil.getRandomAction(GameStateUtil.getPlayerState(gs, 'O'), gs.rng));
+      }
       this.currentPhaseService.goToNextPhase();
     }
   }
