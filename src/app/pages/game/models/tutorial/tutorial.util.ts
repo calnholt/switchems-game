@@ -8,7 +8,7 @@ export const TutorialSections: TutorialSection[] = [
     isStart: true,
   },
   {
-    text: `Going forward, I will highlight relevant information by making them "pulse" on your screen, so please take notice!`,
+    text: `Going forward, I will highlight relevant information by making them <span class="tutorial-highlight inline">"pulse"</span> on your screen, so please take notice!`,
     description: 'pulse',
   },
   {
