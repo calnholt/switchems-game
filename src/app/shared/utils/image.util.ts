@@ -18,7 +18,6 @@ export const ImageUtil = {
     draw: getSymbolsPath('draw'),
     discard: getSymbolsPath('discard'),
     buff: getSymbolsPath('buff'),
-    randomCube: getSymbolsPath('question'),
     attack: getSymbolsPath('attack'),
     speed: getSymbolsPath('speed'),
     defense: getSymbolsPath('defense'),

@@ -101,7 +101,6 @@ export const IMAGE_CODES = [
     new Image(`[SPECIAL]`, SYMBOLS_PATH + `status.png`),
     new Image(`[STATUS]`, SYMBOLS_PATH + `wound.png`),
     new Image(`[FLIP]`, SYMBOLS_PATH + `flip.png`),
-    new Image(`[Q]`, SYMBOLS_PATH + `question.png`),
     new Image(`[DISABLE]`, SYMBOLS_PATH + `lock.png`),
     new Image(`[SINGLE]`, SYMBOLS_PATH + `single-use.png`),
     new Image(`[SR]`, SYMBOLS_PATH + `switch-right.png`),

@@ -1,7 +1,6 @@
 <div id="effectiveness-tooltip">
   <div>
-    <div>
-      <img [src]="randomCube">
+    <div [innerHTML]="randomCube | convertEmbeddedText">
     </div>
     <div class="vs">VS</div>
     <ng-container *ngFor="let path of imgPaths">

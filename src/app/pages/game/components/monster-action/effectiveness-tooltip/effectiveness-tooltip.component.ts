@@ -11,7 +11,7 @@ export class EffectivenessTooltipComponent {
   @Input() advantages!: number[];
 
   imgPaths: Path[] = [];
-  randomCube = ImageUtil.icons.randomCube;
+  randomCube = '{\"stat\": \"?\", \"num\": 1}';
 
   ngOnInit() {
     this.imgPaths = ELEMENTS.filter((elem, i) => this.advantages[i] === 1)
