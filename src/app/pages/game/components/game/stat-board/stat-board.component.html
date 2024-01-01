@@ -1,11 +1,11 @@
 <div id="stat-board" [ngClass]="{'tutorial-highlight' : isStatBoardHighlighted}">
   <div>
-    <sw-stat-board-section [statBoardSection]="statBoard.attack" [disable]="disable" />
+    <sw-stat-board-section [statBoardSection]="statBoard.attack" [disable]="disable" [isPlayer]="isPlayer" />
   </div>
   <div>
-    <sw-stat-board-section [statBoardSection]="statBoard.speed" [disable]="disable" />
+    <sw-stat-board-section [statBoardSection]="statBoard.speed" [disable]="disable" [isPlayer]="isPlayer" />
   </div>
   <div>
-    <sw-stat-board-section [statBoardSection]="statBoard.defense" [disable]="disable" />
+    <sw-stat-board-section [statBoardSection]="statBoard.defense" [disable]="disable" [isPlayer]="isPlayer" />
   </div>
 </div>

@@ -3,7 +3,7 @@
   <div id="game">
     <div *ngIf="!winner">
       <div class="d-flex">
-        <sw-stat-board [statBoard]="statBoard" />
+        <sw-stat-board [statBoard]="statBoard" [isPlayer]="true" />
         <div class="monsters-container">
           <div class="monster-container">
             <div class="modifier-container">
@@ -25,11 +25,11 @@
             </div>
           </div>
         </div>
-        <sw-stat-board [statBoard]="oStatBoard" [disable]="true" />
+        <sw-stat-board [statBoard]="oStatBoard" [disable]="true" [isPlayer]="false" />
       </div>
       <div class="actions-container">
         <div class="whose-actions">
-          {{ isViewingOpponentActions ? 'ENEMY ACTION' : 'YOUR ACTIONS' }}
+          {{ isViewingOpponentActions ? 'ENEMY ACTIONS' : 'YOUR ACTIONS' }}
         </div>
         <div class="d-flex justify-content-evenly" [style.marginBottom]="'8px'">
           <div>

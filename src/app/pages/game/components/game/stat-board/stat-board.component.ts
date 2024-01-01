@@ -10,6 +10,7 @@ import { TutorialService } from '../../../services/tutorial/tutorial.service';
 export class StatBoardComponent {
   @Input() statBoard: StatBoard = new StatBoard();
   @Input() disable: boolean = false;
+  @Input() isPlayer: boolean = false;
 
   isStatBoardHighlighted = false;
 

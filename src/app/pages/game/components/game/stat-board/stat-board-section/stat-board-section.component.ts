@@ -20,6 +20,7 @@ import { SelectedActionService } from '~/app/pages/game/services/selected-action
 export class StatBoardSectionComponent implements OnInit {
   @Input() statBoardSection!: StatBoardSection;
   @Input() disable: boolean = false;
+  @Input() isPlayer: boolean = false;
 
   icon!: Path;
 
@@ -38,30 +39,41 @@ export class StatBoardSectionComponent implements OnInit {
 
   ngOnInit() {
     this.icon = this.getPathFromType(this.statBoardSection.type);
-    if (this.disable) return;
-    this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
-      if (selectedAction.action.getSelectableActionType() != 'MONSTER') {
-        this.disable = true;
-        this.isApplied = false;
-        return;
-      }
-      const action = selectedAction.action as MonsterAction;
-      if (action.isStatus) {
-        this.disable = true;
-      }
-      else {
-        this.disable = false;
-      }
-      if (selectedAction.statBoardSection?.type === this.statBoardSection.type) {
-        this.isApplied = true;
-      }
-      else {
-        this.isApplied = false;
-      }
-    });
-    this.currentPhaseService.currentPhase$.subscribe((phase) => {
-      this.enabled = phase === 'SELECTION_PHASE';
-    })
+    if (this.isPlayer) {
+      this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
+        if (selectedAction.action.getSelectableActionType() != 'MONSTER') {
+          this.disable = true;
+          this.isApplied = false;
+          return;
+        }
+        const action = selectedAction.action as MonsterAction;
+        if (action.isStatus) {
+          this.disable = true;
+        }
+        else {
+          this.disable = false;
+        }
+        if (selectedAction.statBoardSection?.type === this.statBoardSection.type) {
+          this.isApplied = true;
+        }
+        else {
+          this.isApplied = false;
+        }
+      });
+      this.currentPhaseService.currentPhase$.subscribe((phase) => {
+        this.enabled = phase === 'SELECTION_PHASE';
+      })
+    }
+    else {
+      this.selectedActionService.oSelectedAction$.subscribe((selectedAction) => {
+        this.isApplied = selectedAction.statBoardSection?.type === this.statBoardSection.type;
+      });
+      this.currentPhaseService.currentPhase$.subscribe((phase) => {
+        if (phase === 'SELECTION_PHASE') {
+          this.isApplied = false;
+        }
+      })
+    }
   }
 
   getPathFromType(type: StatBoardSectionType) {
