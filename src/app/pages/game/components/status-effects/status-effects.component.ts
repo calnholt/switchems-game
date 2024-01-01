@@ -24,15 +24,46 @@ export class StatusEffectsComponent implements OnChanges {
   }
 
   ngOnInit() {
-    this.displayStatuses = this.modifiers.filter(m => m.status()).map(m => StringUtil.getFirstLetterCapitalized(m.type));
-    // this.displayStatuses.push('Drain');
-    // this.displayStatuses.push('Fatigue');
-    // this.displayStatuses.push('Wound');
-    // this.displayStatuses.push('Curse');
+    this.displayStatuses = [];
+    // this.modifiers = [
+    //   new Modifier<MonsterModifierType>('CURSE', 'CURSE'),
+    //   new Modifier<MonsterModifierType>('CURSE', 'CURSE'),
+    //   new Modifier<MonsterModifierType>('CURSE', 'CURSE'),
+    //   new Modifier<MonsterModifierType>('CURSE', 'CURSE'),
+    //   new Modifier<MonsterModifierType>('DRAIN', 'DRAIN'),
+    //   new Modifier<MonsterModifierType>('DRAIN', 'DRAIN'),
+    //   new Modifier<MonsterModifierType>('DRAIN', 'DRAIN'),
+    //   new Modifier<MonsterModifierType>('DRAIN', 'DRAIN'),
+    //   new Modifier<MonsterModifierType>('CURSE', 'CURSE'),
+    //   new Modifier<MonsterModifierType>('CURSE', 'CURSE'),
+    //   new Modifier<MonsterModifierType>('CURSE', 'CURSE'),
+    //   new Modifier<MonsterModifierType>('WOUND', 'WOUND'),
+    //   new Modifier<MonsterModifierType>('WOUND', 'WOUND'),
+    // ];
+    const statusCollection: Map<MonsterModifierType, number> = new Map();
+    this.modifiers
+      .filter(m => m.status())
+      .forEach(m => {
+        if (!statusCollection.has(m.type)) {
+          statusCollection.set(m.type, 0);
+        }
+        //@ts-ignore
+        statusCollection.set(m.type, statusCollection.get(m.type) + 1);
+    });
+    [...statusCollection.keys()].forEach(key => {
+      //@ts-ignore
+      const amount: number = statusCollection.get(key);
+      this.displayStatuses.push(`${StringUtil.getFirstLetterCapitalized(key)}${amount > 1 ? ` x${amount}` : ''}`);
+    });
   }
 
   getDescription(name: string): StatusEffect {
-    return new StatusEffect((TERM_CODES.find(t => t.name === name) as Term));
+    let termName = name;
+    const regex = /x\d+/;
+    if (name.match(regex)) {
+      termName = name.substring(0, name.search(regex) - 1);
+    }
+    return new StatusEffect((TERM_CODES.find(t => t.name === termName) as Term));
   }
 
 }
