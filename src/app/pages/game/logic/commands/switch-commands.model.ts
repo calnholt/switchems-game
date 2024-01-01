@@ -13,6 +13,7 @@ export type SWITCH_TYPES =
 
 export interface SwitchCommandData extends CommandData {
   type?: 'HEAL' | 'REMOVE_STATUS' | 'KO';
+  isKo?: boolean;
 }
 
 export class SwitchRoutineCommand extends EventCommand<SwitchCommandData> {

@@ -308,7 +308,7 @@ function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSer
     CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs.getFreshGameState());
   }, 250);
   // gain switch in defense if opponent selected a monster action
-  if (opponentAction.action.getSelectableActionType() === 'MONSTER') {
+  if (!data.isKo && opponentAction.action.getSelectableActionType() === 'MONSTER') {
     const switchingToMonster = GameStateUtil.getSwitchingToMonster(gs, data.player);
     const opponentAttack = GameStateUtil.getMonsterActionByPlayer(gs, GameStateUtil.getOppositePlayer(data.player));
     if (switchingToMonster.resistances.includes(opponentAttack.element)) {
@@ -352,12 +352,12 @@ function knockoutRoutine(gs: GameState, data: KnockedOutCommandData, rc: UpdateG
    // switch to only other option without prompt
   if (availableMonsters.length === 1) {
     const monsterToSwitchTo = availableMonsters[0];
-    new SwitchInCommand(rc, { ...data, player: kodPlayer, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
+    new SwitchInCommand(rc, { ...data, player: kodPlayer, key: monsterToSwitchTo.key(), isKo: true, monsterName: monsterToSwitchTo.name, display: true }).pushFront();
   }
   // cpu chooses randomly
   else if (kodPlayer === 'O' && gs.cpu) {
     const monsterToSwitchTo = availableMonsters[gs.rng.randomIntOption(2)];
-    new SwitchInCommand(rc, { ...data, player: kodPlayer, key: monsterToSwitchTo.key(), monsterName: monsterToSwitchTo.name, display: true }).pushFront();
+    new SwitchInCommand(rc, { ...data, player: kodPlayer, key: monsterToSwitchTo.key(), isKo: true, monsterName: monsterToSwitchTo.name, display: true }).pushFront();
   }
   else {
     const options = inactiveMonsters.map(m => { return { name: m.name, key: m.key() }});

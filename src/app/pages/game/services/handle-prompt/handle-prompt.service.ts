@@ -32,7 +32,7 @@ export class HandlePromptService {
         break;
       case 'KNOCKED_OUT_SWITCH_IN_PROMPT':
         const monsterName = (GameStateUtil.getPlayerState(gs, data.player).inactiveMonsters.find(m => m.key() === data.key) as Monster).name;
-        new SwitchInCommand(this.uggs, { ...data, monsterName }).pushFrontDecision();
+        new SwitchInCommand(this.uggs, { ...data, monsterName, isKo: true }).pushFrontDecision();
         break;
       case 'SWITCH_OUT_PROMPT':
         new SwitchOutCommand(this.uggs, { ...data, }).pushFrontDecision();
