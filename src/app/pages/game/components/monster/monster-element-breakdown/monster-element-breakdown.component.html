@@ -1,15 +1,23 @@
 <div id="monster-element-breakdown">
-  <div class="element-info-container" [ngClass]="{'tutorial-highlight' : isWeaknessHighlighted}">
+  <div class="element-info-container" 
+    [ngClass]="{'tutorial-highlight' : isWeaknessHighlighted}"
+    cardInfoTooltip
+    tooltipType="SIMPLE"
+    [object]="'WEAKNESSES' | simpleTooltip">
     <div class="type">
       <img [src]="superEffectiveIcon">
     </div>
-    <div class="elements weaknesses">
+    <div class="elements weaknesses" >
       <ng-container *ngFor="let element of weaknesses" class="elements">
         <img class="element-icon" [src]="ImageUtil.getElementsPath(element)">
       </ng-container>
     </div>
   </div>
-  <div class="element-info-container" [ngClass]="{'tutorial-highlight' : isResistanceHighlighted}">
+  <div class="element-info-container" 
+    [ngClass]="{'tutorial-highlight' : isResistanceHighlighted}"
+    cardInfoTooltip
+    tooltipType="SIMPLE"
+    [object]="'RESISTANCES' | simpleTooltip">
     <div class="elements resistances">
       <ng-container *ngFor="let element of resistances">
         <img class="element-icon" [src]="ImageUtil.getElementsPath(element)">

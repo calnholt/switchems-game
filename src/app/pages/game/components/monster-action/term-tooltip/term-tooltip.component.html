@@ -1,5 +1,5 @@
 <div id="term-tooltip">
-  <div class="title-container" [ngClass]="{'monster-name' : !description}">
+  <div *ngIf="title" class="title-container" [ngClass]="{'monster-name' : !description}">
     <div class="title">
       {{title}}
     </div>

@@ -93,7 +93,11 @@
         </div>
         <div *ngIf="isActiveMonster && isOpponent" 
           class="hand-of-cards"
-          [ngClass]="{'tutorial-highlight' : isOpponentHandHighlighted}">
+          [ngClass]="{'tutorial-highlight' : isOpponentHandHighlighted}"
+          cardInfoTooltip
+          tooltipType="SIMPLE"
+          [object]="'OPPONENT_HAND' | simpleTooltip"
+          >
           <div>
             {{cardsInMyOpponentsHand}}
           </div>

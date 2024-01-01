@@ -7,7 +7,12 @@
       </ng-container>
     </div>
   </div>
-  <div class="initiative" [ngClass]="{'tutorial-highlight' : isInitiativeHighlighted}">
+  <div class="initiative" 
+    [ngClass]="{'tutorial-highlight' : isInitiativeHighlighted}"
+    cardInfoTooltip
+    tooltipType="SIMPLE"
+    [object]="'INITIATIVE' | simpleTooltip"
+    >
     <div>{{ initiative }}</div>
   </div>
 </div>

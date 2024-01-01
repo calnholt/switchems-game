@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { slideInRightOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
+import { fadeOutOnLeaveAnimation, slideInLeftOnEnterAnimation } from 'angular-animations';
 import { ITooltip } from '~/app/shared/interfaces/ITooltip.interface';
 import { AnimationEvent } from '@angular/animations';
 import { StatusEffect } from '../../status-effects/status-effects.component';
@@ -9,7 +9,7 @@ import { StatusEffect } from '../../status-effects/status-effects.component';
   templateUrl: './status-effect-tooltip.component.html',
   styleUrls: ['./status-effect-tooltip.component.scss'],
   animations: [
-    slideInRightOnEnterAnimation({ duration: 300, translate: '5%' }),
+    slideInLeftOnEnterAnimation({ duration: 300, translate: '5%' }),
     fadeOutOnLeaveAnimation({ duration: 300 }),
   ]
 })
@@ -33,7 +33,7 @@ export class StatusEffectTooltipComponent extends ITooltip implements AfterViewI
     this.statusEffect = statusEffect;
     const { right, top, bottom, left } = nativeElement.getBoundingClientRect();
     this.left = left - 300;
-    this.top = top;
+    this.top =  top - (nativeElement.offsetHeight);
     this.bottom = bottom;
   }
 }
