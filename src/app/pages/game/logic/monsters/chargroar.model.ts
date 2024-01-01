@@ -89,7 +89,7 @@ export class Chargroar extends MonsterLogic {
     }).pushFront();
     new DescriptiveMessageCommand(this.rc, { 
       ...this.data, 
-      message: "Chargoar gained 3 attack pips and +1 defense from Hypercharge!",
+      message: "Chargoar gained 3 attack Pips and +1 defense from Hypercharge!",
     }).pushFront();
   }
 

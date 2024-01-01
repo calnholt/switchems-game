@@ -52,7 +52,7 @@ export class RevealGamePhaseCommand extends EventCommand<RevealGamePhaseCommandD
     const { appliedBuffs, appliedDiscards, statBoardSection } = this.data.opponentAction;
     let pips = '';
     if (statBoardSection) {
-      pips = ` using ${statBoardSection.current} ${statBoardSection.type.toLowerCase()}`
+      pips = ` using ${statBoardSection.current} ${statBoardSection.type.toLowerCase()} Pips`
     }
     let buffs = '';
     if (appliedBuffs.length) {

@@ -51,7 +51,7 @@ export class SubmitActionButtonComponent {
   getDisplayText(statBoardSection: StatBoardSection | undefined ): string {
     let pipInfo = '';
     if (statBoardSection) {
-      pipInfo = `w/ ${statBoardSection.current} ${statBoardSection.type.toLowerCase()} pips`
+      pipInfo = `w/ ${statBoardSection.current} ${statBoardSection.type.toLowerCase()} Pips`
     }
     if (this.isCostFulfilled) {
       return `${this.displayName} ${pipInfo} - GO!`;

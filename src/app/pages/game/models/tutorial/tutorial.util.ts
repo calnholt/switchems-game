@@ -129,7 +129,7 @@ export const TutorialSections: TutorialSection[] = [
     isTop: true,
   },
   {
-    text: `When an attack is super effective against a monster (meaning the attack is one of the elements that the monster is weak to), the player gains a stat pip of a random value.`,
+    text: `When an attack is super effective against a monster (meaning the attack is one of the elements that the monster is weak to), the player gains a stat Pip of a random value.`,
     types: ['MONSTER_ACTION_ELEMENT', 'WEAKNESSES', 'PIP_SECTION'], 
     description: 'super-effective',
   },
@@ -139,7 +139,7 @@ export const TutorialSections: TutorialSection[] = [
     description: 'super-effective-2',
   },
   {
-    text: `Throughout the game, you will gain stat pips. There are three types - attack [ATK], speed [SPD], and defense [DEF]. When you are selecting a monster action, you may also apply all of your pips from a single type. This is done by clicking a pip section when you have selected a monster action.`,
+    text: `Throughout the game, you will gain stat pips. There are three types - attack [ATK], speed [SPD], and defense [DEF]. When you are selecting a monster action, you may also apply all of your pips from a single type. This is done by clicking a Pip section when you have selected a monster action.`,
     types: ['PIP_SECTION'], 
     description: 'pips',
   },
