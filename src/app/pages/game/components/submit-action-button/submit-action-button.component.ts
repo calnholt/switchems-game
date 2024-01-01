@@ -59,7 +59,7 @@ export class SubmitActionButtonComponent {
   }
 
   submit() {
-    if (this.enabled && this.isCostFulfilled) {
+    if (this.enabled && this.isCostFulfilled && !this.viewingOtherMonstersActions) {
       this.gamePhaseService.submitAction();
     }
   }
