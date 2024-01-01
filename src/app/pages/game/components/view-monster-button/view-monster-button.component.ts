@@ -3,6 +3,7 @@ import { MonsterBeingViewed, MonsterViewService } from '../../services/monster-v
 import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { PlayerType } from '../../logic/player-type.mode';
+import { SfxService } from '~/app/shared/services/sfx.service';
 
 @Component({
   selector: 'sw-view-monster-button',
@@ -21,6 +22,7 @@ export class ViewMonsterButtonComponent {
 
   constructor(
     private monsterViewService: MonsterViewService,
+    private sfx: SfxService,
   ) {
     
   }
@@ -34,6 +36,9 @@ export class ViewMonsterButtonComponent {
 
   view() {
     this.monsterViewService.changeViewedMonster(this.key, this.player);
+    if (this.isActive) {
+      this.sfx.play('CLICK');
+    }
   }
 
 }

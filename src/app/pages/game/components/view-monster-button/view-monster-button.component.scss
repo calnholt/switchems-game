@@ -1,8 +1,16 @@
 #view-monster-button {
   .view-container {
     padding: 3px;
+    border-radius: 6px;
+    &.selected {
+      background-color: black;
+      cursor:default;
+      img {
+        filter: invert(1);
+      }
+    }
   }
   img {
-    height: 30px;
+    height: 29px;
   }
 }

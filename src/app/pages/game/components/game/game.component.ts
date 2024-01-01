@@ -130,6 +130,9 @@ export class GameComponent {
       this.winner = value;
     });
     this.currentPhaseService.currentPhase$.subscribe((phase) => {
+      if (phase === 'START_OF_GAME') {
+        this.monsterViewService.reset();
+      }
       this.currentPhase = phase;
       this.hideModifiers = ![
         'REVEAL_PHASE', 
