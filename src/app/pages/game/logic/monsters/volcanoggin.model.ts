@@ -47,15 +47,15 @@ export class Volcanoggin extends MonsterLogic {
       display: false,
       origin: 'Enrage'
     }, this.rc);
+    new DescriptiveMessageCommand(this.rc, { 
+      ...this.data, 
+      message: `Volcanoggin ${randomPips.message} and +1 defense from Enrage!`,
+    }).pushFront();
     new StatModificationCommand(this.rc, {
       ...this.data,
       amount: 1, 
       statType: "DEFENSE",
       origin: 'Enrage',
-    }).pushFront();
-    new DescriptiveMessageCommand(this.rc, { 
-      ...this.data, 
-      message: `Volcanoggin ${randomPips.message} and +1 defense from Enrage!`,
     }).pushFront();
   }
   override action4(): void {

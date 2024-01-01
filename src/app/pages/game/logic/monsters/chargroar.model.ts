@@ -1,6 +1,5 @@
 import { ArrayUtil } from "~/app/shared/utils/array.util";
 import { GameStateUtil } from "../../services/game-state/game-state.util";
-import { CommandUtil } from "../../services/update-game-state/command.util";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { DisableActionCommand, DisableActionPromptCommand } from "../commands/monster-action-commands.model";
 import { StatModificationCommand } from "../commands/stat-modification-command.model";
@@ -75,6 +74,10 @@ export class Chargroar extends MonsterLogic {
   }
 
   override action3(): void {
+    new DescriptiveMessageCommand(this.rc, { 
+      ...this.data, 
+      message: "Chargoar gained 3 attack Pips and +1 defense from Hypercharge!",
+    }).pushFront();
     new GainStatPipCommand(this.rc, {
       ...this.data, 
       amount: 3, 
@@ -86,10 +89,6 @@ export class Chargroar extends MonsterLogic {
       amount: 1, 
       statType: "DEFENSE",
       origin: 'Hypercharge',
-    }).pushFront();
-    new DescriptiveMessageCommand(this.rc, { 
-      ...this.data, 
-      message: "Chargoar gained 3 attack Pips and +1 defense from Hypercharge!",
     }).pushFront();
   }
 
