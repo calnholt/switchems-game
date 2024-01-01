@@ -90,4 +90,27 @@ export class ModifiersComponent implements OnChanges {
     return mods.reduce((accumulator, mod) => accumulator + mod.value, 0);
   }
 
+  getFontSize(textLength: number | undefined) {
+    if (!textLength) {
+      return '0rem';
+    }
+    const baseSize = 2; // Base font size in em/rem
+    const scalingFactor = 0.15; // Adjust this to control the rate of scaling
+    const minFontSize = 1.2; // Minimum font size in em/rem
+    const maxFontSize = 2; // Maximum font size in em/rem
+    const threshold = 15;
+
+    if (textLength < threshold) {
+      return `${maxFontSize}rem`;
+    }
+  
+    // scale text
+
+    let fontSize = baseSize - ((textLength - threshold) * scalingFactor);
+    fontSize = Math.max(fontSize, minFontSize);
+    fontSize = Math.min(fontSize, maxFontSize);
+  
+    return `${fontSize}rem`; // or use 'rem' depending on your preference
+  };
+
 }

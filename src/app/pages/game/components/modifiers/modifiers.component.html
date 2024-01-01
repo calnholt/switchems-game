@@ -1,6 +1,7 @@
 <div id="modifiers">
   <div class="mods-container" *ngIf="!hide">
-    <div *ngIf="selectedAction" class="mod stats" [ngClass]="{'has-mods' : this.displayModifiers.length > 0}">
+    <div class="action-name" [style.font-size]="getFontSize(selectedAction?.action?.getDisplayName()?.length)">{{selectedAction?.action?.getDisplayName()}}</div>
+    <div *ngIf="selectedAction?.action?.getSelectableActionType() === 'MONSTER'" class="mod stats" [ngClass]="{'has-mods' : this.displayModifiers.length > 0}">
       <div *ngIf="attack"class="stat">
         {{attack}}
         <img [src]="attackIcon" />
