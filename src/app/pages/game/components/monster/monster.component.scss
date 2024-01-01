@@ -25,7 +25,7 @@
     line-height: 70%;
 
     img {
-      height: 330px;
+      height: 305px;
       cursor: pointer;
       animation: idle 3.5s ease-in-out infinite;
       &.reverse {
@@ -51,6 +51,31 @@
         height: 25px;
         filter: invert(1);
         animation: unset;
+        cursor: default;
+      }
+    }
+
+    .monster-name-container {
+      display: flex;
+      align-items: center;
+      .monster-name {
+        color: black;
+        text-shadow: $text-shadow-border;
+        margin-right: 5px;
+        font-size: 24px;
+      }
+      .elements-container {
+        background-color: black;
+        padding: 3px;
+        border-radius: 6px;
+        img {
+          animation: unset;
+          height: 15px;
+          cursor: default;
+        }
+        img:not(:last-child) {
+          margin-right: 3px;
+        }
       }
     }
 
@@ -89,7 +114,7 @@
       }
 
       img {
-        height: 128px;
+        height: 118px;
         animation: unset;
       }
 

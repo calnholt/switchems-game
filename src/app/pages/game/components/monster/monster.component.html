@@ -72,6 +72,16 @@
         <img [ngClass]="{'selected' : numDiscards > 0}" [src]="discardIcon" />
         <img [ngClass]="{'selected' : numDiscards > 1}" [src]="discardIcon" />
       </div>
+      <div class="monster-name-container">
+        <div class="monster-name">
+          {{monster.name + ' - '}} 
+        </div>
+        <div class="elements-container">
+          <ng-container *ngFor="let element of monster.getElementIcons()">
+            <img [src]="element" />
+          </ng-container>
+        </div>
+      </div>
       <sw-monster-hp [hp]="monster.hp" [currentHp]="monster.currentHp" [initiative]="monster.initiative" [isActive]="isActiveMonster" />
       <div class="detail-container">
         <div *ngIf="isActiveMonster && !isOpponent" class="view-button-container">
