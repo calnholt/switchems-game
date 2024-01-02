@@ -14,8 +14,8 @@ export class TitleScreenComponent {
     this.router.navigate(['/select-monsters']);
   }
 
-  quickStart() {
-    this.router.navigate(['/quick-start']);
+  quickGame() {
+    this.router.navigate(['/quick-game']);
   }
 
   tutorial() {
