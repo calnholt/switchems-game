@@ -146,7 +146,7 @@ export class ApplyCurseStatus extends EventCommand<BasicCommandData> {
     super(receiver, 'APPLY_CURSE_STATUS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.opponentMonsterName} became cursed!`;
+    return `${this.data.opponentMonsterName} became cursed${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
   }
 }
 export class CurseCommand extends EventCommand<BasicCommandData> {
