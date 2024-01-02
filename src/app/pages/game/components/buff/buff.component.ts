@@ -53,7 +53,7 @@ export class BuffComponent extends IHover implements OnInit {
 
   ngOnInit() {
     const monster = this.monsterService.getMonster(this.buff.monsterName);
-    this.backgroundClass = monster.elements.map(e => e.toString().toLowerCase()).join("");
+    this.backgroundClass = monster.getBuffBackground();
     this.monsterPath = ImageUtil.getMonstersPath(monster.name);
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
       if (!selectedAction.action) {

@@ -67,6 +67,7 @@ import { ViewMonsterButtonComponent } from './components/view-monster-button/vie
     BuffComponent,
     GameComponent,
     SoundControlComponent,
+    ViewMonsterButtonComponent,
   ],
   imports: [
     CommonModule,

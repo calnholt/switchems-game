@@ -9,6 +9,7 @@ import { SelectedActionService } from '../selected-action/selected-action.servic
 import { TutorialService } from '../tutorial/tutorial.service';
 import { GameOverService } from '../game-over/game-over.service';
 import { SfxService } from '~/app/shared/services/sfx.service';
+import { MonsterSelection, MonsterSelectionService } from '~/app/pages/select-monsters/services/monster-selection.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,7 @@ export class PlayerService {
     private gameOverService: GameOverService,
     private tutorialService: TutorialService,
     private sfx: SfxService,
+    private monsterSelectionService: MonsterSelectionService,
   ) {
     this._player = new Player(this.getSpecificStartRandom('Deusvolt', 'Vulturock', 'Stalagrowth'), this.rng);
     this._opponent = new Player(this.getSpecificStartRandom('Lanternshade', 'Vulturock', 'Chargroar'), this.rng);
@@ -50,8 +52,13 @@ export class PlayerService {
 
   startGame() {
     this._player.reset(this.getRandomStart());
-    this.selectedActionService.clear();
     this._opponent.reset(this.getRandomStart());
+    this.setup();
+
+  }
+
+  setup() {
+    this.selectedActionService.clear();
     this.tutorialService.clear();
     this.currentPhaseService.startGame();
     this.sfx.play('BATTLE_MUSIC');
@@ -64,6 +71,12 @@ export class PlayerService {
     this.sfx.play('TUTORIAL_MUSIC');
   }
 
+  startCustomGame() {
+    this._player.reset(this.getCustomStart(this.monsterSelectionService.selectedMonsters));
+    this._opponent.reset(this.getCustomStart(this.monsterSelectionService.cpuSelections));
+    this.setup();
+  }
+
   getRandomStart(): Monster[] {
     const threeRandomMonsters = ArrayUtil.getRandomUniqueEntriesFromArray(
       this.monsterService.getAllMonsters(), 3, this.rng,
@@ -74,6 +87,14 @@ export class PlayerService {
     // threeRandomMonsters[1].takeDamage(999);
     // threeRandomMonsters[2].takeDamage(999);
     return threeRandomMonsters;
+  }
+
+  getCustomStart(selections: MonsterSelection[]) {
+    const teamKeys = selections.filter(m => m.isOnTeam && !m.isLead).map(m => m.key);
+    const leadKey = (selections.find(m => m.isLead) as MonsterSelection).key;
+    let lead = this.monsterService.getAllMonsters().find(m => m.key() === leadKey) as Monster;
+    lead.setIsActive(true);
+    return [lead].concat(teamKeys.map(key => (this.monsterService.getAllMonsters().find(m => m.key() === key) as Monster)));
   }
 
   getSpecificStart(...names: string[]): Monster[] {

@@ -44,10 +44,6 @@ export const GamePhaseUtil = {
 
 function revealPhase(gs: GameState, rc: UpdateGameStateService) {
   let selectedAction = GameStateUtil.getPlayerState(gs, 'O').selectedAction;
-  if (gs.cpu) {
-    selectedAction = CPUActionSelectUtil.getRandomAction(GameStateUtil.getPlayerState(gs, 'O'), gs.rng);
-    gs.selectedActionService.setOpponentAction(selectedAction);
-  }
   new RevealGamePhaseCommand(rc, { opponentAction: selectedAction, key: 'phase', player: 'P', display: true }).enqueue();
 }
 function applyPipsPhase(gs: GameState, rc: UpdateGameStateService) {

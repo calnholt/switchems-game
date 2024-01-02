@@ -1,0 +1,43 @@
+<div id="full-monster-view">
+  <div class="full-monster-view">
+    <div class="monster-wrapper">
+      <div class="monster-container">
+        <sw-monster [monster]="monster" [isActiveMonster]="true" [cardsInHand]="5" />
+        <div class="common-buttons-container">
+          <div *ngIf="!readOnly" class="button">
+            <sw-pushable-button >
+              <div class="button-face" (click)="isAdd ? add() : remove()">
+                {{isAdd ? 'Add' : 'Remove'}}
+              </div>
+            </sw-pushable-button>
+          </div>
+          <div class="button">
+            <sw-pushable-button >
+              <div class="button-face" (click)="close()">
+                Close
+              </div>
+            </sw-pushable-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions-buffs">
+      <div class="text-header">Actions</div>
+      <div class="actions-container">
+        <ng-container *ngFor="let action of monster.actions">
+          <div class="action">
+            <sw-monster-action [action]="action" />
+          </div>
+        </ng-container>
+      </div>
+      <div class="text-header">Buffs</div>
+      <div class="buffs-container">
+        <ng-container *ngFor="let buff of monster.buffs">
+          <div class="buff">
+            <sw-buff [buff]="buff" />
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

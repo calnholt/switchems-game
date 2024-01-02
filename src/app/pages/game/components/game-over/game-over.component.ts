@@ -20,6 +20,7 @@ export class GameOverComponent {
   loseAvatar = ImageUtil.avatars.lose;
 
   isTutorial = false;
+  isCustomGame = false;
 
   constructor(
     private gameOverService: GameOverService,
@@ -27,6 +28,7 @@ export class GameOverComponent {
     private router: Router,
   ) {
     this.isTutorial = this.router.url === '/tutorial';
+    this.isCustomGame = this.router.url === '/custom-game';
   }
 
   returnToTitleScreen() {
@@ -36,6 +38,11 @@ export class GameOverComponent {
   playAgain() {
     this.gameOverService.winner$.next(null);
     this.currentPhaseService.startGame();
+  }
+
+  changeMonsters() {
+    this.gameOverService.winner$.next(null);
+    this.router.navigate(['/select-monsters']);
   }
 
 }

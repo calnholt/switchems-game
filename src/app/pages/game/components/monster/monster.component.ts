@@ -11,6 +11,7 @@ import { AnimationEvent } from '@angular/animations';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { TutorialService } from '../../services/tutorial/tutorial.service';
 import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sw-monster',
@@ -46,6 +47,8 @@ export class MonsterComponent implements OnInit, OnChanges {
   numDiscards = 0;
   enabled = true;
 
+  hideUiElements = false;
+
   attacking = false;
   takingDamage = false;
   usingSpecial = false;
@@ -62,6 +65,7 @@ export class MonsterComponent implements OnInit, OnChanges {
     private battleAnimationService: BattleAnimationService,
     private currentPhaseService: CurrentPhaseService,
     private tutorialService: TutorialService,
+    private router: Router,
   ) {
     
   }
@@ -77,6 +81,7 @@ export class MonsterComponent implements OnInit, OnChanges {
     this.superEffectiveIcon = ImageUtil.icons.superEffective;
     this.switchDefenseIcon = ImageUtil.icons.switchDefense;
     this.backgroundClass = this.monster.elements.map(e => e.toString().toLowerCase()).join("");
+    this.hideUiElements = !this.router.url.includes('game');
     // update discard icons when paying for switch action
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
       if (selectedAction.action.key() === this.monster.key()) {

@@ -15,6 +15,11 @@
   filter: brightness(85%);
   transition: filter 0.3s ease;
 
+  .action-container {
+    height: 100%;
+    border-radius: 6px;
+  }
+
   .disabled, .locked {
     background-size: 130px;
     background-position: center;
@@ -76,30 +81,6 @@
     img {
       height: 22px;
     }
-  }
-
-  &.death-action {
-    background-image: url("../../../../../../assets/images/backgrounds/action/death.png");
-  }
-
-  &.electric-action {
-    background-image: url("../../../../../../assets/images/backgrounds/action/electric.png");
-  }
-
-  &.fire-action {
-    background-image: url("../../../../../../assets/images/backgrounds/action/fire.png");
-  }
-
-  &.leaf-action {
-    background-image: url("../../../../../../assets/images/backgrounds/action/leaf.png");
-  }
-
-  &.rock-action {
-    background-image: url("../../../../../../assets/images/backgrounds/action/rock.png");
-  }
-
-  &.water-action {
-    background-image: url("../../../../../../assets/images/backgrounds/action/water.png");
   }
 
 }

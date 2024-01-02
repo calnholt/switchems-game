@@ -1,4 +1,4 @@
-import { ELEMENTS, ElemType, Path } from "src/app/shared/types/dataTypes";
+import { Css, ELEMENTS, ElemType, Path } from "src/app/shared/types/dataTypes";
 import { StatUtil } from "src/app/shared/utils/stat.util";
 import { IHaveTooltip } from "~/app/shared/interfaces/IHaveTooltip.interface";
 import { MonsterAction } from "./monster-action.model";
@@ -172,6 +172,10 @@ export class Monster implements IHaveTooltip, ISelectableAction {
   getElementIcons(): Path[] {
     // @ts-ignore
     return this.elements.map(e => ImageUtil.elements?.[e.toLowerCase()]);
+  }
+
+  getBuffBackground(): Css {
+    return this.elements.map(e => e.toString().toLowerCase()).join("") + "-b";
   }
 
 }

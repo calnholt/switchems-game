@@ -13,8 +13,9 @@ export const CPUActionSelectUtil = {
   getRandomAction,
 }
 
-function getRandomAction(cpuState: PlayerState, rng: SeedableRngService): SelectedAction {
+function getRandomAction(cpuState: PlayerState, playerState: PlayerState, rng: SeedableRngService): SelectedAction {
   const { activeMonster, inactiveMonsters, statBoard, playerCardManager } = cpuState;
+  const { activeMonster: pActiveMonster } = playerState;
   const potentialActionKeys: CardCompositeKey[] = [];
   // standard actions
   if (rng.randomFloat() > 0.75) {
@@ -27,8 +28,12 @@ function getRandomAction(cpuState: PlayerState, rng: SeedableRngService): Select
   }
   // switch to options
   if (playerCardManager.hand.cardsInHand() >= 2) {
+    let switchRandom = rng.randomFloat();
+    if (activeMonster.modifiers.hasStatusEffect()) {
+      switchRandom += 0.1;
+    }
     inactiveMonsters.forEach(m => {
-      if (m.currentHp !== 0) {
+      if (m.currentHp !== 0 && switchRandom > 0.4) {
         potentialActionKeys.push(m.key());
       }
     });

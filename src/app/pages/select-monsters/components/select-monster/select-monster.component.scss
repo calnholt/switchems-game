@@ -1,11 +1,56 @@
 #select-monster {
+  --width: 200px;
+  position: relative;
+  .view-button-container {
+    position: absolute;
+    color: black;
+    top: 6px;
+    right: 0;
+    .header {
+      padding: 3px;
+    }
+    img {
+      height: 30px;
+    }
+  }
   .select-monster {
-    display: grid;
-    grid-template-columns: 400px 1000px;
+    background-color: black;
+    border-radius: 6px;
+    padding: 15px;
+    width: var(--width);
 
-    .actions-buffs {
+    .monster-container {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        height: 150px;
+      }
+
+      .monster {
+        display: flex;
+        flex-direction: column;
+        .name-container {
+          display: flex;
+          justify-content: center;
+        }
+        .header {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+  .add-monster-container {
+    .button {
+      margin-bottom: 8px;;
+    }
+    .text-header {
+      font-size: 25px;
+      width: var(--width);
+    }
+    .lead {
+      text-align: center;
     }
   }
 }

@@ -1,17 +1,64 @@
 #select-monsters {
+  background-image: url('../../../../../assets/images/backgrounds/arena/ruins.png');
+  height: 100vh;
+
+  .monster-modal {
+  }
+
+  .header {
+    font-size: 50px;
+    text-align: center;
+    padding: 50px;
+  }
+
   .select-monsters {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    background-image: url('../../../../../assets/images/backgrounds/arena/ruins.png');
     background-repeat: no-repeat;
-    height: 100%;
+    background-size: cover;
+    padding: 10px;
 
     .options-container {
-      height: 90vh;
-      overflow-y: scroll;
+      margin-right: 20px;
+      padding: 100px;
+    }
+
+    .selections-container {
+      .header {
+        position: absolute;
+      }
+    }
+
+    .selections-container, .options-container {
+      height: 70vh;
+      overflow-y: auto;
       overflow-x: hidden;
+      background: #0000008a;
+      width: 50%;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 10px;
+      justify-content: center;
+      border-radius: 6px;
+
+      .inner-container {
+        padding-top: 150px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .monster-option {
+        margin-right: 20px;
+        margin-bottom: 15px;
+      }
+
     }
 
   }
+
+  .common-buttons-container {
+    display: flex;
+    justify-content: space-around;
+  }
+
 }

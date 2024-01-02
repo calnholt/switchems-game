@@ -13,6 +13,10 @@ export const AppRoutingModule: Routes = [
     component: GameComponent
   },
   {
+    path: 'custom-game',
+    component: GameComponent,
+  },
+  {
     path: 'tutorial',
     component: GameComponent
   },

@@ -41,7 +41,11 @@ export class GamePhaseService {
     }
     else if (gs.p.selectedAction.isCostFulfilled() && gs.o.selectedAction.isCostFulfilled()) {
       if (gs.cpu) {
-        gs.selectedActionService.setOpponentAction(CPUActionSelectUtil.getRandomAction(GameStateUtil.getPlayerState(gs, 'O'), gs.rng));
+        gs.selectedActionService.setOpponentAction(
+          CPUActionSelectUtil.getRandomAction(
+            GameStateUtil.getPlayerState(gs, 'O'),
+            GameStateUtil.getPlayerState(gs, 'P'),
+            gs.rng));
       }
       this.currentPhaseService.goToNextPhase();
     }

@@ -33,6 +33,9 @@ export class SfxService {
         return;
       }
       const audio = new Audio(this.getPath(value));
+      if (value.includes('MUSIC') && value === this.song) {
+        return;
+      }
       if (value.includes('MUSIC') && value !== this.song) {
         this.music = audio;
         this.music.loop = true;

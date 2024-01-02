@@ -1,9 +1,107 @@
 <div id="select-monsters">
-  <div class="select-monsters">
-    <div class="options-container">
-      <ng-container *ngFor="let monster of monsterOptions">
-        <sw-select-monster [monster]="monster" />
-      </ng-container>
+  <div class="monster-modal" *ngIf="fullViewMonster">
+    <sw-full-monster-view 
+      [monster]="fullViewMonster" 
+      [isSettingTeam]="screen === 'PICK_3'"
+      [readOnly]="isViewingCpuMonster"
+      (onClose)="fullViewMonster = null" 
+      (onAdd)="addFromModal()" 
+      (onRemove)="removeFromModal()" />
+  </div>
+
+  <!-- Choose 4 monsters -->
+  <ng-container *ngIf="screen === 'PICK_4'">
+    <div class="header outline">Select 4 monsters!</div>
+    <div class="select-monsters">
+      <div class="options-container">
+        <ng-container *ngFor="let monster of monsterOptions">
+          <div class="monster-option">
+            <sw-select-monster [monster]="monster" [isAdded]="false" (onView)="viewMonsterDetails($event)" />
+          </div>
+        </ng-container>
+      </div>
+      <div class="selections-container">
+        <div class="header outline">{{selectedMonsters.length}}/4</div>
+        <div class="inner-container d-flex">
+          <ng-container *ngFor="let monster of selectedMonsters">
+            <div class="monster-option">
+              <sw-select-monster [monster]="monster" [isAdded]="true" (onView)="viewMonsterDetails($event)" />
+            </div>
+          </ng-container>
+        </div>
+      </div>
     </div>
+  </ng-container>
+
+  <!-- Choose your 3 + lead -->
+  <ng-container *ngIf="screen === 'PICK_3'">
+    <div class="header outline">Select 3 monsters and your lead!</div>
+    <div class="select-monsters three">
+      <div class="options-container ">
+        <ng-container *ngFor="let monster of teamPlusOne">
+          <div class="monster-option">
+            <sw-select-monster [monster]="monster" [isAdded]="false" [addToTeam]="true" (onView)="viewMonsterDetails($event)" />
+          </div>
+        </ng-container>
+      </div>
+      <div class="selections-container">
+        <div class="header outline">{{team.length}}/3</div>
+        <div class="inner-container d-flex">
+          <ng-container *ngFor="let monster of team">
+            <div class="monster-option">
+              <sw-select-monster [monster]="monster" [isAdded]="true" [addToTeam]="true" [isLead]="monster.key() === lead?.key()" (onView)="viewMonsterDetails($event)" />
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="selections-container">
+        <div class="header outline">CPU Monsters</div>
+        <div class="inner-container d-flex">
+          <ng-container *ngFor="let monster of cpuSelections">
+            <div class="monster-option">
+              <sw-select-monster 
+                [monster]="monster" 
+                [isAdded]="true" 
+                [addToTeam]="true" 
+                [isLead]="monster.key() === lead?.key()"
+                [hideButtons]="true"
+                (onView)="viewMonsterDetails($event, true)" />
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="common-buttons-container">
+    <div class="button">
+      <sw-pushable-button>
+        <div class="button-face" (click)="goToTitleScreen()">Back to title screen</div>
+      </sw-pushable-button>
+    </div>
+    <ng-container *ngIf="screen === 'PICK_4'">
+      <div class="button">
+        <sw-pushable-button>
+          <div class="button-face" (click)="clear()">Clear</div>
+        </sw-pushable-button>
+      </div>
+      <div class="button">
+        <sw-pushable-button [isActive]="selectedMonsters.length === 4">
+          <div class="button-face" (click)="proceed()">Proceed</div>
+        </sw-pushable-button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="screen === 'PICK_3'">
+      <div class="button">
+        <sw-pushable-button>
+          <div class="button-face" (click)="back()">Go Back</div>
+        </sw-pushable-button>
+      </div>
+      <div class="button">
+        <sw-pushable-button [isActive]="team.length === 3">
+          <div class="button-face" (click)="play()">Play!</div>
+        </sw-pushable-button>
+      </div>
+    </ng-container>
   </div>
 </div>

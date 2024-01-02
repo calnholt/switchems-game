@@ -1,10 +1,8 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { Monster } from '../../models/monster/monster.model';
 import { StatBoard } from '../../models/stat-board/stat-board.model';
 import { PlayerCardManager } from '../../models/player/player-card-manager.model';
 import { PlayerService } from '../../services/player/player.service';
-import { StandardAction } from '../../models/standard-action/standard-action.model';
-import { ImageUtil } from '~/app/shared/utils/image.util';
 import { ARENAS, ArenaType } from '~/app/shared/types/dataTypes';
 import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
 import { Modifier, MonsterModifierType } from '../../logic/modifiers/modifier.model';
@@ -19,7 +17,6 @@ import { SelectedAction } from '../../services/selected-action/selected-action.m
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
 import { MonsterAction } from '../../models/monster/monster-action.model';
-import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 import { MonsterViewService } from '../../services/monster-view/monster-view.service';
 
 @Component({
@@ -73,8 +70,12 @@ export class GameComponent {
 
   ngOnInit() {
     this.isTutorial = this.router.url === '/tutorial';
+    const isCustom = this.router.url === '/custom-game';
     if (this.isTutorial) {
       this.playerService.startTutorial();
+    }
+    else if (isCustom) {
+      this.playerService.startCustomGame();
     }
     else {
       this.playerService.startGame();
