@@ -335,6 +335,7 @@ $scrollbar-hover-color: #555;
 }
 
 .common-buttons-container {
+  width: fit-content;
   .button {
     margin: 20px 0px;
     background-color: #efefef;

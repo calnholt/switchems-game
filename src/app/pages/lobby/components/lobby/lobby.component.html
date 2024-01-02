@@ -1,0 +1,50 @@
+<div id="lobby">
+  <div class="lobby">
+    <div *ngIf="!opponentProfile.name" class="profile-container section">
+      <div class="text-header text-center">Your Profile</div>
+      <div class="">{{profile.name ? "Name: " + profile.name : 'A profile name is required to play online'}}</div>
+      <input class="input" [(ngModel)]="profile.name" type="text" placeholder="Enter your name here..." maxlength="30" (ngModelChange)="savePlayerName()" />
+    </div>
+    <ng-container *ngIf="profile.name">
+      <div class="share-container section">
+        <div class="text-header text-center">Share your connection</div>
+        <div class="common-buttons-container">
+          <div class="button">
+            <sw-pushable-button [isActive]="!!myId">
+              <div class="button-face" (click)="copyPeerIdToClipboard()">
+                Copy ID
+              </div>
+            </sw-pushable-button>
+          </div>
+        </div>
+      </div>
+      <div class="text-header text-center">OR</div>
+      <div class="enter-id-container section">
+        <div class="text-header text-center">Enter your friend's ID:</div>
+        <input class="input" [(ngModel)]="peerId" type="text" placeholder="Paste the ID here..." />
+        <div class="common-buttons-container">
+          <div class="button">
+            <sw-pushable-button [isActive]="!!myId">
+              <div class="button-face" (click)="connectToPeer()">
+                Connect
+              </div>
+            </sw-pushable-button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="opponentProfile.name" class="section">
+        <div class="text-header text-center">Connected</div>
+        <div>Opponent: {{opponentProfile.name}}</div>
+        <div class="common-buttons-container">
+          <div class="button">
+            <sw-pushable-button [isActive]="!!myId">
+              <div class="button-face" (click)="play()">
+                Play!
+              </div>
+            </sw-pushable-button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

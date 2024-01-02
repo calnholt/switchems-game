@@ -14,6 +14,10 @@ export class TitleScreenComponent {
     this.router.navigate(['/select-monsters']);
   }
 
+  playOnline() {
+    this.router.navigate(['/lobby']);
+  }
+
   quickGame() {
     this.router.navigate(['/quick-game']);
   }

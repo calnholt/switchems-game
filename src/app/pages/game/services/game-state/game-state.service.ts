@@ -38,6 +38,8 @@ export interface PlayerState {
 })
 export class GameStateService {
 
+  private _isCpu: boolean = true;
+
   constructor(
     private playerService: PlayerService,
     private selectedActionService: SelectedActionService,
@@ -45,6 +47,10 @@ export class GameStateService {
     private battleAniService: BattleAnimationService,
     private gameOverService: GameOverService,
   ) { }
+
+  public setCpu(value: boolean) {
+    this._isCpu = value;
+  }
 
   public getGameState(): GameState {
     const { 
@@ -88,7 +94,7 @@ export class GameStateService {
       playerService: this.playerService,
       selectedActionService: this.selectedActionService,
       gameOverService: this.gameOverService,
-      cpu: true,
+      cpu: this._isCpu,
       getFreshGameState: this.getGameState,
     }
   }
