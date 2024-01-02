@@ -25,7 +25,9 @@ export class PlayerProfileService {
   constructor() { 
     const profile = localStorage.getItem(KEY);
     if (profile) {
-      this.profile$.next(JSON.parse(profile) as PlayerProfile);
+      let playerProfile = JSON.parse(profile) as PlayerProfile;
+      playerProfile.playerType = 'P';
+      this.profile$.next(playerProfile);
     }
   }
 
