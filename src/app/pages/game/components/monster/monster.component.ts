@@ -81,7 +81,7 @@ export class MonsterComponent implements OnInit, OnChanges {
     this.superEffectiveIcon = ImageUtil.icons.superEffective;
     this.switchDefenseIcon = ImageUtil.icons.switchDefense;
     this.backgroundClass = this.monster.elements.map(e => e.toString().toLowerCase()).join("");
-    this.hideUiElements = !this.router.url.includes('game');
+    this.hideUiElements = this.router.url.includes('select-monsters');
     // update discard icons when paying for switch action
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
       if (selectedAction.action.key() === this.monster.key()) {
