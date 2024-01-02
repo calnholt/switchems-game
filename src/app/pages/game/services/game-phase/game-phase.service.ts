@@ -4,7 +4,6 @@ import { UpdateGameStateService } from '../update-game-state/update-game-state.s
 import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
 import { GamePhaseUtil } from '../update-game-state/game-phase.util';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
-import { Chargroar } from '../../logic/monsters/chargroar.model';
 import { TutorialService } from '../tutorial/tutorial.service';
 import { GuidedTutorialCheckUtil } from '../../models/tutorial/tutorial.util';
 import { GameStateUtil } from '../game-state/game-state.util';
@@ -48,13 +47,6 @@ export class GamePhaseService {
             gs.rng));
       }
       this.currentPhaseService.goToNextPhase();
-    }
-  }
-
-  public startGame() {
-    const gs = this.gameStateService.getGameState();
-    if (gs.p.activeMonster.key() === 'CHARGROAR') {
-      new Chargroar('CHARGROAR', '', 'P', gs, this.ugss).addTriggers();
     }
   }
 

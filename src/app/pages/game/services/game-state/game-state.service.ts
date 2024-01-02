@@ -10,6 +10,8 @@ import { BattleAnimationService } from '../battle-animation/battle-animation.ser
 import { Player } from '../../models/player/player.model';
 import { MonsterAction } from '../../models/monster/monster-action.model';
 import { GameOverService } from '../game-over/game-over.service';
+import { PlayerType } from '../../logic/player-type.mode';
+import { PlayerProfileService } from '~/app/shared/services/player-profile.service';
 
 export interface GameState {
   p: PlayerState;
@@ -20,6 +22,7 @@ export interface GameState {
   selectedActionService: SelectedActionService;
   gameOverService: GameOverService;
   cpu: boolean;
+  playerType: PlayerType;
   getFreshGameState: () => GameState;
 }
 
@@ -46,6 +49,7 @@ export class GameStateService {
     private seedableRngService: SeedableRngService,
     private battleAniService: BattleAnimationService,
     private gameOverService: GameOverService,
+    private playerProfileService: PlayerProfileService,
   ) { }
 
   public setCpu(value: boolean) {
@@ -95,6 +99,7 @@ export class GameStateService {
       selectedActionService: this.selectedActionService,
       gameOverService: this.gameOverService,
       cpu: this._isCpu,
+      playerType: this.playerProfileService.profile.playerType,
       getFreshGameState: this.getGameState,
     }
   }
