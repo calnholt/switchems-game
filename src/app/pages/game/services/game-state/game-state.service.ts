@@ -22,7 +22,7 @@ export interface GameState {
   selectedActionService: SelectedActionService;
   gameOverService: GameOverService;
   cpu: boolean;
-  playerType: PlayerType;
+  activePlayerType: PlayerType;
   getFreshGameState: () => GameState;
 }
 
@@ -99,7 +99,7 @@ export class GameStateService {
       selectedActionService: this.selectedActionService,
       gameOverService: this.gameOverService,
       cpu: this._isCpu,
-      playerType: this.playerProfileService.profile.playerType,
+      activePlayerType: this.playerProfileService.profile.playerType,
       getFreshGameState: this.getGameState,
     }
   }
