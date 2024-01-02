@@ -11,12 +11,26 @@
   position: relative;
   background: white;
   cursor: pointer;
-  filter: brightness(85%);
-  transition: filter 0.3s ease;
-
+  // filter: brightness(85%);
+  
   .action-container {
     height: 100%;
     border-radius: 6px;
+    transition: filter 0.3s ease;
+    filter: brightness(85%);
+    &.selected {
+      filter: brightness(100%);
+    }
+    &.unselectable {
+      filter: brightness(85%);
+    }
+    &.unselectable:hover {
+      filter: brightness(85%);
+    }
+  }
+
+  .action-container:hover:not(.unselectable) {
+    filter: brightness(100%);
   }
 
   .disabled, .locked {
@@ -33,16 +47,6 @@
 
   .locked {
     background-image: url('../../../../../../assets/images/symbols/single-use.png');
-  }
-
-  &.selected {
-    filter: brightness(100%);
-  }
-  &.unselectable {
-    filter: brightness(85%);
-  }
-  &.unselectable:hover {
-    filter: brightness(85%);
   }
 
   .sw-card-title {

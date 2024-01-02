@@ -23,6 +23,10 @@
   .sw-card-text-container {
     background-color: unset;
     margin: 0 5px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .text {
       display: flex;
       justify-content: center;

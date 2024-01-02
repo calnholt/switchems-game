@@ -26,7 +26,7 @@
       <div class="actions-container">
         <ng-container *ngFor="let action of monster.actions">
           <div class="action">
-            <sw-monster-action [action]="action" />
+            <sw-monster-action [action]="action" [cardsInHand]="5" />
           </div>
         </ng-container>
       </div>

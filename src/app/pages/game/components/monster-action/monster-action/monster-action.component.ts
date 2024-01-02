@@ -64,7 +64,8 @@ export class MonsterActionComponent {
     });
     this.currentPhaseService.currentPhase$.subscribe((phase) => {
       this.enabled = phase === 'SELECTION_PHASE';
-      this.isSelected = phase === 'SELECTION_PHASE';
+      if (phase === 'SELECTION_PHASE')
+      this.isSelected = false;
     });
     this.tutorialService.currentSection$.subscribe((value) => {
       this.isMonsterActionHighlighted = !!value.types?.includes('MONSTER_ACTION') || !!value.types?.includes(this.action.key() as TutorialSectionType);
