@@ -4,6 +4,8 @@ import { CurrentPhaseService } from '../../services/current-phase/current-phase.
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { slideInLeftAnimation, slideInLeftOnEnterAnimation } from 'angular-animations';
 import { Router } from '@angular/router';
+import { PlayerProfileService } from '~/app/shared/services/player-profile.service';
+import { PlayerType } from '../../logic/player-type.mode';
 
 @Component({
   selector: 'sw-game-over',
@@ -22,13 +24,19 @@ export class GameOverComponent {
   isTutorial = false;
   isCustomGame = false;
 
+  activePlayer!: PlayerType;
+
   constructor(
     private gameOverService: GameOverService,
     private currentPhaseService: CurrentPhaseService,
+    private playerProfileService: PlayerProfileService,
     private router: Router,
   ) {
     this.isTutorial = this.router.url === '/tutorial';
     this.isCustomGame = this.router.url === '/custom-game';
+    this.playerProfileService.profile$.subscribe((value) => {
+      this.activePlayer = value.playerType;
+    })
   }
 
   returnToTitleScreen() {

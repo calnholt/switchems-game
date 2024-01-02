@@ -39,7 +39,7 @@
         <div class="action-container">
           <div class="inactive-monster-container">
             <ng-container *ngFor="let monster of (isViewingOpponentActions ? oInactiveMonsters : inactiveMonsters)">
-              <sw-monster [monster]="monster" [isActiveMonster]="false" [cardsInHand]="cardsInMyHand" [disable]="!isViewingActiveMonster" [isOpponent]="isViewingOpponentActions" />
+              <sw-monster [monster]="monster" [isActiveMonster]="false" [cardsInHand]="cardsInMyHand" [disable]="!isViewingActiveMonster" [isOpponent]="isViewingOpponentActions" [activePlayerType]="activePlayerType" />
             </ng-container>
           </div>
           <div>

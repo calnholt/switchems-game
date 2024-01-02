@@ -4,6 +4,7 @@ import { PlayerType } from '../../logic/player-type.mode';
 import { BehaviorSubject } from 'rxjs';
 import { PlayerService } from '../player/player.service';
 import { EventType, Router } from '@angular/router';
+import { PlayerProfileService } from '~/app/shared/services/player-profile.service';
 
 export interface MonsterBeingViewed {
   key: CardCompositeKey;
@@ -22,6 +23,7 @@ export class MonsterViewService {
 
   constructor(
     private playerService: PlayerService,
+    private playerProfileService: PlayerProfileService,
   ) { 
     this._monsterBeingViewed = new BehaviorSubject<MonsterBeingViewed>({
       key: this.playerService.activeMonster.key(),
@@ -30,7 +32,7 @@ export class MonsterViewService {
   }
 
   reset() {
-    this.changeViewedMonster(this.playerService.activeMonster.key(), 'P');
+    this.changeViewedMonster(this.playerService.activeMonster.key(), this.playerProfileService.profile.playerType);
   }
 
   changeViewedMonster(key: CardCompositeKey, player: PlayerType) {

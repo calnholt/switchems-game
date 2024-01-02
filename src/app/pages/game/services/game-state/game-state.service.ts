@@ -42,6 +42,7 @@ export interface PlayerState {
 export class GameStateService {
 
   private _isCpu: boolean = true;
+  private activePlayerType!: PlayerType;
 
   constructor(
     private playerService: PlayerService,
@@ -50,7 +51,11 @@ export class GameStateService {
     private battleAniService: BattleAnimationService,
     private gameOverService: GameOverService,
     private playerProfileService: PlayerProfileService,
-  ) { }
+  ) {
+    this.playerProfileService.profile$.subscribe((value) => {
+      this.activePlayerType = value.playerType;
+    })
+  }
 
   public setCpu(value: boolean) {
     this._isCpu = value;
@@ -73,7 +78,6 @@ export class GameStateService {
       selectedAction, 
       oSelectedAction,
     } = this.selectedActionService;
-
     return {
       p: {
         activeMonster,
@@ -99,7 +103,7 @@ export class GameStateService {
       selectedActionService: this.selectedActionService,
       gameOverService: this.gameOverService,
       cpu: this._isCpu,
-      activePlayerType: this.playerProfileService.profile.playerType,
+      activePlayerType: this.activePlayerType,
       getFreshGameState: this.getGameState,
     }
   }

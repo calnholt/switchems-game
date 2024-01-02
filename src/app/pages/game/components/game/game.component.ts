@@ -18,6 +18,8 @@ import { CurrentPhaseService } from '../../services/current-phase/current-phase.
 import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
 import { MonsterAction } from '../../models/monster/monster-action.model';
 import { MonsterViewService } from '../../services/monster-view/monster-view.service';
+import { PlayerProfileService } from '~/app/shared/services/player-profile.service';
+import { PlayerType } from '../../logic/player-type.mode';
 
 @Component({
   selector: 'sw-game',
@@ -56,6 +58,8 @@ export class GameComponent {
 
   currentPhase!: GamePhaseCommandType;
 
+  activePlayerType!: PlayerType;
+
   constructor(
     private playerService: PlayerService,
     private battleAniService: BattleAnimationService,
@@ -65,6 +69,7 @@ export class GameComponent {
     private currentPhaseService: CurrentPhaseService,
     private selectedActionService: SelectedActionService,
     private monsterViewService: MonsterViewService,
+    private playerProfileService: PlayerProfileService,
     private router: Router
   ) { }
 
@@ -80,6 +85,9 @@ export class GameComponent {
     else {
       this.playerService.startGame();
     }
+    this.playerProfileService.profile$.subscribe((value) => {
+      this.activePlayerType = value.playerType;
+    });
     this.playerService.player.activeMonster$.subscribe((value) => {
       if (this.modifiersSub) {
         this.modifiersSub.unsubscribe();
@@ -164,9 +172,9 @@ export class GameComponent {
       });
     }
     this.monsterViewService.monsterBeingViewed$.subscribe((value) => {
-      this.isViewingOpponentActions = value.player === 'O';
-      this.isViewingActiveMonster = value.player === 'P' && this.activeMonster.key() === value.key;
-      if (value.player === 'P') {
+      this.isViewingOpponentActions = value.player !== this.activePlayerType;
+      this.isViewingActiveMonster = value.player === this.activePlayerType && this.activeMonster.key() === value.key;
+      if (value.player === this.activePlayerType) {
         this.monsterActionsBeingViewed = (this.inactiveMonsters.concat(this.activeMonster).find(m => m.key() === value.key) as Monster).actions;
       }
       else {

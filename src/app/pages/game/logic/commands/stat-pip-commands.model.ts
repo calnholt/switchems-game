@@ -62,7 +62,7 @@ export class CrushCommand extends EventCommand<CrushCommandData> {
     super(receiver, 'CRUSH', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString()} crushed ${this.data.selections.map(s => `${s.amount} ${s.statType.toLowerCase()} Pips`).join(", ")}`;
+    return `${this.data.monsterName} crushed ${this.data.selections.map(s => `${s.amount} ${s.statType.toLowerCase()} Pips`).join(", ")}`;
   }
 }
 
@@ -71,7 +71,7 @@ export class ApplyStatPipsCommand extends EventCommand<StatPipCommandData> {
     super(receiver, 'APPLY_STAT_PIPS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString()} applied ${this.data.amount} ${this.data.statType.toLowerCase()} Pips.`;
+    return `${this.data.monsterName} applied ${this.data.amount} ${this.data.statType.toLowerCase()} Pips.`;
   }
 }
 

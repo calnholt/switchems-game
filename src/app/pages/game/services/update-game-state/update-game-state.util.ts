@@ -70,13 +70,13 @@ function doMonsterAction(gs: GameState, data: MonsterActionCommandData, rc: Upda
   const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
   if (action?.isStatus) {
     new RecoilCheckCommand(rc, { ...data }).pushFront();
-    gs.battleAniService.update(data.player === 'P', 'USING_SPECIAL');
+    gs.battleAniService.update(gs.activePlayerType === data.player, 'USING_SPECIAL');
   }
   data.doMonsterAction();
 }
 
 function doStandardAction(gs: GameState, data: StandardActionCommandData, rc: UpdateGameStateService) {
-  gs.battleAniService.update(data.player === 'P', 'USING_SPECIAL');
+  gs.battleAniService.update(gs.activePlayerType === data.player, 'USING_SPECIAL');
   data.doStandardAction();
 }
 
@@ -152,7 +152,7 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
     opposingMonster.takeDamage(damage);
     const message = `${monsterNames.monsterName} used ${attack.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
     commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message }))
-    gs.battleAniService.update(data.player === 'P', attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
+    gs.battleAniService.update(gs.activePlayerType === data.player, attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
   }
   else {
     const message = `${monsterNames.opponentMonsterName} took no damage!`;
@@ -180,7 +180,7 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
 function dealDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameStateService) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
   monster.takeDamage(data.damageToDeal);
-  gs.battleAniService.update(data.player === 'P', 'TAKING_DAMAGE');
+  gs.battleAniService.update(gs.activePlayerType === data.player, 'TAKING_DAMAGE');
   if (monster.currentHp === 0) {
     const monsterNames = GameStateUtil.getMonsterNames(gs, data.player);
     new KnockedOutCommand(rc, { 
@@ -298,7 +298,7 @@ function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSe
 function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateService) {
   const { activeMonster, player } = GameStateUtil.getPlayerState(gs, data.player);
   const { selectedAction: opponentAction, activeMonster: opponentActiveMonster } = GameStateUtil.getOpponentPlayerState(gs, data.player);
-  gs.battleAniService.update(data.player === 'P', 'SWITCHING_OUT');
+  gs.battleAniService.update(gs.activePlayerType === data.player, 'SWITCHING_OUT');
   // timeout syncs the animation...clunky
   setTimeout(() => {
     player.switch(data.key);

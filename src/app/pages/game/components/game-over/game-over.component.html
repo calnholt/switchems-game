@@ -1,9 +1,9 @@
 <ng-container *ngIf="winner">
   <div id="game-over" [@slideInLeftOnEnter]>
     <div class="game-over-container">
-      <img [src]="winner === 'P' ? winAvatar : loseAvatar" />
+      <img [src]="winner === activePlayer ? winAvatar : loseAvatar" />
       <div class="winner-text">
-        {{winner === 'P' ? 'You won!' : 'You lost!'}}
+        {{winner === activePlayer ? 'You won!' : 'You lost!'}}
       </div>
       <div class="buttons-container">
         <sw-pushable-button *ngIf="!isTutorial">

@@ -31,11 +31,11 @@ export const GameStateUtil = {
 }
 
 function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
-  if (playerType === 'P') return gs.p;
+  if (gs.activePlayerType === playerType) return gs.p;
   return gs.o;
 }
 function getOpponentPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
-  if (playerType === 'P') return gs.o;
+  if (gs.activePlayerType === playerType) return gs.o;
   return gs.p;
 }
 
@@ -72,11 +72,11 @@ function isFaster(gs: GameState, playerType: PlayerType) {
 }
 
 function getMonsterActionByPlayer(gs: GameState, playerType: PlayerType) {
-  const playerState = playerType === 'P' ? GameStateUtil.getPlayerState(gs, playerType) : GameStateUtil.getOpponentPlayerState(gs, getOppositePlayer(playerType));
+  const playerState = gs.activePlayerType === playerType ? GameStateUtil.getPlayerState(gs, playerType) : GameStateUtil.getOpponentPlayerState(gs, getOppositePlayer(playerType));
   return GameStateUtil.getMonsterAction(playerState);
 }
 function getMonsterByPlayer(gs: GameState, playerType: PlayerType) {
-  const playerState = playerType === 'P' ? GameStateUtil.getPlayerState(gs, playerType) : GameStateUtil.getOpponentPlayerState(gs, getOppositePlayer(playerType));
+  const playerState = gs.activePlayerType === playerType ? GameStateUtil.getPlayerState(gs, playerType) : GameStateUtil.getOpponentPlayerState(gs, getOppositePlayer(playerType));
   return playerState.activeMonster;
 }
 function getMonsterAction(ps: PlayerState) {
