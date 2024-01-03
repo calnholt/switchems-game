@@ -8,6 +8,13 @@ import { SeedableRngService } from '../../game/services/seedable-rng/seedable-rn
 const CAPACITY: number = 4;
 const TEAM_CAPACITY: number = 3;
 
+export type OnlineSelectionType = 
+  | 'PICK_4_CONFIRMED' 
+  | 'PICK_4_SELECTIONS' 
+  | 'TEAM_CONFIRMED' 
+  | 'START_GAME' 
+  | '';
+
 export interface MonsterSelection {
   key: CardCompositeKey,
   isLead: boolean,
@@ -21,15 +28,23 @@ export class MonsterSelectionService {
 
   private _monstersOptions: BehaviorSubject<MonsterSelection[]> = new BehaviorSubject<MonsterSelection[]>([]);
   private _selectedMonsters: BehaviorSubject<MonsterSelection[]> = new BehaviorSubject<MonsterSelection[]>([]);
+  private _opponentSelections: BehaviorSubject<MonsterSelection[]> = new BehaviorSubject<MonsterSelection[]>([]);
   private _cpuSelections: BehaviorSubject<MonsterSelection[]> = new BehaviorSubject<MonsterSelection[]>([]);
+
+  private _opponentSelectionType: BehaviorSubject<OnlineSelectionType> = new BehaviorSubject<OnlineSelectionType>('');
 
   public get monstersOptions() { return this._monstersOptions.value; }
   public get monstersOptions$() { return this._monstersOptions; }
   public get selectedMonsters() { return this._selectedMonsters.value; }
   public get selectedMonsters$() { return this._selectedMonsters; }
+  public get opponentSelections() { return this._opponentSelections.value; }
+  public get opponentSelections$() { return this._opponentSelections; }
   public get cpuSelections() { return this._cpuSelections.value; }
   public get cpuSelections$() { return this._cpuSelections; }
   public get capacity(): number { return CAPACITY };
+
+  public get opponentSelectionType() { return this._opponentSelectionType.value; }
+  public get opponentSelectionType$() { return this._opponentSelectionType; }
 
   constructor(
     private monsterDataService: MonsterDataService,

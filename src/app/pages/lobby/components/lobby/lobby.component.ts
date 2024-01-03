@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { PeerJsService } from '~/app/shared/services/peer-js.service';
 import { PlayerProfile, PlayerProfileService } from '~/app/shared/services/player-profile.service';
 
@@ -18,7 +19,8 @@ export class LobbyComponent {
 
   constructor(
     private peerService: PeerJsService,
-    private playerProfileService: PlayerProfileService
+    private playerProfileService: PlayerProfileService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -63,10 +65,11 @@ export class LobbyComponent {
   }
 
   play() {
-    
+    this.router.navigate(['select-monsters']);
+    this.peerService.sendData('GO_TO_MONSTER_SELECT', {});
   }
 
-  sendData() {
-    this.peerService.sendData('PICK_4_SELECTIONS', ['A', 'B', 'C']);
+  returnToTitleScreen() {
+    this.router.navigate(['/']);
   }
 }

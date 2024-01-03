@@ -14,6 +14,10 @@ export const AppRoutingModule: Routes = [
     component: GameComponent
   },
   {
+    path: 'online-game',
+    component: GameComponent
+  },
+  {
     path: 'custom-game',
     component: GameComponent,
   },
@@ -23,7 +27,7 @@ export const AppRoutingModule: Routes = [
   },
   {
     path: 'select-monsters',
-    component: SelectMonstersComponent
+    component: SelectMonstersComponent,
   },
   {
     path: 'lobby',

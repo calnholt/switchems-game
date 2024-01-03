@@ -10,20 +10,23 @@ export class SeedableRngService {
   private a = 1103515245;
   private c = 12345;
 
-  private seed: number;
+  private _seed: number;
+
+  public get seed() { return this._seed; }
+
   constructor() {
-    this.seed = Math.floor(Math.random() * 1000000);
-    // this.seed = 286945;
-    console.log("SEED: " + this.seed);
+    this._seed = Math.floor(Math.random() * 1000000);
+    // this._seed = 264793;
+    console.log("SEED: " + this._seed);
   }
 
   setSeed(seed: number) {
-    this.seed = seed;
+    this._seed = seed;
   }
 
   randomInt(): number {
-    this.seed = (this.a * this.seed + this.c) % this.m;
-    return this.seed;
+    this._seed = (this.a * this._seed + this.c) % this.m;
+    return this._seed;
   }
 
   randomIntOption(value: number) {

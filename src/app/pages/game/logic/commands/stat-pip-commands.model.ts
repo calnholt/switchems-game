@@ -1,6 +1,7 @@
 import { CommandData, EventCommand } from "./event-command.model";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { StatBoardSectionType } from "../../models/stat-board/stat-board.model";
+import { PlayerType } from "../player-type.mode";
 
 export type STAT_PIP_TYPES = 
   | 'GAIN_RANDOM_STAT_PIP' 
@@ -80,6 +81,6 @@ export class DiscardPipsCommand extends EventCommand<StatPipCommandData> {
     super(receiver, 'DISCARD_PIPS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString()} discarded ${this.data.amount} ${this.data.statType.toLowerCase()} Pips.`;
+    return `${this.getPlayerString(this.data.activePlayerType as PlayerType)} discarded ${this.data.amount} ${this.data.statType.toLowerCase()} Pips.`;
   }
 }

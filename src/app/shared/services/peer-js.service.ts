@@ -3,6 +3,7 @@ import Peer, { DataConnection } from 'peerjs';
 import { BehaviorSubject } from 'rxjs';
 import { PeerMessageType } from '../types/PeerMessageTypes';
 import { PlayerProfile, PlayerProfileService } from './player-profile.service';
+import { PeerMessageMediatorService } from '~/app/pages/game/services/peer-message-mediator.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class PeerJsService {
 
   constructor(
     private playerProfileService: PlayerProfileService,
+    private peerMessageMediatorService: PeerMessageMediatorService,
   ) {
     this._peer = new Peer();
 
@@ -41,13 +43,7 @@ export class PeerJsService {
 
     // Now you can set up event handlers for this connection
     connection.on('data', (data: any) => {
-      const type = data.type as PeerMessageType;
-      switch (type) {
-        case 'PLAYER_PROFILE':
-          this.playerProfileService.setHost(data.data, isHost);
-          break;
-      }
-      console.log('Received data from Peer A:', data);
+      this.peerMessageMediatorService.message$.next({ type: data.type, data: { data: data.data, isHost }})
     });
 
     connection.on('open', () => {
@@ -73,13 +69,13 @@ export class PeerJsService {
     });
   }
 
-  sendData(type: PeerMessageType, data: any) {
+  sendData(type: PeerMessageType, data?: any) {
     this.connection?.send({ type, data });
   }
 
 }
 
-export interface PeerData {
+export interface PeerMessage {
   type: PeerMessageType,
-  data: any;
+  data?: any;
 }

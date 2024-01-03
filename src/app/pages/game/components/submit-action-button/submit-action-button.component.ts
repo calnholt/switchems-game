@@ -3,6 +3,7 @@ import { SelectedActionService } from '../../services/selected-action/selected-a
 import { StatBoardSection, StatBoardSectionType } from '../../models/stat-board/stat-board.model';
 import { GamePhaseService } from '../../services/game-phase/game-phase.service';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
+import { OnlineBattleService } from '../../services/online-battle.service';
 
 const LABEL = 'Select an action';
 
@@ -21,12 +22,17 @@ export class SubmitActionButtonComponent {
   statBoardSectionType: StatBoardSectionType | null = null;
   enabled = true;
 
+  isSubmittedOnline = false;
+
   constructor(
     private selectedActionService: SelectedActionService,
     private gamePhaseService: GamePhaseService,
     private currentPhaseService: CurrentPhaseService,
+    private onlineBattleService: OnlineBattleService,
   ) {
-
+    this.onlineBattleService.confirmed$.subscribe((value) => {
+      this.isSubmittedOnline = value;
+    })
   }
 
   ngOnInit() {

@@ -3,6 +3,8 @@ import { EventCommandQueueService } from '../../../services/event-command-queue/
 import { SwitchOutPromptCommand } from '../../../logic/commands/switch-commands.model';
 import { HandlePromptService } from '../../../services/handle-prompt/handle-prompt.service';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
+import { PeerMessageType } from '~/app/shared/types/PeerMessageTypes';
+import { PeerJsService } from '~/app/shared/services/peer-js.service';
 
 @Component({
   selector: 'sw-switch-out-dialog',
@@ -21,6 +23,7 @@ export class SwitchOutDialogComponent {
   constructor(
     private ecqs: EventCommandQueueService,
     private handlePromptService: HandlePromptService,
+    private peerService: PeerJsService,
   ) {
 
   }
@@ -34,12 +37,16 @@ export class SwitchOutDialogComponent {
   }
 
   heal() {
-    this.handlePromptService.execute(this.command.type, { ...this.command.data, type: 'HEAL' });
+    const data = { ...this.command.data, type: 'HEAL' };
+    this.handlePromptService.execute(this.command.type, data);
+    this.peerService.sendData(this.command.type as PeerMessageType, data);
     this.show = false;
   }
 
   removeStatus() {
-    this.handlePromptService.execute(this.command.type, { ...this.command.data, type: 'REMOVE_STATUS' });
+    const data = { ...this.command.data, type: 'REMOVE_STATUS' };
+    this.handlePromptService.execute(this.command.type, data);
+    this.peerService.sendData(this.command.type as PeerMessageType, data);
     this.show = false;
   }
 

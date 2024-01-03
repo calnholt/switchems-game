@@ -54,7 +54,12 @@ export class PlayerService {
     this._player.reset(this.getRandomStart());
     this._opponent.reset(this.getRandomStart());
     this.setup();
+  }
 
+  startOnlineGame() {
+    this._player.reset(this.getCustomStart(this.monsterSelectionService.selectedMonsters));
+    this._opponent.reset(this.getCustomStart(this.monsterSelectionService.opponentSelections));
+    this.setup();
   }
 
   setup() {

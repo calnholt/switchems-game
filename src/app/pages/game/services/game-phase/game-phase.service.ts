@@ -8,6 +8,10 @@ import { TutorialService } from '../tutorial/tutorial.service';
 import { GuidedTutorialCheckUtil } from '../../models/tutorial/tutorial.util';
 import { GameStateUtil } from '../game-state/game-state.util';
 import { CPUActionSelectUtil } from '../update-game-state/cpu-action-select.util';
+import { PeerJsService } from '~/app/shared/services/peer-js.service';
+import { SelectedActionService } from '../selected-action/selected-action.service';
+import { PeerMessageMediatorService } from '../peer-message-mediator.service';
+import { OnlineBattleService } from '../online-battle.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +25,14 @@ export class GamePhaseService {
     private ugss: UpdateGameStateService,
     private currentPhaseService: CurrentPhaseService,
     private tutorialService: TutorialService,
+    private peerService: PeerJsService,
+    private onlineBattleService: OnlineBattleService,
   ) {
     this.currentPhaseService.currentPhase$.subscribe((value) => {
+      if (value === 'SELECTION_PHASE') {
+        this.onlineBattleService.confirmed$.next(false);
+        this.onlineBattleService.oConfirmed$.next(false);
+      }
       if (value === 'GAME_OVER') {
         this.loaded = false;
         return;
@@ -33,11 +43,23 @@ export class GamePhaseService {
 
   public submitAction() {
     const gs: GameState = this.gameStateService.getGameState();
+    console.log('current seed: ', gs.rng.seed)
+    // online games
+    if (!this.gameStateService.isCpu) {
+      if (this.onlineBattleService.confirmed) {
+        return;
+      }
+      this.onlineBattleService.confirmed$.next(true);
+      this.peerService.sendData('SUBMIT_ACTION');
+      return;
+    }
+    // guided tutorial
     if (this.tutorialService.isGuidedTutorialActive) {
       if (GuidedTutorialCheckUtil.checkTurn(gs, this.currentPhaseService.currentTurn) && gs.p.selectedAction.isCostFulfilled()) {
         this.currentPhaseService.goToNextPhase();
       }
     }
+    // CPU
     else if (gs.p.selectedAction.isCostFulfilled() && gs.o.selectedAction.isCostFulfilled()) {
       if (gs.cpu) {
         gs.selectedActionService.setOpponentAction(

@@ -3,7 +3,7 @@
     <sw-full-monster-view 
       [monster]="fullViewMonster" 
       [isSettingTeam]="screen === 'PICK_3'"
-      [readOnly]="isViewingCpuMonster"
+      [readOnly]="isViewingCpuMonster || (isOnline && mySelectionType.includes('CONFIRM'))"
       (onClose)="fullViewMonster = null" 
       (onAdd)="addFromModal()" 
       (onRemove)="removeFromModal()" />
@@ -11,12 +11,12 @@
 
   <!-- Choose 4 monsters -->
   <ng-container *ngIf="screen === 'PICK_4'">
-    <div class="header outline">Select 4 monsters!</div>
+    <div class="header outline">{{isOnline && mySelectionType.includes('CONFIRM') ? 'Waiting for opponent...' :  'Select 4 monsters!'}}</div>
     <div class="select-monsters">
       <div class="options-container">
         <ng-container *ngFor="let monster of monsterOptions">
           <div class="monster-option">
-            <sw-select-monster [monster]="monster" [isAdded]="false" (onView)="viewMonsterDetails($event)" />
+            <sw-select-monster [monster]="monster" [isAdded]="false" [hideButtons]="isOnline && mySelectionType !== ''" (onView)="viewMonsterDetails($event)" />
           </div>
         </ng-container>
       </div>
@@ -25,7 +25,7 @@
         <div class="inner-container d-flex">
           <ng-container *ngFor="let monster of selectedMonsters">
             <div class="monster-option">
-              <sw-select-monster [monster]="monster" [isAdded]="true" (onView)="viewMonsterDetails($event)" />
+              <sw-select-monster [monster]="monster" [isAdded]="true" [hideButtons]="isOnline && mySelectionType !== ''" (onView)="viewMonsterDetails($event)" />
             </div>
           </ng-container>
         </div>
@@ -44,7 +44,7 @@
           </div>
         </ng-container>
       </div>
-      <div class="selections-container">
+      <div class="selections-container" [style.margin-right]="'20px'">
         <div class="header outline">{{team.length}}/3</div>
         <div class="inner-container d-flex">
           <ng-container *ngFor="let monster of team">
@@ -55,9 +55,9 @@
         </div>
       </div>
       <div class="selections-container">
-        <div class="header outline">CPU Monsters</div>
+        <div class="header outline">{{isOnline ? opponentName + "'s monsters" : 'CPU Monsters'}}</div>
         <div class="inner-container d-flex">
-          <ng-container *ngFor="let monster of cpuSelections">
+          <ng-container *ngFor="let monster of opponentSelections">
             <div class="monster-option">
               <sw-select-monster 
                 [monster]="monster" 
@@ -74,18 +74,23 @@
   </ng-container>
 
   <div class="common-buttons-container">
-    <div class="button">
+    <div *ngIf="!isOnline" class="button">
       <sw-pushable-button>
         <div class="button-face" (click)="goToTitleScreen()">Back to title screen</div>
       </sw-pushable-button>
     </div>
     <ng-container *ngIf="screen === 'PICK_4'">
       <div class="button">
-        <sw-pushable-button>
+        <sw-pushable-button [isActive]="!mySelectionType.includes('CONFIRM')">
           <div class="button-face" (click)="clear()">Clear</div>
         </sw-pushable-button>
       </div>
-      <div class="button">
+      <div *ngIf="isOnline" class="button">
+        <sw-pushable-button [isActive]="selectedMonsters.length === 4 && mySelectionType === ''">
+          <div class="button-face" (click)="proceed()">{{mySelectionType !== '' ? 'Confirmed' : 'Confirm'}}</div>
+        </sw-pushable-button>
+      </div>
+      <div *ngIf="!isOnline" class="button">
         <sw-pushable-button [isActive]="selectedMonsters.length === 4">
           <div class="button-face" (click)="proceed()">Proceed</div>
         </sw-pushable-button>

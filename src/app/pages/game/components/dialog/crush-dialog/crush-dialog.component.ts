@@ -5,6 +5,8 @@ import { HandlePromptService } from '../../../services/handle-prompt/handle-prom
 import { CrushPromptCommand } from '../../../logic/commands/stat-pip-commands.model';
 import { PlayerService } from '../../../services/player/player.service';
 import { StatBoard, StatBoardSection, StatBoardSectionType } from '../../../models/stat-board/stat-board.model';
+import { PeerJsService } from '~/app/shared/services/peer-js.service';
+import { PeerMessageType } from '~/app/shared/types/PeerMessageTypes';
 
 @Component({
   selector: 'sw-crush-dialog',
@@ -26,7 +28,8 @@ export class CrushDialogComponent {
   constructor(
     private ecqs: EventCommandQueueService,
     private handlePromptService: HandlePromptService,
-    private playerService: PlayerService
+    private playerService: PlayerService,
+    private peerService: PeerJsService,
   ) {
 
   }
@@ -68,7 +71,9 @@ export class CrushDialogComponent {
 
   submit() {
     if (this.getTotal() > 0) {
-      this.handlePromptService.execute(this.command.type, { ...this.command.data, selections: this.selections });
+      const data = { ...this.command.data, selections: this.selections };
+      this.handlePromptService.execute(this.command.type, data);
+      this.peerService.sendData(this.command.type as PeerMessageType, data);
       this.show = false;
     }
   }

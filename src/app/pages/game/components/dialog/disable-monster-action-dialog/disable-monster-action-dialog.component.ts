@@ -4,6 +4,8 @@ import { HandlePromptService } from '../../../services/handle-prompt/handle-prom
 import { DisableActionPromptCommand } from '../../../logic/commands/monster-action-commands.model';
 import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
+import { PeerMessageType } from '~/app/shared/types/PeerMessageTypes';
+import { PeerJsService } from '~/app/shared/services/peer-js.service';
 
 @Component({
   selector: 'sw-disable-monster-action-dialog',
@@ -25,6 +27,7 @@ export class DisableMonsterActionDialogComponent {
   constructor(
     private ecqs: EventCommandQueueService,
     private handlePromptService: HandlePromptService,
+    private peerService: PeerJsService,
   ) {
 
   }
@@ -39,7 +42,9 @@ export class DisableMonsterActionDialogComponent {
   }
 
   submit(selection: { key: CardCompositeKey, name: string }) {
+    const data = { ...this.command.data, selection };
     this.handlePromptService.execute(this.command.type, { ...this.command.data, selection });
+    this.peerService.sendData(this.command.type as PeerMessageType, data);
     this.show = false;
   }
 

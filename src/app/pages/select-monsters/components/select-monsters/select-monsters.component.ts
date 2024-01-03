@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { Monster } from '~/app/pages/game/models/monster/monster.model';
 import { MonsterDataService } from '~/app/shared/services/monster-data.service';
-import { MonsterSelectionService } from '../../services/monster-selection.service';
+import { MonsterSelectionService, OnlineSelectionType } from '../../services/monster-selection.service';
 import { Router } from '@angular/router';
+import { PlayerProfileService } from '~/app/shared/services/player-profile.service';
+import { PeerJsService } from '~/app/shared/services/peer-js.service';
+import { GameStateService } from '~/app/pages/game/services/game-state/game-state.service';
 
 @Component({
   selector: 'sw-select-monsters',
@@ -16,12 +19,17 @@ export class SelectMonstersComponent {
   fullViewMonster!: Monster | null;
   isViewingCpuMonster = false;
 
+  isOnline = false;
+  onlineSelectionType: OnlineSelectionType = '';
+  mySelectionType: OnlineSelectionType = '';
+
   capacity: number = 0;
 
   monsterOptions: Monster[] = [];
   selectedMonsters: Monster[] = [];
 
-  cpuSelections: Monster[] = [];
+  opponentSelections: Monster[] = [];
+  opponentName = '';
 
   teamPlusOne: Monster[] = [];
   team: Monster[] = [];
@@ -32,12 +40,37 @@ export class SelectMonstersComponent {
   constructor(
     private monsterService: MonsterDataService,
     private monsterSelectionService: MonsterSelectionService,
+    private playerProfileService: PlayerProfileService,
+    private peerService: PeerJsService,
+    private gameStateService: GameStateService,
     private router: Router,
   ) {
 
   }
 
   ngOnInit() {
+    this.isOnline = !!this.playerProfileService.opponentProfile.name;
+    // this.isOnline = true;
+    this.opponentName = this.playerProfileService?.opponentProfile?.name;
+    if (this.isOnline) {
+      this.monsterSelectionService.opponentSelectionType$.subscribe((value) => {
+        this.onlineSelectionType = value;
+        if (this.mySelectionType === 'PICK_4_CONFIRMED' && this.onlineSelectionType === 'PICK_4_CONFIRMED') {
+          this.peerService.sendData('PICK_4_SELECTIONS', this.monsterSelectionService.selectedMonsters);
+          this.screen = 'PICK_3';
+        }
+        if (this.mySelectionType === 'TEAM_CONFIRMED' && this.onlineSelectionType === 'TEAM_CONFIRMED') {
+          this.peerService.sendData('START_GAME', this.monsterSelectionService.selectedMonsters);
+          this.gameStateService.setCpu(false);
+          setTimeout(() => {
+            this.router.navigate(['/online-game']);
+          }, 100);
+        }
+      });
+      this.monsterSelectionService.opponentSelections$.subscribe((value) => {
+        this.opponentSelections = this.allMonsters.filter(m => value.map(m => m.key).includes(m.key()));
+      })
+    }
     this.capacity = this.monsterSelectionService.capacity;
     this.allMonsters = this.monsterService.getAllMonsters();
     this.monsterSelectionService.monstersOptions$.subscribe((value) => {
@@ -49,9 +82,11 @@ export class SelectMonstersComponent {
       this.team = this.allMonsters.filter(m => value.filter(m => m.isOnTeam).map(m => m.key).includes(m.key()));
       this.lead = this.allMonsters.find(m => value.filter(m => m.isLead).map(m => m.key).includes(m.key())) as Monster;
     });
-    this.monsterSelectionService.cpuSelections$.subscribe((value) => {
-      this.cpuSelections = this.allMonsters.filter(m => value.map(m => m.key).includes(m.key()));
-    })
+    if (!this.isOnline) {
+      this.monsterSelectionService.cpuSelections$.subscribe((value) => {
+        this.opponentSelections = this.allMonsters.filter(m => value.map(m => m.key).includes(m.key()));
+      })
+    }
   }
 
   goToTitleScreen() {
@@ -59,7 +94,9 @@ export class SelectMonstersComponent {
   }
 
   clear() {
-
+    if (this.isOnline && this.mySelectionType.includes('CONFIRM')) {
+      return;
+    }
     this.monsterSelectionService.clear();
   }
 
@@ -90,6 +127,15 @@ export class SelectMonstersComponent {
   }
 
   proceed() {
+    if (this.isOnline) {
+      this.mySelectionType = 'PICK_4_CONFIRMED';
+      this.peerService.sendData('PICK_4_CONFIRMED', {});
+      if (this.onlineSelectionType === 'PICK_4_CONFIRMED') {
+        this.peerService.sendData('PICK_4_SELECTIONS', this.monsterSelectionService.selectedMonsters);
+        this.screen = 'PICK_3';
+      }
+      return;
+    }
     if (this.selectedMonsters.length !== 4) {
       return;
     }
@@ -103,6 +149,15 @@ export class SelectMonstersComponent {
   }
 
   play() {
+    if (this.isOnline) {
+      this.mySelectionType = 'TEAM_CONFIRMED';
+      this.peerService.sendData('TEAM_CONFIRMED', {});
+      if (this.onlineSelectionType === 'TEAM_CONFIRMED') {
+        this.peerService.sendData('START_GAME', this.monsterSelectionService.selectedMonsters);
+        // this.router.navigate(['/online-game']);
+      }
+      return;
+    }
     if (this.team.length !== 3) {
       return;
     }

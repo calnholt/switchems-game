@@ -58,8 +58,8 @@ export abstract class EventCommand<T extends CommandData> {
     return false; // Placeholder for actual decision requirement
   }
 
-  protected getPlayerString(): string {
-    return this._data.player === 'P' ? 'You' : 'Opponent';
+  protected getPlayerString(activePlayer: PlayerType): string {
+    return this._data.player === activePlayer ? 'You' : 'Opponent';
   }
 }
 
@@ -86,6 +86,8 @@ export interface CommandData {
   display?: boolean; // determines if we display event as a message
   origin?: string;
   parent?: EventCommandType;
+  // TODO: not optional
+  activePlayerType?: PlayerType;
   monsterActionTrigger?: boolean; // denotes a trigger originating from a monster action
   updateMonsterPlayerTriggers?: boolean; // true on switch out, need to clean up irrelevant triggers
   removeOnSwitchTrigger?: boolean; // denotes a trigger that's cleared after switch

@@ -1,4 +1,3 @@
-import { ISelectableAction } from "~/app/shared/interfaces/ISelectableAction.interface";
 import { GameState, PlayerState } from "./game-state.service";
 import { MonsterAction } from "../../models/monster/monster-action.model";
 import { PlayerType } from "../../logic/player-type.mode";
@@ -121,7 +120,7 @@ function opponentHasKnockedOutMonster(gs: GameState, playerType: PlayerType) {
 
 function getFirstPlayer(gs: GameState, playerType: PlayerType): PlayerType {
   const { p, o } = getPlayerStates(gs, playerType);
-  if (!p.selectedAction.action || !o.selectedAction.action) return 'P';
+  if (!p.selectedAction.action || !o.selectedAction.action) return gs.activePlayerType;
   const monster = p.activeMonster;
   const oMonster = o.activeMonster;
   const initiative = monster.initiative;
@@ -133,24 +132,24 @@ function getFirstPlayer(gs: GameState, playerType: PlayerType): PlayerType {
   const speed = (monster.actions.find(a => a.key() === key) as MonsterAction)?.speed + (p.activeMonster.modifiers?.sumByType('SPEED') ?? 0);
   const oSpeed = (oMonster.actions.find(a => a.key() === oKey) as MonsterAction)?.speed + (o.activeMonster.modifiers?.sumByType('SPEED') ?? 0);
   if (type !== oType) {
-    if (type === 'SWITCH') return 'P';
-    if (oType === 'SWITCH') return 'O';
-    if (type === 'MONSTER') return 'P';
-    if (oType === 'MONSTER') return 'O';
-    if (type === 'STANDARD') return 'O';
-    return 'P';
+    if (type === 'SWITCH') return gs.activePlayerType;
+    if (oType === 'SWITCH') return gs.opponentPlayerType;
+    if (type === 'MONSTER') return gs.activePlayerType;
+    if (oType === 'MONSTER') return gs.opponentPlayerType;
+    if (type === 'STANDARD') return gs.opponentPlayerType;
+    return gs.activePlayerType;
   }
   else {
     if (type === 'SWITCH' || type === 'STANDARD') {
-      return initiative > oInitiative ? 'P' : 'O';
+      return initiative > oInitiative ? gs.activePlayerType : gs.opponentPlayerType;
     }
     if (speed !== oSpeed) {
-      return speed > oSpeed ? 'P' : 'O';
+      return speed > oSpeed ? gs.activePlayerType : gs.opponentPlayerType;
     }
     if (initiative === oInitiative) {
       return gs.rng.getRandomPlayer();
     }
-    return initiative > oInitiative ? 'P' : 'O';
+    return initiative > oInitiative ? gs.activePlayerType : gs.opponentPlayerType;
   }
 }
 
@@ -167,11 +166,11 @@ function getInitiativePlayer(initiative: number, oInitiative: number, gs: GameSt
   if (initiative === oInitiative) {
     return gs.rng.getRandomPlayer();
   }
-  return initiative > oInitiative ? 'P' : 'O';
+  return initiative > oInitiative ? gs.activePlayerType : GameStateUtil.getOppositePlayer(gs.activePlayerType);
 }
 
 function getSpeedPlayers(gs: GameState) {
-  const fasterPlayer = GameStateUtil.getFirstPlayer(gs, 'P');
+  const fasterPlayer = GameStateUtil.getFirstPlayer(gs, gs.activePlayerType);
   const slowerPlayer = GameStateUtil.getOppositePlayer(fasterPlayer);
   return { fasterPlayer, slowerPlayer };
 }

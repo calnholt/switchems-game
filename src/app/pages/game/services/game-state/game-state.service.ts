@@ -12,6 +12,7 @@ import { MonsterAction } from '../../models/monster/monster-action.model';
 import { GameOverService } from '../game-over/game-over.service';
 import { PlayerType } from '../../logic/player-type.mode';
 import { PlayerProfileService } from '~/app/shared/services/player-profile.service';
+import { GameStateUtil } from './game-state.util';
 
 export interface GameState {
   p: PlayerState;
@@ -23,6 +24,7 @@ export interface GameState {
   gameOverService: GameOverService;
   cpu: boolean;
   activePlayerType: PlayerType;
+  opponentPlayerType: PlayerType;
   getFreshGameState: () => GameState;
 }
 
@@ -43,6 +45,8 @@ export class GameStateService {
 
   private _isCpu: boolean = true;
   private activePlayerType!: PlayerType;
+
+  public get isCpu() { return this._isCpu; }
 
   constructor(
     private playerService: PlayerService,
@@ -104,6 +108,7 @@ export class GameStateService {
       gameOverService: this.gameOverService,
       cpu: this._isCpu,
       activePlayerType: this.activePlayerType,
+      opponentPlayerType: GameStateUtil.getOppositePlayer(this.activePlayerType),
       getFreshGameState: this.getGameState,
     }
   }

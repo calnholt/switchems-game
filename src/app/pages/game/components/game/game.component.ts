@@ -76,11 +76,15 @@ export class GameComponent {
   ngOnInit() {
     this.isTutorial = this.router.url === '/tutorial';
     const isCustom = this.router.url === '/custom-game';
+    const isOnline = this.router.url === '/online-game';
     if (this.isTutorial) {
       this.playerService.startTutorial();
     }
     else if (isCustom) {
       this.playerService.startCustomGame();
+    }
+    else if (isOnline) {
+      this.playerService.startOnlineGame();
     }
     else {
       this.playerService.startGame();
