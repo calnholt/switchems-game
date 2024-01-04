@@ -1,7 +1,9 @@
+import { EventCommand } from "../../logic/commands/event-command.model";
 import { DrawCommand, HandCommandData } from "../../logic/commands/hand-commands.model";
-import { DescriptiveMessageCommand } from "../../logic/commands/message-command.model";
+import { DescriptiveMessageCommand, WaitingForOpponentCommand } from "../../logic/commands/message-command.model";
 import { HealCommand, HealCommandData } from "../../logic/commands/stat-modification-command.model";
 import { GainRandomStatPipCommandData, GainStatPipCommand } from "../../logic/commands/stat-pip-commands.model";
+import { PlayerType } from "../../logic/player-type.mode";
 import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { UpdateGameStateService } from "./update-game-state.service";
@@ -10,6 +12,7 @@ export const CommandUtil = {
   gainRandomStatPip,
   heal,
   draw,
+  handlePrompt,
 }
 
 // basically an intermediary action that sets the actual pips gained
@@ -81,4 +84,25 @@ function heal(gs: GameState, data: HealCommandData, rc: UpdateGameStateService) 
   }
   new HealCommand(rc, { ...data, amount: hpDiff, display: false}).pushFront();
   return hpDiff;
+}
+
+function handlePrompt(
+  prompt: EventCommand<any>, 
+  command: EventCommand<any>, 
+  gs: GameState, 
+  player: PlayerType, 
+  rc: UpdateGameStateService,
+  ) {
+  // is cpu opponent
+  const isCpuOpponent = gs.cpu && player === 'O';
+  const isOnlineOpponentWaiting = gs.cpu && player !== gs.activePlayerType;
+  if (isCpuOpponent) {
+    command.pushFront();
+  }
+  else if (isOnlineOpponentWaiting) {
+    new WaitingForOpponentCommand(rc, { player, key: 'waiting'}).pushFront();
+  }
+  else {
+    prompt.pushFront();
+  }
 }

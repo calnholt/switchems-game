@@ -4,6 +4,7 @@ import { GameStateUtil } from "../../services/game-state/game-state.util";
 import { PlayerType } from "../player-type.mode";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { CommandData } from "../commands/event-command.model";
+import { Monster } from "../../models/monster/monster.model";
 
 export abstract class MonsterLogic {
   monsterKey: string;
@@ -22,7 +23,13 @@ export abstract class MonsterLogic {
     this.cardKey = cardKey;
     this.player = player;
     this.gs = gs;
+    // TODO: this is very fugly
     this.monsterNames = GameStateUtil.getMonsterNames(gs, player);
+    const { selectedAction, inactiveMonsters } = GameStateUtil.getPlayerState(gs, player);
+    if (selectedAction.action.getSelectableActionType() === 'SWITCH') {
+      const activeMonster = inactiveMonsters.find(m => m.key() === selectedAction.action.key()) as Monster;
+      this.monsterNames = { monsterName: activeMonster.name, opponentMonsterName: this.monsterNames.opponentMonsterName };
+    }
     this.rc = rc;
     this.key = `${monsterKey}_${cardKey}`;
     this.data = { key: this.key, player, ...this.monsterNames };

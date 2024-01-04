@@ -20,6 +20,7 @@ import { StatBoardSectionType } from "../../models/stat-board/stat-board.model";
 import { GameOverPhaseCommand } from "../../logic/commands/game-phase-commands.model";
 import { MonsterAction } from "../../models/monster/monster-action.model";
 import { StandardActionCommandData } from "../../logic/commands/standard-action-command.model";
+import { CommandUtil } from "./command.util";
 
 export const UpdateGameStateUtil = {
   doMonsterAction,
@@ -56,7 +57,7 @@ export const UpdateGameStateUtil = {
 }
 
 function skipActionAndDamage(gs: GameState, data: CommandData): boolean {
-  const { activeMonster, selectedAction } = GameStateUtil.getPlayerState(gs.getFreshGameState(), data.player);
+  const { activeMonster, selectedAction } = GameStateUtil.getPlayerState(gs, data.player);
   const isKOd = activeMonster.currentHp === 0;
   const wasKOdThisTurn = !!(selectedAction.action?.key() && ((selectedAction.action as MonsterAction)?.monsterName !== activeMonster.name));
   const isFlinched = activeMonster.modifiers.contains('FLINCHED');
@@ -306,7 +307,7 @@ function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSer
     // timeout syncs the animation...clunky
     setTimeout(() => {
       player.switch(data.key);
-      CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs.getFreshGameState());
+      CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs);
     }, 250);
     // gain switch in defense if opponent selected a monster action
     if (!data.isKo && opponentAction.action.getSelectableActionType() === 'MONSTER') {
@@ -329,17 +330,13 @@ function recoilCheck(gs: GameState, data: BasicCommandData, rc: UpdateGameStateS
 
 function switchRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
   const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
-  // cpu opponent
-  if (data.player === 'O' && gs.cpu) {
-    new SwitchOutCommand(rc, { ...data, type: activeMonster.modifiers.hasStatusEffect() ? 'REMOVE_STATUS' : 'HEAL', }).pushFront();
-  }
-  else if (activeMonster.modifiers.hasStatusEffect()) {
-    if (!gs.cpu && data.player === gs.opponentPlayerType) {
-      new WaitingForOpponentCommand(rc, data).pushFront();
-    }
-    else {
-      new SwitchOutPromptCommand(rc, { ...data }).pushFront();
-    }
+  const cpuCommand = new SwitchOutCommand(rc, { 
+    ...data, 
+    type: activeMonster.modifiers.hasStatusEffect() ? 'REMOVE_STATUS' : 'HEAL',
+  });
+  const prompt = new SwitchOutPromptCommand(rc, { ...data });
+  if (activeMonster.modifiers.hasStatusEffect()) {
+    CommandUtil.handlePrompt(prompt, cpuCommand, gs, data.player, rc);
   }
   else {
     new SwitchOutCommand(rc, { ...data, type: 'HEAL', }).pushFront();
@@ -358,23 +355,33 @@ function knockoutRoutine(gs: GameState, data: KnockedOutCommandData, rc: UpdateG
   const { inactiveMonsters } = GameStateUtil.getPlayerState(gs, kodPlayer);
   const availableMonsters = inactiveMonsters.filter(m => m.currentHp !== 0);
    // switch to only other option without prompt
+  const monsterToSwitchTo = availableMonsters[0];
+  const noOptionCommand = new SwitchInCommand(rc, { 
+    ...data, 
+    player: kodPlayer, 
+    key: monsterToSwitchTo.key(), 
+    isKo: true, 
+    monsterName: monsterToSwitchTo.name, 
+    display: true,
+  });
+  const cpuCommand = new SwitchInCommand(rc, { 
+    ...data, 
+    player: kodPlayer, 
+    key: monsterToSwitchTo.key(), 
+    isKo: true, 
+    monsterName: monsterToSwitchTo.name, 
+    display: true,
+  });
+  const prompt = new KnockedOutSwitchInPromptCommand(rc, { 
+    ...data, 
+    player: kodPlayer, 
+    options: inactiveMonsters.map(m => { return { name: m.name, key: m.key() }}),
+  });
   if (availableMonsters.length === 1) {
-    const monsterToSwitchTo = availableMonsters[0];
-    new SwitchInCommand(rc, { ...data, player: kodPlayer, key: monsterToSwitchTo.key(), isKo: true, monsterName: monsterToSwitchTo.name, display: true }).pushFront();
-  }
-  // cpu chooses randomly
-  else if (kodPlayer === 'O' && gs.cpu) {
-    const monsterToSwitchTo = availableMonsters[gs.rng.randomIntOption(2)];
-    new SwitchInCommand(rc, { ...data, player: kodPlayer, key: monsterToSwitchTo.key(), isKo: true, monsterName: monsterToSwitchTo.name, display: true }).pushFront();
+    noOptionCommand.pushFront();
   }
   else {
-    if (kodPlayer === gs.activePlayerType) {
-      const options = inactiveMonsters.map(m => { return { name: m.name, key: m.key() }});
-      new KnockedOutSwitchInPromptCommand(rc, { ...data, player: kodPlayer, options }).pushFront();
-    }
-    else if (!gs.cpu) {
-      new WaitingForOpponentCommand(rc, data).pushFront();
-    }
+    CommandUtil.handlePrompt(prompt, cpuCommand, gs, kodPlayer, rc);
   }
 }
 

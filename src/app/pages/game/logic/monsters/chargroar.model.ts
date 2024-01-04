@@ -5,6 +5,7 @@ import { DisableActionCommand, DisableActionPromptCommand } from "../commands/mo
 import { StatModificationCommand } from "../commands/stat-modification-command.model";
 import { GainRandomStatPipCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { MonsterLogic } from "./monster-logic.model";
+import { CommandUtil } from "../../services/update-game-state/command.util";
 
 export class Chargroar extends MonsterLogic {
 
@@ -13,27 +14,21 @@ export class Chargroar extends MonsterLogic {
     const options = activeMonster.actions
         .filter(a => !a.isDisabled && !a.isLocked)
         .map(a => { return { key: a.key(), name: a.name }});
-    if (this.gs.cpu && this.player === 'O') {
-      const selection = options[ArrayUtil.getRandomIndex(options.length, this.gs.rng)];
-      new DisableActionCommand(this.rc, {
-        ...this.data,
-        destroyOnTrigger: true,
-        display: true,
-        selection,
-      }).pushFront();
-    }
-    else if (!this.gs.cpu && this.data.player !== this.gs.activePlayerType) {
-      new WaitingForOpponentCommand(this.rc, this.data).pushFront();
-    }
-    else {
-      new DisableActionPromptCommand(this.rc, { 
-        ...this.data, 
-        destroyOnTrigger: true, 
-        options, 
-        origin: 'Chargroar switched in',
-        display: true,
-      }).pushFront();
-    }
+    const selection = options[ArrayUtil.getRandomIndex(options.length, this.gs.rng)];
+    const prompt = new DisableActionPromptCommand(this.rc, { 
+      ...this.data, 
+      destroyOnTrigger: true, 
+      options, 
+      origin: 'Chargroar switched in',
+      display: true,
+    });
+    const command = new DisableActionCommand(this.rc, {
+      ...this.data,
+      destroyOnTrigger: true,
+      display: true,
+      selection,
+    });
+    CommandUtil.handlePrompt(prompt, command, this.gs, this.player, this.rc);
   }
 
   override addTriggers(): void {
