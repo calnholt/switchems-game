@@ -59,6 +59,7 @@ export class GameComponent {
   currentPhase!: GamePhaseCommandType;
 
   activePlayerType!: PlayerType;
+  opponentPlayerType!: PlayerType;
 
   constructor(
     private playerService: PlayerService,
@@ -91,6 +92,7 @@ export class GameComponent {
     }
     this.playerProfileService.profile$.subscribe((value) => {
       this.activePlayerType = value.playerType;
+      this.opponentPlayerType = value.playerType === 'P' ? 'O' : 'P';
     });
     this.playerService.player.activeMonster$.subscribe((value) => {
       if (this.modifiersSub) {
@@ -175,6 +177,7 @@ export class GameComponent {
         }
       });
     }
+    this.monsterViewService.reset();
     this.monsterViewService.monsterBeingViewed$.subscribe((value) => {
       this.isViewingOpponentActions = value.player !== this.activePlayerType;
       this.isViewingActiveMonster = value.player === this.activePlayerType && this.activeMonster.key() === value.key;

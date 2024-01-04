@@ -35,7 +35,7 @@ export class MonsterComponent implements OnInit, OnChanges {
   @Input() cardsInHand = 0;
   @Input() cardsInMyOpponentsHand = 0;
   @Input() disable: boolean = false;
-  @Input() activePlayerType: PlayerType = 'P';
+  @Input() playerType: PlayerType = 'P';
   @Output() onView: EventEmitter<CardCompositeKey> = new EventEmitter();
   
   monsterIcon!: Path;
@@ -147,13 +147,6 @@ export class MonsterComponent implements OnInit, OnChanges {
 
   view() {
     this.onView.emit(this.monster.key());
-  }
-
-  getOpponentPlayerType() {
-    if (this.isOpponent) {
-      return this.activePlayerType === 'P' ? 'O' : 'P';
-    }
-    return this.activePlayerType;
   }
 
 }

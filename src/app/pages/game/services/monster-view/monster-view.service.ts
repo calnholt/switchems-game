@@ -27,7 +27,7 @@ export class MonsterViewService {
   ) { 
     this._monsterBeingViewed = new BehaviorSubject<MonsterBeingViewed>({
       key: this.playerService.activeMonster.key(),
-      player: 'P',
+      player: this.playerProfileService.profile.playerType ?? 'P',
     });
   }
 

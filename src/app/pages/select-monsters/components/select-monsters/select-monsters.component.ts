@@ -54,10 +54,6 @@ export class SelectMonstersComponent {
     if (this.isOnline) {
       this.monsterSelectionService.opponentSelectionType$.subscribe((value) => {
         this.onlineSelectionType = value;
-        if (this.mySelectionType === 'PICK_4_SELECTIONS') {
-          this.peerService.sendData('PICK_4_SELECTIONS', this.monsterSelectionService.selectedMonsters);
-          this.screen = 'PICK_3';
-        }
         if (this.mySelectionType === 'PICK_4_CONFIRMED' && this.onlineSelectionType === 'PICK_4_CONFIRMED') {
           this.peerService.sendData('PICK_4_SELECTIONS', this.monsterSelectionService.selectedMonsters);
           this.screen = 'PICK_3';

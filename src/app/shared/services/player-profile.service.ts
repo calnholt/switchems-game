@@ -42,7 +42,7 @@ export class PlayerProfileService {
 
   setHost(opponent: PlayerProfile, isHost: boolean) {
     this.profile$.next({ ...this.profile, playerType: isHost ? 'P' : 'O' });
-    this.opponentProfile$.next({ ...opponent, playerType: !isHost ? 'P' : 'O' });
+    this.opponentProfile$.next({ ...opponent, playerType: isHost ? 'O' : 'P' });
   }
 
 }

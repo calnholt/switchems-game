@@ -95,7 +95,7 @@ function handlePrompt(
   ) {
   // is cpu opponent
   const isCpuOpponent = gs.cpu && player === 'O';
-  const isOnlineOpponentWaiting = gs.cpu && player !== gs.activePlayerType;
+  const isOnlineOpponentWaiting = !gs.cpu && player !== gs.activePlayerType;
   if (isCpuOpponent) {
     command.pushFront();
   }

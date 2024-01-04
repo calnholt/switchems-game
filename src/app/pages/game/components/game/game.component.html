@@ -11,13 +11,13 @@
               <sw-status-effects [modifiers]="modifiers" />
             </div>
             <div>
-              <sw-monster [monster]="activeMonster" [isActiveMonster]="true" />
+              <sw-monster [monster]="activeMonster" [isActiveMonster]="true" [playerType]="activePlayerType" />
             </div>
           </div>
           <div class="monster-container">
             <div>
               <sw-monster [monster]="oActiveMonster" [isActiveMonster]="true" [isOpponent]="true"
-                [cardsInMyOpponentsHand]="cardsInMyOpponentsHand" />
+                [cardsInMyOpponentsHand]="cardsInMyOpponentsHand" [playerType]="opponentPlayerType"/>
             </div>
             <div class="modifier-container opponent">
               <sw-modifiers [modifiers]="oModifiers" [selectedAction]="oSelectedAction" [hide]="hideModifiers" />
@@ -39,7 +39,7 @@
         <div class="action-container">
           <div class="inactive-monster-container">
             <ng-container *ngFor="let monster of (isViewingOpponentActions ? oInactiveMonsters : inactiveMonsters)">
-              <sw-monster [monster]="monster" [isActiveMonster]="false" [cardsInHand]="cardsInMyHand" [disable]="!isViewingActiveMonster" [isOpponent]="isViewingOpponentActions" [activePlayerType]="activePlayerType" />
+              <sw-monster [monster]="monster" [isActiveMonster]="false" [cardsInHand]="cardsInMyHand" [disable]="!isViewingActiveMonster" [isOpponent]="isViewingOpponentActions" [playerType]="isViewingOpponentActions ? opponentPlayerType : activePlayerType" />
             </ng-container>
           </div>
           <div>

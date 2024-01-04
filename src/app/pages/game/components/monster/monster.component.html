@@ -27,7 +27,7 @@
 <ng-container *ngIf="!isActiveMonster">
   <div id="inactive-container">
     <div class="view-button-container">
-      <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="false" [player]="getOpponentPlayerType()"  />
+      <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="false" [player]="playerType"  />
     </div>
     <div [ngClass]="{'tutorial-highlight' : isBenchedMonsterHighlighted}">
       <sw-pushable-button [isActive]="cardsInHand >= 2 && enabled && !disable">
@@ -85,7 +85,7 @@
       <sw-monster-hp [hp]="monster.hp" [currentHp]="monster.currentHp" [initiative]="monster.initiative" [isActive]="isActiveMonster" />
       <div class="detail-container">
         <div *ngIf="isActiveMonster && !isOpponent && !hideUiElements" class="view-button-container">
-          <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="isActiveMonster" [player]="getOpponentPlayerType()" />
+          <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="isActiveMonster" [player]="playerType" />
         </div>
         <div [style.marginRight]="'5px'">
           <sw-monster-element-breakdown [style.width]="'100%'" [weaknesses]="monster.weaknesses"
@@ -106,7 +106,7 @@
           </div>
         </div>
         <div *ngIf="isActiveMonster && isOpponent" class="view-button-container">
-          <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="isActiveMonster" [player]="getOpponentPlayerType()" />
+          <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="isActiveMonster" [player]="playerType" />
         </div>
       </div>
     </div>
