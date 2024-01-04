@@ -108,9 +108,7 @@ export class EventCommandQueueService {
       if (command?.requiresDecision()) {
         const gs = this.gameStateService.getGameState();
         // active player is making a decision
-        if (gs.activePlayerType === command.data.activePlayerType) {
-          this._isAwaitingDecision = true;
-        }
+        this._isAwaitingDecision = true;
         console.log('currentQueue', this._queue);
         break; // Exit the loop and wait for the decision
       } else {

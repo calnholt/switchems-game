@@ -333,12 +333,13 @@ function switchRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStat
   if (data.player === 'O' && gs.cpu) {
     new SwitchOutCommand(rc, { ...data, type: activeMonster.modifiers.hasStatusEffect() ? 'REMOVE_STATUS' : 'HEAL', }).pushFront();
   }
-  // online opponent
-  else if (data.player === gs.opponentPlayerType) {
-    new WaitingForOpponentCommand(rc, data).pushFront();
-  }
   else if (activeMonster.modifiers.hasStatusEffect()) {
-    new SwitchOutPromptCommand(rc, { ...data }).pushFront();
+    if (data.player === gs.opponentPlayerType) {
+      new WaitingForOpponentCommand(rc, data).pushFront();
+    }
+    else {
+      new SwitchOutPromptCommand(rc, { ...data }).pushFront();
+    }
   }
   else {
     new SwitchOutCommand(rc, { ...data, type: 'HEAL', }).pushFront();
@@ -367,8 +368,13 @@ function knockoutRoutine(gs: GameState, data: KnockedOutCommandData, rc: UpdateG
     new SwitchInCommand(rc, { ...data, player: kodPlayer, key: monsterToSwitchTo.key(), isKo: true, monsterName: monsterToSwitchTo.name, display: true }).pushFront();
   }
   else {
-    const options = inactiveMonsters.map(m => { return { name: m.name, key: m.key() }});
-    new KnockedOutSwitchInPromptCommand(rc, { ...data, player: kodPlayer, options }).pushFront();
+    if (kodPlayer === gs.activePlayerType) {
+      const options = inactiveMonsters.map(m => { return { name: m.name, key: m.key() }});
+      new KnockedOutSwitchInPromptCommand(rc, { ...data, player: kodPlayer, options }).pushFront();
+    }
+    else {
+      new WaitingForOpponentCommand(rc, data).pushFront();
+    }
   }
 }
 
