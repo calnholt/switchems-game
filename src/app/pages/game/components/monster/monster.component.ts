@@ -115,7 +115,7 @@ export class MonsterComponent implements OnInit, OnChanges {
   }
 
   onSelect() {
-    if (!this.isActiveMonster && this.enabled && !this.disable) {
+    if (!this.isActiveMonster && this.enabled && !this.disable && this.monster.currentHp > 0) {
       this.eventManagerService.sendEvent({ type: GameUISelectionEventType.TOGGLE_ACTION, data: this.monster })
     }
   }

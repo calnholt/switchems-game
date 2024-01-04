@@ -50,11 +50,14 @@ export class SelectMonstersComponent {
 
   ngOnInit() {
     this.isOnline = !!this.playerProfileService.opponentProfile.name;
-    // this.isOnline = true;
     this.opponentName = this.playerProfileService?.opponentProfile?.name;
     if (this.isOnline) {
       this.monsterSelectionService.opponentSelectionType$.subscribe((value) => {
         this.onlineSelectionType = value;
+        if (this.mySelectionType === 'PICK_4_SELECTIONS') {
+          this.peerService.sendData('PICK_4_SELECTIONS', this.monsterSelectionService.selectedMonsters);
+          this.screen = 'PICK_3';
+        }
         if (this.mySelectionType === 'PICK_4_CONFIRMED' && this.onlineSelectionType === 'PICK_4_CONFIRMED') {
           this.peerService.sendData('PICK_4_SELECTIONS', this.monsterSelectionService.selectedMonsters);
           this.screen = 'PICK_3';

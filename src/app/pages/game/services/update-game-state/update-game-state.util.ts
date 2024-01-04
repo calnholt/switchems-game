@@ -221,7 +221,7 @@ function heal(gs: GameState, data: HealCommandData, rc: UpdateGameStateService) 
   if (amountHealed > 0 && !data.skip) {
     new DescriptiveMessageCommand(rc, {
       ...data,
-      message: `${data.monsterName} healed ${amountHealed} HP ${data.origin ? ` from ${data.origin}` : ''}.`,
+      message: `${data.monsterName} healed ${amountHealed}HP${data.origin ? ` from ${data.origin}` : ''}.`,
     }).pushFront();
   }
 }
@@ -299,7 +299,7 @@ function switchIn(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSer
   const { activeMonster, player } = GameStateUtil.getPlayerState(gs, data.player);
   const { selectedAction: opponentAction, activeMonster: opponentActiveMonster } = GameStateUtil.getOpponentPlayerState(gs, data.player);
   if (gs.currentPhaseService.currentTurn === 0) {
-    CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs.getFreshGameState());
+    CardByKeyUtil.executeCardByKey(data.key, data.player, rc, gs);
   }
   else {
     gs.battleAniService.update(gs.activePlayerType === data.player, 'SWITCHING_OUT');
@@ -334,7 +334,7 @@ function switchRoutine(gs: GameState, data: BasicCommandData, rc: UpdateGameStat
     new SwitchOutCommand(rc, { ...data, type: activeMonster.modifiers.hasStatusEffect() ? 'REMOVE_STATUS' : 'HEAL', }).pushFront();
   }
   else if (activeMonster.modifiers.hasStatusEffect()) {
-    if (data.player === gs.opponentPlayerType) {
+    if (!gs.cpu && data.player === gs.opponentPlayerType) {
       new WaitingForOpponentCommand(rc, data).pushFront();
     }
     else {
@@ -372,7 +372,7 @@ function knockoutRoutine(gs: GameState, data: KnockedOutCommandData, rc: UpdateG
       const options = inactiveMonsters.map(m => { return { name: m.name, key: m.key() }});
       new KnockedOutSwitchInPromptCommand(rc, { ...data, player: kodPlayer, options }).pushFront();
     }
-    else {
+    else if (!gs.cpu) {
       new WaitingForOpponentCommand(rc, data).pushFront();
     }
   }

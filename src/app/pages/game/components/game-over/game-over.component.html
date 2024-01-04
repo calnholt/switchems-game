@@ -5,16 +5,22 @@
       <div class="winner-text">
         {{winner === activePlayer ? 'You won!' : 'You lost!'}}
       </div>
-      <div class="buttons-container">
-        <sw-pushable-button *ngIf="!isTutorial">
-          <div class="acknowledge-button" (click)="playAgain()">Play Again</div>
-        </sw-pushable-button>
-        <sw-pushable-button *ngIf="isCustomGame">
-          <div class="acknowledge-button" (click)="changeMonsters()">Change Monsters</div>
-        </sw-pushable-button>
-        <sw-pushable-button>
-          <div class="acknowledge-button" (click)="returnToTitleScreen()">Return to title screen</div>
-        </sw-pushable-button>
+      <div class="common-buttons-container">
+        <div class="button">
+          <sw-pushable-button *ngIf="!isTutorial">
+            <div class="button-face" (click)="playAgain()">Play Again</div>
+          </sw-pushable-button>
+        </div>
+        <div class="button">
+          <sw-pushable-button *ngIf="!isTutorial">
+            <div class="button-face" (click)="changeMonsters()">Change Monsters</div>
+          </sw-pushable-button>
+        </div>
+        <div class="button">
+          <sw-pushable-button>
+            <div class="button-face" (click)="returnToTitleScreen()">Return to title screen</div>
+          </sw-pushable-button>
+        </div>
       </div>
     </div>
   </div>

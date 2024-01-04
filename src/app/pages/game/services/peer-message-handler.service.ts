@@ -11,6 +11,7 @@ import { PeerMessageMediatorService } from './peer-message-mediator.service';
 import { CurrentPhaseService } from './current-phase/current-phase.service';
 import { PeerJsService } from '~/app/shared/services/peer-js.service';
 import { EventCommandType } from '../logic/commands/event-command.model';
+import { PlayerService } from './player/player.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,7 @@ export class PeerMessageHandlerService {
     private peerMessageMediatorService: PeerMessageMediatorService,
     private currentPhaseService: CurrentPhaseService,
     private peerService: PeerJsService,
+    private playerService: PlayerService,
   ) {
     this.peerMessageMediatorService.message$.subscribe((value) => {
       if (!value) return;
@@ -64,6 +66,7 @@ export class PeerMessageHandlerService {
       case 'START_GAME':
         this.monsterSelectionService.opponentSelections$.next(data);
         this.gameStateService.setCpu(false);
+        // timeout for data to load
         setTimeout(() => {
           this.router.navigate(['/online-game']);
         }, 100);
@@ -81,6 +84,9 @@ export class PeerMessageHandlerService {
         break;
       case 'FINISHED_TURN':
         this.onlineBattleService.oStatus$.next('SELECTING_ACTION');
+        break;
+      case 'REPLAY_GAME':
+        this.playerService.startOnlineGame();
         break;
     }
 

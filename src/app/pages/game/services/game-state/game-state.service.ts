@@ -14,7 +14,6 @@ import { PlayerType } from '../../logic/player-type.mode';
 import { PlayerProfileService } from '~/app/shared/services/player-profile.service';
 import { GameStateUtil } from './game-state.util';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
-import { PeerJsService } from '~/app/shared/services/peer-js.service';
 
 export interface GameState {
   p: PlayerState;
@@ -59,7 +58,6 @@ export class GameStateService {
     private gameOverService: GameOverService,
     private playerProfileService: PlayerProfileService,
     private currentPhaseService: CurrentPhaseService,
-    private peerService: PeerJsService,
   ) {
     this.playerProfileService.profile$.subscribe((value) => {
       this.activePlayerType = value.playerType;
@@ -112,7 +110,7 @@ export class GameStateService {
       selectedActionService: this.selectedActionService,
       currentPhaseService: this.currentPhaseService,
       gameOverService: this.gameOverService,
-      cpu: this._isCpu,
+      cpu: this._isCpu === undefined ? true : this._isCpu,
       activePlayerType: this.activePlayerType,
       opponentPlayerType: GameStateUtil.getOppositePlayer(this.activePlayerType),
       getFreshGameState: this.getGameState,

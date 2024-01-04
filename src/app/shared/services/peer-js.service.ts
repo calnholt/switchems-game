@@ -73,6 +73,10 @@ export class PeerJsService {
     this.connection?.send({ type, data });
   }
 
+  disconnect() {
+    this.connection?.close();
+  }
+
 }
 
 export interface PeerMessage {

@@ -6,9 +6,13 @@
   justify-content: center;
   font-family: $text-font;
 
+  img {
+    height: 300px;
+  }
+
   .game-over-container {
-    margin-top: 100px;
-    width: 550px;
+    margin-top: 50px;
+    width: 450px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,19 +22,9 @@
 
     .winner-text {
       font-size: 50px;
-      color: white;
-    }
-
-    .buttons-container {
-      display: flex;
-      justify-content: space-around;
-      width: 100%;
-
-      .acknowledge-button {
-        width: 200px;
-        padding: 10px;
-      }
-
+      font-family: $text-font;
+      text-shadow: $text-shadow-border;
+      color: black;
     }
 
   }

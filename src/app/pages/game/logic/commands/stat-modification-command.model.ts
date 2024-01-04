@@ -32,7 +32,7 @@ export class HealCommand extends EventCommand<HealCommandData> {
     super(receiver, 'HEAL', { ...data, display: false });
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} healed ${this.data.amount} HP ${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
+    return `${this.data.monsterName} healed ${this.data.amount}HP${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
   }
 }
 

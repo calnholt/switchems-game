@@ -22,7 +22,7 @@ export class Chargroar extends MonsterLogic {
         selection,
       }).pushFront();
     }
-    else if (this.data.player !== this.gs.activePlayerType) {
+    else if (!this.gs.cpu && this.data.player !== this.gs.activePlayerType) {
       new WaitingForOpponentCommand(this.rc, this.data).pushFront();
     }
     else {
