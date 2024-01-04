@@ -57,7 +57,7 @@ export class CrushDialogComponent {
   }
 
   increment(statType: StatBoardSectionType) {
-    if (this.getTotal() <= 2 && this.getTotal() < this.statBoard.totalPips()) {
+    if (this.getTotal() < this.command.data.total && this.getTotal() < this.statBoard.totalPips()) {
       //@ts-ignore
       this.selections.find(s => s.statType === statType).amount++;
     }
