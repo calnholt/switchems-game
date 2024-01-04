@@ -12,19 +12,24 @@ import { Buff } from '../models/monster/buff.model';
 import { PeerJsService } from '~/app/shared/services/peer-js.service';
 import { Router } from '@angular/router';
 
+export type OnlineBattleStatusType = 
+  | 'SELECTING_ACTION' 
+  | 'CONFIRMED_ACTION' 
+  | 'RESOLVING_TURN' 
+
 @Injectable({
   providedIn: 'root'
 })
 export class OnlineBattleService {
 
     // denotes if online opponent has submitted their action
-    private _confirmed$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    private _oConfirmed$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private _status$: BehaviorSubject<OnlineBattleStatusType> = new BehaviorSubject<OnlineBattleStatusType>('SELECTING_ACTION');
+    private _oStatus$: BehaviorSubject<OnlineBattleStatusType> = new BehaviorSubject<OnlineBattleStatusType>('SELECTING_ACTION');
 
-    public get confirmed$() { return this._confirmed$; }
-    public get confirmed() { return this.confirmed$.value; }
-    public get oConfirmed$() { return this._oConfirmed$; }
-    public get oConfirmed() { return this._oConfirmed$.value; }
+    public get status$() { return this._status$;   }
+    public get status() { return this.status$.value; }
+    public get oStatus$() { return this._oStatus$; }
+    public get oStatus() { return this._oStatus$.value; }
     public get isOnline() { return this.router.url.includes('online') }
 
   constructor(
@@ -34,15 +39,13 @@ export class OnlineBattleService {
     private router: Router,
 
   ) { 
-    this.confirmed$.subscribe((value) => {
-      if (!value) return;
-      if (this.oConfirmed) {
+    this.status$.subscribe((value) => {
+      if (this.oStatus === 'CONFIRMED_ACTION' && value === 'CONFIRMED_ACTION') {
         this.peerJsService.sendData('SEND_SELECTED_ACTION', this.getActionData());
       }
     })
-    this.oConfirmed$.subscribe((value) => {
-      if (!value) return;
-      if (this.confirmed) {
+    this.oStatus$.subscribe((value) => {
+      if (this.status === 'CONFIRMED_ACTION'  && value === 'CONFIRMED_ACTION') {
         this.peerJsService.sendData('SEND_SELECTED_ACTION', this.getActionData());
       }
     })

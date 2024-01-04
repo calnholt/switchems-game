@@ -3,9 +3,12 @@ import { SelectedActionService } from '../../services/selected-action/selected-a
 import { StatBoardSection, StatBoardSectionType } from '../../models/stat-board/stat-board.model';
 import { GamePhaseService } from '../../services/game-phase/game-phase.service';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
-import { OnlineBattleService } from '../../services/online-battle.service';
+import { OnlineBattleService, OnlineBattleStatusType } from '../../services/online-battle.service';
+import { SelectedAction } from '../../services/selected-action/selected-action.model';
 
 const LABEL = 'Select an action';
+const WAITING_LABEL = `Waiting for opponent's selection...`;
+const WAITING_TURN_LABEL = `Waiting for opponent to finish turn...`;
 
 @Component({
   selector: 'sw-submit-action-button',
@@ -14,7 +17,7 @@ const LABEL = 'Select an action';
 })
 export class SubmitActionButtonComponent {
   @Input() viewingOtherMonstersActions = false;
-
+  selectedAction!: SelectedAction;
   isCostFulfilled = false;
   displayName: string | null = null;
   label: string | null = LABEL;
@@ -22,7 +25,10 @@ export class SubmitActionButtonComponent {
   statBoardSectionType: StatBoardSectionType | null = null;
   enabled = true;
 
-  isSubmittedOnline = false;
+  status!: OnlineBattleStatusType;
+  opponentStatus!: OnlineBattleStatusType;
+
+  showButton = true;
 
   constructor(
     private selectedActionService: SelectedActionService,
@@ -30,15 +36,13 @@ export class SubmitActionButtonComponent {
     private currentPhaseService: CurrentPhaseService,
     private onlineBattleService: OnlineBattleService,
   ) {
-    this.onlineBattleService.confirmed$.subscribe((value) => {
-      this.isSubmittedOnline = value;
-    })
   }
 
   ngOnInit() {
     this.selectedActionService.selectedAction$.subscribe((selectedAction) => {
       if (selectedAction.action.getSelectableActionType() === 'NONE') {
         this.isCostFulfilled = false;
+        this.label = LABEL;
         return;
       }
       this.displayName = selectedAction.action.getDisplayName();
@@ -47,10 +51,40 @@ export class SubmitActionButtonComponent {
     })
     this.currentPhaseService.currentPhase$.subscribe((phase) => {
       this.enabled = phase === 'SELECTION_PHASE';
+      this.showButton = phase === 'SELECTION_PHASE';
       if (phase === 'SELECTION_PHASE') {
         this.label = LABEL;
       }
     })
+    this.onlineBattleService.status$.subscribe((value) => {
+      this.status = value;
+      if (['SELECTING_ACTION'].includes(value) && this.opponentStatus == 'RESOLVING_TURN') {
+        this.label = WAITING_TURN_LABEL;
+      }
+      if (value === 'CONFIRMED_ACTION') {
+        if (this.opponentStatus === 'SELECTING_ACTION') {
+          this.label = WAITING_LABEL;
+        }
+        else {
+          this.label = LABEL;
+        }
+      }
+    })
+    this.onlineBattleService.oStatus$.subscribe((value) => {
+      this.opponentStatus = value;
+    })
+  }
+
+  isSubmitActive(): boolean {
+    const baseBool = this.isCostFulfilled 
+        && this.enabled 
+        && !this.viewingOtherMonstersActions 
+        && this.status === 'SELECTING_ACTION';
+    if (this.onlineBattleService.isOnline) {
+      return baseBool 
+          && this.opponentStatus !== 'RESOLVING_TURN';
+    }
+    return baseBool;
   }
 
   getDisplayText(statBoardSection: StatBoardSection | undefined ): string {
@@ -66,7 +100,13 @@ export class SubmitActionButtonComponent {
 
   submit() {
     if (this.enabled && this.isCostFulfilled && !this.viewingOtherMonstersActions) {
-      this.gamePhaseService.submitAction();
+      if (this.onlineBattleService.isOnline && this.opponentStatus === 'SELECTING_ACTION') {
+        this.gamePhaseService.submitAction();
+        return;
+      }
+      else {
+        this.gamePhaseService.submitAction();
+      }
     }
   }
 

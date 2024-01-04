@@ -10,6 +10,7 @@ import { SeedableRngService } from './seedable-rng/seedable-rng.service';
 import { PeerMessageMediatorService } from './peer-message-mediator.service';
 import { CurrentPhaseService } from './current-phase/current-phase.service';
 import { PeerJsService } from '~/app/shared/services/peer-js.service';
+import { EventCommandType } from '../logic/commands/event-command.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class PeerMessageHandlerService {
     private peerMessageMediatorService: PeerMessageMediatorService,
     private currentPhaseService: CurrentPhaseService,
     private peerService: PeerJsService,
-  ) { 
+  ) {
     this.peerMessageMediatorService.message$.subscribe((value) => {
       if (!value) return;
       this.handleMessage(value);
@@ -39,6 +40,7 @@ export class PeerMessageHandlerService {
     const type = message.type as PeerMessageType;
     const data = message?.data?.data;
     const isHost = message?.data?.isHost
+
     switch (type) {
       case 'PLAYER_PROFILE':
         this.playerProfileService.setHost(data, isHost);
@@ -67,19 +69,23 @@ export class PeerMessageHandlerService {
         }, 100);
         break;
       case 'SUBMIT_ACTION':
-        this.onlineBattleService.oConfirmed$.next(true);
+        this.onlineBattleService.oStatus$.next('CONFIRMED_ACTION');
         break;
       case 'SEND_SELECTED_ACTION':
         this.onlineBattleService.setOpponentSelectedAction(data);
         this.currentPhaseService.goToNextPhase();
+        this.onlineBattleService.oStatus$.next('RESOLVING_TURN');
         break;
-      case 'CRUSH_PROMPT':
-      case 'DISABLE_ACTION_PROMPT':
-      case 'KNOCKED_OUT_SWITCH_IN_PROMPT':
-      case 'SWITCH_OUT_PROMPT':
-        this.handlePromptService.execute(type, data);
+      case 'FINISHED_TURN':
+        this.onlineBattleService.oStatus$.next('SELECTING_ACTION');
         break;
     }
+
+    // handles all prompts
+    if (type.includes('_PROMPT')) {
+      this.handlePromptService.execute(type as EventCommandType, data);
+    }
+
     console.log(`Received data from Peer A: ${type}`, data);
   }
 }

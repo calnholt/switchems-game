@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { CurrentPhaseService } from '../current-phase/current-phase.service';
 import { PlayerType } from '../../logic/player-type.mode';
 import { GameOverService } from '../game-over/game-over.service';
+import { GameStateService } from '../game-state/game-state.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class EventCommandQueueService {
   private _queue = new Dequeue<EventCommand<CommandData>>();
   private _triggers = new Map<EventCommandType, EventCommand<CommandData>[]>();
   private _isProcessing = false;
-  private _isAwaitingDecision = false;
   private _isAwaitingAcknowledgement = false;
+  private _isAwaitingDecision = false;
 
   private _event$ = new BehaviorSubject<EventCommand<CommandData> | undefined>(undefined);
 
@@ -26,6 +27,7 @@ export class EventCommandQueueService {
   constructor(
     private currentPhaseService: CurrentPhaseService,
     private gameOverService: GameOverService,
+    private gameStateService: GameStateService,
   ) { 
     this.gameOverService.winner$.subscribe((value) => {
       if (!value) {
@@ -102,9 +104,13 @@ export class EventCommandQueueService {
       }
       command = this.dequeue();
       if (!command) break;
+      // The command requires a player decision to proceed
       if (command?.requiresDecision()) {
-        // The command requires a player decision to proceed
-        this._isAwaitingDecision = true;
+        const gs = this.gameStateService.getGameState();
+        // active player is making a decision
+        if (gs.activePlayerType === command.data.activePlayerType) {
+          this._isAwaitingDecision = true;
+        }
         console.log('currentQueue', this._queue);
         break; // Exit the loop and wait for the decision
       } else {

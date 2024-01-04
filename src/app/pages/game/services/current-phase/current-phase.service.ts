@@ -18,7 +18,7 @@ export class CurrentPhaseService {
   constructor() {}
 
   public startGame() {
-    this._currentTurn = 1;
+    this._currentTurn = 0;
     this._currentPhase.next('START_OF_GAME');
   }
 
@@ -26,8 +26,11 @@ export class CurrentPhaseService {
   goToNextPhase() {
     const nextPhase = this.calculateNextPhase();
     console.log('going to next phase', nextPhase);
+    if (nextPhase === 'SELECTION_PHASE' && this.currentTurn === 0) {
+      this._currentTurn++;
+    }
     if (nextPhase === 'END_PHASE') {
-      this._currentTurn ++;
+      this._currentTurn++;
     }
     this._currentPhase.next(nextPhase);
   }

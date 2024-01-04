@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PeerMessageHandlerService } from './pages/game/services/peer-message-handler.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'switchems-game';
+
+  constructor(
+    private p: PeerMessageHandlerService, 
+  ) {
+    
+  }
+
 }

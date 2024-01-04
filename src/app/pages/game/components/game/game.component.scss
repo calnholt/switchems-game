@@ -39,8 +39,10 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
+    margin-right: 0px 5px 0px 0px;
     &.opponent {
       align-items: flex-start;
+      margin-right: 0px 0px 0px 5px;
     }
   }
   

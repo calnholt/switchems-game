@@ -9,8 +9,6 @@ import { GuidedTutorialCheckUtil } from '../../models/tutorial/tutorial.util';
 import { GameStateUtil } from '../game-state/game-state.util';
 import { CPUActionSelectUtil } from '../update-game-state/cpu-action-select.util';
 import { PeerJsService } from '~/app/shared/services/peer-js.service';
-import { SelectedActionService } from '../selected-action/selected-action.service';
-import { PeerMessageMediatorService } from '../peer-message-mediator.service';
 import { OnlineBattleService } from '../online-battle.service';
 
 @Injectable({
@@ -30,8 +28,8 @@ export class GamePhaseService {
   ) {
     this.currentPhaseService.currentPhase$.subscribe((value) => {
       if (value === 'SELECTION_PHASE') {
-        this.onlineBattleService.confirmed$.next(false);
-        this.onlineBattleService.oConfirmed$.next(false);
+        this.onlineBattleService.status$.next('SELECTING_ACTION');
+        this.peerService.sendData('FINISHED_TURN');
       }
       if (value === 'GAME_OVER') {
         this.loaded = false;
@@ -46,10 +44,10 @@ export class GamePhaseService {
     console.log('current seed: ', gs.rng.seed)
     // online games
     if (!this.gameStateService.isCpu) {
-      if (this.onlineBattleService.confirmed) {
-        return;
-      }
-      this.onlineBattleService.confirmed$.next(true);
+      // if (this.onlineBattleService.confirmed) {
+      //   return;
+      // }
+      this.onlineBattleService.status$.next('CONFIRMED_ACTION');
       this.peerService.sendData('SUBMIT_ACTION');
       return;
     }

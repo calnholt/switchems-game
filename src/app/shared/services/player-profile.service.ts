@@ -35,7 +35,7 @@ export class PlayerProfileService {
     if (name.length > 30) {
       return null;
     }
-    localStorage.setItem(KEY, JSON.stringify({ ...this._profile, name: name }));
+    localStorage.setItem(KEY, JSON.stringify({ ...this.profile, name: name }));
     this.profile$.next({ ...this.profile, name });
     return this.profile;
   }

@@ -30,8 +30,8 @@ export class SwitchOutDialogComponent {
 
   ngOnInit() {
     this.ecqs.event$.subscribe((command) => {
-      if (!command) return;
-      this.show = command.type === 'SWITCH_OUT_PROMPT';
+      if (!command || command.type !== 'SWITCH_OUT_PROMPT') return;
+      this.show = true;
       this.command = command;
     });
   }

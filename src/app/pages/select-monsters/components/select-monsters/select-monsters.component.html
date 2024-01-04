@@ -97,14 +97,21 @@
       </div>
     </ng-container>
     <ng-container *ngIf="screen === 'PICK_3'">
-      <div class="button">
+      <div *ngIf="!isOnline" class="button">
         <sw-pushable-button>
           <div class="button-face" (click)="back()">Go Back</div>
         </sw-pushable-button>
       </div>
-      <div class="button">
+      <div *ngIf="isOnline"></div>
+      <div></div>
+      <div *ngIf="!isOnline" class="button">
         <sw-pushable-button [isActive]="team.length === 3">
           <div class="button-face" (click)="play()">Play!</div>
+        </sw-pushable-button>
+      </div>
+      <div *ngIf="isOnline" class="button">
+        <sw-pushable-button [isActive]="team.length === 3 && mySelectionType !== 'TEAM_CONFIRMED'">
+          <div class="button-face" (click)="play()">{{mySelectionType !== 'TEAM_CONFIRMED' ? 'Confirm' : 'Confirmed'}}</div>
         </sw-pushable-button>
       </div>
     </ng-container>

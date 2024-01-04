@@ -3,6 +3,7 @@ import { EventCommandQueueService } from '../../services/event-command-queue/eve
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
+import { OnlineBattleService } from '../../services/online-battle.service';
 
 @Component({
   selector: 'sw-dialog',
@@ -19,19 +20,23 @@ export class DialogComponent {
   message: string = '';
   show: boolean = false;
   allowNext = true;
+  hideNext = false;
 
   constructor(
     private ecqs: EventCommandQueueService,
     private currentPhaseService: CurrentPhaseService,
     private battleAniService: BattleAnimationService,
+    private onlineBattleService: OnlineBattleService,
   ) {
 
   }
 
   ngOnInit() {
+    this.hideNext = this.onlineBattleService.isOnline;
     this.ecqs.event$.subscribe((command) => {
       if (!command) return;
       this.show = !command.type.includes('PROMPT');
+      this.hideNext = command.type === 'WAITING_FOR_OPPONENT';
       setTimeout(() =>{
         this.message = command.getDisplayMessage();
       }, 300);

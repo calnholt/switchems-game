@@ -4,7 +4,7 @@ import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseComm
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
 import { DealAttackDamageCommand, FasterCommand, MonsterActionCommand, SlowerCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
-import { SwitchRoutineCommand } from "../../logic/commands/switch-commands.model";
+import { SwitchInCommand, SwitchRoutineCommand } from "../../logic/commands/switch-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
 import { GameState } from "../game-state/game-state.service";
@@ -13,6 +13,7 @@ import { SelectedAction } from "../selected-action/selected-action.model";
 import { UpdateGameStateService } from "./update-game-state.service";
 import { CPUActionSelectUtil } from "./cpu-action-select.util";
 import { StandardActionCommand } from "../../logic/commands/standard-action-command.model";
+import { UpdateGameStateUtil } from "./update-game-state.util";
 
 export const GamePhaseUtil = {
   revealPhase,
@@ -77,7 +78,7 @@ function executeStartGamePhase(gs: GameState, rc: UpdateGameStateService) {
   function startPhaseByPlayer(player: PlayerType) {
     const { activeMonster } = GameStateUtil.getPlayerState(gs, player);
     const key = activeMonster.key();
-    CardByKeyUtil.executeCardByKey(key, player, rc, gs);
+    new SwitchInCommand(rc, { player, key, activePlayerType: gs.activePlayerType, monsterName: activeMonster.name, display: !activeMonster.switchIn}).enqueue();
   }
 
   startPhaseByPlayer(playerWithInitiative);

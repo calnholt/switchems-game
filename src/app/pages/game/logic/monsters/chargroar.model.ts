@@ -1,6 +1,6 @@
 import { ArrayUtil } from "~/app/shared/utils/array.util";
 import { GameStateUtil } from "../../services/game-state/game-state.util";
-import { DescriptiveMessageCommand } from "../commands/message-command.model";
+import { DescriptiveMessageCommand, WaitingForOpponentCommand } from "../commands/message-command.model";
 import { DisableActionCommand, DisableActionPromptCommand } from "../commands/monster-action-commands.model";
 import { StatModificationCommand } from "../commands/stat-modification-command.model";
 import { GainRandomStatPipCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
@@ -21,6 +21,9 @@ export class Chargroar extends MonsterLogic {
         display: true,
         selection,
       }).pushFront();
+    }
+    else if (this.data.player !== this.gs.activePlayerType) {
+      new WaitingForOpponentCommand(this.rc, this.data).pushFront();
     }
     else {
       new DisableActionPromptCommand(this.rc, { 

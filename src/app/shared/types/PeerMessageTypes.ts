@@ -8,6 +8,7 @@ export type PeerMessageType =
   | 'START_GAME' // starts online game
   | 'SUBMIT_ACTION' // when action is confirmed
   | 'SEND_SELECTED_ACTION' // sends selected action after both players have confirmed
+  | 'FINISHED_TURN' // signifies opponent has finished resolving the turn
 
   // from prompts
   | 'CRUSH_PROMPT'
