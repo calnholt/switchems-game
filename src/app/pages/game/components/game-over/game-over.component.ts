@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { GameOverService, WinnerType } from '../../services/game-over/game-over.service';
 import { ImageUtil } from '~/app/shared/utils/image.util';
 import { slideInLeftOnEnterAnimation } from 'angular-animations';
@@ -8,6 +8,7 @@ import { PlayerType } from '../../logic/player-type.mode';
 import { OnlineBattleService } from '../../services/online-battle.service';
 import { PeerJsService } from '~/app/shared/services/peer-js.service';
 import { PlayerService } from '../../services/player/player.service';
+import { MonsterSelectionService } from '~/app/pages/select-monsters/services/monster-selection.service';
 
 @Component({
   selector: 'sw-game-over',
@@ -17,7 +18,7 @@ import { PlayerService } from '../../services/player/player.service';
     slideInLeftOnEnterAnimation({ translate: '1000px', duration: 300 }),
   ]
 })
-export class GameOverComponent {
+export class GameOverComponent implements OnDestroy {
   @Input() winner: WinnerType = null; 
 
   winAvatar = ImageUtil.avatars.win;
@@ -34,6 +35,7 @@ export class GameOverComponent {
     private playerProfileService: PlayerProfileService,
     private onlineBattleService: OnlineBattleService,
     private peerService: PeerJsService,
+    private monsterSelectionService: MonsterSelectionService,
     private router: Router,
   ) {
     this.isTutorial = this.router.url === '/tutorial';
@@ -41,6 +43,10 @@ export class GameOverComponent {
     this.playerProfileService.profile$.subscribe((value) => {
       this.activePlayer = value.playerType;
     })
+  }
+
+  ngOnDestroy() {
+    this.gameOverService.winner$.next(null);
   }
 
   returnToTitleScreen() {
@@ -68,6 +74,7 @@ export class GameOverComponent {
   changeMonsters() {
     this.gameOverService.winner$.next(null);
     if (this.onlineBattleService.isOnline) {
+      this.monsterSelectionService.opponentSelectionType$.next('');
       this.peerService.sendData('GO_TO_MONSTER_SELECT');
     }
     this.router.navigate(['/select-monsters']);

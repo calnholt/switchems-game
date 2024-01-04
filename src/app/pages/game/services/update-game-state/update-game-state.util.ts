@@ -404,7 +404,12 @@ function crushPrompt(gs: GameState, data: CrushPromptCommandData, rc: UpdateGame
     crush(gs, { ...data, selections }, rc);
   }
   else if (statBoard.hasPips()) {
-    new CrushPromptCommand(rc, data).pushFront();
+    if (!gs.cpu && gs.activePlayerType === data.player) {
+      new CrushPromptCommand(rc, data).pushFront();
+    }
+    else {
+      new WaitingForOpponentCommand(rc, data).pushFront();
+    }
   }
 }
 

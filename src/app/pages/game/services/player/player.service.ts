@@ -9,6 +9,7 @@ import { SelectedActionService } from '../selected-action/selected-action.servic
 import { TutorialService } from '../tutorial/tutorial.service';
 import { SfxService } from '~/app/shared/services/sfx.service';
 import { MonsterSelection, MonsterSelectionService } from '~/app/pages/select-monsters/services/monster-selection.service';
+import { GameOverService } from '../game-over/game-over.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,7 @@ export class PlayerService {
     private tutorialService: TutorialService,
     private sfx: SfxService,
     private monsterSelectionService: MonsterSelectionService,
+    private gameOverService: GameOverService,
   ) {
     this._player = new Player(this.getSpecificStartRandom('Deusvolt', 'Vulturock', 'Stalagrowth'), this.rng);
     this._opponent = new Player(this.getSpecificStartRandom('Lanternshade', 'Vulturock', 'Chargroar'), this.rng);
@@ -50,12 +52,15 @@ export class PlayerService {
   }
 
   startOnlineGame() {
+    this.setup();
     this._player.reset(this.getCustomStart(this.monsterSelectionService.selectedMonsters));
     this._opponent.reset(this.getCustomStart(this.monsterSelectionService.opponentSelections));
-    this.setup();
+    // this.player.inactiveMonsters.forEach(m => m.takeDamage(99));
+    // this._opponent.inactiveMonsters.forEach(m => m.takeDamage(99));
   }
 
   setup() {
+    this.gameOverService.winner$.next(null);
     this.selectedActionService.clear();
     this.tutorialService.clear();
     this.currentPhaseService.startGame();

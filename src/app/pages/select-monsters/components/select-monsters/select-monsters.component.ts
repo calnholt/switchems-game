@@ -54,6 +54,9 @@ export class SelectMonstersComponent {
     if (this.isOnline) {
       this.monsterSelectionService.opponentSelectionType$.subscribe((value) => {
         this.onlineSelectionType = value;
+        if (this.onlineSelectionType === '') {
+          this.mySelectionType = '';
+        }
         if (this.mySelectionType === 'PICK_4_CONFIRMED' && this.onlineSelectionType === 'PICK_4_CONFIRMED') {
           this.peerService.sendData('PICK_4_SELECTIONS', this.monsterSelectionService.selectedMonsters);
           this.screen = 'PICK_3';
@@ -126,7 +129,7 @@ export class SelectMonstersComponent {
   }
 
   proceed() {
-    if (this.isOnline) {
+    if (this.isOnline && this.selectedMonsters.length === 4) {
       this.mySelectionType = 'PICK_4_CONFIRMED';
       this.peerService.sendData('PICK_4_CONFIRMED', {});
       if (this.onlineSelectionType === 'PICK_4_CONFIRMED') {
@@ -148,12 +151,11 @@ export class SelectMonstersComponent {
   }
 
   play() {
-    if (this.isOnline) {
+    if (this.isOnline && this.team.length === 3) {
       this.mySelectionType = 'TEAM_CONFIRMED';
       this.peerService.sendData('TEAM_CONFIRMED', {});
       if (this.onlineSelectionType === 'TEAM_CONFIRMED') {
         this.peerService.sendData('START_GAME', this.monsterSelectionService.selectedMonsters);
-        // this.router.navigate(['/online-game']);
       }
       return;
     }

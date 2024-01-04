@@ -54,6 +54,7 @@ export class PeerMessageHandlerService {
         this.rng.setSeed(data.seed);
         break;
       case 'GO_TO_MONSTER_SELECT':
+        this.monsterSelectionService.opponentSelectionType$.next('');
         this.router.navigate(['/select-monsters']);
         break;
       case 'PICK_4_CONFIRMED':
