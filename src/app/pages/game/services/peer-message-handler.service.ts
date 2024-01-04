@@ -76,6 +76,9 @@ export class PeerMessageHandlerService {
         this.currentPhaseService.goToNextPhase();
         this.onlineBattleService.oStatus$.next('RESOLVING_TURN');
         break;
+      case 'ACKNOWLEDGE_DIALOG':
+        this.onlineBattleService.oStatus$.next('ACKNOWLEDGE_DIALOG');
+        break;
       case 'FINISHED_TURN':
         this.onlineBattleService.oStatus$.next('SELECTING_ACTION');
         break;

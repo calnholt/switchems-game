@@ -5,10 +5,8 @@
         {{ message }}
       </div>
     </div>
-    <div *ngIf="!hideNext">
-      <sw-pushable-button [isActive]="allowNext">
-        <div class="acknowledge-button" (click)="next()">Next</div>
-      </sw-pushable-button>
-    </div>
+    <sw-pushable-button *ngIf="!hideNext" [isActive]="allowNext">
+      <div class="acknowledge-button" (click)="next()">Next</div>
+    </sw-pushable-button>
   </div>
 </ng-container>

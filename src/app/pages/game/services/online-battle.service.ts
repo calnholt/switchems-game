@@ -11,11 +11,13 @@ import { StandardAction } from '../models/standard-action/standard-action.model'
 import { Buff } from '../models/monster/buff.model';
 import { PeerJsService } from '~/app/shared/services/peer-js.service';
 import { Router } from '@angular/router';
+import { EventCommandQueueService } from './event-command-queue/event-command-queue.service';
 
 export type OnlineBattleStatusType = 
   | 'SELECTING_ACTION' 
   | 'CONFIRMED_ACTION' 
   | 'RESOLVING_TURN' 
+  | 'ACKNOWLEDGE_DIALOG' 
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +25,8 @@ export type OnlineBattleStatusType =
 export class OnlineBattleService {
 
     // denotes if online opponent has submitted their action
-    private _status$: BehaviorSubject<OnlineBattleStatusType> = new BehaviorSubject<OnlineBattleStatusType>('SELECTING_ACTION');
-    private _oStatus$: BehaviorSubject<OnlineBattleStatusType> = new BehaviorSubject<OnlineBattleStatusType>('SELECTING_ACTION');
+    private _status$: BehaviorSubject<OnlineBattleStatusType> = new BehaviorSubject<OnlineBattleStatusType>('RESOLVING_TURN');
+    private _oStatus$: BehaviorSubject<OnlineBattleStatusType> = new BehaviorSubject<OnlineBattleStatusType>('RESOLVING_TURN');
 
     public get status$() { return this._status$;   }
     public get status() { return this.status$.value; }
@@ -36,19 +38,36 @@ export class OnlineBattleService {
     private selectedActionService: SelectedActionService,
     private monsterDataService: MonsterDataService,
     private peerJsService: PeerJsService,
+    private ecqs: EventCommandQueueService,
     private router: Router,
 
   ) { 
     this.status$.subscribe((value) => {
-      if (this.oStatus === 'CONFIRMED_ACTION' && value === 'CONFIRMED_ACTION') {
-        this.peerJsService.sendData('SEND_SELECTED_ACTION', this.getActionData());
+      if (value === 'ACKNOWLEDGE_DIALOG') {
+        this.peerJsService.sendData('ACKNOWLEDGE_DIALOG');
       }
+      this.executeSynchronizedActionFromStatuses(value, this.oStatus);
     })
     this.oStatus$.subscribe((value) => {
-      if (this.status === 'CONFIRMED_ACTION'  && value === 'CONFIRMED_ACTION') {
-        this.peerJsService.sendData('SEND_SELECTED_ACTION', this.getActionData());
-      }
+      this.executeSynchronizedActionFromStatuses(this.status, value);
     })
+  }
+
+  // drives online logic
+  executeSynchronizedActionFromStatuses(status: OnlineBattleStatusType, oStatus: OnlineBattleStatusType) {
+    function isBothStatusEqual(statusType: OnlineBattleStatusType) {
+      return status === statusType && oStatus === statusType;
+    }
+    if (isBothStatusEqual('CONFIRMED_ACTION')) {
+      this.peerJsService.sendData('SEND_SELECTED_ACTION', this.getActionData());
+    }
+    if (isBothStatusEqual('ACKNOWLEDGE_DIALOG')) {
+      this.status$.next('RESOLVING_TURN');
+      this.oStatus$.next('RESOLVING_TURN');
+      setTimeout(() => {
+        this.ecqs.acknowledge();
+      }, 100);
+    }
   }
 
   getActionData(): OnlineSelectedAction {

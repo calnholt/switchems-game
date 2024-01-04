@@ -32,7 +32,7 @@ export class DialogComponent {
   }
 
   ngOnInit() {
-    this.hideNext = this.onlineBattleService.isOnline;
+    // this.hideNext = this.onlineBattleService.isOnline;
     this.ecqs.event$.subscribe((command) => {
       if (!command) return;
       this.show = !command.type.includes('PROMPT');
@@ -54,8 +54,15 @@ export class DialogComponent {
 
   next() {
     if (this.allowNext) {
-      this.message = '';
-      this.ecqs.acknowledge();
+      if (this.onlineBattleService.isOnline) {
+        this.onlineBattleService.status$.next('ACKNOWLEDGE_DIALOG');
+        this.message = 'Waiting for opponent to acknowledge...';
+        this.hideNext = true;
+      }
+      else {
+        this.message = '';
+        this.ecqs.acknowledge();
+      }
     }
   }
 
