@@ -130,9 +130,8 @@ function applyStatusDrain(gs: GameState, data: BasicCommandData, rc: UpdateGameS
 }
 
 function applyStatPips(gs: GameState, data: StatPipCommandData) {
-  const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  monster.modifiers.add(getMonsterModifier('pip', data.statType, data.amount))
-  const statBoard = GameStateUtil.getStatBoardByPlayer(gs, data.player);
+  const { activeMonster, statBoard } = GameStateUtil.getPlayerState(gs, data.player);
+  activeMonster.modifiers.add(getMonsterModifier('pip', data.statType, statBoard.getSectionFromType(data.statType).current))
   statBoard.getSectionFromType(data.statType).clear();
 }
 
