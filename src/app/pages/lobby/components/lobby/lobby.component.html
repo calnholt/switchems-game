@@ -35,6 +35,9 @@
       <div *ngIf="opponentProfile.name" class="section">
         <div class="text-header text-center">Connected</div>
         <div>Opponent: {{opponentProfile.name}}</div>
+        <div class="gigachad" *ngIf="opponentProfile.gigachad">
+          <img [src]="ImageUtil.avatars.profHolt" />
+        </div>
         <div class="common-buttons-container">
           <div class="button">
             <sw-pushable-button [isActive]="!!myId">

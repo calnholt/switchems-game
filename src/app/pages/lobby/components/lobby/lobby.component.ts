@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { PeerJsService } from '~/app/shared/services/peer-js.service';
 import { PlayerProfile, PlayerProfileService } from '~/app/shared/services/player-profile.service';
+import { ImageUtil } from '~/app/shared/utils/image.util';
 
 @Component({
   selector: 'sw-lobby',
@@ -16,6 +17,8 @@ export class LobbyComponent {
 
   profile!: PlayerProfile;
   opponentProfile!: PlayerProfile;
+
+  readonly ImageUtil = ImageUtil;
 
   constructor(
     private peerService: PeerJsService,

@@ -7,6 +7,7 @@ const KEY = 'PLAYER_PROFILE';
 export interface PlayerProfile {
   name: string;
   playerType: PlayerType,
+  gigachad?: boolean;
 }
 
 @Injectable({
