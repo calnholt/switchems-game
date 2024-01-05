@@ -146,7 +146,7 @@ function applyStatusFatigue(gs: GameState, data: BasicCommandData, rc: UpdateGam
         monsterName: activeMonster.name,
         amount: buffSlotsUsed,
         statType: 'RECOIL',
-        origin: 'Fatigue',
+        origin: 'fatigue [STATUS]',
         display: true,
       });
     },
