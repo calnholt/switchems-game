@@ -42,7 +42,7 @@ export class MonsterActionTooltipComponent extends ITooltip implements AfterView
   tooltipSetup = (action: MonsterAction, nativeElement: HTMLElement) => {
     this.action = action;
     const { left, right, top, bottom } = nativeElement.getBoundingClientRect();
-    this.left = left + 25; // (300 - 250) / 2
+    this.left = left + ( ( nativeElement.offsetWidth - 250 ) / 2 ); // (300 - 250) / 2
     this.top = top - 10; // adjust for scaling when hovering
   }
 

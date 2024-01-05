@@ -2,7 +2,7 @@
   <sw-game-over [winner]="winner" />
   <div id="game">
     <div *ngIf="!winner">
-      <div class="d-flex">
+      <div class="d-flex align-items-center">
         <sw-stat-board [statBoard]="statBoard" [isPlayer]="true" />
         <div class="monsters-container">
           <div class="monster-container">
@@ -27,25 +27,27 @@
         </div>
         <sw-stat-board [statBoard]="oStatBoard" [disable]="true" [isPlayer]="false" />
       </div>
-      <div class="actions-container">
-        <div class="whose-actions">
-          {{ isViewingOpponentActions ? 'ENEMY ACTIONS' : 'YOUR ACTIONS' }}
-        </div>
-        <div class="d-flex justify-content-evenly" [style.marginBottom]="'8px'">
-          <div>
-            <sw-submit-action-button [viewingOtherMonstersActions]="!isViewingActiveMonster" />
+      <div class="d-flex justify-content-center">
+        <div class="actions-container">
+          <div class="whose-actions">
+            {{ isViewingOpponentActions ? 'ENEMY ACTIONS' : 'YOUR ACTIONS' }}
           </div>
-        </div>
-        <div class="action-container">
-          <div class="inactive-monster-container">
-            <ng-container *ngFor="let monster of (isViewingOpponentActions ? oInactiveMonsters : inactiveMonsters)">
-              <sw-monster [monster]="monster" [isActiveMonster]="false" [cardsInHand]="cardsInMyHand" [disable]="!isViewingActiveMonster" [isOpponent]="isViewingOpponentActions" [playerType]="isViewingOpponentActions ? opponentPlayerType : activePlayerType" />
-            </ng-container>
+          <div class="d-flex justify-content-evenly" [style.marginBottom]="'8px'">
+            <div>
+              <sw-submit-action-button [viewingOtherMonstersActions]="!isViewingActiveMonster" />
+            </div>
           </div>
-          <div>
-            <sw-monster-action-grid [actions]="monsterActionsBeingViewed"
-              [cardsInHand]="cardsInMyHand" [disable]="!isViewingActiveMonster" />
-            <sw-player-hand [hide]="isViewingOpponentActions" />
+          <div class="action-container">
+            <div class="inactive-monster-container">
+              <ng-container *ngFor="let monster of (isViewingOpponentActions ? oInactiveMonsters : inactiveMonsters)">
+                <sw-monster [monster]="monster" [isActiveMonster]="false" [cardsInHand]="cardsInMyHand" [disable]="!isViewingActiveMonster" [isOpponent]="isViewingOpponentActions" [playerType]="isViewingOpponentActions ? opponentPlayerType : activePlayerType" />
+              </ng-container>
+            </div>
+            <div>
+              <sw-monster-action-grid [actions]="monsterActionsBeingViewed"
+                [cardsInHand]="cardsInMyHand" [disable]="!isViewingActiveMonster" />
+              <sw-player-hand [hide]="isViewingOpponentActions" />
+            </div>
           </div>
         </div>
       </div>

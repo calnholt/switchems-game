@@ -31,7 +31,7 @@ export class BuffTooltipComponent extends ITooltip {
   tooltipSetup = (buff: Buff, nativeElement: HTMLElement) => {
     this.buff = buff;
     const { left, top } = nativeElement.getBoundingClientRect();
-    this.left = left;
+    this.left = left  + ( ( nativeElement.offsetWidth - 250 ) / 2 );
     this.top = top - 10; // adjust for scaling when hovering
   }
   

@@ -1,5 +1,6 @@
 @import '../../../../../assets/styles/constants.scss';
 
+
 #arena {
   background-size: cover;
   background-position-x: center;
@@ -30,7 +31,7 @@
 }
 
 #game {
-  margin: 0 40px;
+  margin: 0 5px;
   // height: 924px;
   padding-bottom: 10px;
 
@@ -64,7 +65,8 @@
     background-color: #6363637d;
     border-radius: 4px;
     padding: 12px;
-    max-width: 1770px;
+    width: 1770px;
+    margin-top: 5px;
   }
 
   .whose-actions {
@@ -77,11 +79,20 @@
 
   .action-container {
     display: grid;
-    grid-template-columns: 320px max-content;
+    grid-template-columns: 320px auto;
     .inactive-monster-container {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+    }
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  #arena {
+    max-width: 1440px;
+    min-width: unset;
+    .monster-container {
     }
   }
 }
