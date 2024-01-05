@@ -4,7 +4,7 @@ import { CommandUtil } from "../../services/update-game-state/command.util";
 import { UpdateGameStateUtil } from "../../services/update-game-state/update-game-state.util";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { ApplyFatigueStatus } from "../commands/monster-action-commands.model";
-import {  StatModificationCommand } from "../commands/stat-modification-command.model";
+import {  HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
 import { CrushCommand, CrushCommandData, GainRandomStatPipCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { ConditionalTriggerCommand } from "../commands/trigger-command.model";
 import { MonsterLogic } from "./monster-logic.model";
@@ -76,13 +76,14 @@ export class Drownigator extends MonsterLogic {
     }).pushFront();
   }
   override action4(): void {
-
   }
   override buff1(): void {
     UpdateGameStateUtil.crushPrompt(this.gs, {  
       ...this.data,
       total: 1,
       origin: 'Abrupt Weakness',
+      playerToCrush: this.gs.opponentPlayerType,
+      activePlayerType: this.gs.activePlayerType,
       display: true,
     }, this.rc);
 
@@ -103,13 +104,36 @@ export class Drownigator extends MonsterLogic {
     }).executeAsTrigger('CRUSH');
   }
   override buff2(): void {
-    // TODO:
+    UpdateGameStateUtil.crushPrompt(this.gs, {  
+      ...this.data,
+      playerToCrush: this.gs.activePlayerType,
+      activePlayerType: this.gs.activePlayerType,
+      total: 2,
+      origin: 'Famished',
+      display: true,
+    }, this.rc);
+    new ConditionalTriggerCommand(this.rc, {
+      ...this.data,
+      triggerCondition: (command: CrushCommand) => { return command.data.selections.reduce((acc, value) => acc + value.amount, 0) >= 1 },
+      getConditionalTrigger: (command: CrushCommandData) => {
+        return new HealCommand(this.rc, {
+          ...this.data,
+          amount: command.selections.reduce((acc, value) => acc + value.amount, 0),
+          origin: 'Abrupt Weakness',
+          display: true,
+          destroyOnTrigger: true,
+          removeEotTrigger: true,
+        }); 
+      },
+    }).executeAsTrigger('CRUSH');
   }
   override buff3(): void {
     UpdateGameStateUtil.crushPrompt(this.gs, {  
       ...this.data,
       total: 4,
       origin: 'Cripple',
+      playerToCrush: this.gs.opponentPlayerType,
+      activePlayerType: this.gs.activePlayerType,
       display: true,
     }, this.rc);
   }

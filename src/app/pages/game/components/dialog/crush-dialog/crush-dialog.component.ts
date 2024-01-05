@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { EventCommandQueueService } from '../../../services/event-command-queue/event-command-queue.service';
 import { HandlePromptService } from '../../../services/handle-prompt/handle-prompt.service';
-import { CrushPromptCommand } from '../../../logic/commands/stat-pip-commands.model';
+import { CrushPromptCommand, CrushPromptCommandData } from '../../../logic/commands/stat-pip-commands.model';
 import { PlayerService } from '../../../services/player/player.service';
-import { StatBoard, StatBoardSection, StatBoardSectionType } from '../../../models/stat-board/stat-board.model';
+import { StatBoard, StatBoardSectionType } from '../../../models/stat-board/stat-board.model';
 import { PeerJsService } from '~/app/shared/services/peer-js.service';
 import { PeerMessageType } from '~/app/shared/types/PeerMessageTypes';
+import { PlayerProfileService } from '~/app/shared/services/player-profile.service';
 
 @Component({
   selector: 'sw-crush-dialog',
@@ -22,6 +23,7 @@ export class CrushDialogComponent {
   show: boolean = false;
   command!: CrushPromptCommand;
   statBoard!: StatBoard;
+  description!: string;
 
   selections: { statType: StatBoardSectionType, amount: number }[] = [];
 
@@ -39,7 +41,14 @@ export class CrushDialogComponent {
       if (!command || command.type !== 'CRUSH_PROMPT') return;
       this.show = true;
       this.command = command as CrushPromptCommand;
-      this.statBoard = this.playerService.oPlayer.statBoard;
+      const data = command.data as CrushPromptCommandData;
+      this.statBoard = data.activePlayerType === data.playerToCrush ? this.playerService.statBoard : this.playerService.oStatBoard;
+      if (this.command.data.playerToCrush === command.data.activePlayerType) {
+        this.description = 'Select which Pips of yours to crush:';
+      }
+      else {
+        this.description = 'Select which Pips of your opponents to crush:';
+      }
       if (this.statBoard.attack.current > 0) {
         this.selections.push({ statType: 'ATTACK', amount: 0});
       }

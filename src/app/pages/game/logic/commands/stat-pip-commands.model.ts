@@ -43,9 +43,11 @@ export class GainRandomStatPipCommand extends EventCommand<GainRandomStatPipComm
 }
 export interface CrushPromptCommandData extends CommandData {
   total: number,
+  playerToCrush: PlayerType;
 }
 export interface CrushCommandData extends CommandData {
   selections: { statType: StatBoardSectionType, amount: number }[],
+  playerToCrush: PlayerType;
 }
 
 export class CrushPromptCommand extends EventCommand<CrushPromptCommandData> {

@@ -110,6 +110,8 @@ export class Stalagrowth extends MonsterLogic {
       ...this.data,
       total: 2,
       origin: 'Life Siphon',
+      playerToCrush: this.gs.opponentPlayerType,
+      activePlayerType: this.gs.activePlayerType,
       display: true,
     }, this.rc);
     new HealCommand(this.rc, {

@@ -417,7 +417,7 @@ function knockoutRoutine(gs: GameState, data: KnockedOutCommandData, rc: UpdateG
 }
 
 function crushPrompt(gs: GameState, data: CrushPromptCommandData, rc: UpdateGameStateService) {
-  const { statBoard } = GameStateUtil.getPlayerState(gs, gs.opponentPlayerType);
+  const { statBoard } = GameStateUtil.getPlayerState(gs, data.playerToCrush);
   if (data.player !== gs.activePlayerType && gs.cpu) {
     const total = statBoard.totalPips() >= data.total ? data.total : statBoard.totalPips();
     const options = ArrayUtil.randomizeOrder(

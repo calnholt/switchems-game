@@ -171,6 +171,9 @@ export class EventCommandQueueService {
     const triggers = this._triggers.get(command.type);
     if (triggers) {
       triggers.forEach(trigger => {
+        // TODO: this needs to be refactored
+        // flags are nice but I think we need to check for the condition on an ability basis
+        // can create a util for common comparisons
         const isMonsterActionTrigger = trigger.data.monsterActionTrigger;
         const isKeyMatch = command.data.key === trigger.data.key;
         const isPlayerMatch = trigger.data.player === command.data.player && !trigger.data.matchOnOpponentTrigger;
