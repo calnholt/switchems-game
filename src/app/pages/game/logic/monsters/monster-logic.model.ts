@@ -37,7 +37,7 @@ export abstract class MonsterLogic {
 
   executeMonsterCard(key: CardCompositeKey) {
     if (key === this.monsterKey) {
-      this.switchIn();
+      this.switchIn(this.gs.currentPhaseService.currentTurn > 0);
       this.addTriggers();
     }
     if (this.cardKey.includes('A1')) {
@@ -67,7 +67,7 @@ export abstract class MonsterLogic {
   }
   
   abstract addTriggers(): void;
-  abstract switchIn(): void;
+  abstract switchIn(isFront: boolean): void;
   abstract action1(): void;
   abstract action2(): void;
   abstract action3(): void;

@@ -2,6 +2,7 @@ import { CommandData, EventCommand } from "./event-command.model";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { StatBoardSectionType } from "../../models/stat-board/stat-board.model";
 import { PlayerType } from "../player-type.mode";
+import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
 
 export type STAT_PIP_TYPES = 
   | 'GAIN_RANDOM_STAT_PIP' 
@@ -22,7 +23,7 @@ export class GainStatPipCommand extends EventCommand<StatPipCommandData> {
     super(receiver, 'GAIN_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} ${this.data.wasRandom ? 'randomly ' : ''}gained ${this.data.amount} ${this.data.statType.toLowerCase()} Pip${this.data.amount > 1 ? 's' : ''}${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
+    return `${this.data.monsterName} ${this.data.wasRandom ? 'randomly ' : ''}gained ${this.data.amount} ${AbilityTextUtil.getIconText(this.data.statType)} Pip${this.data.amount > 1 ? 's' : ''}${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
   }
 }
 
@@ -63,7 +64,7 @@ export class CrushCommand extends EventCommand<CrushCommandData> {
     super(receiver, 'CRUSH', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} crushed ${this.data.selections.map(s => `${s.amount} ${s.statType.toLowerCase()} Pips`).join(", ")}`;
+    return `${this.data.monsterName} crushed ${this.data.selections.map(s => `${s.amount} ${AbilityTextUtil.getIconText(s.statType)} Pips`).join(", ")}`;
   }
 }
 

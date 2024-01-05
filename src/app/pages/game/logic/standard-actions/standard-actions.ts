@@ -19,7 +19,7 @@ function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameSta
     message += ` drawing ${numberOfCardsDrawn} card${numberOfCardsDrawn > 1 ? 's' : ''}`
   }
   if (hpHealed > 0) {
-    message += ` ${hpHealed > 0 ? 'and ' : ''}healing 1 HP`;
+    message += ` ${hpHealed > 0 ? 'and ' : ''}healing 1[HP]`;
   }
   message += '.';
   new DescriptiveMessageCommand(receiver, { ...values, message }).pushFront();

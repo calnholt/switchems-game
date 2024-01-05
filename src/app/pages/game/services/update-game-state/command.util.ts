@@ -48,7 +48,7 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
       })
     );
   }
-  let message = `${data?.monsterName ?? ''} randomly gained ${attack > 0 ? ` ${attack} attack` : ''}${speed > 0 ? ` ${speed} speed` : ''}${defense > 0 ? ` ${defense} defense`  : ''} pips${data.origin ? ` from ${data.origin}` : ''}`;
+  let message = `${data?.monsterName ?? ''} randomly gained ${attack > 0 ? ` ${attack} [ATK]` : ''}${speed > 0 ? ` ${speed} [SPD]` : ''}${defense > 0 ? ` ${defense} [DEF]`  : ''} Pips${data.origin ? ` from ${data.origin}` : ''}`;
   if(data.superEffective) {
     message = `The attack was super effective! ${message}`
   }

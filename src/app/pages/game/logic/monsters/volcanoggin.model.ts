@@ -26,14 +26,14 @@ export class Volcanoggin extends MonsterLogic {
       display: true,
     }).executeAsTrigger('SLOWER');
   }
-  override switchIn(): void {
+  override switchIn(isFront: boolean): void {
     new GainStatPipCommand(this.rc,{
       ...this.data,
       amount: 1,
       statType: 'DEFENSE',
       origin: 'switching in',
       display: true,
-    }).enqueue();
+    }).pushFrontOrBack(isFront);
   }
   override action1(): void {
   }

@@ -22,6 +22,7 @@ export class MonsterAction implements ISelectableAction, IHaveTooltip {
   private _currentDiscardSlots: number;
   private _draw: number;
   private _isSingleUse: boolean;
+  private _isSpammable: boolean;
 
   readonly modifiers: Modifiers<ActionModifierType> = new Modifiers();
 
@@ -50,6 +51,7 @@ export class MonsterAction implements ISelectableAction, IHaveTooltip {
     this._currentDiscardSlots = discard;
     this._draw = draw;
     this._isSingleUse = text?.includes('~SINGLE~');
+    this._isSpammable = text?.includes('~SPAMMABLE~');
   }
 
   get name(): string { return this._name; }
@@ -64,6 +66,7 @@ export class MonsterAction implements ISelectableAction, IHaveTooltip {
   get isUsed(): boolean { return this._isUsed; }
   get isDisabled(): boolean { return this._isDisabled; }
   get isSingleUse(): boolean { return this._isSingleUse; }
+  get isSpammable(): boolean { return this._isSpammable; }
   get draw(): number { return this._draw; }
   get buffs(): number { return this._currentBuffSlots; }
   get discards(): number { return this._currentDiscardSlots; }

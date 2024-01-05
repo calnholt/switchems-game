@@ -146,7 +146,7 @@ export class ApplyCurseStatus extends EventCommand<BasicCommandData> {
     super(receiver, 'APPLY_CURSE_STATUS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.opponentMonsterName} became cursed${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
+    return `${this.data.opponentMonsterName} became cursed [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
   }
 }
 export class CurseCommand extends EventCommand<BasicCommandData> {
@@ -162,7 +162,7 @@ export class DrainCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'DRAIN', data);
   }
   override getDisplayMessage(): string {
-    return `1HP was drained from ${this.data.opponentMonsterName}!`;
+    return `1[HP] was drained from ${this.data.opponentMonsterName}!`;
   }
 }
 export class ApplyStatusCommand extends EventCommand<ApplyStatusEffectCommandData> {

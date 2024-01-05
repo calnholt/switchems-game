@@ -50,7 +50,7 @@ export class Monster implements IHaveTooltip, ISelectableAction {
     this._actions = actions;
     this._buffs = buffs;
     this._currentHp = hp;
-    // this._currentHp = 1;
+    this._currentHp = 1;
 
     this._effectivenessArray = this.getEffectivenessArray();
     this._weaknesses = this.getWeaknesses();
@@ -91,10 +91,24 @@ export class Monster implements IHaveTooltip, ISelectableAction {
   public get switchDefense(): number { return this._switchDefense; }
   public get isActive(): boolean { return this._isActive; }
 
-  setIsActive(value: boolean) { this._isActive = value; }
+  setIsActive(value: boolean) { 
+    this._isActive = value; 
+    if (!value) {
+      this._currentHp = 0;
+    }
+  }
 
   setDisabledActions(key: CardCompositeKey) {
-    this._actions.forEach(a => a.setDisabled(a.key() === key));
+    this._actions.forEach(a => {
+      if (!a.isSpammable) {
+        if (a.isSingleUse) {
+          a.setLocked(a.key() === key);
+        }
+        else {
+          a.setDisabled(a.key() === key);
+        }
+      }
+    });
   }
 
   eotCleanup(key: CardCompositeKey) {

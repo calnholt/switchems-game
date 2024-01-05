@@ -13,14 +13,14 @@ export class Deusvolt extends MonsterLogic {
       monsterActionTrigger: true,
     }).executeAsTrigger('FASTER');
   }
-  override switchIn(): void {
+  override switchIn(isFront: boolean): void {
     new GainStatPipCommand(this.rc,{
       ...this.data,
       amount: 2,
       statType: 'SPEED',
       origin: 'switching in',
       display: true,
-    }).enqueue();
+    }).pushFrontOrBack(isFront);
   }
   override action1(): void {
   }

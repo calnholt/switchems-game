@@ -78,7 +78,7 @@ function executeStartGamePhase(gs: GameState, rc: UpdateGameStateService) {
   function startPhaseByPlayer(player: PlayerType) {
     const { activeMonster } = GameStateUtil.getPlayerState(gs, player);
     const key = activeMonster.key();
-    new SwitchInCommand(rc, { player, key, activePlayerType: gs.activePlayerType, monsterName: activeMonster.name, display: !activeMonster.switchIn}).enqueue();
+    new SwitchInCommand(rc, { player, key, activePlayerType: gs.activePlayerType, monsterName: activeMonster.name }).enqueue();
   }
 
   startPhaseByPlayer(playerWithInitiative);
@@ -96,9 +96,6 @@ function executeRevealPhase(gs: GameState, rc: UpdateGameStateService) {
       playerCardManager.cleanup(selectedAction.appliedBuffs);
       playerCardManager.cleanup(selectedAction.appliedDiscards);
       activeMonster.setDisabledActions(selectedAction.action.key());
-      if (action?.isSingleUse) {
-        action.setLocked(true);
-      }
   }
 
   reveal(playerWithInitiative);

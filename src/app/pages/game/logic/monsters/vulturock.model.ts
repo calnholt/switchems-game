@@ -7,14 +7,14 @@ import { MonsterLogic } from "./monster-logic.model";
 
 export class Vulturock extends MonsterLogic {
 
-  override switchIn(): void {
+  override switchIn(isFront: boolean): void {
     new GainStatPipCommand(this.rc, {
       ...this.data,
       amount: 2,
       statType: 'SPEED',
       origin: 'switching in',
       display: true,
-    }).pushFront();
+    }).pushFrontOrBack(isFront);
   }
   override addTriggers(): void {
     new HealCommand(this.rc, {
@@ -94,7 +94,7 @@ export class Vulturock extends MonsterLogic {
   override buff3(): void {
     new DescriptiveMessageCommand(this.rc, { 
       ...this.data, 
-      message: `${this.monsterNames.monsterName} used Self Defense, healing 1HP and does not suffer from recoil damage this turn!`,
+      message: `${this.monsterNames.monsterName} used Self Defense, healing 1[HP] and does not suffer from recoil damage this turn!`,
     }).pushFront();
     new HealCommand(this.rc, {
       ...this.data,

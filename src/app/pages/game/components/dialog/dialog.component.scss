@@ -19,9 +19,7 @@
   .text {
     padding: 20px;
     font-family: $text-font;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
   }
 
   .acknowledge-button {

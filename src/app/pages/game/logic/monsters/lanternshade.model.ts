@@ -8,12 +8,12 @@ export class Lanternshade extends MonsterLogic {
 
   override addTriggers(): void {
   }
-  override switchIn(): void {
+  override switchIn(isFront: boolean): void {
     new ApplyCurseStatus(this.rc, {
       ...this.data,
       origin: `Lanternshade's switch in ability`,
       display: true,
-    }).pushFront();
+    }).pushFrontOrBack(isFront);
   }
   override action1(): void {
     const { activeMonster } = GameStateUtil.getOpponentPlayerState(this.gs, this.player);

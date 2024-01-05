@@ -385,8 +385,8 @@ function knockoutRoutine(gs: GameState, data: KnockedOutCommandData, rc: UpdateG
 }
 
 function crushPrompt(gs: GameState, data: CrushPromptCommandData, rc: UpdateGameStateService) {
-  const { statBoard } = GameStateUtil.getPlayerState(gs, GameStateUtil.getOppositePlayer(data.player));
-  if (data.player === 'O' && gs.cpu) {
+  const { statBoard } = GameStateUtil.getPlayerState(gs, gs.opponentPlayerType);
+  if (data.player !== gs.activePlayerType && gs.cpu) {
     const total = statBoard.totalPips() >= data.total ? data.total : statBoard.totalPips();
     const options = ArrayUtil.randomizeOrder(
       [...Array(statBoard.attack).keys()].map(v => 'ATTACK')
@@ -403,7 +403,7 @@ function crushPrompt(gs: GameState, data: CrushPromptCommandData, rc: UpdateGame
     crush(gs, { ...data, selections }, rc);
   }
   else if (statBoard.hasPips()) {
-    if (!gs.cpu && gs.activePlayerType === data.player) {
+    if (gs.activePlayerType === data.player) {
       new CrushPromptCommand(rc, data).pushFront();
     }
     else {

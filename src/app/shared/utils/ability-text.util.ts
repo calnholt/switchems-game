@@ -1,11 +1,13 @@
+import { StatBoardSectionType } from "~/app/pages/game/models/stat-board/stat-board.model";
 import { Term, Image } from "../types/data";
-import { Css, TERM_CODES, IMAGE_CODES } from "../types/dataTypes";
+import { Css, TERM_CODES, IMAGE_CODES, ImageCode } from "../types/dataTypes";
 
 export const AbilityTextUtil = {
-  getAbilityTextDefaults: getAbilityTextDefaults,
-  getAbilityText: getAbilityText,
-  getAbilityTextWithoutTerms: getAbilityTextWithoutTerms,
-  getTermsFromText: getTermsFromText,
+  getAbilityTextDefaults,
+  getAbilityText,
+  getAbilityTextWithoutTerms,
+  getTermsFromText,
+  getIconText,
 }
 
 function getAbilityTextDefaults(text: string): string {
@@ -85,3 +87,15 @@ function convertInnerTextJson(innerHtml: string) {
 const getImageClass  = (str: string): string => {
   return str.substring(1, str.length - 1).toLowerCase();
 };
+
+function getIconText(type: string): string {
+  switch (type) {
+    case 'ATTACK':
+      return '[ATK]';
+    case 'SPEED':
+      return '[SPD]';
+    case 'DEFENSE':
+      return '[DEF]';
+  };
+  return type;
+}

@@ -41,6 +41,15 @@ export abstract class EventCommand<T extends CommandData> {
     this.receiver.pushFront(this);
   }
 
+  public pushFrontOrBack(isFront: boolean) {
+    if (isFront) {
+      this.receiver.pushFront(this);
+    }
+    else {
+      this.receiver.enqueue(this);
+    }
+  }
+
   public execute() {
     this.receiver.execute(this);
   }

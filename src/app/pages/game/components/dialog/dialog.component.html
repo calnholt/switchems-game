@@ -1,8 +1,12 @@
 <ng-container *ngIf="show && !hide">
   <div id="dialog" [@fadeInOnEnter] [@fadeOutOnLeave]>
     <div class="dialog-container">
-      <div *ngIf="message" class="text" [@fadeInOnEnter] [@fadeOutOnLeave]>
-        {{ message }}
+      <div *ngIf="message" 
+        class="text" 
+        [innerHtml]="message | convertEmbeddedText: 
+          {termCss: 'embedded-term-text', imageCss: 'embedded-icon dialog inverse', excludeTerms: true}" 
+        [@fadeInOnEnter] 
+        [@fadeOutOnLeave]>
       </div>
     </div>
     <sw-pushable-button *ngIf="!hideNext" [isActive]="allowNext">

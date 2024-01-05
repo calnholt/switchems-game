@@ -1,3 +1,4 @@
+import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { CommandData, EventCommand } from "./event-command.model";
 
@@ -18,7 +19,7 @@ export class StatModificationCommand extends EventCommand<StatModificationData> 
     super(receiver, 'MODIFY_STAT', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} gained ${this.data.amount} ${this.data.statType.toLowerCase()} from ${this.data.origin}.`;
+    return `${this.data.monsterName} gained ${this.data.amount} ${AbilityTextUtil.getIconText(this.data.statType)} from ${this.data.origin}.`;
   }
 }
 
@@ -32,7 +33,7 @@ export class HealCommand extends EventCommand<HealCommandData> {
     super(receiver, 'HEAL', { ...data, display: false });
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} healed ${this.data.amount}HP${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
+    return `${this.data.monsterName} healed ${this.data.amount}[HP]${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
   }
 }
 

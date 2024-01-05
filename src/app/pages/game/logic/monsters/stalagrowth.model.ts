@@ -1,23 +1,23 @@
 import { GameStateUtil } from "../../services/game-state/game-state.util";
-import { CommandUtil } from "../../services/update-game-state/command.util";
 import { UpdateGameStateUtil } from "../../services/update-game-state/update-game-state.util";
-import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { ApplyDrainStatus, DrainCommand, RemoveStatusEffectsCommand } from "../commands/monster-action-commands.model";
 import { ApplyFlinchCommand, HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
 import { CrushCommand, GainRandomStatPipCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { MonsterLogic } from "./monster-logic.model";
 
 export class Stalagrowth extends MonsterLogic {
-  override switchIn(): void {
+
+  override switchIn(isFront: boolean): void {
     new GainStatPipCommand(this.rc,{
       ...this.data,
       amount: 1,
       statType: 'DEFENSE',
       origin: 'switching in',
       display: true,
-    }).enqueue();
+    }).pushFrontOrBack(isFront);
   }
   override addTriggers(): void { }
+
   override action1(): void {
     new ApplyDrainStatus(this.rc, {
       ...this.data,

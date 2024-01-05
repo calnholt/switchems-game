@@ -10,11 +10,12 @@
 }
 
 .embedded-icon {
-  max-height: 19px;
-}
-
-.embedded-icon {
   max-height: 15px;
+
+  &.dialog {
+    max-height: 26px;
+    padding-bottom: 7px;
+  }
 
   &.inverse {
     filter: invert(100%);

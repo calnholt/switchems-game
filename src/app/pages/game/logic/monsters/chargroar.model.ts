@@ -9,7 +9,7 @@ import { CommandUtil } from "../../services/update-game-state/command.util";
 
 export class Chargroar extends MonsterLogic {
 
-  override switchIn(): void {
+  override switchIn(isFront: boolean): void {
     const { activeMonster } = GameStateUtil.getOpponentPlayerState(this.gs, this.data.player);
     const options = activeMonster.actions
         .filter(a => !a.isDisabled && !a.isLocked)

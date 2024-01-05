@@ -30,7 +30,7 @@
       <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="false" [player]="playerType"  />
     </div>
     <div [ngClass]="{'tutorial-highlight' : isBenchedMonsterHighlighted}">
-      <sw-pushable-button [isActive]="cardsInHand >= 2 && enabled && !disable">
+      <sw-pushable-button [isActive]="cardsInHand >= 2 && enabled && !disable && monster.currentHp > 0">
         <ng-container *ngTemplateOutlet="monsterTemplate"></ng-container>
       </sw-pushable-button>
     </div>
