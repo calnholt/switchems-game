@@ -44,9 +44,9 @@ export class GamePhaseService {
     console.log('current seed: ', gs.rng.seed)
     // online games
     if (!this.gameStateService.isCpu) {
-      // if (this.onlineBattleService.confirmed) {
-      //   return;
-      // }
+      if (this.onlineBattleService.status == 'CONFIRMED_ACTION') {
+        return;
+      }
       this.onlineBattleService.status$.next('CONFIRMED_ACTION');
       this.peerService.sendData('SUBMIT_ACTION');
       return;
