@@ -11,18 +11,25 @@ import { UpdateGameStateService } from "../../services/update-game-state/update-
 import { GamePhaseCommandType } from "./game-phase-commands.model";
 import { MessageCommandType } from "./message-command.model";
 import { STANDARD_ACTION_COMMAND_TYPES } from "./standard-action-command.model";
+import { TRIGGER_TYPES } from "./trigger-command.model";
 
 export abstract class EventCommand<T extends CommandData> {
   readonly receiver: UpdateGameStateService;
   readonly type: EventCommandType;
   private _data: T;
+  private _triggerData!: CommandData;
 
   public get data() { return this._data; }
+  public get triggerData() { return this._triggerData; }
 
   constructor(receiver: UpdateGameStateService, type: EventCommandType, data: T) {
     this.receiver = receiver; // The entity that knows how to execute the action
     this.type = type;
     this._data = data;
+  }
+
+  public setTriggerData(data: CommandData) {
+    this._triggerData = data;
   }
 
   public enqueue() {
@@ -84,6 +91,7 @@ export type EventCommandType =
   | GamePhaseCommandType
   | MessageCommandType
   | STANDARD_ACTION_COMMAND_TYPES
+  | TRIGGER_TYPES
 
 export interface CommandData {
   monsterName?: string;
@@ -103,4 +111,5 @@ export interface CommandData {
   removeEotTrigger?: boolean;
   removeFromOtherTriggers?: boolean; // a single trigger that's looking at multiple events but should only fire once
   triggerCondition?: (command: any) => boolean; // used for when a trigger also has a condition that needs to be satisfied
+  getConditionalTrigger?: (command: any) => EventCommand<any>; // updates the command data using the command that caused trigger
 };

@@ -21,7 +21,7 @@ export const convertJsonToObjs = (selectedMonster?: any): Array<Monster> => {
   }
   return convertFromJSON([
     Chargroar,
-    // Drownigator,
+    Drownigator,
     // Flexferno,
     // Galeaffy,
     Stalagrowth,

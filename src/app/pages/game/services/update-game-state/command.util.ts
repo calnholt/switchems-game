@@ -70,7 +70,7 @@ function draw(gs: GameState, data: HandCommandData, rc: UpdateGameStateService) 
     cardsToDraw = 0;
   }
   if (cardsToDraw > 0) {
-    new DrawCommand(rc, { ...data, amount: cardsToDraw, display: false, activePlayerType: gs.activePlayerType }).pushFront();
+    new DrawCommand(rc, { ...data, amount: cardsToDraw, display: data.display, activePlayerType: gs.activePlayerType }).pushFront();
   }
   return cardsToDraw;
 }

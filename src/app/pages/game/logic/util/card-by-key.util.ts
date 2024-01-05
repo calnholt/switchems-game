@@ -10,6 +10,7 @@ import { Deusvolt } from "../monsters/deusvolt.model";
 import { Volcanoggin } from "../monsters/volcanoggin.model";
 import { Sorrospine } from "../monsters/Sorrospine.model";
 import { Lanternshade } from "../monsters/lanternshade.model";
+import { Drownigator } from "../monsters/drownigator.model";
 
 export const CardByKeyUtil = {
   executeCardByKey,
@@ -27,6 +28,9 @@ function executeCardByKey(key: CardCompositeKey, player: PlayerType, receiver: U
       break;
     case DEUSVOLT:
       new Deusvolt(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      break;
+    case DROWNIGATOR:
+      new Drownigator(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case LANTERNSHADE:
       new Lanternshade(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);

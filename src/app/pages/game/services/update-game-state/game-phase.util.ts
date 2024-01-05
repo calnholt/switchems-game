@@ -173,7 +173,7 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
 
     // draw cards check
     if (action.draw > 0) {
-      new DrawCommand(rc, { key, player, amount: action.draw,origin: action.name, display: true }).enqueue();
+      new DrawCommand(rc, { key, player, amount: action.draw, origin: action.name, display: true, activePlayerType: gs.activePlayerType }).enqueue();
     }
 
     // add monster action effect(s) to queue

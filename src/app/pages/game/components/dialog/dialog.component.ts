@@ -4,6 +4,7 @@ import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animati
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { BattleAnimationService } from '../../services/battle-animation/battle-animation.service';
 import { OnlineBattleService } from '../../services/online-battle.service';
+import { EventCommand, CommandData } from '../../logic/commands/event-command.model';
 
 @Component({
   selector: 'sw-dialog',
@@ -21,6 +22,7 @@ export class DialogComponent {
   show: boolean = false;
   allowNext = true;
   hideNext = false;
+  command!: EventCommand<CommandData>;
 
   constructor(
     private ecqs: EventCommandQueueService,
@@ -35,6 +37,7 @@ export class DialogComponent {
     // this.hideNext = this.onlineBattleService.isOnline;
     this.ecqs.event$.subscribe((command) => {
       if (!command) return;
+      this.command = command;
       this.show = !command.type.includes('PROMPT');
       this.hideNext = command.type === 'WAITING_FOR_OPPONENT';
       setTimeout(() =>{

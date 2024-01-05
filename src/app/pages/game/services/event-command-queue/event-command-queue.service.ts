@@ -177,19 +177,20 @@ export class EventCommandQueueService {
         const isConditionMet = !trigger.data.triggerCondition || trigger.data.triggerCondition?.(command);
         const isEndPhase = command.type === 'END_PHASE';
         // if monster action trigger, need key to match
+        const updatedTrigger = trigger?.data?.getConditionalTrigger ? trigger?.data?.getConditionalTrigger(command.data) : trigger;
         if (isMonsterActionTrigger && isKeyMatch && isPlayerMatch && isConditionMet) {
-          console.log('enqueue trigger', trigger)
-          this.pushFront(trigger);
+          console.log('enqueue trigger', updatedTrigger)
+          this.pushFront(updatedTrigger);
         }
         // end phase trigger
         else if (isConditionMet && isEndPhase) {
-          console.log('enqueue trigger', trigger)
-          this.pushFront(trigger);
+          console.log('enqueue trigger', updatedTrigger)
+          this.pushFront(updatedTrigger);
         }
         // otherwise this is a basic trigger match
         else if (!isMonsterActionTrigger && isPlayerMatch && isConditionMet) {
-          console.log('enqueue trigger', trigger)
-          this.pushFront(trigger);
+          console.log('enqueue trigger', updatedTrigger)
+          this.pushFront(updatedTrigger);
         }
       });
     }
