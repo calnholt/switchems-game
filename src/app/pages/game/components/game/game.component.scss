@@ -3,8 +3,7 @@
 
 #arena {
   background-size: cover;
-  background-position-x: center;
-  min-width: 1780px;
+  background-position: center center;
   height: 100vh;
   padding-top: 10px;
 
@@ -40,10 +39,10 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
-    margin-right: 0px 5px 0px 0px;
+    margin: 0px 5px 0px 0px;
     &.opponent {
       align-items: flex-start;
-      margin-right: 0px 0px 0px 5px;
+      margin: 0px 0px 0px 5px;
     }
   }
   
