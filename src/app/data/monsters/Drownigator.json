@@ -5,7 +5,7 @@
   ],
   "actions": [
     {
-      "name": "Fatigue",
+      "name": "From the Depths",
       "text": "<b>Fatigue [STATUS]</b>, {\"stat\": \"DEF\", \"num\": 1}. ~FATIGUE~ ~STATUS~",
       "element": "Death",
       "statusFlg": true,

@@ -181,9 +181,10 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
       key, 
       player, 
       ...monsterNames,
+      selectedAction: selectedAction,
       doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(selectedAction.action.key() as string, player, rc, gs) },
     }).enqueue();
-    
+
     if (action.attack) {
       new DealAttackDamageCommand(rc, { key, player: player, ...monsterNames, damageToDeal: 999 }).enqueue();
     }

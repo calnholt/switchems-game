@@ -2,6 +2,7 @@ import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interfac
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { PlayerType } from "../player-type.mode";
 import { CommandData, EventCommand } from "./event-command.model";
+import { SelectedAction } from "../../services/selected-action/selected-action.model";
 
 export type MONSTER_ACTION_COMMANDS =
   | 'MONSTER_ACTION'
@@ -14,9 +15,10 @@ export type MONSTER_ACTION_COMMANDS =
   | 'KNOCKED_OUT'
   | 'TAKE_RECOIL_DAMAGE'
   | 'RECOIL_CHECK'
-  | 'APPLY_STATUS_EFFECT'
   | 'APPLY_DRAIN_STATUS'
   | 'APPLY_CURSE_STATUS'
+  | 'APPLY_FATIGUE_STATUS'
+  | 'FATIGUE'
   | 'CURSE'
   | 'DRAIN'
   | 'REMOVE_STATUS_EFFECT'
@@ -31,6 +33,7 @@ export interface BasicCommandData extends CommandData {
 
 export interface MonsterActionCommandData extends CommandData {
   doMonsterAction: () => void,
+  selectedAction: SelectedAction,
 }
 
 export class MonsterActionCommand extends EventCommand<MonsterActionCommandData> {
@@ -157,20 +160,28 @@ export class CurseCommand extends EventCommand<BasicCommandData> {
     return `${this.data.opponentMonsterName} took 1 damage from curse!`;
   }
 }
+export class ApplyFatigueStatus extends EventCommand<BasicCommandData> {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+    super(receiver, 'APPLY_FATIGUE_STATUS', data);
+  }
+  override getDisplayMessage(): string {
+    return `${this.data.opponentMonsterName} became fatigued [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
+  }
+}
+export class FatigueCommand extends EventCommand<BasicCommandData> {
+  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+    super(receiver, 'FATIGUE', data);
+  }
+  override getDisplayMessage(): string {
+    return `${this.data.opponentMonsterName} took 1 damage from fatigue!`;
+  }
+}
 export class DrainCommand extends EventCommand<BasicCommandData> {
   constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
     super(receiver, 'DRAIN', data);
   }
   override getDisplayMessage(): string {
     return `1[HP] was drained from ${this.data.opponentMonsterName}!`;
-  }
-}
-export class ApplyStatusCommand extends EventCommand<ApplyStatusEffectCommandData> {
-  constructor(receiver: UpdateGameStateService, data: ApplyStatusEffectCommandData) {
-    super(receiver, 'APPLY_STATUS_EFFECT', data);
-  }
-  override getDisplayMessage(): string {
-    return `${this.data.monsterName} received a ${this.data.statusName.toLowerCase()} status condition.`;
   }
 }
 export class RemoveStatusCommand extends EventCommand<ApplyStatusEffectCommandData> {

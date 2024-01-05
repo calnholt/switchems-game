@@ -2,9 +2,9 @@ import { StatBoardSectionType } from "../../models/stat-board/stat-board.model";
 import { GameStateUtil } from "../../services/game-state/game-state.util";
 import { CommandUtil } from "../../services/update-game-state/command.util";
 import { UpdateGameStateUtil } from "../../services/update-game-state/update-game-state.util";
-import { DrawCommand } from "../commands/hand-commands.model";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
-import { HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
+import { ApplyFatigueStatus } from "../commands/monster-action-commands.model";
+import {  StatModificationCommand } from "../commands/stat-modification-command.model";
 import { CrushCommand, CrushCommandData, GainRandomStatPipCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { ConditionalTriggerCommand } from "../commands/trigger-command.model";
 import { MonsterLogic } from "./monster-logic.model";
@@ -31,6 +31,18 @@ export class Drownigator extends MonsterLogic {
     }, this.rc);
   }
   override action1(): void {
+    new GainStatPipCommand(this.rc,{
+      ...this.data,
+      amount: 1,
+      statType: 'DEFENSE',
+      origin: 'From  the Depths',
+      display: true,
+    }).pushFront();
+    new ApplyFatigueStatus(this.rc, {
+      ...this.data,
+      origin: 'From  the Depths',
+      display: true,
+    }).pushFront();
   }
   override action2(): void {
     const { activeMonster } = GameStateUtil.getPlayerState(this.gs, this.gs.opponentPlayerType);
@@ -64,6 +76,7 @@ export class Drownigator extends MonsterLogic {
     }).pushFront();
   }
   override action4(): void {
+
   }
   override buff1(): void {
     UpdateGameStateUtil.crushPrompt(this.gs, {  

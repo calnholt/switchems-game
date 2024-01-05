@@ -36,6 +36,9 @@ export class UpdateGameStateService {
       case 'APPLY_DRAIN_STATUS':
         UpdateGameStateUtil.applyStatusDrain(gs, data, this);
         break;
+      case 'APPLY_FATIGUE_STATUS':
+        UpdateGameStateUtil.applyStatusFatigue(gs, data, this);
+        break;
       case 'APPLY_STAT_PIPS':
         UpdateGameStateUtil.applyStatPips(gs, data);
         break;
@@ -137,6 +140,7 @@ export class UpdateGameStateService {
       case 'SWITCH_OUT_PROMPT':
         break;
       case 'TAKE_RECOIL_DAMAGE':
+      case 'FATIGUE':
       case 'TRUE_DAMAGE':
         UpdateGameStateUtil.dealDamage(gs, data, this);
         break;

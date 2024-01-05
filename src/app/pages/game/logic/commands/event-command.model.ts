@@ -107,9 +107,12 @@ export interface CommandData {
   activePlayerType?: PlayerType;
   monsterActionTrigger?: boolean; // denotes a trigger originating from a monster action
   updateMonsterPlayerTriggers?: boolean; // true on switch out, need to clean up irrelevant triggers
+  matchOnOpponentTrigger?: boolean; // denotes a trigger that matches on opponent
   removeOnSwitchTrigger?: boolean; // denotes a trigger that's cleared after switch
   removeEotTrigger?: boolean;
   removeFromOtherTriggers?: boolean; // a single trigger that's looking at multiple events but should only fire once
   triggerCondition?: (command: any) => boolean; // used for when a trigger also has a condition that needs to be satisfied
+  customTriggerConditionOverride?: (command: any, trigger: any) => boolean; // used for when a trigger also has a condition that needs to be satisfied, overrides all other checks
   getConditionalTrigger?: (command: any) => EventCommand<any>; // updates the command data using the command that caused trigger
+  removeCondition?: () => boolean;
 };

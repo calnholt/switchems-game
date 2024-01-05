@@ -173,12 +173,17 @@ export class EventCommandQueueService {
       triggers.forEach(trigger => {
         const isMonsterActionTrigger = trigger.data.monsterActionTrigger;
         const isKeyMatch = command.data.key === trigger.data.key;
-        const isPlayerMatch = trigger.data.player === command.data.player;
+        const isPlayerMatch = trigger.data.player === command.data.player && !trigger.data.matchOnOpponentTrigger;
         const isConditionMet = !trigger.data.triggerCondition || trigger.data.triggerCondition?.(command);
+        const isOverride = trigger.data.customTriggerConditionOverride && trigger.data.customTriggerConditionOverride?.(command.data, trigger.data);
         const isEndPhase = command.type === 'END_PHASE';
-        // if monster action trigger, need key to match
         const updatedTrigger = trigger?.data?.getConditionalTrigger ? trigger?.data?.getConditionalTrigger(command.data) : trigger;
-        if (isMonsterActionTrigger && isKeyMatch && isPlayerMatch && isConditionMet) {
+        if (isOverride) {
+          console.log('enqueue trigger', updatedTrigger)
+          this.pushFront(updatedTrigger);
+        }
+        // if monster action trigger, need key to match
+        else if (isMonsterActionTrigger && isKeyMatch && isPlayerMatch && isConditionMet) {
           console.log('enqueue trigger', updatedTrigger)
           this.pushFront(updatedTrigger);
         }
@@ -211,7 +216,7 @@ export class EventCommandQueueService {
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
       const filteredTriggers = (this._triggers.get(key) as EventCommand<CommandData>[])
-      .filter(cmd => cmd.data.monsterActionTrigger && cmd.data.player !== playerType);
+      .filter(cmd => (cmd.data.monsterActionTrigger && cmd.data.player !== playerType) || !( cmd.data.removeCondition && cmd.data.removeCondition() ));
       this._triggers.set(key, filteredTriggers);
     });
     console.log('triggers after switch', this._triggers);
@@ -221,7 +226,7 @@ export class EventCommandQueueService {
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
       this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[])
-        .filter(cmd => !cmd.data.removeEotTrigger));
+        .filter(cmd => !cmd.data.removeEotTrigger || !( cmd.data.removeCondition && cmd.data.removeCondition() )));
     });
   }
   private unregisterFromOtherTriggers(playerType: PlayerType, key: CardCompositeKey) {

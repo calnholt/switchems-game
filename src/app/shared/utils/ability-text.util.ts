@@ -97,5 +97,5 @@ function getIconText(type: string): string {
     case 'DEFENSE':
       return '[DEF]';
   };
-  return type;
+  return type.toLowerCase();
 }

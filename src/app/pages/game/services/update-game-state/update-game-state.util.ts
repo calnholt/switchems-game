@@ -2,7 +2,7 @@ import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { ActionModifierType, Modifier, MonsterModifierType } from "../../logic/modifiers/modifier.model";
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
-import { ApplyStatusEffectCommandData, BasicCommandData, CurseCommand, DealDamageCommandData, DisableActionCommandData, DrainCommand, KnockedOutByAttackCommand, KnockedOutCommand, KnockedOutCommandData, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, RemoveStatusEffectsCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
+import { ApplyStatusEffectCommandData, BasicCommandData, CurseCommand, DealDamageCommandData, DisableActionCommandData, DrainCommand, FatigueCommand, KnockedOutByAttackCommand, KnockedOutCommand, KnockedOutCommandData, MonsterActionCommand, MonsterActionCommandData, RecoilCheckCommand, RemoveStatusEffectsCommand, TakeRecoilDamageCommand, WeakCommand } from "../../logic/commands/monster-action-commands.model";
 import { CrushCommandData, CrushPromptCommand, CrushPromptCommandData, GainRandomStatPipCommand, StatPipCommandData } from "../../logic/commands/stat-pip-commands.model";
 import { HealCommand, HealCommandData, StatModificationCommand, StatModificationData } from "../../logic/commands/stat-modification-command.model";
 import { HandCommandData } from "../../logic/commands/hand-commands.model";
@@ -21,6 +21,7 @@ import { GameOverPhaseCommand } from "../../logic/commands/game-phase-commands.m
 import { MonsterAction } from "../../models/monster/monster-action.model";
 import { StandardActionCommandData } from "../../logic/commands/standard-action-command.model";
 import { CommandUtil } from "./command.util";
+import { ConditionalTriggerCommand } from "../../logic/commands/trigger-command.model";
 
 export const UpdateGameStateUtil = {
   doMonsterAction,
@@ -29,6 +30,7 @@ export const UpdateGameStateUtil = {
   applyFlinch,
   applyStatusCurse,
   applyStatusDrain,
+  applyStatusFatigue,
   applyStatPips,
   dealAttackDamage,
   dealDamage,
@@ -127,6 +129,36 @@ function applyStatusDrain(gs: GameState, data: BasicCommandData, rc: UpdateGameS
       return gs.rng.randomFloat() <= 0.5;
     },
   }).executeAsTrigger('END_PHASE');
+}
+
+function applyStatusFatigue(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
+  const opposingMonster = GameStateUtil.getOpponentPlayerState(gs, data.player).activeMonster;
+  opposingMonster.modifiers.add(getMonsterModifier(opposingMonster.key(), 'FATIGUE', 0, true));
+  new ConditionalTriggerCommand(rc, {
+    ...data,
+    matchOnOpponentTrigger: true,
+    getConditionalTrigger: (command: MonsterActionCommandData) => {
+      const { activeMonster } = GameStateUtil.getPlayerState(gs, gs.opponentPlayerType);
+      const buffSlotsUsed  = command.selectedAction.appliedBuffs.reduce((acc, val) => val.buffSlots + acc, 0);
+      return new StatModificationCommand(rc, {
+        player: gs.opponentPlayerType,
+        key: 'fatigue',
+        monsterName: activeMonster.name,
+        amount: buffSlotsUsed,
+        statType: 'RECOIL',
+        origin: 'Fatigue',
+        display: true,
+      });
+    },
+    customTriggerConditionOverride: (command: MonsterActionCommandData, trigger: MonsterActionCommandData): boolean => {
+      const buffSlotsUsed  = command.selectedAction.appliedBuffs.reduce((acc, val) => val.buffSlots + acc, 0);
+      return !!(command.player !== trigger.player && buffSlotsUsed > 0);
+    },
+    removeCondition: (): boolean => {
+      const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
+      return !activeMonster.modifiers.contains('FATIGUE');
+    },
+  }).executeAsTrigger('MONSTER_ACTION');
 }
 
 function applyStatPips(gs: GameState, data: StatPipCommandData) {
