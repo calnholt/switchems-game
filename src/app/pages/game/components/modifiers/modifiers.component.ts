@@ -48,6 +48,9 @@ export class ModifiersComponent implements OnChanges {
     this.setValues();
     this.currentPhaseService.currentPhase$.subscribe((value) => {
       this.currentPhase = value;
+      if (value === 'SELECTION_PHASE' && this.isOpponent) {
+        this.displayBuffs = false;
+      }
     })
   }
 
