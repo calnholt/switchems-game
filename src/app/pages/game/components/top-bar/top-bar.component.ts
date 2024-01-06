@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { StringUtil } from '~/app/shared/utils/string.util';
 import { PlayerProfileService } from '~/app/shared/services/player-profile.service';
+import { ImageUtil } from '~/app/shared/utils/image.util';
 
 @Component({
   selector: 'sw-top-bar',
@@ -16,11 +17,17 @@ export class TopBarComponent {
   player!: string;
   opponent!: string;
 
+  isGiga = false;
+  isOpponentGiga = false;
+
+  readonly ImageUtil = ImageUtil;
+
   constructor(
     private currentPhaseService: CurrentPhaseService,
     private playerProfileService: PlayerProfileService,
   ) {
-
+    this.isGiga = !!this.playerProfileService.profile.gigachad;
+    this.isOpponentGiga = !!this.playerProfileService.opponentProfile.gigachad;
   }
 
   ngOnInit() {

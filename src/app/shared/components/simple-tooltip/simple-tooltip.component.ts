@@ -35,6 +35,10 @@ export class SimpleTooltipComponent extends ITooltip implements AfterViewInit {
         this.left = left + width + 5;
         this.top = top + height + 5;
         break;
+      case 'BELOW':
+        this.left = left - 120 + (width / 2);
+        this.top = bottom + height + 20;
+        break;
       case 'ABOVE':
       default:
         this.left = left - 120 + (width / 2);

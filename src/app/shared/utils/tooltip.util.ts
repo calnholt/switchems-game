@@ -44,6 +44,11 @@ function getSimpleTooltip(type: SimpleTooltipType): SimpleTooltip {
         `You are viewing this monster's actions. (Click to toggle back to your active monster)`,
         'RIGHT'
       );
+    case 'GIGACHAD':
+      return new SimpleTooltip(
+        `You really think you can beat me?`,
+        'BELOW'
+      );
     default:
       return new SimpleTooltip('');
   }
@@ -59,3 +64,4 @@ export type SimpleTooltipType =
   | 'CURRENTLY_VIEWING_MONSTER'
   | 'CURRENTLY_VIEWING_MONSTER_RIGHT'
   | 'CURRENTLY_VIEWING_ACTIVE_MONSTER'
+  | 'GIGACHAD'

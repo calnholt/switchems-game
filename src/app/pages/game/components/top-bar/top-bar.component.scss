@@ -18,6 +18,9 @@
     .player, .opponent {
       font-family: $text-font;
       width: var(--player-width);
+      img {
+        height: 20px;
+      }
     }
     .opponent {
       text-align: right;

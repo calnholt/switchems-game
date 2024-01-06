@@ -1,6 +1,12 @@
 <div id="top-bar">
   <div class="top-bar">
     <div class="text-header outline player">
+      <img *ngIf="isGiga" 
+        [src]="ImageUtil.avatars.profHolt"
+        cardInfoTooltip
+        tooltipType="SIMPLE"
+        [object]="'GIGACHAD' | simpleTooltip"
+      />
       {{player}}
     </div>
     <div class="round-info-container">
@@ -10,6 +16,7 @@
     </div>
     <div class="text-header outline opponent">
       {{opponent}}
+      <img *ngIf="isOpponentGiga" [src]="ImageUtil.avatars.profHolt" />
     </div>
   </div>
 </div>
