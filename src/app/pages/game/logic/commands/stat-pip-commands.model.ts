@@ -72,10 +72,10 @@ export class CrushCommand extends EventCommand<CrushCommandData> {
 
 export class ApplyStatPipsCommand extends EventCommand<StatPipCommandData> {
   constructor(receiver: UpdateGameStateService, data: StatPipCommandData) {
-    super(receiver, 'APPLY_STAT_PIPS', data);
+    super(receiver, 'APPLY_STAT_PIPS',  { ...data, display: true });
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} applied ${this.data.amount} ${this.data.statType.toLowerCase()} Pips.`;
+    return `${this.data.monsterName} applied ${this.data.amount}${AbilityTextUtil.getIconText(this.data.statType)} Pips.`;
   }
 }
 

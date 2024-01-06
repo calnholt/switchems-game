@@ -10,7 +10,7 @@ export class CurrentPhaseService {
   private _currentTurn = 0;
 
   // Observable that other services/components can subscribe to
-  readonly currentPhase$ = this._currentPhase.asObservable();
+  public get currentPhase$()  { return this._currentPhase; };
 
   public get currentPhase() { return this._currentPhase.value; }
   public get currentTurn() { return this._currentTurn; }

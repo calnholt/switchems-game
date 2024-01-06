@@ -5,6 +5,7 @@ import { UpdateGameStateUtil } from './update-game-state.util';
 import { EventCommandQueueService } from '../event-command-queue/event-command-queue.service';
 import { GamePhaseUtil } from './game-phase.util';
 import { CommandUtil } from './command.util';
+import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,13 +22,13 @@ export class UpdateGameStateService {
     const gs = this.gameStateService.getGameState();
     // TODO: kinda bad
     const data = ec.data as any;
-    switch(ec.type) {
+    switch (ec.type) {
       case 'APPLY_BUFF':
         UpdateGameStateUtil.applyBuff(gs, data, this);
         break;
       case 'APPLY_BUFF_BELONGS': // trigger
         break;
-      case 'APPLY_FLINCH': 
+      case 'APPLY_FLINCH':
         UpdateGameStateUtil.applyFlinch(gs, data);
         break;
       case 'APPLY_CURSE_STATUS':
@@ -81,7 +82,7 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.gainSwitchDefense(gs, data);
         break;
       case 'GAIN_RANDOM_STAT_PIP':
-        CommandUtil.gainRandomStatPip(gs, { ...data, display: true}, this);
+        CommandUtil.gainRandomStatPip(gs, { ...data, display: true }, this);
         break;
       case 'GAIN_STAT_PIP':
         UpdateGameStateUtil.gainStatPip(gs, data);
@@ -153,6 +154,7 @@ export class UpdateGameStateService {
         GamePhaseUtil.executeStartGamePhase(gs, this);
         break;
       case 'SELECTION_PHASE':
+        gs.currentPhaseService.currentPhase$.next('SELECTION_PHASE');
         break;
       case 'REVEAL_PHASE':
         GamePhaseUtil.executeRevealPhase(gs, this);
@@ -178,7 +180,28 @@ export class UpdateGameStateService {
       case 'GAME_OVER':
         GamePhaseUtil.executeGameOver(gs, data);
         break;
-
+      case 'GO_TO_NEXT_PHASE':
+        switch (data.nextPhase as GamePhaseCommandType) {
+          case 'APPLY_PIPS_PHASE':
+            GamePhaseUtil.enqueueApplyPipsPhase(gs, this);
+            break;
+          case 'APPLY_BUFFS_PHASE':
+            GamePhaseUtil.enqueueApplyBuffsPhase(gs, this);
+            break;
+          case 'SWITCH_ACTIONS_PHASE':
+            GamePhaseUtil.enqueueSwitchActionsPhase(gs, this);
+            break;
+          case 'MONSTER_ACTIONS_PHASE':
+            GamePhaseUtil.enqueueMonsterActionsPhase(gs, this);
+            break;
+          case 'STANDARD_ACTIONS_PHASE':
+            GamePhaseUtil.enqueueStandardActionsPhase(gs, this);
+            break;
+          case 'END_PHASE':
+            GamePhaseUtil.enqueueEndPhase(gs, this);
+            break;
+        }
+        break;
     }
   }
 
@@ -200,7 +223,7 @@ export class UpdateGameStateService {
   public pushFront(event: EventCommand<CommandData>) {
     this.ecqs.pushFront(event);
   }
-  
+
   public registerTrigger(type: EventCommandType, command: EventCommand<CommandData>) {
     this.ecqs.registerTrigger(type, command);
   }

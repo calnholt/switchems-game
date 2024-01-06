@@ -18,6 +18,21 @@ export type GamePhaseCommandType =
   | 'END_PHASE'
   | 'GAME_OVER'
 
+  | 'GO_TO_NEXT_PHASE'
+
+export interface GoToNextPhaseCommandData extends CommandData {
+  nextPhase: GamePhaseCommandType,
+}
+
+export class GoToNextPhaseCommand extends EventCommand<CommandData> {
+  constructor(receiver: UpdateGameStateService, data: GoToNextPhaseCommandData) {
+    super(receiver, 'GO_TO_NEXT_PHASE', { ...data, display: false });
+  }
+  override getDisplayMessage(): string {
+    return ``;
+  }
+}
+
 export interface GamePhaseCommandData extends CommandData {
   
 }

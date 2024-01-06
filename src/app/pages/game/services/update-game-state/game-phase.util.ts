@@ -1,6 +1,6 @@
 import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 import { ApplyBuffCommand, BuffCommand } from "../../logic/commands/buff-command.model";
-import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, GameOverPhaseCommandData, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, StartGamePhaseCommand, SwitchActionsGamePhaseCommand } from "../../logic/commands/game-phase-commands.model";
+import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseCommand, GoToNextPhaseCommand, GameOverPhaseCommandData, MonsterActionsGamePhaseCommand, RevealGamePhaseCommand, SelectionGamePhaseCommand, StandardActionsGamePhaseCommand, StartGamePhaseCommand, SwitchActionsGamePhaseCommand, GamePhaseCommandType } from "../../logic/commands/game-phase-commands.model";
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
 import { DealAttackDamageCommand, FasterCommand, MonsterActionCommand, SlowerCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
@@ -11,20 +11,18 @@ import { GameState } from "../game-state/game-state.service";
 import { GameStateUtil } from "../game-state/game-state.util";
 import { SelectedAction } from "../selected-action/selected-action.model";
 import { UpdateGameStateService } from "./update-game-state.service";
-import { CPUActionSelectUtil } from "./cpu-action-select.util";
 import { StandardActionCommand } from "../../logic/commands/standard-action-command.model";
-import { UpdateGameStateUtil } from "./update-game-state.util";
 
 export const GamePhaseUtil = {
-  revealPhase,
-  applyPipsPhase,
-  applyBuffsPhase,
-  switchActionsPhase,
-  monsterActionsPhase,
-  standardActionsPhase,
-  endPhase,
-  selectionPhase,
-  startGamePhase,
+  enqueueRevealPhase,
+  enqueueApplyPipsPhase,
+  enqueueApplyBuffsPhase,
+  enqueueSwitchActionsPhase,
+  enqueueMonsterActionsPhase,
+  enqueueStandardActionsPhase,
+  enqueueEndPhase,
+  enqueueSelectionPhase,
+  enqueueStartGamePhase,
 
   executeStartGamePhase,
   executeRevealPhase,
@@ -43,32 +41,37 @@ export const GamePhaseUtil = {
   isStandardActionPhaseApplicable,
 }
 
-function revealPhase(gs: GameState, rc: UpdateGameStateService) {
+function enqueueNextPhase(rc: UpdateGameStateService, nextPhase: GamePhaseCommandType) {
+  new GoToNextPhaseCommand(rc, { key: 'phase', player: 'P', nextPhase }).enqueue();
+}
+
+function enqueueRevealPhase(gs: GameState, rc: UpdateGameStateService) {
+  gs.currentPhaseService.goToNextPhase();
   let selectedAction = GameStateUtil.getPlayerState(gs, gs.opponentPlayerType).selectedAction;
   new RevealGamePhaseCommand(rc, { opponentAction: selectedAction, key: 'phase', player: 'P', display: true }).enqueue();
 }
-function applyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
+function enqueueApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
   new ApplyPipsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
 }
-function applyBuffsPhase(gs: GameState, rc: UpdateGameStateService) {
+function enqueueApplyBuffsPhase(gs: GameState, rc: UpdateGameStateService) {
   new ApplyBuffsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
 }
-function switchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
+function enqueueSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   new SwitchActionsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
 }
-function monsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
+function enqueueMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   new MonsterActionsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
 }
-function standardActionsPhase(gs: GameState, rc: UpdateGameStateService) {
+function enqueueStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   new StandardActionsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
 }
-function endPhase(gs: GameState, rc: UpdateGameStateService) {
+function enqueueEndPhase(gs: GameState, rc: UpdateGameStateService) {
   new EndGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
 }
-function selectionPhase(gs: GameState, rc: UpdateGameStateService) {
+function enqueueSelectionPhase(gs: GameState, rc: UpdateGameStateService) {
   new SelectionGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
 }
-function startGamePhase(gs: GameState, rc: UpdateGameStateService) {
+function enqueueStartGamePhase(gs: GameState, rc: UpdateGameStateService) {
   new StartGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
 }
 
@@ -88,41 +91,52 @@ function executeStartGamePhase(gs: GameState, rc: UpdateGameStateService) {
 
 function executeRevealPhase(gs: GameState, rc: UpdateGameStateService) {
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
-
+  
   function reveal(player: PlayerType) {
     const { selectedAction, playerCardManager, activeMonster } = GameStateUtil.getPlayerState(gs, player);
     const action = GameStateUtil.getMonsterActionByPlayer(gs, player);
-      // move buffs and discards
-      playerCardManager.cleanup(selectedAction.appliedBuffs);
-      playerCardManager.cleanup(selectedAction.appliedDiscards);
-      activeMonster.setDisabledActions(selectedAction.action.key());
+    // move buffs and discards
+    playerCardManager.cleanup(selectedAction.appliedBuffs);
+    playerCardManager.cleanup(selectedAction.appliedDiscards);
+    activeMonster.setDisabledActions(selectedAction.action.key());
   }
-
+  
   reveal(playerWithInitiative);
   reveal(playerWithoutInitiative);
-
+  
+  enqueueNextPhase(rc, 'APPLY_PIPS_PHASE');
 }
 
 function executeApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
+  gs.currentPhaseService.goToNextPhase();
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
 
   function applyStatPips(player: PlayerType) {
-    const { selectedAction } = GameStateUtil.getPlayerState(gs, player);
+    const { selectedAction, activeMonster } = GameStateUtil.getPlayerState(gs, player);
     const section = selectedAction.statBoardSection;
     if (section) {
       rc.enqueue(
-        new ApplyStatPipsCommand(rc, { key: selectedAction.action.key(), amount: section.current, player, statType: section.type })
+        new ApplyStatPipsCommand(rc, { 
+          key: selectedAction.action.key(), 
+          monsterName: activeMonster.name,
+          amount: section.current, 
+          player, 
+          statType: section.type 
+        })
       );
     }
   }
 
   applyStatPips(playerWithInitiative);
   applyStatPips(playerWithoutInitiative);
+
+  enqueueNextPhase(rc, 'APPLY_BUFFS_PHASE');
 }
 
 function executeApplyBuffs(gs: GameState, rc: UpdateGameStateService) {
+  gs.currentPhaseService.goToNextPhase();
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
-
+  
   function applyBuffs(gs: GameState, player: PlayerType) {
     const monsterNames = GameStateUtil.getMonsterNames(gs, player);
     const { selectedAction } = GameStateUtil.getPlayerState(gs, player);
@@ -141,11 +155,14 @@ function executeApplyBuffs(gs: GameState, rc: UpdateGameStateService) {
 
   applyBuffs(gs, playerWithInitiative);
   applyBuffs(gs, playerWithoutInitiative);
+  
+  enqueueNextPhase(rc, 'SWITCH_ACTIONS_PHASE');
 }
 
 function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
+  gs.currentPhaseService.goToNextPhase();
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
-
+  
   function performSwitchAction(gs: GameState, player: PlayerType) {
     const monsterNames = GameStateUtil.getMonsterNames(gs, player);
     const { selectedAction } = GameStateUtil.getPlayerState(gs, player);
@@ -154,13 +171,15 @@ function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     }
     new SwitchRoutineCommand(rc, { key: selectedAction.action.key(), player, ...monsterNames }).enqueue();
   }
-
+  
   performSwitchAction(gs, playerWithInitiative);
   performSwitchAction(gs, playerWithoutInitiative);
-
+  
+  enqueueNextPhase(rc, 'MONSTER_ACTIONS_PHASE');
 }
 
 function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
+  gs.currentPhaseService.goToNextPhase();
   const { fasterPlayer, slowerPlayer } = GameStateUtil.getSpeedPlayers(gs);
   
   function performMonsterAction(gs: GameState, player: PlayerType) {
@@ -203,11 +222,13 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   performMonsterAction(gs, fasterPlayer);
   performMonsterAction(gs, slowerPlayer);
 
+  enqueueNextPhase(rc, 'STANDARD_ACTIONS_PHASE');
 }
 
 function executeStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) {
+  gs.currentPhaseService.goToNextPhase();
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
-
+  
   function performStandardAction(gs: GameState, player: PlayerType) {
     const playerState = GameStateUtil.getPlayerState(gs, player);
     if (playerState.selectedAction.action.getSelectableActionType() !== 'STANDARD') return;
@@ -218,15 +239,17 @@ function executeStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) 
       doStandardAction: () => CardByKeyUtil.executeStandardAction(playerState.selectedAction.action.key(), player, rc, gs),
     }).enqueue();
   }
-
+  
   performStandardAction(gs, playerWithInitiative);
   performStandardAction(gs, playerWithoutInitiative);
+
+  enqueueNextPhase(rc, 'END_PHASE');
 }
 
 function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
+  gs.currentPhaseService.goToNextPhase();
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
-  // this.selectedActionService.selectedAction$.next(playerState.selectedAction);
-
+  
   function playerCleanup(gs: GameState, player: PlayerType) {
     // move buffs and discards
     const { selectedAction, playerCardManager, activeMonster, player: p } = GameStateUtil.getPlayerState(gs, player);
@@ -241,10 +264,11 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
     // draw card
     new DrawCommand(rc, { key: selectedAction.action.key(), player, amount: 1 }).enqueue();
   }
-
+  
   playerCleanup(gs, playerWithInitiative);
   playerCleanup(gs, playerWithoutInitiative);
 
+  enqueueNextPhase(rc, 'SELECTION_PHASE');
 }
 
 function executeGameOver(gs: GameState, data: GameOverPhaseCommandData) {
