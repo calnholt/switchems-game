@@ -42,9 +42,9 @@
     img {
       height: 30vh;
       cursor: pointer;
-      animation: idle 3.5s ease-in-out infinite;
+      animation: imposing 3.5s ease-in-out infinite;
       &.reverse {
-        animation: idleEnemy 3.5s ease-in-out infinite;
+        animation: mirroredImposing 3.5s ease-in-out infinite;
       }
     }
 
@@ -200,7 +200,7 @@
   }
 
 
-  @keyframes idle {
+  @keyframes imposing {
     0%, 100% {
       transform: translateX(-5px) scale(1);
     }
@@ -208,12 +208,29 @@
       transform: translateX(5px)  scale(1.02);
     }
   }
-  @keyframes idleEnemy {
+  @keyframes mirroredImposing {
     0%, 100% {
       transform: scale(1) scaleX(-1) translateX(-5px);
     }
     50% {
       transform: scale(1.02) scaleX(-1) translateX(5px);
+    }
+  }
+
+  @keyframes wiggleAndScrunch {
+    0%, 100% {
+      transform: rotate(-3deg) scale(0.95);
+    }
+    50% {
+      transform: rotate(3deg) scale(1.05);
+    }
+  }
+  @keyframes mirroredWiggleAndScrunch {
+    0%, 100% {
+      transform: rotate(3deg) scale(0.95);
+    }
+    50% {
+      transform: rotate(-3deg) scale(1.05);
     }
   }
   
