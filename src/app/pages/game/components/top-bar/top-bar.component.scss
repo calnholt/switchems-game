@@ -8,9 +8,9 @@
   .top-bar {
     background: linear-gradient(to right, 
     rgba(255, 255, 255, 0), 
-    rgba(128, 128, 128, 0.5), 
+    rgba(0, 0, 0, 0.6), 
     rgba(255, 255, 255, 0));
-    width: 60%;
+    width: 80%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,6 +25,8 @@
     .round-info-container {
       .round-container {
         font-size: 22px;
+        width: 330px;
+        text-align: center;
       }
     }
   }
