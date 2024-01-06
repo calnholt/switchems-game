@@ -1,13 +1,21 @@
 <div id="top-bar">
   <div class="top-bar">
     <div class="text-header outline player">
-      <img *ngIf="isGiga" 
+      <div>
+        <img *ngIf="isGiga" 
         [src]="ImageUtil.avatars.profHolt"
         cardInfoTooltip
         tooltipType="SIMPLE"
         [object]="'GIGACHAD' | simpleTooltip"
-      />
-      {{player}}
+        />
+        <span>{{player}}</span>
+      </div>
+      <div class="monster-alive-container">
+        <div class="alive" [ngClass]="{ 'dead' : aliveMonsters < 1}"></div>
+        <div class="alive" [ngClass]="{ 'dead' : aliveMonsters < 2}"></div>
+        <div class="alive" [ngClass]="{ 'dead' : aliveMonsters < 3}"></div>
+      </div>
+      <span [innerHTML]="hpString | convertEmbeddedText: {termCss: 'embedded-term-text', imageCss: 'embedded-icon inverse', excludeTerms: true}"></span>
     </div>
     <div class="round-info-container">
       <div class="header outline round-container">
@@ -15,8 +23,16 @@
       </div>
     </div>
     <div class="text-header outline opponent">
-      {{opponent}}
-      <img *ngIf="isOpponentGiga" [src]="ImageUtil.avatars.profHolt" />
+      <span [innerHTML]="oHpString | convertEmbeddedText: {termCss: 'embedded-term-text', imageCss: 'embedded-icon inverse', excludeTerms: true}"></span>
+      <div class="monster-alive-container">
+        <div class="alive" [ngClass]="{ 'dead' : oAliveMonsters < 1}"></div>
+        <div class="alive" [ngClass]="{ 'dead' : oAliveMonsters < 2}"></div>
+        <div class="alive" [ngClass]="{ 'dead' : oAliveMonsters < 3}"></div>
+      </div>
+      <div>
+        <span>{{opponent}}</span>
+        <img *ngIf="isOpponentGiga" [src]="ImageUtil.avatars.profHolt" />
+      </div>
     </div>
   </div>
 </div>

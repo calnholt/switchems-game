@@ -2,7 +2,7 @@
   <sw-game-over [winner]="winner" />
   <div id="game">
     <div *ngIf="!winner">
-      <sw-top-bar />
+      <sw-top-bar/>
       <div class="d-flex align-items-center">
         <sw-stat-board [statBoard]="statBoard" [isPlayer]="true" />
         <div class="monsters-container">
@@ -55,6 +55,7 @@
     </div>
   </div>
 </div>
+<sw-flashy-graphic [show]="currentPhase === 'START_OF_GAME' || currentPhase === 'REVEAL_PHASE'" />
 <sw-dialog [hide]="!!winner" />
 <sw-switch-out-dialog />
 <sw-koswitch-out-dialog />

@@ -1,7 +1,7 @@
 @import '../../../../../assets/styles/constants.scss';
 
 #top-bar {
-  --player-width: 12vw;
+  --player-width: 20vw;
   display: flex;
   justify-content: center; 
   margin-bottom: 5px;
@@ -10,7 +10,7 @@
     rgba(255, 255, 255, 0), 
     rgba(0, 0, 0, 0.6), 
     rgba(255, 255, 255, 0));
-    width: 80%;
+    width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,8 +18,27 @@
     .player, .opponent {
       font-family: $text-font;
       width: var(--player-width);
+      display: flex;
+      justify-content: space-evenly;
       img {
         height: 20px;
+      }
+      .monster-alive-container {
+        display: flex;
+        align-items: center;
+        .alive {
+          background-color: green;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          &.dead {
+            background-color: red;
+          }
+        }
+        .alive:not(:last-child) {
+          margin-right: 5px;
+        }
+
       }
     }
     .opponent {
@@ -28,7 +47,7 @@
     .round-info-container {
       .round-container {
         font-size: 22px;
-        width: 330px;
+        width: 400px;
         text-align: center;
       }
     }
