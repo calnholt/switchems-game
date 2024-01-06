@@ -3,6 +3,7 @@ import { MonsterAction } from "../../models/monster/monster-action.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { DamageCalcUtil } from "../../logic/util/damage-calc.util";
 import { Monster } from "../../models/monster/monster.model";
+import { CardCompositeKey } from "~/app/shared/interfaces/ICompositeKey.interface";
 
 export const GameStateUtil = {
   isFaster,
@@ -26,7 +27,7 @@ export const GameStateUtil = {
   getSpeedPlayers,
   getMonsterNames,
   getSwitchingToMonster,
-
+  getPlayerMonsterByKey,
 }
 
 function getPlayerState(gs: GameState, playerType: PlayerType): PlayerState {
@@ -182,4 +183,9 @@ function getMonsterNames(gs: GameState, playerType: PlayerType) {
 function getSwitchingToMonster(gs: GameState, playerType: PlayerType) {
   const { selectedAction, inactiveMonsters } = getPlayerState(gs, playerType);
   return inactiveMonsters.find(m => m.key() === selectedAction.action.key()) as Monster;
+}
+
+function getPlayerMonsterByKey(gs: GameState, playerType: PlayerType, key: CardCompositeKey) {
+  const { activeMonster, inactiveMonsters } = getPlayerState(gs, playerType);
+  return inactiveMonsters.concat(activeMonster).find(m => m.key() === key) as Monster;
 }

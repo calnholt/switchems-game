@@ -4,7 +4,6 @@ import { GameStateUtil } from "../../services/game-state/game-state.util";
 import { PlayerType } from "../player-type.mode";
 import { UpdateGameStateService } from "../../services/update-game-state/update-game-state.service";
 import { CommandData } from "../commands/event-command.model";
-import { Monster } from "../../models/monster/monster.model";
 
 export abstract class MonsterLogic {
   monsterKey: string;
@@ -31,8 +30,11 @@ export abstract class MonsterLogic {
 
   executeMonsterCard(key: CardCompositeKey) {
     if (key === this.monsterKey) {
-      this.switchIn(this.gs.currentPhaseService.currentTurn > 0);
-      this.addTriggers();
+      const isStartOfGame = this.gs.currentPhaseService.currentTurn < 1;
+      this.switchIn(!isStartOfGame);
+      if (isStartOfGame) {
+        this.addTriggers();
+      }
     }
     if (this.cardKey.includes('A1')) {
       this.action1();
@@ -70,4 +72,5 @@ export abstract class MonsterLogic {
   abstract buff2(): void;
   abstract buff3(): void;
   abstract buff4(): void;
+
 }

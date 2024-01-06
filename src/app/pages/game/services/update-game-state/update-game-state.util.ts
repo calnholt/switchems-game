@@ -21,16 +21,12 @@ import { GameOverPhaseCommand } from "../../logic/commands/game-phase-commands.m
 import { MonsterAction } from "../../models/monster/monster-action.model";
 import { StandardActionCommandData } from "../../logic/commands/standard-action-command.model";
 import { CommandUtil } from "./command.util";
-import { ConditionalTriggerCommand } from "../../logic/commands/trigger-command.model";
 
 export const UpdateGameStateUtil = {
   doMonsterAction,
   doStandardAction,
   applyBuff,
   applyFlinch,
-  applyStatusCurse,
-  applyStatusDrain,
-  applyStatusFatigue,
   applyStatPips,
   dealAttackDamage,
   dealDamage,
@@ -54,8 +50,8 @@ export const UpdateGameStateUtil = {
   knockoutRoutine,
   crush,
   crushPrompt,
-  drain,
   disableMonsterAction,
+  getMonsterModifier,
 }
 
 function skipActionAndDamage(gs: GameState, data: CommandData): boolean {
@@ -106,61 +102,7 @@ function applyFlinch(gs: GameState, data: StatModificationData) {
   monster.modifiers.add(getMonsterModifier(monster.key(), 'FLINCH'));
 }
 
-function applyStatusCurse(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
-  const opposingMonster = GameStateUtil.getOpponentPlayerState(gs, data.player).activeMonster;
-  opposingMonster.modifiers.add(getMonsterModifier(opposingMonster.key(), 'CURSE', 0, true));
-  new CurseCommand(rc, {
-    ...data,
-    player: GameStateUtil.getOppositePlayer(data.player),
-    display: true,
-    triggerCondition: (command: EventCommand<CommandData>) => {
-      const rngCurse = gs.rng.randomFloat();
-      return rngCurse <= 0.33;
-    },
-  }).executeAsTrigger('END_PHASE');
-}
 
-function applyStatusDrain(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
-  const opposingMonster = GameStateUtil.getOpponentPlayerState(gs, data.player).activeMonster;
-  opposingMonster.modifiers.add(getMonsterModifier(opposingMonster.key(), 'DRAIN', 0, true));
-  new DrainCommand(rc, {
-    ...data,
-    display: true,
-    triggerCondition: (command: EventCommand<CommandData>) => {
-      return gs.rng.randomFloat() <= 0.5;
-    },
-  }).executeAsTrigger('END_PHASE');
-}
-
-function applyStatusFatigue(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
-  const opposingMonster = GameStateUtil.getOpponentPlayerState(gs, data.player).activeMonster;
-  opposingMonster.modifiers.add(getMonsterModifier(opposingMonster.key(), 'FATIGUE', 0, true));
-  new ConditionalTriggerCommand(rc, {
-    ...data,
-    matchOnOpponentTrigger: true,
-    getConditionalTrigger: (command: MonsterActionCommandData) => {
-      const { activeMonster } = GameStateUtil.getPlayerState(gs, command.player);
-      const buffSlotsUsed  = command.selectedAction.appliedBuffs.reduce((acc, val) => val.buffSlots + acc, 0);
-      return new StatModificationCommand(rc, {
-        player: command.player,
-        key: 'fatigue',
-        monsterName: activeMonster.name,
-        amount: buffSlotsUsed,
-        statType: 'RECOIL',
-        origin: 'fatigue [STATUS]',
-        display: true,
-      });
-    },
-    customTriggerConditionOverride: (command: MonsterActionCommandData, trigger: MonsterActionCommandData): boolean => {
-      const buffSlotsUsed  = command.selectedAction.appliedBuffs.reduce((acc, val) => val.buffSlots + acc, 0);
-      return !!(command.player !== trigger.player && buffSlotsUsed > 0);
-    },
-    removeCondition: (): boolean => {
-      const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
-      return !activeMonster.modifiers.contains('FATIGUE');
-    },
-  }).executeAsTrigger('MONSTER_ACTION');
-}
 
 function applyStatPips(gs: GameState, data: StatPipCommandData) {
   const { activeMonster, statBoard } = GameStateUtil.getPlayerState(gs, data.player);
@@ -454,20 +396,7 @@ function crush(gs: GameState, data: CrushCommandData, rc: UpdateGameStateService
   data.selections.forEach(s => statBoard.remove(s.amount, s.statType));
 }
 
-function drain(gs: GameState, data: BasicCommandData, rc: UpdateGameStateService) {
-  const { activeMonster } = GameStateUtil.getPlayerState(gs, data.player);
-  const { activeMonster: opposingMonster } = GameStateUtil.getOpponentPlayerState(gs, data.player);
-  activeMonster.heal(1);
-  opposingMonster.takeDamage(1);
-  if (opposingMonster.currentHp === 0) {
-    // TODO: check if this is the correct player
-    new KnockedOutCommand(rc, {
-      ...data,
-      kodMonster: opposingMonster.name,
-      kodPlayer: 'O',
-    }).pushFront();
-  }
-}
+
 
 function disableMonsterAction(gs: GameState, data: DisableActionCommandData, rc: UpdateGameStateService) {
   if (data.selection.key === 'NONE') return;

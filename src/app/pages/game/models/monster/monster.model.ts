@@ -117,6 +117,10 @@ export class Monster implements IHaveTooltip, ISelectableAction {
       a.modifiers.eotClear();
     });
   }
+
+  isKod(): boolean {
+    return this._currentHp <= 0;
+  }
   
   getEffectivenessArray(): number[] {
     const arrs = this._elements.map((el: ElemType) => StatUtil.getAdvantages(el)) ?? [];

@@ -1,4 +1,5 @@
 import { GameStateUtil } from "../../services/game-state/game-state.util";
+import { TriggerUtil } from "../../services/update-game-state/trigger.util";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { PreventRecoilCommand } from "../commands/ongoing-turn-commands.model";
 import { HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
@@ -23,7 +24,7 @@ export class Vulturock extends MonsterLogic {
       amount: 6,
       origin: "Scavenge",
       display: true,
-      monsterActionTrigger: true,
+      triggerCondition: TriggerUtil.checkMonsterActionTrigger,
     }).executeAsTrigger('KNOCKED_OUT');
   }
   override action1(): void {

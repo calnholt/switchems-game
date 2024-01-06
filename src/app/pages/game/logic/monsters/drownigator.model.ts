@@ -1,7 +1,9 @@
 import { StatBoardSectionType } from "../../models/stat-board/stat-board.model";
 import { GameStateUtil } from "../../services/game-state/game-state.util";
 import { CommandUtil } from "../../services/update-game-state/command.util";
+import { TriggerUtil } from "../../services/update-game-state/trigger.util";
 import { UpdateGameStateUtil } from "../../services/update-game-state/update-game-state.util";
+import { EventCommand } from "../commands/event-command.model";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { ApplyFatigueStatus } from "../commands/monster-action-commands.model";
 import {  HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
@@ -17,7 +19,7 @@ export class Drownigator extends MonsterLogic {
       key: 'DROWNIGATOR_A4',
       amount: 1,
       statType: "ATTACK",
-      monsterActionTrigger: true,
+      triggerCondition: TriggerUtil.checkMonsterActionTrigger,
       display: true, 
       origin: 'Surge'
     }).executeAsTrigger('FASTER');
@@ -40,6 +42,7 @@ export class Drownigator extends MonsterLogic {
     }).pushFront();
     new ApplyFatigueStatus(this.rc, {
       ...this.data,
+      player: GameStateUtil.getOppositePlayer(this.player),
       origin: 'From  the Depths',
       display: true,
     }).pushFront();
@@ -89,7 +92,11 @@ export class Drownigator extends MonsterLogic {
 
     new ConditionalTriggerCommand(this.rc, {
       ...this.data,
-      triggerCondition: (command: CrushCommand) => { return command.data.selections.reduce((acc, value) => acc + value.amount, 0) >= 1 },
+      triggerCondition: (command: CrushCommand, trigger: CrushCommand) => { 
+        const condition = TriggerUtil.checkBasicTrigger(command, trigger);
+        const crushCondition = command.data.selections.reduce((acc, value) => acc + value.amount, 0) >= 1;
+        return condition && crushCondition;
+      },
       getConditionalTrigger: (command: CrushCommandData) => {
         return new GainStatPipCommand(this.rc, {
           ...this.data,
@@ -114,7 +121,11 @@ export class Drownigator extends MonsterLogic {
     }, this.rc);
     new ConditionalTriggerCommand(this.rc, {
       ...this.data,
-      triggerCondition: (command: CrushCommand) => { return command.data.selections.reduce((acc, value) => acc + value.amount, 0) >= 1 },
+      triggerCondition: (command: CrushCommand, trigger: CrushCommand) => { 
+        const condition = TriggerUtil.checkBasicTrigger(command, trigger);
+        const crushCondition = command.data.selections.reduce((acc, value) => acc + value.amount, 0) >= 1;
+        return condition && crushCondition;
+      },
       getConditionalTrigger: (command: CrushCommandData) => {
         return new HealCommand(this.rc, {
           ...this.data,

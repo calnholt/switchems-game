@@ -1,4 +1,5 @@
 import { CommandUtil } from "../../services/update-game-state/command.util";
+import { TriggerUtil } from "../../services/update-game-state/trigger.util";
 import { DescriptiveMessageCommand } from "../commands/message-command.model";
 import { StatModificationCommand } from "../commands/stat-modification-command.model";
 import { GainStatPipCommand } from "../commands/stat-pip-commands.model";
@@ -13,7 +14,7 @@ export class Volcanoggin extends MonsterLogic {
       amount: 2,
       statType: "ATTACK",
       origin: 'Headbutt',
-      monsterActionTrigger: true,
+      triggerCondition: TriggerUtil.checkMonsterActionTrigger,
       display: true,
     }).executeAsTrigger('SLOWER');
     new StatModificationCommand(this.rc, {
@@ -22,7 +23,7 @@ export class Volcanoggin extends MonsterLogic {
       amount: 2,
       statType: "RECOIL",
       origin: 'Explode',
-      monsterActionTrigger: true,
+      triggerCondition: TriggerUtil.checkMonsterActionTrigger,
       display: true,
     }).executeAsTrigger('SLOWER');
   }

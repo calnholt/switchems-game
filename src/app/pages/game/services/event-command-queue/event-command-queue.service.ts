@@ -140,7 +140,7 @@ export class EventCommandQueueService {
         }
       }
       else {
-        this.unregisterEotTriggers();
+        // this.unregisterEotTriggers();
       }
       this._isAwaitingAcknowledgement = false;
       this._isAwaitingDecision = false;
@@ -169,32 +169,9 @@ export class EventCommandQueueService {
     const triggers = this._triggers.get(command.type);
     if (triggers) {
       triggers.forEach(trigger => {
-        // TODO: this needs to be refactored
-        // flags are nice but I think we need to check for the condition on an ability basis
-        // can create a util for common comparisons
-        const isMonsterActionTrigger = trigger.data.monsterActionTrigger;
-        const isKeyMatch = command.data.key === trigger.data.key;
-        const isPlayerMatch = trigger.data.player === command.data.player && !trigger.data.matchOnOpponentTrigger;
-        const isConditionMet = !trigger.data.triggerCondition || trigger.data.triggerCondition?.(command);
-        const isOverride = trigger.data.customTriggerConditionOverride && trigger.data.customTriggerConditionOverride?.(command.data, trigger.data);
-        const isEndPhase = command.type === 'END_PHASE';
+        const isTriggered = trigger.data.triggerCondition && trigger.data.triggerCondition(command, trigger);
         const updatedTrigger = trigger?.data?.getConditionalTrigger ? trigger?.data?.getConditionalTrigger(command.data) : trigger;
-        if (isOverride) {
-          console.log('enqueue trigger', updatedTrigger)
-          this.pushFront(updatedTrigger);
-        }
-        // if monster action trigger, need key to match
-        else if (isMonsterActionTrigger && isKeyMatch && isPlayerMatch && isConditionMet) {
-          console.log('enqueue trigger', updatedTrigger)
-          this.pushFront(updatedTrigger);
-        }
-        // end phase trigger
-        else if (isConditionMet && isEndPhase) {
-          console.log('enqueue trigger', updatedTrigger)
-          this.pushFront(updatedTrigger);
-        }
-        // otherwise this is a basic trigger match
-        else if (!isMonsterActionTrigger && isPlayerMatch && isConditionMet) {
+        if (isTriggered) {
           console.log('enqueue trigger', updatedTrigger)
           this.pushFront(updatedTrigger);
         }
@@ -217,7 +194,7 @@ export class EventCommandQueueService {
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
       const filteredTriggers = (this._triggers.get(key) as EventCommand<CommandData>[])
-      .filter(cmd => (cmd.data.monsterActionTrigger && cmd.data.player !== playerType) || !( cmd.data.removeCondition && cmd.data.removeCondition() ));
+      .filter(cmd => !( cmd.data.removeCondition && cmd.data.removeCondition() ));
       this._triggers.set(key, filteredTriggers);
     });
     console.log('triggers after switch', this._triggers);
@@ -230,13 +207,5 @@ export class EventCommandQueueService {
         .filter(cmd => !cmd.data.removeEotTrigger || !( cmd.data.removeCondition && cmd.data.removeCondition() )));
     });
   }
-  private unregisterFromOtherTriggers(playerType: PlayerType, key: CardCompositeKey) {
-    const keys = [...this._triggers.keys()];
-    keys.forEach((key) => {
-      this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[])
-        .filter(cmd => cmd.data.removeFromOtherTriggers && cmd.data.player === playerType && cmd.data.key === key));
-    });
-  }
-
 
 }

@@ -1,3 +1,4 @@
+import { TriggerUtil } from "../../services/update-game-state/trigger.util";
 import { HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
 import { GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { MonsterLogic } from "./monster-logic.model";
@@ -10,7 +11,7 @@ export class Deusvolt extends MonsterLogic {
       key: 'DEUSVOLT_A4',
       amount: 2,
       origin: 'Gnaw',
-      monsterActionTrigger: true,
+      triggerCondition: TriggerUtil.checkMonsterActionTrigger,
     }).executeAsTrigger('FASTER');
   }
   override switchIn(isFront: boolean): void {

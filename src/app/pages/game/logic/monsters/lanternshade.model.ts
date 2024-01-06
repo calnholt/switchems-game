@@ -11,6 +11,7 @@ export class Lanternshade extends MonsterLogic {
   override switchIn(isFront: boolean): void {
     new ApplyCurseStatus(this.rc, {
       ...this.data,
+      player: GameStateUtil.getOppositePlayer(this.player),
       origin: `Lanternshade's switch in ability`,
       display: true,
     }).pushFrontOrBack(isFront);
@@ -55,6 +56,7 @@ export class Lanternshade extends MonsterLogic {
     if (selectedAction.action.getSelectableActionType() === 'SWITCH') {
       new ApplyCurseStatus(this.rc, {
         ...this.data,
+        player: GameStateUtil.getOppositePlayer(this.player),
         origin: `Spreading Curse`,
         display: true,
       }).pushFront();
@@ -71,6 +73,7 @@ export class Lanternshade extends MonsterLogic {
     if (selectedAction.appliedBuffs.length > 1) {
       new ApplyCurseStatus(this.rc, {
         ...this.data,
+        player: GameStateUtil.getOppositePlayer(this.player),
         origin: `Infusion`,
         display: true,
       }).pushFront();

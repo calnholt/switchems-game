@@ -3,6 +3,7 @@ import { UpdateGameStateService } from "../../services/update-game-state/update-
 import { PlayerType } from "../player-type.mode";
 import { CommandData, EventCommand } from "./event-command.model";
 import { SelectedAction } from "../../services/selected-action/selected-action.model";
+import { Player } from "../../models/player/player.model";
 
 export type MONSTER_ACTION_COMMANDS =
   | 'MONSTER_ACTION'
@@ -144,6 +145,11 @@ export class ApplyDrainStatus extends EventCommand<BasicCommandData> {
     return `${this.data.opponentMonsterName} became drained!`;
   }
 }
+
+export interface StatusEffectCommandData extends CommandData {
+  targetMonster: CardCompositeKey;
+}
+
 export class ApplyCurseStatus extends EventCommand<BasicCommandData> {
   constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
     super(receiver, 'APPLY_CURSE_STATUS', data);
@@ -152,8 +158,8 @@ export class ApplyCurseStatus extends EventCommand<BasicCommandData> {
     return `${this.data.opponentMonsterName} became cursed [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
   }
 }
-export class CurseCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+export class CurseCommand extends EventCommand<StatusEffectCommandData> {
+  constructor(receiver: UpdateGameStateService, data: StatusEffectCommandData) {
     super(receiver, 'CURSE', data);
   }
   override getDisplayMessage(): string {
@@ -168,16 +174,16 @@ export class ApplyFatigueStatus extends EventCommand<BasicCommandData> {
     return `${this.data.opponentMonsterName} became fatigued [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
   }
 }
-export class FatigueCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+export class FatigueCommand extends EventCommand<StatusEffectCommandData> {
+  constructor(receiver: UpdateGameStateService, data: StatusEffectCommandData) {
     super(receiver, 'FATIGUE', data);
   }
   override getDisplayMessage(): string {
     return `${this.data.opponentMonsterName} took 1 damage from fatigue!`;
   }
 }
-export class DrainCommand extends EventCommand<BasicCommandData> {
-  constructor(receiver: UpdateGameStateService, data: BasicCommandData) {
+export class DrainCommand extends EventCommand<StatusEffectCommandData> {
+  constructor(receiver: UpdateGameStateService, data: StatusEffectCommandData) {
     super(receiver, 'DRAIN', data);
   }
   override getDisplayMessage(): string {

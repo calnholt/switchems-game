@@ -6,6 +6,7 @@ import { StatModificationCommand } from "../commands/stat-modification-command.m
 import { GainRandomStatPipCommand, GainStatPipCommand } from "../commands/stat-pip-commands.model";
 import { MonsterLogic } from "./monster-logic.model";
 import { CommandUtil } from "../../services/update-game-state/command.util";
+import { TriggerUtil } from "../../services/update-game-state/trigger.util";
 
 export class Chargroar extends MonsterLogic {
 
@@ -38,7 +39,7 @@ export class Chargroar extends MonsterLogic {
       key: 'CHARGROAR_A2',
       amount: 2,
       statType: "SPEED",
-      monsterActionTrigger: true,
+      triggerCondition: TriggerUtil.checkMonsterActionTrigger,
       display: true, 
       origin: 'Lights Out'
     }).executeAsTrigger('KNOCKED_OUT_BY_ATTACK');
@@ -49,7 +50,7 @@ export class Chargroar extends MonsterLogic {
       amount: 3,
       statType: "ATTACK",
       origin: 'Lightning Fang',
-      monsterActionTrigger: true,
+      triggerCondition: TriggerUtil.checkMonsterActionTrigger,
     }).executeAsTrigger('FASTER');
 
     new StatModificationCommand(this.rc, { 
@@ -57,7 +58,7 @@ export class Chargroar extends MonsterLogic {
       key: 'CHARGROAR_A4',
       amount: 1, 
       statType: 'PIERCE', 
-      monsterActionTrigger: true,
+      triggerCondition: TriggerUtil.checkMonsterActionTrigger,
       display: true,
       origin: 'Blazing Roar',
     }).executeAsTrigger('APPLY_BUFF');

@@ -92,7 +92,6 @@ export class GameComponent {
     else {
       this.playerService.startGame();
     }
-    this.gamePhaseService.startGame();
     this.playerProfileService.profile$.subscribe((value) => {
       this.activePlayerType = value.playerType;
       this.opponentPlayerType = value.playerType === 'P' ? 'O' : 'P';
@@ -190,7 +189,8 @@ export class GameComponent {
       else {
         this.monsterActionsBeingViewed = (this.oInactiveMonsters.concat(this.oActiveMonster).find(m => m.key() === value.key) as Monster).actions;
       }
-    })
+    });
+    this.gamePhaseService.startGame();
   }
 
   getRandomArena(): ArenaType {

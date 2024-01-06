@@ -6,6 +6,7 @@ import { EventCommandQueueService } from '../event-command-queue/event-command-q
 import { GamePhaseUtil } from './game-phase.util';
 import { CommandUtil } from './command.util';
 import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
+import { StatusEffectUtil } from './status-effect.util';
 
 @Injectable({
   providedIn: 'root'
@@ -32,13 +33,13 @@ export class UpdateGameStateService {
         UpdateGameStateUtil.applyFlinch(gs, data);
         break;
       case 'APPLY_CURSE_STATUS':
-        UpdateGameStateUtil.applyStatusCurse(gs, data, this);
+        StatusEffectUtil.applyStatusCurse(gs, data, this);
         break;
       case 'APPLY_DRAIN_STATUS':
-        UpdateGameStateUtil.applyStatusDrain(gs, data, this);
+        StatusEffectUtil.applyStatusDrain(gs, data, this);
         break;
       case 'APPLY_FATIGUE_STATUS':
-        UpdateGameStateUtil.applyStatusFatigue(gs, data, this);
+        StatusEffectUtil.applyStatusFatigue(gs, data, this);
         break;
       case 'APPLY_STAT_PIPS':
         UpdateGameStateUtil.applyStatPips(gs, data);
@@ -65,7 +66,7 @@ export class UpdateGameStateService {
       case 'DISCARD_PIPS':
         break;
       case 'DRAIN':
-        UpdateGameStateUtil.drain(gs, data, this);
+        StatusEffectUtil.drain(gs, data, this);
         break;
       case 'DRAW':
       case 'DRAW_FROM_ICON':

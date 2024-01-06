@@ -1,4 +1,5 @@
 import { GameStateUtil } from "../../services/game-state/game-state.util";
+import { TriggerUtil } from "../../services/update-game-state/trigger.util";
 import { UpdateGameStateUtil } from "../../services/update-game-state/update-game-state.util";
 import { ApplyDrainStatus, DrainCommand, RemoveStatusEffectsCommand } from "../commands/monster-action-commands.model";
 import { ApplyFlinchCommand, HealCommand, StatModificationCommand } from "../commands/stat-modification-command.model";
@@ -21,6 +22,7 @@ export class Stalagrowth extends MonsterLogic {
   override action1(): void {
     new ApplyDrainStatus(this.rc, {
       ...this.data,
+      player: GameStateUtil.getOppositePlayer(this.player),
       origin: 'Gravelcrust Grip',
       display: true,
     }).pushFront();
@@ -60,6 +62,7 @@ export class Stalagrowth extends MonsterLogic {
     if (selectedAction.action.getSelectableActionType() === 'SWITCH') {
       new ApplyDrainStatus(this.rc, {
         ...this.data,
+        player: GameStateUtil.getOppositePlayer(this.player),
         origin: 'Vine Whips',
         display: true,
       }).pushFront();
@@ -116,7 +119,11 @@ export class Stalagrowth extends MonsterLogic {
     }, this.rc);
     new HealCommand(this.rc, {
       ...this.data,
-      triggerCondition: (command: CrushCommand) => { return command.data.selections.reduce((acc, value) => acc + value.amount, 0) >= 2 },
+      triggerCondition: (command: CrushCommand, trigger: CrushCommand) => { 
+        const condition = TriggerUtil.checkBasicTrigger(command, trigger);
+        const crushCondition = command.data.selections.reduce((acc, value) => acc + value.amount, 0) >= 2;
+        return condition && crushCondition;
+      },
       amount: 1,
       origin: 'Life Siphon',
       display: true,

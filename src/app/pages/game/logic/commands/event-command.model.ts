@@ -97,7 +97,9 @@ export interface CommandData {
   monsterName?: string;
   opponentMonsterName?: string;
   key: CardCompositeKey;
-  player: PlayerType;
+  player: PlayerType; // the player who the things happens to
+  targetMonster?: CardCompositeKey;
+  targetPlayer?: PlayerType;
   destroyOnTrigger?: boolean; // single time trigger flag
   ongoing?: boolean;
   display?: boolean; // determines if we display event as a message
@@ -105,14 +107,9 @@ export interface CommandData {
   parent?: EventCommandType;
   // TODO: not optional
   activePlayerType?: PlayerType;
-  monsterActionTrigger?: boolean; // denotes a trigger originating from a monster action
-  updateMonsterPlayerTriggers?: boolean; // true on switch out, need to clean up irrelevant triggers
-  matchOnOpponentTrigger?: boolean; // denotes a trigger that matches on opponent
-  removeOnSwitchTrigger?: boolean; // denotes a trigger that's cleared after switch
   removeEotTrigger?: boolean;
-  removeFromOtherTriggers?: boolean; // a single trigger that's looking at multiple events but should only fire once
-  triggerCondition?: (command: any) => boolean; // used for when a trigger also has a condition that needs to be satisfied
-  customTriggerConditionOverride?: (command: any, trigger: any) => boolean; // used for when a trigger also has a condition that needs to be satisfied, overrides all other checks
+  updateMonsterPlayerTriggers?: boolean;
+  triggerCondition?: (command: EventCommand<any>, trigger: EventCommand<any>) => boolean;
   getConditionalTrigger?: (command: any) => EventCommand<any>; // updates the command data using the command that caused trigger
   removeCondition?: () => boolean;
 };

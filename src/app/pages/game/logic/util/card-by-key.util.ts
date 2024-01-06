@@ -8,9 +8,9 @@ import { Vulturock } from "../monsters/vulturock.model";
 import { Stalagrowth } from "../monsters/stalagrowth.model";
 import { Deusvolt } from "../monsters/deusvolt.model";
 import { Volcanoggin } from "../monsters/volcanoggin.model";
-import { Sorrospine } from "../monsters/Sorrospine.model";
 import { Lanternshade } from "../monsters/lanternshade.model";
 import { Drownigator } from "../monsters/drownigator.model";
+import { Sorrospine } from "../monsters/Sorrospine.model";
 
 export const CardByKeyUtil = {
   executeCardByKey,
