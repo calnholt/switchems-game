@@ -1,7 +1,7 @@
 <div [style.height]="'32px'">
   <sw-pushable-button *ngIf="showButton" [isActive]="isSubmitActive()">
     <div id="submit-action-button" class="button-default" [ngClass]="{'active' : isCostFulfilled}" (click)="submit()">
-      <span>{{ viewingOtherMonstersActions ? 'Disabled while viewing other monster actions' : label }}</span>
+      <span [innerHTML]="(viewingOtherMonstersActions ? 'Disabled while viewing other monster actions' : label) | convertEmbeddedText"></span>
     </div>
   </sw-pushable-button>
 </div>

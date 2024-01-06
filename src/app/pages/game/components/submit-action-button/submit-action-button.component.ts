@@ -5,6 +5,7 @@ import { GamePhaseService } from '../../services/game-phase/game-phase.service';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { OnlineBattleService, OnlineBattleStatusType } from '../../services/online-battle.service';
 import { SelectedAction } from '../../services/selected-action/selected-action.model';
+import { AbilityTextUtil } from '~/app/shared/utils/ability-text.util';
 
 const LABEL = 'Select an action';
 const WAITING_LABEL = `Waiting for opponent's selection...`;
@@ -20,7 +21,7 @@ export class SubmitActionButtonComponent {
   selectedAction!: SelectedAction;
   isCostFulfilled = false;
   displayName: string | null = null;
-  label: string | null = LABEL;
+  label: string = LABEL;
   numBuffSlotsUsed: number = 0;
   statBoardSectionType: StatBoardSectionType | null = null;
   enabled = true;
@@ -90,7 +91,7 @@ export class SubmitActionButtonComponent {
   getDisplayText(statBoardSection: StatBoardSection | undefined ): string {
     let pipInfo = '';
     if (statBoardSection) {
-      pipInfo = `w/ ${statBoardSection.current} ${statBoardSection.type.toLowerCase()} Pips`
+      pipInfo = `w/ ${statBoardSection.current}${AbilityTextUtil.getIconText(statBoardSection.type)} Pips`
     }
     if (this.isCostFulfilled) {
       return `${this.displayName} ${pipInfo} - GO!`;
