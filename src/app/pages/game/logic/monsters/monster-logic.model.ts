@@ -23,13 +23,7 @@ export abstract class MonsterLogic {
     this.cardKey = cardKey;
     this.player = player;
     this.gs = gs;
-    // TODO: this is very fugly
     this.monsterNames = GameStateUtil.getMonsterNames(gs, player);
-    const { selectedAction, inactiveMonsters } = GameStateUtil.getPlayerState(gs, player);
-    if (selectedAction.action.getSelectableActionType() === 'SWITCH') {
-      const activeMonster = inactiveMonsters.find(m => m.key() === selectedAction.action.key()) as Monster;
-      this.monsterNames = { monsterName: activeMonster.name, opponentMonsterName: this.monsterNames.opponentMonsterName };
-    }
     this.rc = rc;
     this.key = `${monsterKey}_${cardKey}`;
     this.data = { key: this.key, player, ...this.monsterNames };

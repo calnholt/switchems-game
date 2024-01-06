@@ -70,7 +70,7 @@
     },
     {
       "buffName": "Tremble",
-      "buffText": "<b>Super, Recoil 1</b>.<br><br><div>{\"stat\": \"SPD\", \"num\": 2}</div> and <div>{\"stat\": \"ATK\", \"num\": 2}.</div>~SUPER~ ~RECOIL~",
+      "buffText": "<b>Super, Recoil 1</b>.<br><br><div>{\"stat\": \"SPD\", \"num\": 2}</div><br><br><div>{\"stat\": \"ATK\", \"num\": 2}</div>~SUPER~ ~RECOIL~",
       "lastUpdated": "Tue, 24 Jan 2023 13:29:13 GMT"
     }
   ],

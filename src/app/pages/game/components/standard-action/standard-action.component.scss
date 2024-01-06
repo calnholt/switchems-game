@@ -13,6 +13,13 @@
 
   &.selected {
     filter: brightness(100%);
+    background-image: url('../../../../../assets/images/symbols/selected.png');
+    background-size: 62px;
+    background-position: center;
+    height: inherit;
+    background-repeat: no-repeat;
+    background-position-y: 26px;
+    background-position-x: 2px;
   }
 
   .sw-card-title { 

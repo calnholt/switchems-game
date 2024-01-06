@@ -7,7 +7,11 @@
           'selected' : isSelected, 
           'unselectable': action.isDisabled || action.isLocked || cardsInHand < action.discards || disable,
           }" cardInfoTooltip [object]="action" tooltipType="ACTION">
-        <div [ngClass]="{'disabled' : action.isDisabled, 'locked' : action.isLocked}">
+        <div [ngClass]="{
+            'disabled' : action.isDisabled, 
+            'locked' : action.isLocked,
+            'selected-action' : isSelected && !action.isDisabled && !action.isLocked
+        }">
           <div class="title-container sw-card-title">
             {{action.name}}
           </div>

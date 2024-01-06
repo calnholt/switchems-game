@@ -4,7 +4,7 @@ import { SelectedActionService } from './selected-action/selected-action.service
 import { SelectedAction } from './selected-action/selected-action.model';
 import { CardCompositeKey } from '~/app/shared/interfaces/ICompositeKey.interface';
 import { SelectedActionType } from '~/app/shared/interfaces/ISelectableAction.interface';
-import { StatBoardSection } from '../models/stat-board/stat-board.model';
+import { StatBoardSection, StatBoardSectionType } from '../models/stat-board/stat-board.model';
 import { MonsterDataService } from '~/app/shared/services/monster-data.service';
 import { MonsterAction } from '../models/monster/monster-action.model';
 import { StandardAction } from '../models/standard-action/standard-action.model';
@@ -72,10 +72,15 @@ export class OnlineBattleService {
 
   getActionData(): OnlineSelectedAction {
     const selectedAction = this.selectedActionService.selectedAction;
+    const statBoardSection = selectedAction.statBoardSection;
     return {
       key: selectedAction.action.key(),
       type: selectedAction.action.getSelectableActionType(),
-      pipSection: selectedAction.statBoardSection,
+      pipSection: statBoardSection?.type ? { 
+        type: statBoardSection?.type, 
+        max: statBoardSection?.max, 
+        current: statBoardSection?.current 
+      } : undefined,
       buffs: selectedAction.appliedBuffs.map(m => m.key()),
       discards: selectedAction.appliedDiscards.map(m => m.key()),
     }
@@ -107,7 +112,7 @@ export class OnlineBattleService {
       iAction, 
       allBuffs.filter(b => action.buffs.includes(b.key())),  
       allBuffs.filter(b => action.discards.includes(b.key())), 
-      action.pipSection,
+      action.pipSection?.type ? new StatBoardSection(action.pipSection.max, action.pipSection.current, action.pipSection.type) : undefined,
     );
     this.selectedActionService.oSelectedAction$.next(selectedAction);
     // this.confirmed$.next(false);
@@ -119,7 +124,7 @@ export class OnlineBattleService {
 export interface OnlineSelectedAction {
   key: CardCompositeKey,
   type: SelectedActionType,
-  pipSection: StatBoardSection | undefined,
+  pipSection: undefined | { type: StatBoardSectionType, current: number, max: number },
   buffs: CardCompositeKey[],
   discards: CardCompositeKey[],
 }

@@ -100,7 +100,7 @@ export class Monster implements IHaveTooltip, ISelectableAction {
 
   setDisabledActions(key: CardCompositeKey) {
     this._actions.forEach(a => {
-      if (!a.isSpam) {
+      if (!a.isSpam && !a.isLocked) {
         if (a.isSingleUse) {
           a.setLocked(a.key() === key);
         }

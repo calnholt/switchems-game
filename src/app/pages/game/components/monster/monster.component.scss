@@ -15,6 +15,10 @@
 
 #monster {
 
+  &.ko {
+    filter: grayscale(100%);
+  }
+
   .monster-container {
     display: flex;
     flex-direction: column;
@@ -23,6 +27,17 @@
     font-family: $header-font;
     font-size: 21px;
     line-height: 70%;
+
+    .selected-action {
+      background-size: 75px;
+      width: 100%;
+      background-position: center;
+      height: inherit;
+      background-repeat: no-repeat;
+      background-position-y: -3px;
+      background-position-x: 0px;
+      background-image: url('../../../../../assets/images/symbols/selected.png');
+    }
 
     img {
       height: 305px;
@@ -58,6 +73,7 @@
     .monster-name-container {
       display: flex;
       align-items: center;
+      justify-content: center;
       .monster-name {
         color: black;
         text-shadow: $text-shadow-border;
@@ -82,6 +98,7 @@
     .detail-container {
       display: flex;
       align-items: center;
+      justify-content: center;
       .view-button-container {
         margin-right: 5px;
       }

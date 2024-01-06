@@ -138,10 +138,10 @@ function applyStatusFatigue(gs: GameState, data: BasicCommandData, rc: UpdateGam
     ...data,
     matchOnOpponentTrigger: true,
     getConditionalTrigger: (command: MonsterActionCommandData) => {
-      const { activeMonster } = GameStateUtil.getPlayerState(gs, gs.opponentPlayerType);
+      const { activeMonster } = GameStateUtil.getPlayerState(gs, command.player);
       const buffSlotsUsed  = command.selectedAction.appliedBuffs.reduce((acc, val) => val.buffSlots + acc, 0);
       return new StatModificationCommand(rc, {
-        player: gs.opponentPlayerType,
+        player: command.player,
         key: 'fatigue',
         monsterName: activeMonster.name,
         amount: buffSlotsUsed,
@@ -322,7 +322,10 @@ function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSe
   else if (data.type === 'REMOVE_STATUS') {
     commands.push(new RemoveStatusEffectsCommand(rc, { ...data, display: true}));
   }
-  activeMonster.actions.forEach(a => a.setLocked(false));
+  activeMonster.actions.forEach(a => { 
+    a.setLocked(false);
+    a.setDisabled(false);
+  });
   commands.push(new SwitchInCommand(rc, { ...data, player: data.player, monsterName: switchingToMonster.name, display: true }));
   commands.reverse().forEach(cmd => cmd.pushFront());
 }

@@ -54,7 +54,7 @@ export class StatBoardSection {
 
   constructor(max: number, current: number, type: StatBoardSectionType) {
     this._max = max;
-    this._current = 0;
+    this._current = current;
     this.type = type;
   }
 

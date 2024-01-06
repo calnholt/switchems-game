@@ -2,6 +2,7 @@ import { UpdateGameStateService } from "../../services/update-game-state/update-
 import { CommandData, EventCommand } from "./event-command.model";
 import { SelectedAction } from "../../services/selected-action/selected-action.model";
 import { PlayerType } from "../player-type.mode";
+import { AbilityTextUtil } from "~/app/shared/utils/ability-text.util";
 
 export type GamePhaseCommandType = 
   | 'TUTORIAL'
@@ -52,7 +53,7 @@ export class RevealGamePhaseCommand extends EventCommand<RevealGamePhaseCommandD
     const { appliedBuffs, appliedDiscards, statBoardSection } = this.data.opponentAction;
     let pips = '';
     if (statBoardSection) {
-      pips = ` using ${statBoardSection.current} ${statBoardSection.type.toLowerCase()} Pips`
+      pips = ` using ${statBoardSection.current}${AbilityTextUtil.getIconText(statBoardSection.type)} Pips`
     }
     let buffs = '';
     if (appliedBuffs.length) {

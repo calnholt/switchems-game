@@ -33,7 +33,7 @@
     filter: brightness(100%);
   }
 
-  .disabled, .locked {
+  .disabled, .locked, .selected-action {
     background-size: 130px;
     background-position: center;
     height: inherit;
@@ -47,6 +47,10 @@
 
   .locked {
     background-image: url('../../../../../../assets/images/symbols/single-use.png');
+  }
+
+  .selected-action {
+    background-image: url('../../../../../../assets/images/symbols/selected.png');
   }
 
   .sw-card-title {

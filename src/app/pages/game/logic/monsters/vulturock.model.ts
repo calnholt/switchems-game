@@ -51,7 +51,7 @@ export class Vulturock extends MonsterLogic {
   override action3(): void {
     new DescriptiveMessageCommand(this.rc, { 
       ...this.data, 
-      message: "Vulturock gained 3 defense pips and +1 defense from Iron Defense!",
+      message: "Vulturock gained 3[DEF] Pips and +1[DEF] from Iron Defense!",
     }).pushFront();
     new StatModificationCommand(this.rc, {
       ...this.data,
@@ -107,7 +107,7 @@ export class Vulturock extends MonsterLogic {
   override buff4(): void {
     new DescriptiveMessageCommand(this.rc, { 
       ...this.data, 
-      message: `${this.monsterNames.monsterName} gains +2 attack and recoil 1 from Bigger Rocs!`,
+      message: `${this.monsterNames.monsterName} gains +2[ATK] and recoil 1 from Bigger Rocs!`,
     }).pushFront();
     new StatModificationCommand(this.rc, {
       ...this.data,

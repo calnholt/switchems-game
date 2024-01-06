@@ -44,69 +44,71 @@
 </ng-template>
 
 <ng-template #monsterTemplate>
-  <div id="monster" (click)="onSelect()">
+  <div id="monster" [ngClass]="{'ko' : monster.currentHp === 0}" (click)="onSelect()">
     <div class="monster-container {{backgroundClass}}" [ngClass]="{
         'inactive' : !isActiveMonster, 
         'selected' : selected, 
         'unselectable': (cardsInHand < 2 && !isActiveMonster) || !enabled || monster.currentHp === 0 || disable,
       }">
-      <div
-        [@wobble]="attacking" 
-        (@wobble.done)="aniDone($event)" 
-        [@flash]="takingDamage" 
-        (@flash.done)="aniDone($event)"
-        [@rubberBand]="usingSpecial" 
-        (@rubberBand.done)="aniDone($event)">
-        <div [ngClass]="{'tutorial-highlight' : isMonsterHighlighted}">
-          <img [src]="monsterIcon" 
-            cardInfoTooltip 
-            [ngClass]="{
-              'reverse' : isOpponent,
-            }"
-            [object]="monster"
-            tooltipType="MONSTER"
-          />
-        </div>
-      </div>
       <div *ngIf="!isActiveMonster" class="discard-container">
         <img [ngClass]="{'selected' : numDiscards > 0}" [src]="discardIcon" />
         <img [ngClass]="{'selected' : numDiscards > 1}" [src]="discardIcon" />
       </div>
-      <div class="monster-name-container">
-        <div class="monster-name">
-          {{monster.name + ' - '}} 
-        </div>
-        <div class="elements-container">
-          <ng-container *ngFor="let element of monster.getElementIcons()">
-            <img [src]="element" />
-          </ng-container>
-        </div>
-      </div>
-      <sw-monster-hp [hp]="monster.hp" [currentHp]="monster.currentHp" [initiative]="monster.initiative" [isActive]="isActiveMonster" />
-      <div class="detail-container">
-        <div *ngIf="isActiveMonster && !isOpponent && !hideUiElements" class="view-button-container">
-          <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="isActiveMonster" [player]="playerType" />
-        </div>
-        <div [style.marginRight]="'5px'">
-          <sw-monster-element-breakdown [style.width]="'100%'" [weaknesses]="monster.weaknesses"
-            [resistances]="monster.resistances" [switchDefense]="monster.switchDefense" />
-        </div>
-        <div *ngIf="isActiveMonster && isOpponent" 
-          class="hand-of-cards"
-          [ngClass]="{'tutorial-highlight' : isOpponentHandHighlighted}"
-          cardInfoTooltip
-          tooltipType="SIMPLE"
-          [object]="'OPPONENT_HAND' | simpleTooltip"
-          >
-          <div>
-            {{cardsInMyOpponentsHand}}
-          </div>
-          <div>
-            <img [src]="handIcon" />
+      <div [ngClass]="{ 'selected-action' : selected }">
+        <div
+          [@wobble]="attacking" 
+          (@wobble.done)="aniDone($event)" 
+          [@flash]="takingDamage" 
+          (@flash.done)="aniDone($event)"
+          [@rubberBand]="usingSpecial" 
+          (@rubberBand.done)="aniDone($event)">
+          <div [ngClass]="{'tutorial-highlight' : isMonsterHighlighted}">
+            <img [src]="monsterIcon" 
+              cardInfoTooltip 
+              [ngClass]="{
+                'reverse' : isOpponent,
+              }"
+              [object]="monster"
+              tooltipType="MONSTER"
+            />
           </div>
         </div>
-        <div *ngIf="isActiveMonster && isOpponent" class="view-button-container">
-          <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="isActiveMonster" [player]="playerType" />
+        <div class="monster-name-container">
+          <div class="monster-name">
+            {{monster.name + ' - '}} 
+          </div>
+          <div class="elements-container">
+            <ng-container *ngFor="let element of monster.getElementIcons()">
+              <img [src]="element" />
+            </ng-container>
+          </div>
+        </div>
+        <sw-monster-hp [hp]="monster.hp" [currentHp]="monster.currentHp" [initiative]="monster.initiative" [isActive]="isActiveMonster" />
+        <div class="detail-container">
+          <div *ngIf="isActiveMonster && !isOpponent && !hideUiElements" class="view-button-container">
+            <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="isActiveMonster" [player]="playerType" />
+          </div>
+          <div>
+            <sw-monster-element-breakdown [style.width]="'100%'" [weaknesses]="monster.weaknesses"
+              [resistances]="monster.resistances" [switchDefense]="monster.switchDefense" />
+          </div>
+          <div *ngIf="isActiveMonster && isOpponent" 
+            class="hand-of-cards"
+            [ngClass]="{'tutorial-highlight' : isOpponentHandHighlighted}"
+            cardInfoTooltip
+            tooltipType="SIMPLE"
+            [object]="'OPPONENT_HAND' | simpleTooltip"
+            >
+            <div>
+              {{cardsInMyOpponentsHand}}
+            </div>
+            <div>
+              <img [src]="handIcon" />
+            </div>
+          </div>
+          <div *ngIf="isActiveMonster && isOpponent" class="view-button-container">
+            <sw-view-monster-button [key]="monster.key()" [isActiveMonster]="isActiveMonster" [player]="playerType" />
+          </div>
         </div>
       </div>
     </div>
