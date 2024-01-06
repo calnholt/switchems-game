@@ -57,14 +57,15 @@ export class GamePhaseService {
     }
     // CPU
     else if (gs.p.selectedAction.isCostFulfilled() && gs.o.selectedAction.isCostFulfilled()) {
+      let cpuAction = null;
       if (gs.cpu) {
-        gs.selectedActionService.setOpponentAction(
-          CPUActionSelectUtil.getRandomAction(
-            GameStateUtil.getPlayerState(gs, 'O'),
-            GameStateUtil.getPlayerState(gs, 'P'),
-            gs.rng));
+        cpuAction = CPUActionSelectUtil.getRandomAction(
+          GameStateUtil.getPlayerState(gs, 'O'),
+          GameStateUtil.getPlayerState(gs, 'P'),
+          gs.rng)
+        gs.selectedActionService.setOpponentAction(cpuAction);
       }
-      GamePhaseUtil.enqueueRevealPhase(gs, this.ugss);
+      GamePhaseUtil.enqueueRevealPhase(gs, this.ugss, cpuAction);
     }
   }
 

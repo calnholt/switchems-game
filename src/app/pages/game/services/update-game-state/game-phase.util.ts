@@ -45,10 +45,10 @@ function enqueueNextPhase(rc: UpdateGameStateService, nextPhase: GamePhaseComman
   new GoToNextPhaseCommand(rc, { key: 'phase', player: 'P', nextPhase }).enqueue();
 }
 
-function enqueueRevealPhase(gs: GameState, rc: UpdateGameStateService) {
+function enqueueRevealPhase(gs: GameState, rc: UpdateGameStateService, cpuAction?: SelectedAction | null) {
   gs.currentPhaseService.goToNextPhase();
-  let selectedAction = GameStateUtil.getPlayerState(gs, gs.opponentPlayerType).selectedAction;
-  new RevealGamePhaseCommand(rc, { opponentAction: selectedAction, key: 'phase', player: 'P', display: true }).enqueue();
+  const { selectedAction } = GameStateUtil.getPlayerState(gs, gs.opponentPlayerType);
+  new RevealGamePhaseCommand(rc, { opponentAction: cpuAction ?? selectedAction, key: 'phase', player: 'P', display: true }).enqueue();
 }
 function enqueueApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
   new ApplyPipsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
