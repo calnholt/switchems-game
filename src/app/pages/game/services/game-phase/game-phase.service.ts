@@ -35,7 +35,6 @@ export class GamePhaseService {
         return;
       }
     });
-    GamePhaseUtil.enqueueStartGamePhase(this.gameStateService.getGameState(), this.ugss);
   }
 
   public submitAction() {
@@ -67,6 +66,10 @@ export class GamePhaseService {
       }
       GamePhaseUtil.enqueueRevealPhase(gs, this.ugss);
     }
+  }
+
+  public startGame() {
+    GamePhaseUtil.enqueueStartGamePhase(this.gameStateService.getGameState(), this.ugss);
   }
 
 }

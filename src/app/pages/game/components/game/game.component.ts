@@ -20,6 +20,7 @@ import { MonsterAction } from '../../models/monster/monster-action.model';
 import { MonsterViewService } from '../../services/monster-view/monster-view.service';
 import { PlayerProfileService } from '~/app/shared/services/player-profile.service';
 import { PlayerType } from '../../logic/player-type.mode';
+import { GamePhaseService } from '../../services/game-phase/game-phase.service';
 
 @Component({
   selector: 'sw-game',
@@ -71,6 +72,7 @@ export class GameComponent {
     private selectedActionService: SelectedActionService,
     private monsterViewService: MonsterViewService,
     private playerProfileService: PlayerProfileService,
+    private gamePhaseService: GamePhaseService,
     private router: Router
   ) { }
 
@@ -90,6 +92,7 @@ export class GameComponent {
     else {
       this.playerService.startGame();
     }
+    this.gamePhaseService.startGame();
     this.playerProfileService.profile$.subscribe((value) => {
       this.activePlayerType = value.playerType;
       this.opponentPlayerType = value.playerType === 'P' ? 'O' : 'P';
