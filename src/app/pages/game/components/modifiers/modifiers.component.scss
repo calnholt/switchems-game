@@ -70,8 +70,14 @@
         margin-bottom: unset;
       }
       li {
-        line-height: 100% !important;
+        div {
+          line-height: 100% !important;
+          cursor: pointer;
+        }
       }
+    }
+    &.margin-top {
+      margin-top: 40px;
     }
   }
 }

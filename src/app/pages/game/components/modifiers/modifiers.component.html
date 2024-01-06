@@ -24,12 +24,17 @@
       </span>
     </div>
   </div>
-  <div class="mods-container buffs" *ngIf="displayBuffs">
+  <div class="mods-container buffs" [ngClass]="{ 'margin-top' : hide }" *ngIf="displayBuffs">
     <div class="title">Applied Buffs</div>
     <div class="buffs-container">
       <ul class="mod" *ngFor="let buff of selectedAction?.appliedBuffs">
         <li class="text">
+        <div
+        cardInfoTooltip
+        tooltipType="SIMPLE"
+        [object]="getBuffTooltip(buff)">
           {{buff.name}}
+        </div>
         </li>
       </ul>
     </div>

@@ -20,7 +20,7 @@
                 [cardsInMyOpponentsHand]="cardsInMyOpponentsHand" [playerType]="opponentPlayerType"/>
             </div>
             <div class="modifier-container opponent">
-              <sw-modifiers [modifiers]="oModifiers" [selectedAction]="oSelectedAction" [hide]="hideModifiers" />
+              <sw-modifiers [modifiers]="oModifiers" [selectedAction]="oSelectedAction" [hide]="hideModifiers" [isOpponent]="true" />
               <sw-status-effects [modifiers]="oModifiers" />
             </div>
           </div>

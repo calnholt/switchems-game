@@ -7,6 +7,8 @@ import { ImageUtil } from '~/app/shared/utils/image.util';
 import { MonsterAction } from '../../models/monster/monster-action.model';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
 import { GamePhaseCommandType } from '../../logic/commands/game-phase-commands.model';
+import { Buff } from '../../models/monster/buff.model';
+import { SimpleTooltip } from '~/app/shared/components/simple-tooltip/simple-tooltip.component';
 
 @Component({
   selector: 'sw-modifiers',
@@ -21,6 +23,7 @@ export class ModifiersComponent implements OnChanges {
   @Input() modifiers!: Modifier<MonsterModifierType>[];
   @Input() selectedAction!: SelectedAction | null;
   @Input() hide = false;
+  @Input() isOpponent = false;
 
   displayModifiers: string[] = [];
 
@@ -45,7 +48,6 @@ export class ModifiersComponent implements OnChanges {
     this.setValues();
     this.currentPhaseService.currentPhase$.subscribe((value) => {
       this.currentPhase = value;
-      this.displayBuffs = !!(['REVEAL_PHASE', 'APPLY_PIPS_PHASE', 'APPLY_BUFFS_PHASE'].includes(value) && this.selectedAction?.appliedBuffs.length);
     })
   }
 
@@ -106,8 +108,12 @@ export class ModifiersComponent implements OnChanges {
     }
   }
 
+  public getBuffTooltip(buff: Buff) {
+    return new SimpleTooltip(buff.text, this.isOpponent ? 'LEFT' : 'RIGHT');
+  }
+
   private setDisplayBuffs(phase: GamePhaseCommandType) {
-    this.displayBuffs = !!(['REVEAL_PHASE', 'APPLY_PIPS_PHASE', 'APPLY_BUFFS_PHASE'].includes(phase) && this.selectedAction?.appliedBuffs.length);
+    this.displayBuffs = this.selectedAction ? this.selectedAction?.appliedBuffs?.length > 0 : false;
   }
 
   private getSum(mods: Modifier<MonsterModifierType>[]): number {

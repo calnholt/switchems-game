@@ -27,9 +27,13 @@ export class SimpleTooltipComponent extends ITooltip implements AfterViewInit {
     const width = nativeElement.offsetWidth;
     const { left, right, top, bottom } = nativeElement.getBoundingClientRect();
     switch (this.tooltip.position) {
+      case 'LEFT':
+        this.left = right - width - 250 - 5;
+        this.top = top + height + 5;
+        break;
       case 'RIGHT':
         this.left = left + width + 5;
-        this.top = top + height;
+        this.top = top + height + 5;
         break;
       case 'ABOVE':
       default:
