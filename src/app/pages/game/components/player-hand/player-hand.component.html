@@ -1,7 +1,7 @@
 <div id="player-hand">
   <ng-container *ngIf="!hide">
     <ng-container *ngIf="buffs.length">
-      <div class="card-separator-section unapplied">
+      <div [@fadeOutOnLeave] class="card-separator-section unapplied">
         <div class="card-separator">
           <div class="section">hand</div>
           <div class="buff" *ngFor="let buff of buffs">
@@ -10,25 +10,5 @@
         </div>
       </div>
     </ng-container>
-    <!-- <ng-container *ngIf="appliedAsBuff.length">
-      <div class="card-separator-section applied-as-buff">
-        <div class="card-separator">
-          <img class="section" [src]="buffPath" />
-          <div class="buff" *ngFor="let buff of appliedAsBuff">
-            <sw-buff [buff]="buff" />
-          </div>
-        </div>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="appliedAsDiscard.length">
-      <div class="card-separator-section applied-as-discard">
-        <div class="card-separator">
-          <img class="section" [src]="discardPath" />
-          <div class="buff" *ngFor="let buff of appliedAsDiscard">
-            <sw-buff [buff]="buff" />
-          </div>
-        </div>
-      </div>
-    </ng-container> -->
   </ng-container>
 </div>
