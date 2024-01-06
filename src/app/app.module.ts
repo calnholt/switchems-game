@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TitleScreenModule } from './pages/title-screen/title-screen.module';
 import { SelectMonstersModule } from './pages/select-monsters/select-monsters.module';
 import { LobbyModule } from './pages/lobby/lobby.module';
+import { CreditsModule } from './pages/credits/credits.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { LobbyModule } from './pages/lobby/lobby.module';
     HttpClientModule,
     TitleScreenModule,
     SelectMonstersModule,
-    LobbyModule
+    LobbyModule,
+    CreditsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
