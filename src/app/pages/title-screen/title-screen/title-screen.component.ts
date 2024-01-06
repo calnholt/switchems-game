@@ -26,4 +26,8 @@ export class TitleScreenComponent {
     this.router.navigate(['/tutorial']);
   }
 
+  credits() {
+    this.router.navigate(['/credits']);
+  }
+
 }

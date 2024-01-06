@@ -1,0 +1,26 @@
+<div id="credits">
+  <div class="credits">
+    <div class="section text-header">
+      Designer - Calvin Holt
+    </div>
+    <div class="section">
+      <div class="text-header">
+        Playtesters
+      </div>
+      <div class="playtesters">
+        <div *ngFor="let tester of playtesters">
+        {{tester}}
+        </div>
+      </div>
+    </div>
+    <div class="common-buttons-container">
+      <div class="button">
+        <sw-pushable-button>
+          <div class="button-face" (click)="titleScreen()">
+            Return to title screen
+          </div>
+        </sw-pushable-button>
+      </div>
+    </div>
+  </div>
+</div>
