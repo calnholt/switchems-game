@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { EventCommandQueueService } from '../../services/event-command-queue/event-command-queue.service';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { CurrentPhaseService } from '../../services/current-phase/current-phase.service';
@@ -22,7 +22,9 @@ export class DialogComponent {
   show: boolean = false;
   allowNext = true;
   hideNext = false;
+  isIntroGraphicEnded = false;
   command!: EventCommand<CommandData>;
+  flashyGraphic!: Element | null;
 
   constructor(
     private ecqs: EventCommandQueueService,
@@ -30,15 +32,27 @@ export class DialogComponent {
     private battleAniService: BattleAnimationService,
     private onlineBattleService: OnlineBattleService,
   ) {
+  }
 
+  ngAfterViewInit() {
+    // TODO: consider handling in service
+    this.flashyGraphic = document.querySelector('#flashy-graphic');
+    if (this.flashyGraphic) {
+      this.flashyGraphic.addEventListener('animationstart', () => {
+        this.show = false;
+      }, { once: false });
+      this.flashyGraphic.addEventListener('animationend', () => {
+        this.show = !this.command.type.includes('PROMPT') ;
+      }, { once: false });
+    }
   }
 
   ngOnInit() {
     // this.hideNext = this.onlineBattleService.isOnline;
     this.ecqs.event$.subscribe((command) => {
-      if (!command) return;
+      if (!command || !command.data.display) return;
       this.command = command;
-      this.show = !command.type.includes('PROMPT');
+      // this.show = !command.type.includes('PROMPT')  ;
       this.hideNext = command.type === 'WAITING_FOR_OPPONENT';
       setTimeout(() =>{
         this.message = command.getDisplayMessage();
@@ -53,6 +67,11 @@ export class DialogComponent {
     this.battleAniService.battleAniState$.subscribe((state) => {
       this.allowNext = !state.isAnimating();
     });
+  }
+  @HostListener('window:keydown.Space')
+  @HostListener('window:keydown.Enter')
+  onKeypress() {
+    this.next();
   }
 
   next() {

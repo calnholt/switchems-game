@@ -29,6 +29,7 @@ import { SoundControlComponent } from './components/sound-control/sound-control.
 import { StatusEffectTooltipComponent } from './components/monster/status-effect-tooltip/status-effect-tooltip.component';
 import { ViewMonsterButtonComponent } from './components/view-monster-button/view-monster-button.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
+import { FlashyGraphicComponent } from './components/flashy-graphic/flashy-graphic.component';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { TopBarComponent } from './components/top-bar/top-bar.component';
     StatusEffectTooltipComponent,
     ViewMonsterButtonComponent,
     TopBarComponent,
+    FlashyGraphicComponent,
   ],
   exports: [
     MonsterComponent,

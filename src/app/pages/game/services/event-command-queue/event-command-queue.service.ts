@@ -81,9 +81,7 @@ export class EventCommandQueueService {
 
   public dequeue(): EventCommand<CommandData> | undefined {
     const command = this._queue.dequeue();
-    if (command?.data.display) {
-      this._event$.next(command);
-    }
+    this._event$.next(command);
     return command;
   }
 

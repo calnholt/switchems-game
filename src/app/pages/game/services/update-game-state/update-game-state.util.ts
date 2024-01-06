@@ -68,6 +68,7 @@ function skipActionAndDamage(gs: GameState, data: CommandData): boolean {
 
 function doMonsterAction(gs: GameState, data: MonsterActionCommandData, rc: UpdateGameStateService) {
   if (skipActionAndDamage(gs, data,)) {
+    new RecoilCheckCommand(rc, { ...data }).pushFront();
     return;
   }
   const action = GameStateUtil.getMonsterActionByPlayer(gs, data.player);
@@ -168,11 +169,12 @@ function applyStatPips(gs: GameState, data: StatPipCommandData) {
 }
 
 function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameStateService) {
-  if (skipActionAndDamage(gs, data,)) {
-    return;
-  }
   const { player, key } = data;
   const monsterNames = GameStateUtil.getMonsterNames(gs, player);
+  if (skipActionAndDamage(gs, data,)) {
+    new RecoilCheckCommand(rc, { key, player, ...monsterNames })
+    return;
+  }
   const attack = GameStateUtil.getMonsterActionByPlayer(gs, player);
   const damage = DamageCalcUtil.calculateDamage(gs, player);
   const opponentPlayer = GameStateUtil.getOppositePlayer(player);
