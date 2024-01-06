@@ -10,7 +10,7 @@ import { Deusvolt } from "../monsters/deusvolt.model";
 import { Volcanoggin } from "../monsters/volcanoggin.model";
 import { Lanternshade } from "../monsters/lanternshade.model";
 import { Drownigator } from "../monsters/drownigator.model";
-import { Sorrospine } from "../monsters/sorrospine.model";
+import { Sorrospine } from "../monsters/Sorrospine.model";
 
 export const CardByKeyUtil = {
   executeCardByKey,
