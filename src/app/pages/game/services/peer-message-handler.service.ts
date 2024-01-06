@@ -8,10 +8,10 @@ import { HandlePromptService } from './handle-prompt/handle-prompt.service';
 import { OnlineBattleService } from './online-battle.service';
 import { SeedableRngService } from './seedable-rng/seedable-rng.service';
 import { PeerMessageMediatorService } from './peer-message-mediator.service';
-import { CurrentPhaseService } from './current-phase/current-phase.service';
 import { PeerJsService } from '~/app/shared/services/peer-js.service';
 import { EventCommandType } from '../logic/commands/event-command.model';
 import { PlayerService } from './player/player.service';
+import { GamePhaseService } from './game-phase/game-phase.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +27,9 @@ export class PeerMessageHandlerService {
     private rng: SeedableRngService,
     private router: Router,
     private peerMessageMediatorService: PeerMessageMediatorService,
-    private currentPhaseService: CurrentPhaseService,
     private peerService: PeerJsService,
     private playerService: PlayerService,
+    private gamePhaseService: GamePhaseService,
   ) {
     this.peerMessageMediatorService.message$.subscribe((value) => {
       if (!value) return;
@@ -77,8 +77,8 @@ export class PeerMessageHandlerService {
         break;
       case 'SEND_SELECTED_ACTION':
         this.onlineBattleService.setOpponentSelectedAction(data);
-        this.currentPhaseService.goToNextPhase();
         this.onlineBattleService.oStatus$.next('RESOLVING_TURN');
+        this.gamePhaseService.revealActions();
         break;
       case 'ACKNOWLEDGE_DIALOG':
         this.onlineBattleService.oStatus$.next('ACKNOWLEDGE_DIALOG');

@@ -54,7 +54,7 @@ export class DialogComponent {
     this.ecqs.event$.subscribe((command) => {
       if (!command || !command.data.display) return;
       this.command = command;
-      this.show = !command.type.includes('PROMPT') && this.isIntroGraphicEnded;
+      this.show = !command?.type?.includes?.('PROMPT') && this.isIntroGraphicEnded;
       this.hideNext = command.type === 'WAITING_FOR_OPPONENT';
       setTimeout(() =>{
         this.message = command.getDisplayMessage();

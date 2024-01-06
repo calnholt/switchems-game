@@ -9,6 +9,7 @@ import { GameStateUtil } from '../game-state/game-state.util';
 import { CPUActionSelectUtil } from '../update-game-state/cpu-action-select.util';
 import { PeerJsService } from '~/app/shared/services/peer-js.service';
 import { OnlineBattleService } from '../online-battle.service';
+import { SelectedAction } from '../selected-action/selected-action.model';
 
 @Injectable({
   providedIn: 'root'
@@ -71,6 +72,10 @@ export class GamePhaseService {
 
   public startGame() {
     GamePhaseUtil.enqueueStartGamePhase(this.gameStateService.getGameState(), this.ugss);
+  }
+
+  public revealActions(cpuAction?: SelectedAction) {
+    GamePhaseUtil.enqueueRevealPhase(this.gameStateService.getGameState(), this.ugss, cpuAction);
   }
 
 }
