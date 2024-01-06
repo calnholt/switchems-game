@@ -1,0 +1,31 @@
+@import '../../../../../assets/styles/constants.scss';
+
+#top-bar {
+  --player-width: 12vw;
+  display: flex;
+  justify-content: center; 
+  margin-bottom: 5px;
+  .top-bar {
+    background: linear-gradient(to right, 
+    rgba(255, 255, 255, 0), 
+    rgba(128, 128, 128, 0.5), 
+    rgba(255, 255, 255, 0));
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 0px;
+    .player, .opponent {
+      font-family: $text-font;
+      width: var(--player-width);
+    }
+    .opponent {
+      text-align: right;
+    }
+    .round-info-container {
+      .round-container {
+        font-size: 22px;
+      }
+    }
+  }
+}

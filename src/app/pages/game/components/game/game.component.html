@@ -2,6 +2,7 @@
   <sw-game-over [winner]="winner" />
   <div id="game">
     <div *ngIf="!winner">
+      <sw-top-bar />
       <div class="d-flex align-items-center">
         <sw-stat-board [statBoard]="statBoard" [isPlayer]="true" />
         <div class="monsters-container">

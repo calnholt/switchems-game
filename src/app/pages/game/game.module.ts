@@ -28,6 +28,7 @@ import { TutorialComponent } from './components/tutorial/tutorial.component';
 import { SoundControlComponent } from './components/sound-control/sound-control.component';
 import { StatusEffectTooltipComponent } from './components/monster/status-effect-tooltip/status-effect-tooltip.component';
 import { ViewMonsterButtonComponent } from './components/view-monster-button/view-monster-button.component';
+import { TopBarComponent } from './components/top-bar/top-bar.component';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { ViewMonsterButtonComponent } from './components/view-monster-button/vie
     SoundControlComponent,
     StatusEffectTooltipComponent,
     ViewMonsterButtonComponent,
+    TopBarComponent,
   ],
   exports: [
     MonsterComponent,
