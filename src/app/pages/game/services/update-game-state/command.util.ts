@@ -38,17 +38,17 @@ function gainRandomStatPip(gs: GameState, data: GainRandomStatPipCommandData, rc
     commands.push(
       new GainStatPipCommand(rc, { 
         ...data, 
+        gs,
         key: selectedAction.action.key(), 
         amount: 1, 
         player: data.player, 
         statType: type, 
-        monsterName: activeMonster.name, 
         wasRandom: true,
         display: false,
       })
     );
   }
-  let message = `${data?.monsterName ?? ''} randomly gained ${attack > 0 ? ` ${attack} [ATK]` : ''}${speed > 0 ? ` ${speed} [SPD]` : ''}${defense > 0 ? ` ${defense} [DEF]`  : ''} Pips${data.origin ? ` from ${data.origin}` : ''}`;
+  let message = `${activeMonster.name ?? ''} randomly gained ${attack > 0 ? ` ${attack} [ATK]` : ''}${speed > 0 ? ` ${speed} [SPD]` : ''}${defense > 0 ? ` ${defense} [DEF]`  : ''} Pips${data.origin ? ` from ${data.origin}` : ''}`;
   if(data.superEffective) {
     message = `The attack was super effective! ${message}`
   }
@@ -100,7 +100,7 @@ function handlePrompt(
     command.pushFront();
   }
   else if (isOnlineOpponentWaiting) {
-    new WaitingForOpponentCommand(rc, { player, key: 'waiting'}).pushFront();
+    new WaitingForOpponentCommand(rc, { player, key: 'waiting', gs}).pushFront();
   }
   else {
     prompt.pushFront();

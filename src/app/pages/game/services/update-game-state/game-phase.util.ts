@@ -41,47 +41,50 @@ export const GamePhaseUtil = {
   isStandardActionPhaseApplicable,
 }
 
-function enqueueNextPhase(rc: UpdateGameStateService, nextPhase: GamePhaseCommandType) {
-  new GoToNextPhaseCommand(rc, { key: 'phase', player: 'P', nextPhase }).enqueue();
+function enqueueNextPhase(rc: UpdateGameStateService, nextPhase: GamePhaseCommandType, gs: GameState) {
+  new GoToNextPhaseCommand(rc, { key: 'phase', player: 'P', nextPhase, gs }).enqueue();
 }
 
 function enqueueRevealPhase(gs: GameState, rc: UpdateGameStateService, cpuAction?: SelectedAction | null) {
   gs.currentPhaseService.goToNextPhase();
   const { selectedAction } = GameStateUtil.getPlayerState(gs, gs.opponentPlayerType);
-  new RevealGamePhaseCommand(rc, { opponentAction: cpuAction ?? selectedAction, key: 'phase', player: 'P', display: true }).enqueue();
+  new RevealGamePhaseCommand(rc, { opponentAction: cpuAction ?? selectedAction, gs, key: 'phase', player: 'P', display: true }).enqueue();
 }
 function enqueueApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
-  new ApplyPipsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
+  new ApplyPipsGamePhaseCommand(rc, { key: 'phase', player: 'P', gs, display: false }).enqueue();
 }
 function enqueueApplyBuffsPhase(gs: GameState, rc: UpdateGameStateService) {
-  new ApplyBuffsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
+  new ApplyBuffsGamePhaseCommand(rc, { key: 'phase', player: 'P', gs, display: false }).enqueue();
 }
 function enqueueSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
-  new SwitchActionsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
+  new SwitchActionsGamePhaseCommand(rc, { key: 'phase', player: 'P', gs, display: false }).enqueue();
 }
 function enqueueMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
-  new MonsterActionsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
+  new MonsterActionsGamePhaseCommand(rc, { key: 'phase', player: 'P', gs, display: false }).enqueue();
 }
 function enqueueStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) {
-  new StandardActionsGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
+  new StandardActionsGamePhaseCommand(rc, { key: 'phase', player: 'P', gs, display: false }).enqueue();
 }
 function enqueueEndPhase(gs: GameState, rc: UpdateGameStateService) {
-  new EndGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
+  new EndGamePhaseCommand(rc, { key: 'phase', player: 'P', gs, display: false }).enqueue();
 }
 function enqueueSelectionPhase(gs: GameState, rc: UpdateGameStateService) {
-  new SelectionGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
+  new SelectionGamePhaseCommand(rc, { key: 'phase', player: 'P', gs, display: false }).enqueue();
 }
 function enqueueStartGamePhase(gs: GameState, rc: UpdateGameStateService) {
-  new StartGamePhaseCommand(rc, { key: 'phase', player: 'P', display: false }).enqueue();
+  new StartGamePhaseCommand(rc, { key: 'phase', player: 'P', gs, display: false }).enqueue();
 }
 
 function executeStartGamePhase(gs: GameState, rc: UpdateGameStateService) {
   const { playerWithInitiative, playerWithoutInitiative } = GameStateUtil.getInitiatives(gs);
   
   function startPhaseByPlayer(player: PlayerType) {
-    const { activeMonster } = GameStateUtil.getPlayerState(gs, player);
+    const { activeMonster, inactiveMonsters } = GameStateUtil.getPlayerState(gs, player);
     const key = activeMonster.key();
-    new SwitchInCommand(rc, { player, key, activePlayerType: gs.activePlayerType, monsterName: activeMonster.name }).enqueue();
+    inactiveMonsters.concat(activeMonster).forEach(m => {
+      CardByKeyUtil.executeCardByKey(m.key(), player, rc, gs, 'ADD_TRIGGERS');
+    });
+    new SwitchInCommand(rc, { player, key, gs, activePlayerType: gs.activePlayerType }).enqueue();
   }
 
   startPhaseByPlayer(playerWithInitiative);
@@ -104,7 +107,7 @@ function executeRevealPhase(gs: GameState, rc: UpdateGameStateService) {
   reveal(playerWithInitiative);
   reveal(playerWithoutInitiative);
   
-  enqueueNextPhase(rc, 'APPLY_PIPS_PHASE');
+  enqueueNextPhase(rc, 'APPLY_PIPS_PHASE', gs);
 }
 
 function executeApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
@@ -118,7 +121,7 @@ function executeApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
       rc.enqueue(
         new ApplyStatPipsCommand(rc, { 
           key: selectedAction.action.key(), 
-          monsterName: activeMonster.name,
+          gs, 
           amount: section.current, 
           player, 
           statType: section.type 
@@ -130,7 +133,7 @@ function executeApplyPipsPhase(gs: GameState, rc: UpdateGameStateService) {
   applyStatPips(playerWithInitiative);
   applyStatPips(playerWithoutInitiative);
 
-  enqueueNextPhase(rc, 'APPLY_BUFFS_PHASE');
+  enqueueNextPhase(rc, 'APPLY_BUFFS_PHASE', gs);
 }
 
 function executeApplyBuffs(gs: GameState, rc: UpdateGameStateService) {
@@ -147,16 +150,16 @@ function executeApplyBuffs(gs: GameState, rc: UpdateGameStateService) {
     appliedBuffs.forEach(buff => {
       // need to fire event per slot used, but only show the message for the first one
       for (let i = 0; i < buff.buffSlots; i++) {
-        new ApplyBuffCommand(rc, { key, player, buffName: buff.name, monsterName: monsterNames.monsterName, display: i > 0 }).enqueue();
+        new ApplyBuffCommand(rc, { key, player, gs, buffName: buff.name, display: i > 0 }).enqueue();
       }
-      new BuffCommand(rc, { key, player, doBuff: () => { CardByKeyUtil.executeCardByKey(buff.key(), player, rc, gs) }}).enqueue()
+      new BuffCommand(rc, { key, player, gs, doBuff: () => { CardByKeyUtil.executeCardByKey(buff.key(), player, rc, gs) }}).enqueue()
     });
   }
 
   applyBuffs(gs, playerWithInitiative);
   applyBuffs(gs, playerWithoutInitiative);
   
-  enqueueNextPhase(rc, 'SWITCH_ACTIONS_PHASE');
+  enqueueNextPhase(rc, 'SWITCH_ACTIONS_PHASE', gs);
 }
 
 function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
@@ -169,13 +172,13 @@ function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     if (selectedAction.action.getSelectableActionType() !== 'SWITCH') {
       return;
     }
-    new SwitchRoutineCommand(rc, { key: selectedAction.action.key(), player, ...monsterNames }).enqueue();
+    new SwitchRoutineCommand(rc, { key: selectedAction.action.key(), player, ...monsterNames, gs}).enqueue();
   }
   
   performSwitchAction(gs, playerWithInitiative);
   performSwitchAction(gs, playerWithoutInitiative);
   
-  enqueueNextPhase(rc, 'MONSTER_ACTIONS_PHASE');
+  enqueueNextPhase(rc, 'MONSTER_ACTIONS_PHASE', gs);
 }
 
 function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
@@ -192,7 +195,7 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
 
     // draw cards check
     if (action.draw > 0) {
-      new DrawCommand(rc, { key, player, amount: action.draw, origin: action.name, display: true, activePlayerType: gs.activePlayerType }).enqueue();
+      new DrawCommand(rc, { key, player, gs, amount: action.draw, origin: action.name, display: true, activePlayerType: gs.activePlayerType }).enqueue();
     }
 
     // add monster action effect(s) to queue
@@ -200,12 +203,13 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
       key, 
       player, 
       ...monsterNames,
+      gs,
       selectedAction: selectedAction,
       doMonsterAction: () =>  { CardByKeyUtil.executeCardByKey(selectedAction.action.key() as string, player, rc, gs) },
     }).enqueue();
 
     if (action.attack) {
-      new DealAttackDamageCommand(rc, { key, player: player, ...monsterNames, damageToDeal: 999 }).enqueue();
+      new DealAttackDamageCommand(rc, { key, player: player, ...monsterNames, damageToDeal: 999, gs }).enqueue();
     }
   }
   
@@ -215,14 +219,14 @@ function executeMonsterActionsPhase(gs: GameState, rc: UpdateGameStateService) {
   const fasterMonsterNames = GameStateUtil.getMonsterNames(gs, fasterPlayer);
   const slowerMonsterNames = GameStateUtil.getMonsterNames(gs, slowerPlayer);
   if (gs.o.selectedAction.action.getSelectableActionType() !== 'SWITCH' && gs.p.selectedAction.action.getSelectableActionType() !== "SWITCH") {
-    new FasterCommand(rc, { key: fasterAction.key(), player: fasterPlayer, ...fasterMonsterNames, display: true }).enqueue();
-    new SlowerCommand(rc, { key: slowerAction.key(), player: slowerPlayer, ...slowerMonsterNames }).enqueue();
+    new FasterCommand(rc, { key: fasterAction.key(), player: fasterPlayer, ...fasterMonsterNames, gs, display: true }).enqueue();
+    new SlowerCommand(rc, { key: slowerAction.key(), player: slowerPlayer, ...slowerMonsterNames, gs, }).enqueue();
   }
 
   performMonsterAction(gs, fasterPlayer);
   performMonsterAction(gs, slowerPlayer);
 
-  enqueueNextPhase(rc, 'STANDARD_ACTIONS_PHASE');
+  enqueueNextPhase(rc, 'STANDARD_ACTIONS_PHASE', gs);
 }
 
 function executeStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) {
@@ -236,6 +240,7 @@ function executeStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) 
     new StandardActionCommand(rc, {
       key: 'SA',
       player,
+      gs,
       doStandardAction: () => CardByKeyUtil.executeStandardAction(playerState.selectedAction.action.key(), player, rc, gs),
     }).enqueue();
   }
@@ -243,7 +248,7 @@ function executeStandardActionsPhase(gs: GameState, rc: UpdateGameStateService) 
   performStandardAction(gs, playerWithInitiative);
   performStandardAction(gs, playerWithoutInitiative);
 
-  enqueueNextPhase(rc, 'END_PHASE');
+  enqueueNextPhase(rc, 'END_PHASE', gs);
 }
 
 function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
@@ -262,13 +267,13 @@ function executeEndPhase(gs: GameState, rc: UpdateGameStateService) {
     gs.selectedActionService.selectedAction$.next(new SelectedAction());
     selectedAction.clear();
     // draw card
-    new DrawCommand(rc, { key: selectedAction.action.key(), player, amount: 1 }).enqueue();
+    new DrawCommand(rc, { key: selectedAction.action.key(), player, gs, amount: 1 }).enqueue();
   }
   
   playerCleanup(gs, playerWithInitiative);
   playerCleanup(gs, playerWithoutInitiative);
 
-  enqueueNextPhase(rc, 'SELECTION_PHASE');
+  enqueueNextPhase(rc, 'SELECTION_PHASE', gs);
 }
 
 function executeGameOver(gs: GameState, data: GameOverPhaseCommandData) {

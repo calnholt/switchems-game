@@ -12,8 +12,8 @@ export const StandardActions = {
 
 function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
   const values = { key, player };
-  const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 2}, receiver);
-  const hpHealed = CommandUtil.heal(gs, { ...values, amount: 1, skip: true}, receiver);
+  const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 2, gs }, receiver);
+  const hpHealed = CommandUtil.heal(gs, { ...values, amount: 1, gs, skip: true}, receiver);
   let message = `${gs.activePlayerType === player ? 'You' : 'The opponent'} rested, `;
   if (numberOfCardsDrawn > 0) {
     message += ` drawing ${numberOfCardsDrawn} card${numberOfCardsDrawn > 1 ? 's' : ''}`
@@ -22,16 +22,16 @@ function rest(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameSta
     message += ` ${hpHealed > 0 ? 'and ' : ''}healing 1[HP]`;
   }
   message += '.';
-  new DescriptiveMessageCommand(receiver, { ...values, message }).pushFront();
+  new DescriptiveMessageCommand(receiver, { ...values, message, gs }).pushFront();
 }
 function prepare(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
   const values = { key, player };
-  const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 1}, receiver);
-  const randomPipsGained = CommandUtil.gainRandomStatPip(gs, { ...values, amount: 3, display: false}, receiver);
+  const numberOfCardsDrawn = CommandUtil.draw(gs, { ...values, amount: 1, gs}, receiver);
+  const randomPipsGained = CommandUtil.gainRandomStatPip(gs, { ...values, amount: 3, display: false, gs}, receiver);
   let message = `${gs.activePlayerType === player ? 'You' : 'The opponent'} prepared,${randomPipsGained.message}`;
   if (numberOfCardsDrawn) {
     message += ` and drew one card`
   }
   message += '.';
-  new DescriptiveMessageCommand(receiver, { ...values, message }).pushFront();
+  new DescriptiveMessageCommand(receiver, { ...values, message, gs }).pushFront();
 }

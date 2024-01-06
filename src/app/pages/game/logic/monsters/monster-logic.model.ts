@@ -25,16 +25,17 @@ export abstract class MonsterLogic {
     this.monsterNames = GameStateUtil.getMonsterNames(gs, player);
     this.rc = rc;
     this.key = `${monsterKey}_${cardKey}`;
-    this.data = { key: this.key, player, ...this.monsterNames };
+    this.data = { key: this.key, player, ...this.monsterNames, gs };
   }
 
   executeMonsterCard(key: CardCompositeKey) {
+    if (this.cardKey === 'ADD_TRIGGERS') {
+      this.addTriggers();
+      return;
+    }
     if (key === this.monsterKey) {
       const isStartOfGame = this.gs.currentPhaseService.currentTurn < 1;
       this.switchIn(!isStartOfGame);
-      if (isStartOfGame) {
-        this.addTriggers();
-      }
     }
     if (this.cardKey.includes('A1')) {
       this.action1();

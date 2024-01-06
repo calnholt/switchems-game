@@ -79,7 +79,7 @@ function addFatigueTrigger(gs: GameState, data: StatusEffectCommandData, rc: Upd
       return new StatModificationCommand(rc, {
         player: data.player,
         key: 'fatigue',
-        monsterName: activeMonster.name,
+        gs,
         amount: buffSlotsUsed,
         statType: 'RECOIL',
         origin: 'fatigue [STATUS]',

@@ -23,7 +23,7 @@ export class GainStatPipCommand extends EventCommand<StatPipCommandData> {
     super(receiver, 'GAIN_STAT_PIP', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} ${this.data.wasRandom ? 'randomly ' : ''}gained ${this.data.amount} ${AbilityTextUtil.getIconText(this.data.statType)} Pip${this.data.amount > 1 ? 's' : ''}${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
+    return `${this.getActiveMonsterName()} ${this.data.wasRandom ? 'randomly ' : ''}gained ${this.data.amount} ${AbilityTextUtil.getIconText(this.data.statType)} Pip${this.data.amount > 1 ? 's' : ''}${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
   }
 }
 
@@ -66,7 +66,7 @@ export class CrushCommand extends EventCommand<CrushCommandData> {
     super(receiver, 'CRUSH', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} crushed ${this.data.selections.map(s => `${s.amount} ${AbilityTextUtil.getIconText(s.statType)} Pips`).join(", ")}`;
+    return `${this.getActiveMonsterName()} crushed ${this.data.selections.map(s => `${s.amount} ${AbilityTextUtil.getIconText(s.statType)} Pips`).join(", ")}`;
   }
 }
 
@@ -75,7 +75,7 @@ export class ApplyStatPipsCommand extends EventCommand<StatPipCommandData> {
     super(receiver, 'APPLY_STAT_PIPS',  { ...data, display: true });
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} applied ${this.data.amount}${AbilityTextUtil.getIconText(this.data.statType)} Pips.`;
+    return `${this.getActiveMonsterName()} applied ${this.data.amount}${AbilityTextUtil.getIconText(this.data.statType)} Pips.`;
   }
 }
 

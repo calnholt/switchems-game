@@ -45,7 +45,7 @@ export class SwitchOutPromptCommand extends EventCommand<SwitchCommandData> {
     super(receiver, 'SWITCH_OUT_PROMPT', { ...data, display: true });
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is switching out.`;
+    return `${this.getActiveMonsterName()} is switching out.`;
   }
   public override requiresDecision(): boolean {
     return true;
@@ -56,7 +56,7 @@ export class SwitchInCommand extends EventCommand<SwitchCommandData> {
     super(receiver, 'SWITCH_IN', { ...data, updateMonsterPlayerTriggers: true });
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is switching in.`;
+    return `${this.getActiveMonsterName()} is switching in.`;
   }
 }
 export class SwitchOutCommand extends EventCommand<SwitchCommandData> {
@@ -64,7 +64,7 @@ export class SwitchOutCommand extends EventCommand<SwitchCommandData> {
     super(receiver, 'SWITCH_OUT', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is switching out.`;
+    return `${this.getActiveMonsterName()} is switching out.`;
   }
 }
 
@@ -73,6 +73,6 @@ export class GainSwitchDefenseCommand extends EventCommand<SwitchCommandData> {
     super(receiver, 'GAIN_SWITCH_DEFENSE', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} gained switch defense.`;
+    return `${this.getActiveMonsterName()} gained switch defense.`;
   }
 }

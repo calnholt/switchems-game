@@ -18,14 +18,12 @@ export class Chargroar extends MonsterLogic {
     const selection = options[ArrayUtil.getRandomIndex(options.length, this.gs.rng)];
     const prompt = new DisableActionPromptCommand(this.rc, { 
       ...this.data, 
-      destroyOnTrigger: true, 
       options, 
       origin: 'Chargroar switched in',
       display: true,
     });
     const command = new DisableActionCommand(this.rc, {
       ...this.data,
-      destroyOnTrigger: true,
       display: true,
       selection,
     });

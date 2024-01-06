@@ -85,7 +85,6 @@ export class Vulturock extends MonsterLogic {
       new StatModificationCommand(this.rc, {
         ...this.data,
         player: GameStateUtil.getOppositePlayer(this.player),
-        monsterName: this.monsterNames.opponentMonsterName,
         amount: 2,
         statType: 'RECOIL',
         origin: 'Hard Headed',

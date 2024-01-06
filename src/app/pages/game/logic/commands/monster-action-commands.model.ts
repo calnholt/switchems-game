@@ -51,7 +51,7 @@ export class FasterCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'FASTER', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is faster than ${this.data.opponentMonsterName}.`;
+    return `${this.getActiveMonsterName()} is faster than ${this.getOpposingMonsterName()}.`;
   }
 }
 
@@ -60,7 +60,7 @@ export class SlowerCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'SLOWER', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is slower than ${this.data.opponentMonsterName}.`;
+    return `${this.getActiveMonsterName()} is slower than ${this.getOpposingMonsterName()}.`;
   }
 }
 
@@ -69,7 +69,7 @@ export class ResistantCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'RESISTANT', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is resistant to ${this.data.opponentMonsterName}'s attack.`;
+    return `${this.getActiveMonsterName()} is resistant to ${this.getOpposingMonsterName()}'s attack.`;
   }
 }
 
@@ -78,7 +78,7 @@ export class WeakCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'WEAK', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} is weak to ${this.data.opponentMonsterName}'s attack.`;
+    return `${this.getActiveMonsterName()} is weak to ${this.getOpposingMonsterName()}'s attack.`;
   }
 }
 
@@ -91,7 +91,7 @@ export class DealAttackDamageCommand extends EventCommand<DealDamageCommandData>
     super(receiver, 'DEAL_ATTACK_DAMAGE', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} dealt ${this.data.damageToDeal} to ${this.data.opponentMonsterName}.`;
+    return `${this.getActiveMonsterName()} dealt ${this.data.damageToDeal} to ${this.getOpposingMonsterName()}.`;
   }
 }
 
@@ -108,7 +108,7 @@ export class TakeRecoilDamageCommand extends EventCommand<DealDamageCommandData>
     super(receiver, 'TAKE_RECOIL_DAMAGE', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} takes ${this.data.damageToDeal} damage from recoil.`;
+    return `${this.getActiveMonsterName()} takes ${this.data.damageToDeal} damage from recoil.`;
   }
 }
 
@@ -130,7 +130,7 @@ export class KnockedOutByAttackCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'KNOCKED_OUT_BY_ATTACK', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.opponentMonsterName} was KO'd by ${this.data.monsterName}.`;
+    return `${this.getOpposingMonsterName()} was KO'd by ${this.getActiveMonsterName()}.`;
   }
 }
 
@@ -142,7 +142,7 @@ export class ApplyDrainStatus extends EventCommand<BasicCommandData> {
     super(receiver, 'APPLY_DRAIN_STATUS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.opponentMonsterName} became drained!`;
+    return `${this.getOpposingMonsterName()} became drained!`;
   }
 }
 
@@ -155,7 +155,7 @@ export class ApplyCurseStatus extends EventCommand<BasicCommandData> {
     super(receiver, 'APPLY_CURSE_STATUS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.opponentMonsterName} became cursed [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
+    return `${this.getOpposingMonsterName()} became cursed [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
   }
 }
 export class CurseCommand extends EventCommand<StatusEffectCommandData> {
@@ -163,7 +163,7 @@ export class CurseCommand extends EventCommand<StatusEffectCommandData> {
     super(receiver, 'CURSE', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.opponentMonsterName} took 1 damage from curse!`;
+    return `${this.getOpposingMonsterName()} took 1 damage from curse!`;
   }
 }
 export class ApplyFatigueStatus extends EventCommand<BasicCommandData> {
@@ -171,7 +171,7 @@ export class ApplyFatigueStatus extends EventCommand<BasicCommandData> {
     super(receiver, 'APPLY_FATIGUE_STATUS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.opponentMonsterName} became fatigued [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
+    return `${this.getOpposingMonsterName()} became fatigued [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
   }
 }
 export class FatigueCommand extends EventCommand<StatusEffectCommandData> {
@@ -179,7 +179,7 @@ export class FatigueCommand extends EventCommand<StatusEffectCommandData> {
     super(receiver, 'FATIGUE', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.opponentMonsterName} took 1 damage from fatigue!`;
+    return `${this.getOpposingMonsterName()} took 1 damage from fatigue!`;
   }
 }
 export class DrainCommand extends EventCommand<StatusEffectCommandData> {
@@ -187,7 +187,7 @@ export class DrainCommand extends EventCommand<StatusEffectCommandData> {
     super(receiver, 'DRAIN', data);
   }
   override getDisplayMessage(): string {
-    return `1[HP] was drained from ${this.data.opponentMonsterName}!`;
+    return `1[HP] was drained from ${this.getOpposingMonsterName()}!`;
   }
 }
 export class RemoveStatusCommand extends EventCommand<ApplyStatusEffectCommandData> {
@@ -195,7 +195,7 @@ export class RemoveStatusCommand extends EventCommand<ApplyStatusEffectCommandDa
     super(receiver, 'REMOVE_STATUS_EFFECT', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.statusName} was removed from ${this.data.monsterName}.`;
+    return `${this.data.statusName} was removed from ${this.getActiveMonsterName()}.`;
   }
 }
 export class RemoveStatusEffectsCommand extends EventCommand<BasicCommandData> {
@@ -203,7 +203,7 @@ export class RemoveStatusEffectsCommand extends EventCommand<BasicCommandData> {
     super(receiver, 'REMOVE_STATUS_EFFECTS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} removed its status effects.`;
+    return `${this.getActiveMonsterName()} removed its status effects.`;
   }
 }
 
@@ -234,8 +234,8 @@ export class DisableActionCommand extends EventCommand<DisableActionCommandData>
   }
   override getDisplayMessage(): string {
     if (this.data.selection.key === 'NONE') {
-      return `${this.data.monsterName} opted not to disable a monster action.`;
+      return `${this.getActiveMonsterName()} opted not to disable a monster action.`;
     }
-    return `${this.data.monsterName} disabled ${this.data.opponentMonsterName}'s action ${this.data.selection.name}.`;
+    return `${this.getActiveMonsterName()} disabled ${this.getOpposingMonsterName()}'s action ${this.data.selection.name}.`;
   }
 }

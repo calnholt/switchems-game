@@ -19,7 +19,7 @@ export class StatModificationCommand extends EventCommand<StatModificationData> 
     super(receiver, 'MODIFY_STAT', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} gained ${this.data.amount} ${AbilityTextUtil.getIconText(this.data.statType)} from ${this.data.origin}.`;
+    return `${this.getActiveMonsterName()} gained ${this.data.amount} ${AbilityTextUtil.getIconText(this.data.statType)} from ${this.data.origin}.`;
   }
 }
 
@@ -33,7 +33,7 @@ export class HealCommand extends EventCommand<HealCommandData> {
     super(receiver, 'HEAL', { ...data, display: false });
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} healed ${this.data.amount}[HP]${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
+    return `${this.getActiveMonsterName()} healed ${this.data.amount}[HP]${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
   }
 }
 
@@ -42,7 +42,7 @@ export class TrueDamageCommand extends EventCommand<StatModificationData> {
     super(receiver, 'TRUE_DAMAGE', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} was dealt ${this.data.amount} damage.`;
+    return `${this.getActiveMonsterName()} was dealt ${this.data.amount} damage.`;
   }
 }
 
@@ -51,6 +51,6 @@ export class ApplyFlinchCommand extends EventCommand<CommandData> {
     super(receiver, 'APPLY_FLINCH', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} gained flinch!`;
+    return `${this.getActiveMonsterName()} gained flinch!`;
   }
 }

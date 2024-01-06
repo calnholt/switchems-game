@@ -16,7 +16,7 @@ export class PreventFlinchCommand extends EventCommand<OngoingTurnCommandData> {
     super(receiver, 'PREVENT_FLINCH', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} can't be flinched this turn.`;
+    return `${this.getActiveMonsterName()} can't be flinched this turn.`;
   }
 }
 
@@ -25,7 +25,7 @@ export class PreventRecoilCommand extends EventCommand<OngoingTurnCommandData> {
     super(receiver, 'PREVENT_RECOIL', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} doesn't take damage from recoil this turn.`;
+    return `${this.getActiveMonsterName()} doesn't take damage from recoil this turn.`;
   }
 }
 
@@ -43,6 +43,6 @@ export class FlinchedCommand extends EventCommand<OngoingTurnCommandData> {
     super(receiver, 'FLINCHED', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.opponentMonsterName} flinched!`;
+    return `${this.getOpposingMonsterName()} flinched!`;
   }
 }

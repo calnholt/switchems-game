@@ -10,42 +10,42 @@ import { Deusvolt } from "../monsters/deusvolt.model";
 import { Volcanoggin } from "../monsters/volcanoggin.model";
 import { Lanternshade } from "../monsters/lanternshade.model";
 import { Drownigator } from "../monsters/drownigator.model";
-import { Sorrospine } from "../monsters/Sorrospine.model";
+import { Sorrospine } from "../monsters/sorrospine.model";
 
 export const CardByKeyUtil = {
   executeCardByKey,
   executeStandardAction,
 }
 
-function executeCardByKey(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState) {
+function executeCardByKey(key: CardCompositeKey, player: PlayerType, receiver: UpdateGameStateService, gs: GameState, addTriggers?: string) {
 
   const monsterKey = key.includes("_") ? key.substring(0, key.indexOf("_")) : key;
   const cardKey = key.substring(key.indexOf("_") + 1, key.length);
 
   switch (monsterKey) {
     case CHARGROAR:
-      new Chargroar(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      new Chargroar(monsterKey, addTriggers ?? cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case DEUSVOLT:
-      new Deusvolt(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      new Deusvolt(monsterKey, addTriggers ?? cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case DROWNIGATOR:
-      new Drownigator(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      new Drownigator(monsterKey, addTriggers ?? cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case LANTERNSHADE:
-      new Lanternshade(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      new Lanternshade(monsterKey, addTriggers ?? cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case SORROSPINE:
-      new Sorrospine(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      new Sorrospine(monsterKey, addTriggers ?? cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case STALAGROWTH:
-      new Stalagrowth(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      new Stalagrowth(monsterKey, addTriggers ?? cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case VOLCANOGGIN:
-      new Volcanoggin(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      new Volcanoggin(monsterKey, addTriggers ?? cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
     case VULTUROCK:
-      new Vulturock(monsterKey, cardKey, player, gs, receiver).executeMonsterCard(key);
+      new Vulturock(monsterKey, addTriggers ?? cardKey, player, gs, receiver).executeMonsterCard(key);
       break;
   }
   switch (key) {

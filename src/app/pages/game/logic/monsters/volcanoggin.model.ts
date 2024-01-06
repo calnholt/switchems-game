@@ -43,7 +43,6 @@ export class Volcanoggin extends MonsterLogic {
   override action3(): void {
     const randomPips = CommandUtil.gainRandomStatPip(this.gs, {
       ...this.data,
-      monsterName: '',
       amount: 3,
       display: false,
       origin: 'Enrage'

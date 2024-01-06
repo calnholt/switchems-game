@@ -29,7 +29,7 @@ export class ApplyBuffCommand extends EventCommand<BuffCommandData> {
     super(receiver, 'APPLY_BUFF', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} was buffed with ${this.data.buffName}.`;
+    return `${this.getActiveMonsterName()} was buffed with ${this.data.buffName}.`;
   }
 }
 
@@ -39,7 +39,7 @@ export class ApplyBuffBelongsCommand extends EventCommand<BuffCommandData> {
     super(receiver, 'APPLY_BUFF_BELONGS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.data.monsterName} applied a buff that belongs to it.`;
+    return `${this.getActiveMonsterName()} applied a buff that belongs to it.`;
   }
 }
 
@@ -48,6 +48,6 @@ export class FlipBelongsCommand extends EventCommand<BuffCommandData> {
     super(receiver, 'FLIP_BELONGS', data);
   }
   override getDisplayMessage(): string {
-    return `The flipped card belongs to ${this.data.monsterName}.`;
+    return `The flipped card belongs to ${this.getActiveMonsterName()}.`;
   }
 }

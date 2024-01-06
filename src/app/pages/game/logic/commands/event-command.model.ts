@@ -12,6 +12,8 @@ import { GamePhaseCommandType } from "./game-phase-commands.model";
 import { MessageCommandType } from "./message-command.model";
 import { STANDARD_ACTION_COMMAND_TYPES } from "./standard-action-command.model";
 import { TRIGGER_TYPES } from "./trigger-command.model";
+import { GameState } from "../../services/game-state/game-state.service";
+import { GameStateUtil } from "../../services/game-state/game-state.util";
 
 export abstract class EventCommand<T extends CommandData> {
   readonly receiver: UpdateGameStateService;
@@ -77,6 +79,16 @@ export abstract class EventCommand<T extends CommandData> {
   protected getPlayerString(activePlayer: PlayerType): string {
     return this._data.player === activePlayer ? 'You' : 'Opponent';
   }
+
+  protected getActiveMonsterName() {
+    const { activeMonster } = GameStateUtil.getPlayerState(this.data.gs?.getFreshGameState() as GameState, this.data.player);
+    return activeMonster.name;
+  }
+  protected getOpposingMonsterName() {
+    const { activeMonster } = GameStateUtil.getOpponentPlayerState(this.data.gs?.getFreshGameState() as GameState, this.data.player);
+    return activeMonster.name;
+  }
+
 }
 
 // union all command types so they can be a little more modular
@@ -94,17 +106,16 @@ export type EventCommandType =
   | TRIGGER_TYPES
 
 export interface CommandData {
-  monsterName?: string;
-  opponentMonsterName?: string;
   key: CardCompositeKey;
   player: PlayerType; // the player who the things happens to
   targetMonster?: CardCompositeKey;
   targetPlayer?: PlayerType;
-  destroyOnTrigger?: boolean; // single time trigger flag
+  destroyOnTrigger?: boolean; // single time trigger flag, used for buffs
   ongoing?: boolean;
   display?: boolean; // determines if we display event as a message
   origin?: string;
   parent?: EventCommandType;
+  gs: GameState;
   // TODO: not optional
   activePlayerType?: PlayerType;
   removeEotTrigger?: boolean;

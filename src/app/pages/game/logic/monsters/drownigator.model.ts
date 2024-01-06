@@ -61,7 +61,6 @@ export class Drownigator extends MonsterLogic {
   override action3(): void {
     const randomPips = CommandUtil.gainRandomStatPip(this.gs, {
       ...this.data,
-      monsterName: '',
       amount: 1,
       display: false,
       origin: 'Swamped'

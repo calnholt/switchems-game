@@ -90,10 +90,10 @@ function getMonsterModifier(key: CardCompositeKey, type: MonsterModifierType, va
 
 function applyBuff(gs: GameState, data: BuffCommandData, rc: UpdateGameStateService) {
   const monster = GameStateUtil.getMonsterByPlayer(gs, data.player);
-  if (monster.name !== data.monsterName) return;
+  if (data.key.includes(monster.key())) return;
   // buff belongs to monster, send belongs command
   rc.enqueue(
-    new ApplyBuffBelongsCommand(rc, { key: data.key, player: data.player, buffName: data.buffName, monsterName: data.monsterName })
+    new ApplyBuffBelongsCommand(rc, { key: data.key, player: data.player, gs,  buffName: data.buffName })
   );
 }
 
@@ -114,7 +114,7 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
   const { player, key } = data;
   const monsterNames = GameStateUtil.getMonsterNames(gs, player);
   if (skipActionAndDamage(gs, data,)) {
-    new RecoilCheckCommand(rc, { key, player, ...monsterNames })
+    new RecoilCheckCommand(rc, { key, player, ...monsterNames, gs })
     return;
   }
   const attack = GameStateUtil.getMonsterActionByPlayer(gs, player);
@@ -127,29 +127,29 @@ function dealAttackDamage(gs: GameState, data: DealDamageCommandData, rc: Update
   if (damage > 0) {
     opposingMonster.takeDamage(damage);
     const message = `${monsterNames.monsterName} used ${attack.name}, which dealt ${damage} damage to ${monsterNames.opponentMonsterName}!`;
-    commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message }))
+    commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message, gs }))
     gs.battleAniService.update(gs.activePlayerType === data.player, attack.attack ? 'ATTACKING' : 'USING_SPECIAL');
   }
   else {
     const message = `${monsterNames.opponentMonsterName} took no damage!`;
-    commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message }));
+    commands.push(new DescriptiveMessageCommand(rc, { key: 'msg', player, message, gs }));
   }
   if (damage > 0 && opposingMonster.currentHp > 0 && GameStateUtil.isFaster(gs, data.player) && attackingMonster.modifiers.contains('FLINCH') && opposingSelectedAction.action.getSelectableActionType() === 'MONSTER') {
-    commands.push(new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, display: true, ...monsterNames }));
+    commands.push(new FlinchedCommand(rc, { key: attackingMonster.key(), player: data.player, gs, display: true, ...monsterNames }));
   }
   if (opposingMonster.currentHp === 0) {
-    commands.push(new KnockedOutByAttackCommand(rc, { key: action.key(), player, ...monsterNames }));
-    commands.push(new KnockedOutCommand(rc, { key: action.key(), player, ...monsterNames, kodMonster: opposingMonster.name, kodPlayer: opponentPlayer, display: true }));
+    commands.push(new KnockedOutByAttackCommand(rc, { key: action.key(), player, ...monsterNames, gs }));
+    commands.push(new KnockedOutCommand(rc, { key: action.key(), player, ...monsterNames, gs, kodMonster: opposingMonster.name, kodPlayer: opponentPlayer, display: true }));
   }
   if (damage > 0 && GameStateUtil.isWeak(gs, data.player) && !action.isStatus) {
-    commands.push(new WeakCommand(rc, { key, player: GameStateUtil.getOppositePlayer(player) }));
+    commands.push(new WeakCommand(rc, { key, player: GameStateUtil.getOppositePlayer(player), gs }));
     commands.push(new GainRandomStatPipCommand(rc, {
       ...data,
       amount: 1,
       superEffective: true,
     }));
   }
-  commands.push(new RecoilCheckCommand(rc, { key, player, ...monsterNames }));
+  commands.push(new RecoilCheckCommand(rc, { key, player, ...monsterNames, gs }));
   commands.reverse().forEach(cmd => cmd.pushFront());
 }
 
@@ -162,6 +162,7 @@ function dealDamage(gs: GameState, data: DealDamageCommandData, rc: UpdateGameSt
     new KnockedOutCommand(rc, { 
       key: monster.key(), 
       player: data.player, 
+      gs,
       kodMonster: monster.name,
       kodPlayer: data.player,
       ...monsterNames, 
@@ -197,7 +198,7 @@ function heal(gs: GameState, data: HealCommandData, rc: UpdateGameStateService) 
   if (amountHealed > 0 && !data.skip) {
     new DescriptiveMessageCommand(rc, {
       ...data,
-      message: `${data.monsterName} healed ${amountHealed}HP${data.origin ? ` from ${data.origin}` : ''}.`,
+      message: `${monster.name} healed ${amountHealed}HP${data.origin ? ` from ${data.origin}` : ''}.`,
     }).pushFront();
   }
 }
@@ -249,7 +250,7 @@ function resistant(gs: GameState, data: BasicCommandData, rc: UpdateGameStateSer
   // determine if switch defense occurs
   if (activeMonster.resistances.includes(action.element) && selectedAction.action.getSelectableActionType() === 'SWITCH') {
     rc.enqueue(
-      new GainSwitchDefenseCommand(rc, { key: data.key, player: data.player })
+      new GainSwitchDefenseCommand(rc, { key: data.key, player: data.player, gs })
     );
   }
 }
@@ -270,7 +271,7 @@ function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSe
     a.setLocked(false);
     a.setDisabled(false);
   });
-  commands.push(new SwitchInCommand(rc, { ...data, player: data.player, monsterName: switchingToMonster.name, display: true }));
+  commands.push(new SwitchInCommand(rc, { ...data, gs, player: data.player, display: true }));
   commands.reverse().forEach(cmd => cmd.pushFront());
 }
 
@@ -336,18 +337,18 @@ function knockoutRoutine(gs: GameState, data: KnockedOutCommandData, rc: UpdateG
   const monsterToSwitchTo = availableMonsters[0];
   const noOptionCommand = new SwitchInCommand(rc, { 
     ...data, 
+    gs,
     player: kodPlayer, 
     key: monsterToSwitchTo.key(), 
     isKo: true, 
-    monsterName: monsterToSwitchTo.name, 
     display: true,
   });
   const cpuCommand = new SwitchInCommand(rc, { 
     ...data, 
+    gs,
     player: kodPlayer, 
     key: monsterToSwitchTo.key(), 
     isKo: true, 
-    monsterName: monsterToSwitchTo.name, 
     display: true,
   });
   const prompt = new KnockedOutSwitchInPromptCommand(rc, { 
