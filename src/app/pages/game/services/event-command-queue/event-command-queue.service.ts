@@ -120,6 +120,9 @@ export class EventCommandQueueService {
         if (command?.data.destroyOnTrigger && command.data.parent) {
           this.unregisterTrigger(command.data.parent, command.data.key);
         }
+        if (command.type === 'REMOVE_STATUS_EFFECTS') {
+          this.unregisterStatusEffectTriggers(command);
+        }
         // if (command?.data.removeFromOtherTriggers) {
         //   this.unregisterFromOtherTriggers(command.data.player, command.data.key);
         // }
@@ -200,12 +203,18 @@ export class EventCommandQueueService {
     console.log('triggers after switch', this._triggers);
   }
 
-  private unregisterEotTriggers() {
+  private unregisterStatusEffectTriggers(command: EventCommand<CommandData>) {
     const keys = [...this._triggers.keys()];
     keys.forEach((key) => {
       this._triggers.set(key, (this._triggers.get(key) as EventCommand<CommandData>[])
-        .filter(cmd => !cmd.data.removeEotTrigger || !( cmd.data.removeCondition && cmd.data.removeCondition() )));
+        .filter(trigger => {
+          const isStatusEffect = trigger.data.isStatusEffect;
+          const isTargetMonster = command.data.targetMonster === trigger.data.targetMonster;
+          const isPlayer = command.data.player === trigger.data.player;
+          return isStatusEffect && isTargetMonster && isPlayer; 
+        }));
     });
   }
+
 
 }

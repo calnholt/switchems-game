@@ -29,7 +29,7 @@ export type MONSTER_ACTION_COMMANDS =
 
 
 export interface BasicCommandData extends CommandData {
-
+  
 }
 
 export interface MonsterActionCommandData extends CommandData {
@@ -142,7 +142,7 @@ export class ApplyDrainStatus extends EventCommand<BasicCommandData> {
     super(receiver, 'APPLY_DRAIN_STATUS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getOpposingMonsterName()} became drained!`;
+    return `${this.getActiveMonsterName()} became drained!`;
   }
 }
 
@@ -155,7 +155,7 @@ export class ApplyCurseStatus extends EventCommand<BasicCommandData> {
     super(receiver, 'APPLY_CURSE_STATUS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getOpposingMonsterName()} became cursed [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
+    return `${this.getActiveMonsterName()} became cursed [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
   }
 }
 export class CurseCommand extends EventCommand<StatusEffectCommandData> {
@@ -163,7 +163,7 @@ export class CurseCommand extends EventCommand<StatusEffectCommandData> {
     super(receiver, 'CURSE', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getOpposingMonsterName()} took 1 damage from curse!`;
+    return `${this.getActiveMonsterName()} took 1 damage from curse!`;
   }
 }
 export class ApplyFatigueStatus extends EventCommand<BasicCommandData> {
@@ -171,7 +171,7 @@ export class ApplyFatigueStatus extends EventCommand<BasicCommandData> {
     super(receiver, 'APPLY_FATIGUE_STATUS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getOpposingMonsterName()} became fatigued [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
+    return `${this.getActiveMonsterName()} became fatigued [STATUS] ${this.data.origin ? ` from ${this.data.origin}` : '' }!`;
   }
 }
 export class FatigueCommand extends EventCommand<StatusEffectCommandData> {
@@ -179,7 +179,7 @@ export class FatigueCommand extends EventCommand<StatusEffectCommandData> {
     super(receiver, 'FATIGUE', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getOpposingMonsterName()} took 1 damage from fatigue!`;
+    return `${this.getActiveMonsterName()} took 1 damage from fatigue!`;
   }
 }
 export class DrainCommand extends EventCommand<StatusEffectCommandData> {

@@ -28,6 +28,7 @@ function addCurseTrigger(gs: GameState, data: StatusEffectCommandData, rc: Updat
   new CurseCommand(rc, {
     ...data,
     display: true,
+    isStatusEffect: true,
     targetMonster: GameStateUtil.getMonsterByPlayer(gs, data.player).key(),
     triggerCondition: (command: EventCommand<CommandData>, trigger: EventCommand<CommandData>): boolean => {
       const rngCurse = gs.rng.randomFloat();
@@ -51,6 +52,7 @@ function addDrainTrigger(gs: GameState, data: StatusEffectCommandData, rc: Updat
   new DrainCommand(rc, {
     ...data,
     display: true,
+    isStatusEffect: true,
     targetMonster: GameStateUtil.getMonsterByPlayer(gs, data.player).key(),
     triggerCondition: (command: EventCommand<CommandData>, trigger: EventCommand<CommandData>): boolean => {
       const rng = gs.rng.randomFloat();
@@ -82,6 +84,7 @@ function addFatigueTrigger(gs: GameState, data: StatusEffectCommandData, rc: Upd
         gs,
         amount: buffSlotsUsed,
         statType: 'RECOIL',
+        isStatusEffect: true,
         origin: 'fatigue [STATUS]',
         display: true,
       });

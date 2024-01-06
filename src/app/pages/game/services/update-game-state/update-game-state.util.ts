@@ -265,7 +265,11 @@ function switchOut(gs: GameState, data: SwitchCommandData, rc: UpdateGameStateSe
     commands.push(new HealCommand(rc, { ...data, amount: 2 }));
   }
   else if (data.type === 'REMOVE_STATUS') {
-    commands.push(new RemoveStatusEffectsCommand(rc, { ...data, display: true}));
+    commands.push(new RemoveStatusEffectsCommand(rc, { 
+      ...data,
+      targetMonster: activeMonster.key(),
+      display: true
+    }));
   }
   activeMonster.actions.forEach(a => { 
     a.setLocked(false);

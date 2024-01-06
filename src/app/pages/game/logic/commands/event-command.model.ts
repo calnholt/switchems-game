@@ -120,6 +120,7 @@ export interface CommandData {
   activePlayerType?: PlayerType;
   removeEotTrigger?: boolean;
   updateMonsterPlayerTriggers?: boolean;
+  isStatusEffect?: boolean;
   triggerCondition?: (command: EventCommand<any>, trigger: EventCommand<any>) => boolean;
   getConditionalTrigger?: (command: any) => EventCommand<any>; // updates the command data using the command that caused trigger
   removeCondition?: () => boolean;

@@ -50,6 +50,7 @@ export class Stalagrowth extends MonsterLogic {
       new RemoveStatusEffectsCommand(this.rc, {
         ...this.data,
         player: GameStateUtil.getOppositePlayer(this.data.player),
+        targetMonster: activeMonster.key(),
       }).pushFront();
       new StatModificationCommand(this.rc, {
         ...this.data,
