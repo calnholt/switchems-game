@@ -5,6 +5,7 @@ import { ImageUtil } from '~/app/shared/utils/image.util';
 import { PlayerType } from '../../logic/player-type.mode';
 import { SfxService } from '~/app/shared/services/sfx.service';
 import { SimpleTooltipType } from '~/app/shared/utils/tooltip.util';
+import { PlayerProfileService } from '~/app/shared/services/player-profile.service';
 
 @Component({
   selector: 'sw-view-monster-button',
@@ -21,9 +22,12 @@ export class ViewMonsterButtonComponent {
   readonly ImageUtil = ImageUtil;
   tooltipType!: SimpleTooltipType;
 
+  isActiveMonsterBeingViewed = false;
+
 
   constructor(
     private monsterViewService: MonsterViewService,
+    private playerProfileService: PlayerProfileService,
     private sfx: SfxService,
   ) {
     
@@ -34,18 +38,27 @@ export class ViewMonsterButtonComponent {
       this.monsterBeingViewed = value;
       this.isActive = value.key === this.key && value.player === this.player;
       this.tooltipType = this.getTooltipType();
+      this.isActiveMonsterBeingViewed = this.isActiveMonster && this.isActive && this.playerProfileService.profile.playerType === this.monsterBeingViewed.player;
     });
   }
 
   view() {
-    this.monsterViewService.changeViewedMonster(this.key, this.player);
+    if (this.isActive) {
+      this.monsterViewService.reset();
+    }
+    else {
+      this.monsterViewService.changeViewedMonster(this.key, this.player);
+    }
     if (this.isActive) {
       this.sfx.play('CLICK');
     }
   }
 
   getTooltipType(): SimpleTooltipType {
-    if (this.isActiveMonster && this.isActive) {
+    if (this.isActiveMonsterBeingViewed) {
+      return 'CURRENTLY_VIEWING_ACTIVE_MONSTER';
+    }
+    if (this.isActiveMonster && this.isActive ) {
       return 'CURRENTLY_VIEWING_MONSTER';
     }
     if (!this.isActiveMonster && this.isActive) {

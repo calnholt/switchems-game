@@ -4,7 +4,6 @@
     border-radius: 6px;
     &.selected {
       background-color: black;
-      cursor:default;
       img {
         filter: invert(1);
       }

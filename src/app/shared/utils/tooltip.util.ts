@@ -31,13 +31,17 @@ function getSimpleTooltip(type: SimpleTooltipType): SimpleTooltip {
         `Click to view this monster's actions.`,
         'RIGHT'
       );
-    case 'CURRENTLY_VIEWING_MONSTER':
+    case 'CURRENTLY_VIEWING_ACTIVE_MONSTER':
       return new SimpleTooltip(
         `You are viewing this monster's actions.`,
       );
+    case 'CURRENTLY_VIEWING_MONSTER':
+      return new SimpleTooltip(
+        `You are viewing this monster's actions. (Click to toggle back to your active monster)`,
+      );
     case 'CURRENTLY_VIEWING_MONSTER_RIGHT':
       return new SimpleTooltip(
-        `You are viewing this monster's actions.`,
+        `You are viewing this monster's actions. (Click to toggle back to your active monster)`,
         'RIGHT'
       );
     default:
@@ -54,3 +58,4 @@ export type SimpleTooltipType =
   | 'VIEW_MONSTER_ACTIONS_RIGHT'
   | 'CURRENTLY_VIEWING_MONSTER'
   | 'CURRENTLY_VIEWING_MONSTER_RIGHT'
+  | 'CURRENTLY_VIEWING_ACTIVE_MONSTER'

@@ -1,5 +1,5 @@
 <div id="view-monster-button">
-  <sw-pushable-button [isActive]="!isActive">
+  <sw-pushable-button [isActive]="!isActiveMonsterBeingViewed">
     <div class="button-default view-container" 
       [ngClass]="{'selected' : isActive}" 
       (click)="view()"
