@@ -40,9 +40,11 @@ export class DialogComponent {
     if (this.flashyGraphic) {
       this.flashyGraphic.addEventListener('animationstart', () => {
         this.show = false;
+        this.isIntroGraphicEnded = false;
       }, { once: false });
       this.flashyGraphic.addEventListener('animationend', () => {
         this.show = !this.command.type.includes('PROMPT') ;
+        this.isIntroGraphicEnded = true;
       }, { once: false });
     }
   }
@@ -52,7 +54,7 @@ export class DialogComponent {
     this.ecqs.event$.subscribe((command) => {
       if (!command || !command.data.display) return;
       this.command = command;
-      // this.show = !command.type.includes('PROMPT')  ;
+      this.show = !command.type.includes('PROMPT') && this.isIntroGraphicEnded;
       this.hideNext = command.type === 'WAITING_FOR_OPPONENT';
       setTimeout(() =>{
         this.message = command.getDisplayMessage();
