@@ -198,7 +198,7 @@ function heal(gs: GameState, data: HealCommandData, rc: UpdateGameStateService) 
   if (amountHealed > 0 && !data.skip) {
     new DescriptiveMessageCommand(rc, {
       ...data,
-      message: `${monster.name} healed ${amountHealed}HP${data.origin ? ` from ${data.origin}` : ''}.`,
+      message: `${monster.name} healed ${amountHealed}[HP]${data.origin ? ` from ${data.origin}` : ''}.`,
     }).pushFront();
   }
 }

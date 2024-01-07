@@ -5,7 +5,7 @@
   transform: translate(-50%, -50%); /* Centers the element */
   z-index: 1000000;
   img {
-    height: 800px;
+    height: 600px;
     &.animate {
       animation: enterMoveVibrateExit 0.75s ease-in-out;
       animation-fill-mode: forwards;
@@ -21,7 +21,7 @@
 
 @keyframes enterMoveVibrateExit {
   0% {
-    transform: translateX(-100%);
+    transform: translateX(-100%) translateY(100%);
     opacity: 0;
   }
   25% {
@@ -39,7 +39,7 @@
     opacity: 1;
   }
   100% {
-    transform: translateX(100%);
+    transform: translateX(100%) translateY(-100%);
     opacity: 0;
   }
 }
