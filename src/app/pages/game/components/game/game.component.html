@@ -2,9 +2,13 @@
   <sw-game-over [winner]="winner" />
   <div id="game">
     <div *ngIf="!winner">
-      <sw-top-bar/>
+      <div class="top-bar-container">
+        <sw-top-bar/>
+      </div>
       <div class="d-flex align-items-center">
-        <sw-stat-board [statBoard]="statBoard" [isPlayer]="true" />
+        <div class="stat-board-container player">
+          <sw-stat-board [statBoard]="statBoard" [isPlayer]="true" />
+        </div>
         <div class="monsters-container">
           <div class="monster-container">
             <div class="modifier-container">
@@ -26,7 +30,9 @@
             </div>
           </div>
         </div>
-        <sw-stat-board [statBoard]="oStatBoard" [disable]="true" [isPlayer]="false" />
+        <div class="stat-board-container opponent">
+          <sw-stat-board [statBoard]="oStatBoard" [disable]="true" [isPlayer]="false" />
+        </div>
       </div>
       <div class="d-flex justify-content-center">
         <div class="actions-container">
@@ -34,7 +40,7 @@
             {{ isViewingOpponentActions ? 'Enemy Actions' : 'Your Actions' }} {{ monsterActionsBeingViewed.length ? ' - ' + monsterActionsBeingViewed[0].monsterName : '' }}
           </div>
           <div class="d-flex justify-content-evenly" [style.marginBottom]="'8px'">
-            <div>
+            <div class="submit-button-container">
               <sw-submit-action-button [viewingOtherMonstersActions]="!isViewingActiveMonster" />
             </div>
           </div>
@@ -56,9 +62,11 @@
   </div>
 </div>
 <sw-flashy-graphic [show]="currentPhase === 'START_OF_GAME' || currentPhase === 'REVEAL_PHASE'" />
-<sw-dialog [hide]="!!winner" />
-<sw-switch-out-dialog />
-<sw-koswitch-out-dialog />
-<sw-crush-dialog />
-<sw-disable-monster-action-dialog />
+<div class="dialog-container">
+  <sw-dialog [hide]="!!winner" />
+  <sw-switch-out-dialog />
+  <sw-koswitch-out-dialog />
+  <sw-crush-dialog />
+  <sw-disable-monster-action-dialog />
+</div>
 <sw-tutorial *ngIf="isTutorial" [section]="tutorialSection" />

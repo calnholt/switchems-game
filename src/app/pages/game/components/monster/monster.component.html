@@ -46,6 +46,7 @@
 <ng-template #monsterTemplate>
   <div id="monster" [ngClass]="{'ko' : monster.currentHp === 0}" (click)="onSelect()">
     <div class="monster-container {{backgroundClass}}" [ngClass]="{
+        'active' : isActiveMonster, 
         'inactive' : !isActiveMonster, 
         'selected' : selected, 
         'unselectable': (cardsInHand < 2 && !isActiveMonster) || !enabled || monster.currentHp === 0 || disable,
@@ -74,7 +75,7 @@
             />
           </div>
         </div>
-        <div>
+        <div class="monster-info-container">
           <div class="monster-name-container">
             <div class="monster-name">
               {{monster.name + ' - '}} 
