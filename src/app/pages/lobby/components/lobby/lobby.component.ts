@@ -75,4 +75,9 @@ export class LobbyComponent {
   returnToTitleScreen() {
     this.router.navigate(['/']);
   }
+
+  test() {
+    this.peerService.sendData('TEST_GAME', {});
+  }
+
 }

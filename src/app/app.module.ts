@@ -10,6 +10,7 @@ import { TitleScreenModule } from './pages/title-screen/title-screen.module';
 import { SelectMonstersModule } from './pages/select-monsters/select-monsters.module';
 import { LobbyModule } from './pages/lobby/lobby.module';
 import { CreditsModule } from './pages/credits/credits.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { CreditsModule } from './pages/credits/credits.module';
     SelectMonstersModule,
     LobbyModule,
     CreditsModule,
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

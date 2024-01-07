@@ -12,6 +12,7 @@ import { PeerJsService } from '~/app/shared/services/peer-js.service';
 import { EventCommandType } from '../logic/commands/event-command.model';
 import { PlayerService } from './player/player.service';
 import { GamePhaseService } from './game-phase/game-phase.service';
+import { TestOnlineUtil } from '~/app/shared/utils/test-online.util';
 
 @Injectable({
   providedIn: 'root'
@@ -88,6 +89,31 @@ export class PeerMessageHandlerService {
         break;
       case 'REPLAY_GAME':
         this.playerService.startOnlineGame();
+        break;
+      case 'TEST_GAME':
+        this.gameStateService.setCpu(false);
+        const selectionsA = TestOnlineUtil.getPlayerSelections([
+          'DROWNIGATOR',
+          'LANTERNSHADE',
+          'VOLCANOGGIN',
+        ]);
+        const selectionsB = TestOnlineUtil.getPlayerSelections([
+          'CHARGROAR',
+          'STALAGROWTH',
+          'SORROSPINE',
+        ]);
+        if (isHost) {
+          this.monsterSelectionService.opponentSelections$.next(selectionsA);
+          this.monsterSelectionService.selectedMonsters$.next(selectionsB);
+        }
+        else {
+          this.monsterSelectionService.opponentSelections$.next(selectionsB);
+          this.monsterSelectionService.selectedMonsters$.next(selectionsA);
+          this.peerService.sendData('TEST_GAME', {  });
+        }
+        setTimeout(() => {
+          this.router.navigate(['/online-game']);
+        }, 200);
         break;
     }
 

@@ -9,6 +9,8 @@ export type PeerMessageType =
   | 'PICK_4_SELECTIONS' // send 4 monsters to opponents
   | 'TEAM_CONFIRMED' // when confirmed team of 3
   | 'START_GAME' // starts online game
+  
+  | 'TEST_GAME' // starts with card-coded presets - for testing
 
   // battle screen
   | 'SUBMIT_ACTION' // when action is confirmed

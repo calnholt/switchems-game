@@ -70,7 +70,11 @@ export class PeerJsService {
   }
 
   sendData(type: PeerMessageType, data?: any) {
-    this.connection?.send({ type, data });
+    let cleanedData = data;
+    if (cleanedData?.gs) {
+      cleanedData.gs = undefined;
+    }
+    this.connection?.send({ type, data: cleanedData });
   }
 
   disconnect() {

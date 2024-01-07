@@ -149,6 +149,7 @@ export class GameComponent {
     this.currentPhaseService.currentPhase$.subscribe((phase) => {
       if (phase === 'START_OF_GAME') {
         this.monsterViewService.reset();
+        this.gamePhaseService.startGame();
       }
       this.currentPhase = phase;
       this.hideModifiers = ![
@@ -190,7 +191,6 @@ export class GameComponent {
         this.monsterActionsBeingViewed = (this.oInactiveMonsters.concat(this.oActiveMonster).find(m => m.key() === value.key) as Monster).actions;
       }
     });
-    this.gamePhaseService.startGame();
   }
 
   getRandomArena(): ArenaType {

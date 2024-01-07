@@ -11,6 +11,7 @@ import { TermTooltipComponent } from '../pages/game/components/monster-action/te
 import { PushableButtonComponent } from './components/pushable-button/pushable-button.component';
 import { SimpleTooltipComponent } from './components/simple-tooltip/simple-tooltip.component';
 import { SimpleTooltipPipe } from './pipes/simple-tooltip.pipe';
+import { KeyPressTestsComponent } from './components/key-press-tests/key-press-tests.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { SimpleTooltipPipe } from './pipes/simple-tooltip.pipe';
     PushableButtonComponent,
     SimpleTooltipComponent,
     SimpleTooltipPipe,
+    KeyPressTestsComponent,
   ],
   imports: [
     CommonModule,
@@ -38,6 +40,7 @@ import { SimpleTooltipPipe } from './pipes/simple-tooltip.pipe';
     TermTooltipComponent,
     PushableButtonComponent,
     SimpleTooltipPipe,
+    KeyPressTestsComponent,
   ]
 })
 export class SharedModule { }

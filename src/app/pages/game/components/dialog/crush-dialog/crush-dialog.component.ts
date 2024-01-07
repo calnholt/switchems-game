@@ -40,6 +40,7 @@ export class CrushDialogComponent {
     this.ecqs.event$.subscribe((command) => {
       if (!command || command.type !== 'CRUSH_PROMPT') return;
       this.show = true;
+      this.selections = [];
       this.command = command as CrushPromptCommand;
       const data = command.data as CrushPromptCommandData;
       this.statBoard = data.activePlayerType === data.playerToCrush ? this.playerService.statBoard : this.playerService.oStatBoard;
@@ -84,6 +85,7 @@ export class CrushDialogComponent {
       this.handlePromptService.execute(this.command.type, data);
       this.peerService.sendData(this.command.type as PeerMessageType, data);
       this.show = false;
+      this.selections = [];
     }
   }
 

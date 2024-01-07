@@ -52,9 +52,9 @@ export class PlayerService {
   }
 
   startOnlineGame() {
-    this.setup();
     this._player.reset(this.getCustomStart(this.monsterSelectionService.selectedMonsters));
     this._opponent.reset(this.getCustomStart(this.monsterSelectionService.opponentSelections));
+    this.setup();
     // this.player.inactiveMonsters.forEach(m => m.takeDamage(99));
     // this._opponent.inactiveMonsters.forEach(m => m.takeDamage(99));
   }

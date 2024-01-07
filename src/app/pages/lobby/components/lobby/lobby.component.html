@@ -46,6 +46,13 @@
               </div>
             </sw-pushable-button>
           </div>
+          <div class="button">
+            <sw-pushable-button [isActive]="!!myId">
+              <div class="button-face" (click)="test()">
+                TEST
+              </div>
+            </sw-pushable-button>
+          </div>
         </div>
       </div>
     </ng-container>

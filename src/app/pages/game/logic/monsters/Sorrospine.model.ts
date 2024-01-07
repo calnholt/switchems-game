@@ -42,7 +42,7 @@ export class Sorrospine extends MonsterLogic {
   override action2(): void {
     new HealCommand(this.rc, {
       ...this.data,
-      amount: 1,
+      amount: 2,
       origin: 'Nap',
       display: true,
     }).pushFront();

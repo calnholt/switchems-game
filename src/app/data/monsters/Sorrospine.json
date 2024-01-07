@@ -15,7 +15,7 @@
     },
     {
       "name": "Nap",
-      "text": "Heal 1[HP]",
+      "text": "Heal 2[HP]",
       "element": "Leaf",
       "statusFlg": true,
       "speed": 3,

@@ -54,6 +54,9 @@ export class Player {
     this.statBoard.reset();
     this.playerCardManager.drawCard();
     this.playerCardManager.drawCard();
+    // this.playerCardManager.drawCard();
+    // this.playerCardManager.drawCard();
+    // this.playerCardManager.drawCard();
   }
   
 }

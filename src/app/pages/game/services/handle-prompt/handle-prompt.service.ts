@@ -23,10 +23,10 @@ export class HandlePromptService {
 
     switch(type) {
       case 'CRUSH_PROMPT':
-        new CrushCommand(this.uggs, data).pushFrontDecision();
+        new CrushCommand(this.uggs, { ...data, gs }).pushFrontDecision();
         break;
       case 'DISABLE_ACTION_PROMPT':
-        new DisableActionCommand(this.uggs, data).pushFrontDecision();
+        new DisableActionCommand(this.uggs, { ...data, gs }).pushFrontDecision();
         break;
       case 'KNOCKED_OUT_SWITCH_IN_PROMPT':
         const monsterName = (GameStateUtil.getPlayerState(gs, data.player).inactiveMonsters.find(m => m.key() === data.key) as Monster).name;
