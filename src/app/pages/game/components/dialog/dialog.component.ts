@@ -43,7 +43,12 @@ export class DialogComponent {
         this.isIntroGraphicEnded = false;
       }, { once: false });
       this.flashyGraphic.addEventListener('animationend', () => {
-        this.show = !this.command?.type?.includes?.('PROMPT') ;
+        if (this.command) {
+          this.show = !this.command?.type?.includes?.('PROMPT') ;
+        }
+        else {
+          this.show = false;
+        }
         this.isIntroGraphicEnded = true;
       }, { once: false });
     }

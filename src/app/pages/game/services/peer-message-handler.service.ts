@@ -47,9 +47,6 @@ export class PeerMessageHandlerService {
     switch (type) {
       case 'PLAYER_PROFILE':
         this.playerProfileService.setHost(data, isHost);
-        if (isHost) {
-          this.peerService.sendData('SHARE_SEED', { seed: this.rng.seed });
-        }
         break;
       case 'SHARE_SEED':
         this.rng.setSeed(data.seed);
@@ -66,6 +63,9 @@ export class PeerMessageHandlerService {
         this.monsterSelectionService.opponentSelections$.next(data);
         break;
       case 'START_GAME':
+        if (isHost) {
+          this.peerService.sendData('SHARE_SEED', { seed: this.rng.seed });
+        }
         this.monsterSelectionService.opponentSelections$.next(data);
         this.gameStateService.setCpu(false);
         // timeout for data to load
@@ -88,9 +88,15 @@ export class PeerMessageHandlerService {
         this.onlineBattleService.oStatus$.next('SELECTING_ACTION');
         break;
       case 'REPLAY_GAME':
+        if (isHost) {
+          this.peerService.sendData('SHARE_SEED', { seed: this.rng.seed });
+        }
         this.playerService.startOnlineGame();
         break;
       case 'TEST_GAME':
+        if (isHost) {
+          this.peerService.sendData('SHARE_SEED', { seed: this.rng.seed });
+        }
         this.gameStateService.setCpu(false);
         const selectionsA = TestOnlineUtil.getPlayerSelections([
           'DROWNIGATOR',

@@ -27,7 +27,9 @@ export class OnlineBattleService {
     // denotes if online opponent has submitted their action
     private _status$: BehaviorSubject<OnlineBattleStatusType> = new BehaviorSubject<OnlineBattleStatusType>('RESOLVING_TURN');
     private _oStatus$: BehaviorSubject<OnlineBattleStatusType> = new BehaviorSubject<OnlineBattleStatusType>('RESOLVING_TURN');
-
+    private acknowledgeCount = 0;
+    
+    
     public get status$() { return this._status$;   }
     public get status() { return this.status$.value; }
     public get oStatus$() { return this._oStatus$; }
@@ -44,7 +46,7 @@ export class OnlineBattleService {
   ) { 
     this.status$.subscribe((value) => {
       if (value === 'ACKNOWLEDGE_DIALOG') {
-        this.peerJsService.sendData('ACKNOWLEDGE_DIALOG');
+        this.peerJsService.sendData('ACKNOWLEDGE_DIALOG', { count: ++this.acknowledgeCount });
       }
       this.executeSynchronizedActionFromStatuses(value, this.oStatus);
     })
