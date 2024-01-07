@@ -82,7 +82,7 @@ export class PeerMessageHandlerService {
         this.gamePhaseService.revealActions();
         break;
       case 'ACKNOWLEDGE_DIALOG':
-        this.onlineBattleService.oStatus$.next('ACKNOWLEDGE_DIALOG');
+        this.onlineBattleService.handleOpponentAcknowledge(data.count);
         break;
       case 'FINISHED_TURN':
         this.onlineBattleService.oStatus$.next('SELECTING_ACTION');

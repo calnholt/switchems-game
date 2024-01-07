@@ -28,6 +28,7 @@ export class OnlineBattleService {
     private _status$: BehaviorSubject<OnlineBattleStatusType> = new BehaviorSubject<OnlineBattleStatusType>('RESOLVING_TURN');
     private _oStatus$: BehaviorSubject<OnlineBattleStatusType> = new BehaviorSubject<OnlineBattleStatusType>('RESOLVING_TURN');
     private acknowledgeCount = 0;
+    private oAcknowledgeCount = 0;
     
     
     public get status$() { return this._status$;   }
@@ -64,12 +65,20 @@ export class OnlineBattleService {
       this.peerJsService.sendData('SEND_SELECTED_ACTION', this.getActionData());
     }
     if (isBothStatusEqual('ACKNOWLEDGE_DIALOG')) {
+      if (this.acknowledgeCount !== this.oAcknowledgeCount) {
+        console.error("PLAYERS OUT OF SYNC", { playerCount: this.acknowledgeCount, opponentCount: this.oAcknowledgeCount });
+      }
       this.status$.next('RESOLVING_TURN');
       this.oStatus$.next('RESOLVING_TURN');
       setTimeout(() => {
         this.ecqs.acknowledge();
       }, 100);
     }
+  }
+
+  handleOpponentAcknowledge(count: number) {
+    this.oStatus$.next('ACKNOWLEDGE_DIALOG');
+    this.oAcknowledgeCount = count;
   }
 
   getActionData(): OnlineSelectedAction {
