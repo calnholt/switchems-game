@@ -46,7 +46,7 @@
               </div>
             </sw-pushable-button>
           </div>
-          <div class="button">
+          <div class="button" *ngIf="profile.gigachad">
             <sw-pushable-button [isActive]="!!myId">
               <div class="button-face" (click)="test()">
                 TEST
