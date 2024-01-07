@@ -102,8 +102,9 @@ export class CardInfoTooltipDirective {
   }
 
   @HostListener('click')
+  @HostListener('touchstart')
   onClick(): void {
-    if (this.state !== 'UNINITIALIZED') {
+    if (this.state !== 'UNINITIALIZED' && this.state !== 'SHOWING') {
       this.destroy();
     }
   }

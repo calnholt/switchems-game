@@ -16,6 +16,7 @@ export class PushableButtonComponent {
   }
 
   @HostListener('click')
+  @HostListener('touchstart')
   onClick() {
     if (this.isActive) {
       this.sfx.play('CLICK');
