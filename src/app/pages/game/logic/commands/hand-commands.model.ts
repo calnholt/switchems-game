@@ -17,7 +17,7 @@ export class DrawCommand extends EventCommand<HandCommandData> {
     super(receiver, 'DRAW', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString(this.data.activePlayerType as PlayerType)} drew a card${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
+    return `${this.getPlayerString()} drew a card${this.data.origin ? ` from ${this.data.origin}` : ''}.`;
   }
 }
 
@@ -26,7 +26,7 @@ export class DiscardCommand extends EventCommand<HandCommandData> {
     super(receiver, 'DISCARD', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString(this.data.activePlayerType as PlayerType)} discarded ${this.data.buffName}.`;
+    return `${this.getPlayerString()} discarded ${this.data.buffName}.`;
   }
 }
 
@@ -35,7 +35,7 @@ export class RandomDiscardCommand extends EventCommand<HandCommandData> {
     super(receiver, 'RANDOM_DISCARD', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString(this.data.activePlayerType as PlayerType)} randomly discarded ${this.data.buffName}.`;
+    return `${this.getPlayerString()} randomly discarded ${this.data.buffName}.`;
   }
 }
 

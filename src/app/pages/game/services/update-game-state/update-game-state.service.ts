@@ -130,7 +130,7 @@ export class UpdateGameStateService {
       case 'STANDARD_ACTION':
         UpdateGameStateUtil.doStandardAction(gs, data, this);
         break;
-      case 'SWITCH_ROUTINE':
+      case 'SWITCH_ACTION':
         UpdateGameStateUtil.switchRoutine(gs, data, this);
         break;
       case 'SWITCH_IN':

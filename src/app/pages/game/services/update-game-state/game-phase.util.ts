@@ -4,7 +4,7 @@ import { ApplyBuffsGamePhaseCommand, ApplyPipsGamePhaseCommand, EndGamePhaseComm
 import { DrawCommand } from "../../logic/commands/hand-commands.model";
 import { DealAttackDamageCommand, FasterCommand, MonsterActionCommand, SlowerCommand } from "../../logic/commands/monster-action-commands.model";
 import { ApplyStatPipsCommand } from "../../logic/commands/stat-pip-commands.model";
-import { SwitchInCommand, SwitchRoutineCommand } from "../../logic/commands/switch-commands.model";
+import { SwitchInCommand, SwitchActionCommand } from "../../logic/commands/switch-commands.model";
 import { PlayerType } from "../../logic/player-type.mode";
 import { CardByKeyUtil } from "../../logic/util/card-by-key.util";
 import { GameState } from "../game-state/game-state.service";
@@ -172,7 +172,7 @@ function executeSwitchActionsPhase(gs: GameState, rc: UpdateGameStateService) {
     if (selectedAction.action.getSelectableActionType() !== 'SWITCH') {
       return;
     }
-    new SwitchRoutineCommand(rc, { key: selectedAction.action.key(), player, ...monsterNames, gs}).enqueue();
+    new SwitchActionCommand(rc, { key: selectedAction.action.key(), player, ...monsterNames, gs}).enqueue();
   }
   
   performSwitchAction(gs, playerWithInitiative);

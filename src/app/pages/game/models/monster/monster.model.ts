@@ -196,4 +196,9 @@ export class Monster implements IHaveTooltip, ISelectableAction {
     return this.elements.map(e => e.toString().toLowerCase()).join("") + "-b";
   }
 
+  setMaxHp(newMax: number) {
+    this._hp = newMax;
+    this._currentHp = newMax;
+  }
+
 }

@@ -84,6 +84,6 @@ export class DiscardPipsCommand extends EventCommand<StatPipCommandData> {
     super(receiver, 'DISCARD_PIPS', data);
   }
   override getDisplayMessage(): string {
-    return `${this.getPlayerString(this.data.activePlayerType as PlayerType)} discarded ${this.data.amount} ${this.data.statType.toLowerCase()} Pips.`;
+    return `${this.getPlayerString()} discarded ${this.data.amount} ${this.data.statType.toLowerCase()} Pips.`;
   }
 }

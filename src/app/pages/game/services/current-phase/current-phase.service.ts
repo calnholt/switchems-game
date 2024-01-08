@@ -26,10 +26,7 @@ export class CurrentPhaseService {
   goToNextPhase() {
     const nextPhase = this.calculateNextPhase();
     console.log('going to next phase', nextPhase);
-    if (nextPhase === 'SELECTION_PHASE' && this.currentTurn === 0) {
-      this._currentTurn++;
-    }
-    if (nextPhase === 'END_PHASE') {
+    if (nextPhase === 'SELECTION_PHASE') {
       this._currentTurn++;
     }
     this._currentPhase.next(nextPhase);

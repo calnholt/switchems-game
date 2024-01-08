@@ -60,7 +60,7 @@
       "buffText": "<div>{\"stat\": \"?\", \"num\": 2}.</div>"
     }
   ],
-  "hp": 7,
+  "hp": 8,
   "name": "Sorrospine",
   "initiative": 25,
   "passive": "At the end of the turn, <div>{\"stat\": \"?\", \"num\": 1}.</div>"

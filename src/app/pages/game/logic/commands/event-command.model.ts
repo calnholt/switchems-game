@@ -76,8 +76,8 @@ export abstract class EventCommand<T extends CommandData> {
     return false; // Placeholder for actual decision requirement
   }
 
-  protected getPlayerString(activePlayer: PlayerType): string {
-    return this._data.player === activePlayer ? 'You' : 'Opponent';
+  protected getPlayerString(): string {
+    return this.data.gs.activePlayerType === this.data.player ? 'You' : 'Opponent';
   }
 
   protected getActiveMonsterName() {

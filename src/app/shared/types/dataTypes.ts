@@ -76,7 +76,7 @@ export const TERM_CODES = termCodes.sort((a, b) => a.name.localeCompare(b.name))
 const IMAGE_KEYS = [`[ATK]`, `[+]`, `[B]`, `[-]`, `[DEF]`, `[TA]`,
     `[SPD]`, `[F]`, `[W]`, `[L]`, `[R]`, `[E]`, `[S]`, `[ST]`, `[REAC]`, `[HP]`, '[CUBE]', '[NQ]', '[PQ]', '[ARROW]',
     '[SPECIAL]', '[STATUS]', '[COUNTER]', '[MQ]', '[ACORN]', '[HONEY]', '[WISH]', '[TORMENT]', '[FLIP]', '[DISABLE]', '[SINGLE]', '[HOLLOW]',
-    '[SR]', '[SL]', '[RESIST]', '[WEAK]', '[STR]', '[FRAIL]', '[GOOP]', `[Q]`, `[SUPER-EFFECTIVE]`
+    '[SR]', '[SL]', '[RESIST]', '[WEAK]', '[STR]', '[FRAIL]', '[GOOP]', `[Q]`, `[SUPER-EFFECTIVE]`, `[BDG]`
 ] as const;
 export type ImageCode = typeof IMAGE_KEYS[number];
 export const IMAGE_CODES = [
@@ -111,6 +111,7 @@ export const IMAGE_CODES = [
     new Image(`[GOOP]`, SYMBOLS_PATH + `goop.png`),
     new Image(`[HOLLOW]`, SYMBOLS_PATH + `hollow.png`),
     new Image(`[ARROW]`, SYMBOLS_PATH + `sideswipe.png`),
+    new Image(`[BDG]`, SYMBOLS_PATH + `badge.png`),
 ];
 
 //TODO: this should return an object with two properties: advElems and DisElems that are arrays of elemtypes

@@ -4,7 +4,7 @@ import { CommandData, EventCommand } from "./event-command.model";
 import { BasicCommandData } from "./monster-action-commands.model";
 
 export type SWITCH_TYPES =
-  | 'SWITCH_ROUTINE'
+  | 'SWITCH_ACTION'
   | 'SWITCH_OUT_PROMPT'
   | 'KNOCKED_OUT_SWITCH_IN_PROMPT'
   | 'SWITCH_OUT'
@@ -16,9 +16,9 @@ export interface SwitchCommandData extends CommandData {
   isKo?: boolean;
 }
 
-export class SwitchRoutineCommand extends EventCommand<SwitchCommandData> {
+export class SwitchActionCommand extends EventCommand<SwitchCommandData> {
   constructor(receiver: UpdateGameStateService, data: SwitchCommandData) {
-    super(receiver, 'SWITCH_ROUTINE', { ...data });
+    super(receiver, 'SWITCH_ACTION', { ...data });
   }
   override getDisplayMessage(): string {
     return ``;
